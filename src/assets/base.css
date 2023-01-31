@@ -56,6 +56,14 @@
   }
 } */
 
+@media print
+{    
+    .no-print, .no-print *
+    {
+        display: none !important;
+    }
+}
+
 .green {
   color: var(--vt-c-green);
 }
@@ -98,6 +106,10 @@ a:not(.plain) {
   }
 }
 
+a.plain {
+  text-decoration: none;
+}
+
 svg {
   fill: currentColor;
 }
@@ -136,11 +148,5 @@ header {
     &:hover {
       background-color: var(--color-background-hover);
     }
-  }
-}
-
-a > .button {
-  &:hover {
-    background-color: transparent;
   }
 }

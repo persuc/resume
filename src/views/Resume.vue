@@ -10,7 +10,7 @@ import { EMAIL, PHONE } from '@/ts/constants'
 </script>
 
 <template>
-  <Header>
+  <Header class="no-print">
     <a href="/andrew_persic_resume.pdf" download>
       <div class="button">
         <IconDownload class="mr-2" />Download
@@ -19,31 +19,27 @@ import { EMAIL, PHONE } from '@/ts/constants'
   </Header>
 
   <div class="resume px-8" style="max-width: 60rem; margin: 0 auto;">
-    <div class="mt-4 flex space-between">
+    <div class="mt-4 flex space-between topRow">
       <h1 class="mb-0">
         Skills
       </h1>
       <ImageAndText class="nowrap" :image="faceImage" :rounded="true">
-        <p>Andrew Persic</p>
+        <p class="mb-0">Andrew Persic</p>
         <CopyButton :value="EMAIL">{{ EMAIL }}</CopyButton>
         <CopyButton :value="PHONE">{{ PHONE }}</CopyButton>
       </ImageAndText>
     </div>
+    
+    <h3 class="mt-2">Technical Leadership</h3>
+    <p>Have built relationships and led initiatives across other teams to target cross-cutting concerns and deliver broader value. My leadership style is asking questions based on a solid understanding of business processes and software architecture, and facilitating communication to come up with key goals.
+    </p>
+    
+    <h3 class="mt-2">Engineering</h3>
+    <p>Experienced with high scale data-intensive workloads across different regions and database architectures. Highly competent in <i>Java</i>, <i>AWS</i>, <i>Terraform</i>, <i>TypeScript</i> and <i>Vue.js</i>.</p>
 
     <h3>Personal</h3>
-    <p>I don’t mind working under pressure, always better to be too busy than bored. I enjoy being
-      engaged right from the inception of new projects and also taking time to improve existing processes and
-      frameworks.
+    <p>I always come to work with a smile since I enjoy the work I do, and I love the people who gravitate towards tech. I don’t mind working under pressure, always better to be too busy than bored.
     </p>
-    
-    <h3 class="mt-2">Technical</h3>
-    <p>Have built relationships and led initiatives across other teams to drive business goals.
-      Experienced with high scale data migration including across regions. Also have a ”fast mode” - can
-      spin up small / medium scale webapps in no time at all.
-    </p>
-    
-    <h3 class="mt-2">Development</h3>
-    <p>Highly competent in <i>Java</i>, <i>AWS</i>, <i>Terraform</i>, <i>TypeScript</i> and <i>Vue.js</i></p>
 
     <h1 class="mt-4 mb-0">
       Relevant Experience
@@ -88,9 +84,7 @@ spectrometry data using <i>Three.js</i> and <i>WebGL</i></li>
       Education
     </h1>
     <ImageAndText class="pt-0 pl-0" :image="monashLogo" :size="'8rem'">
-      <p style="font-style: italic;">Bachelor of Computer Science</p>
-      <p>Monash University</p>
-      <p>Clayton, VIC, Australia</p>
+      <p class="mb-0" style="font-style: italic;">Bachelor of Computer Science</p>
     </ImageAndText>
 
     <div style="height: 10rem;" />
@@ -107,12 +101,12 @@ h3 {
   font-size: 1.2rem;
 }
 
-.resume > div {
+.resume > .topRow {
   flex-direction: column-reverse;
 }
 
 @media (min-width: 1024px) {
-  .resume > div {
+  .resume > .topRow {
     flex-direction: row;
   }
 }

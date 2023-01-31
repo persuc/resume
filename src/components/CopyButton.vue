@@ -28,7 +28,7 @@ async function copy(text: string) {
 </script>
 
 <template>
-  <p @click="copy(value)" style="cursor: pointer;"><slot></slot>
+  <p class="mb-0" @click="copy(value)" style="cursor: pointer;"><slot></slot>
     <span style="position: relative;">📄
       <span style="position: absolute; top: .12em; left: 0.2em; z-index: -1;">📄</span>
     </span>
