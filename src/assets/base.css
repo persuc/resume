@@ -15,6 +15,7 @@
 
   --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
   --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
+  --vt-c-divider-light-3: rgba(60, 60, 60, 0.08);
   --vt-c-divider-dark-1: rgba(84, 84, 84, 0.65);
   --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
 
@@ -29,6 +30,7 @@
   --color-background: var(--vt-c-white);
   --color-background-soft: var(--vt-c-white-soft);
   --color-background-mute: var(--vt-c-white-mute);
+  --color-background-hover: var(--vt-c-divider-light-3);
 
   --color-border: var(--vt-c-divider-light-2);
   --color-border-hover: var(--vt-c-divider-light-1);
@@ -85,7 +87,11 @@ h1, h2, h3, h4, h5, h6 {
   position: initial;
 }
 
-a {
+p, ol {
+  margin-bottom: 8px;
+}
+
+a:not(.plain) {
   color: var(--color-anchor);
   &:visited {
     color: var(--color-anchor);
@@ -125,6 +131,16 @@ header {
 
   &.text {
     color: var(--color-heading);
+    background-color: transparent;
+    transition: background-color 0.5s;
+    &:hover {
+      background-color: var(--color-background-hover);
+    }
+  }
+}
+
+a > .button {
+  &:hover {
     background-color: transparent;
   }
 }

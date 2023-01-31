@@ -14,7 +14,7 @@ withDefaults(defineProps<Props>(), {
 <template>
   <div class="flex center pa-2">
     <img class="mr-2" :src="image" :style="`flex-grow: 0; width: ${size}; ${rounded ? 'border-radius: 2rem;' : ''}`" />
-    <div>
+    <div style="flex-grow: 1;">
       <slot></slot>
     </div>
   </div>

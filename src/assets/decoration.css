@@ -17,3 +17,7 @@
 .br-4 {
   border-radius: 1rem;
 }
+
+.nowrap {
+  white-space: nowrap;
+}
