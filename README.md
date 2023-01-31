@@ -1,6 +1,10 @@
-# typescript-vue
+# My resume
 
-This template should help get you started developing with Vue 3 in Vite.
+Simple SPA built with Vue 3 & Vite. Houses my resume, contact info and some hiring details
+
+## Deployment
+
+Deployed with Netlify
 
 ## Recommended IDE Setup
 
@@ -24,23 +28,23 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 ## Project Setup
 
 ```sh
-npm install
+yarn
 ```
 
 ### Compile and Hot-Reload for Development
 
 ```sh
-npm run dev
+yarn dev
 ```
 
 ### Type-Check, Compile and Minify for Production
 
 ```sh
-npm run build
+yarn build
 ```
 
 ### Lint with [ESLint](https://eslint.org/)
 
 ```sh
-npm run lint
+yarn lint
 ```
