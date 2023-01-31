@@ -24,9 +24,11 @@ const phone = '+81 80 9280 2015'
       <span>🠘 Back</span>
     </div>
 
-    <div class="button">
-      <IconDownload class="mr-2" />Download
-    </div>
+    <a href="/andrew_persic_resume.pdf" download> 
+      <div class="button">
+        <IconDownload class="mr-2" />Download
+      </div>
+    </a>
   </header>
 
   <div class="resume" style="max-width: 60rem; margin: 0 auto;">
