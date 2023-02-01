@@ -19,14 +19,14 @@ import { EMAIL, PHONE } from '@/ts/constants'
   </Header>
 
   <div class="resume px-8" style="max-width: 60rem; margin: 0 auto;">
-    <div class="mt-4 flex space-between topRow">
+    <div class="mt-4 flex space-between topRow" style="height: 2.1rem;" >
       <h1 class="mb-0">
         Skills
       </h1>
-      <ImageAndText class="nowrap" :image="faceImage" :rounded="true">
-        <p class="mb-0">Andrew Persic</p>
-        <CopyButton :value="EMAIL">{{ EMAIL }}</CopyButton>
-        <CopyButton :value="PHONE">{{ PHONE }}</CopyButton>
+      <ImageAndText class="contact nowrap mt-4" :image="faceImage" :rounded="true">
+        <p class="mb-0" style="line-height: 1em;">Andrew Persic</p>
+        <CopyButton :value="EMAIL" style="line-height: 1.5em;">{{ EMAIL }}</CopyButton>
+        <CopyButton :value="PHONE" style="line-height: 1.2em;">{{ PHONE }}</CopyButton>
       </ImageAndText>
     </div>
     
@@ -45,7 +45,9 @@ import { EMAIL, PHONE } from '@/ts/constants'
       Relevant Experience
     </h1>
 
-    <div class="flex space-between"><h3>Canva • Senior Software Engineer</h3><i>October 2021 - Current</i></div>
+    <div class="flex space-between">
+      <h3>Canva • Senior Software Engineer</h3><i>October 2021 - Current</i>
+    </div>
 
     <ul>
       <li>Managed all landing pages on <a target="_blank" href="https://www.canva.com/">canva.com</a> and <a target="_blank" href="https://www.canva.cn/">canva.cn</a>. On average these pages receive 30 million requests per day.</li>
@@ -54,51 +56,77 @@ import { EMAIL, PHONE } from '@/ts/constants'
       <li>Led the initiative to let content managers configure page URLs, increasing TTM and decreasing load on engineering teams.</li>
     </ul>
 
-    <div class="flex space-between mt-2"><h3>Two Bulls • Full-Stack Engineer</h3><i>January 2020 - October 2021</i></div>
+    <div class="flex space-between mt-2">
+      <h3>Two Bulls • Full-Stack Engineer</h3><i>January 2020 - October 2021</i>
+    </div>
     <ul>
       <li>Built numerous web applications with Vue frontend and Serverless / Typescript backend, including deployment using AWS services.</li>
-      <li>Projects include: the <a target="_blank" href="https://www.kidsdoconcall.com.au/">KidsDoc telehealth platform</a>, <a target="_blank" href="https://fit.theonetwo.com/">TheOneTwo</a> lingerie shopfront, the <a target="_blank" href="https://www.service.vic.gov.au/services/border-permit/home">Victorian COVID border permits service</a> (reached #3 on the app store!) and the <a target="_blank" href="https://release.me/">Release.Me</a> land sales platform.</li>
+      <li>Projects include: <a target="_blank" href="https://www.kidsdoconcall.com.au/">KidsDoc telehealth</a>, <a target="_blank" href="https://fit.theonetwo.com/">TheOneTwo</a> shopfront, <a target="_blank" href="https://www.service.vic.gov.au/services/border-permit/home">Victorian COVID border permits</a> (reached #3 on the app store!) and the <a target="_blank" href="https://release.me/">Release.Me</a> land sales platform.</li>
     </ul>
 
-    <div class="flex space-between mt-2"><h3>Unico • Associate Developer</h3><i>January 2019 - January 2020</i></div>
+    <div class="flex space-between mt-2">
+      <h3>Unico • Associate Developer</h3><i>January 2019 - January 2020</i>
+    </div>
     <ul>
       <li>Performed database migrations / ETL for large telecommunications vendors</li>
       <li>Wrote <i>Java / Spring</i> applications to move databases of up to 20 million records to the <i>MATRIXX</i> in-memory database</li>
       <li>Gained experience in data-intensive systems and concurrency, plus conducting thorough testing to secure personal data and reverse engineer older systems.</li>
     </ul>
 
-    <div class="flex space-between mt-2"><h3>Monash University Immersive Analytics Team • Developer</h3><i>July 2017 - January 2019</i></div>
+    <div class="flex space-between mt-2">
+      <h3>Monash University Immersive Analytics Team • Developer</h3><i>July 2017 - January 2019</i>
+    </div>
     <ul>
       <li>Developed a highly performant web application for 2D and 3D visualisation of protein complexes and cross-link mass
 spectrometry data using <i>Three.js</i> and <i>WebGL</i></li>
     </ul>
 
-    <h3 class="mt-2">Inquire to find out more...</h3>
+    <h3 class="mt-2 no-print">Inquire to find out more...</h3>
     <ul>
+      <li class="only-print">Inquire to find out more: </li>
       <li>UAVs</li>
       <li>Cluster computing competitions</li>
       <li>Side projects</li>
     </ul>
 
-    <h1 class="mt-4 mb-0">
-      Education
-    </h1>
-    <ImageAndText class="pt-0 pl-0" :image="monashLogo" :size="'8rem'">
-      <p class="mb-0" style="font-style: italic;">Bachelor of Computer Science</p>
+    <ImageAndText class="education absolute r-0" :image="monashLogo" :size="'4rem'">
+      <p class="mb-0" >Monash University</p>
+      <p class="mb-2" style="font-style: italic;">Bachelor of Computer Science</p>
     </ImageAndText>
-
-    <div style="height: 10rem;" />
   </div>
+  <div style="height: 10rem;" class="no-print" />
 </template>
 
 <style scoped>
 h1 {
   font-weight: 500;
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 
 h3 {
   font-size: 1.2rem;
+}
+
+.education {
+  bottom: -1rem;
+}
+
+@media print{    
+  .resume > .topRow {
+    flex-direction: row !important;
+  }
+
+  ul > li {
+    display: inline;
+    &::after {
+      content: ' ';
+    }
+  }
+
+  .education {
+    bottom: -6.5rem;
+    right: 1rem;
+  }
 }
 
 .resume > .topRow {

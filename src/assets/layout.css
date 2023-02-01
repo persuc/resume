@@ -13,6 +13,19 @@
     top: 0px;
   }
 
+  &.l-2 {
+    left: 8px;
+  }
+  &.r-2 {
+    right: 8px;
+  }
+  &.b-2 {
+    bottom: 8px;
+  }
+  &.t-2 {
+    top: 8px;
+  }
+
   &.l-4 {
     left: 16px;
   }
