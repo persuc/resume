@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Expand from '@/components/Expand.vue'
 import Header from '@/components/Header.vue';
 import Quote from '@/components/Quote.vue'
 
@@ -8,31 +9,31 @@ import Quote from '@/components/Quote.vue'
 
   <Header />
 
-  <div class="talents px-8 pt-8" style="max-width: 60rem; margin: 0 auto;">
-    <h2>Foundation: Technical Leadership</h2>
+  <div class="accomplishments px-8 pt-8" style="max-width: 60rem; margin: 0 auto;">
+    
+    <h2>Canva: Fallback & Experiments</h2>
 
-    <p>My technical leadership style is focused less on dictating what needs to be done and more on locating existing desires amongst partner teams and acting as a coordinator for others to rally around to achieve all of their goals in a holistic and coordinated way. I usually work in the following steps:</p>
+    <ul>
+      <li>Identified pain points in the China region Pages go down without a fallback or being unable to test new designs for canva.com's pages</li>
+      <li>Set up communication with China, Conversion Rate Optimisation and Landing Page teams to define goals</li>
+      <li>Deployed a proxy service, landing page caching mechanism, and experiments config service in the China region</li>
+      <li>Success metrics: Reduced number of 404s in the China region to near 0 and contributed to conversion rate improvement of 18% that year</li>
+    </ul>
 
-    <ol>
-      <li>Understand the existing processes & systems</li>
-      <li>Talk to individuals to identify opportunities</li>
-      <li>Consolidate feedback and coordinate goal setting</li>
-      <li>Provide technical expertise to address cross-cutting concerns</li>
-    </ol>
+    <Expand v-show="false">
+      <template #label>
+        <span>the title</span>
+      </template>
+      <p>When I arrived at Canva the China region as a whole was somewhat neglected. Unfortunately, this is also Canva's fastest growing customer base, so letting  looked like a huge mistake. The first step to enable these features was to deploy a proxy service in the China region, responsible for looking at each incoming request and either passing it to the page rendering service or serving a cached version. This required setting up a new ECS Fargate deployment for an Nginx instance, refactoring our existing Nginx configuration to support mutliple environments, and creating a scraper to cache pages in an S3 bucket when they </p>
+    </Expand>
 
-    <p>Sometimes this happens on a large scale. E.g. when I brought together the landing pages, china, and SEO teams at Canva to create a framework for running experiments to see which web pages resulted in the most subscriptions in the China region. Other times it happens on a small scale, like when I noticed a few people asking for a way to manage a roster of on-call partnerships and helped write down some pairs of team members to facilitate collaboration and define ownership when faults happen.</p>
+    <h2>Canva: CMS → Rendering Service Sync</h2>
 
-    <h2>Complementary skills: Infrastructure and data-driven systems</h2>
-
-    <p>Often, the most valuable thing I have done is to ask the right questions. Following the above process often reveals that the crucial problems in a business are already well known. However when these problems are hidden or are poorly understood, having a technical background in infrastructure and data-driven is crucial. Why?</p>
-
-    <Quote class="mx-4" quotation="Any organization that designs a system (defined broadly) will produce a design whose structure is a copy of the organization's communication structure." author="Melvin E. Conway"/>
-
-    <p>It is my belief that by understanding the flow of data, and the architecture of a software product, you can glean valuable insights into where cross-cutting concerns may be found, and thus where the greatest opportunities to deliver value lie.</p>
-
-    <h2>Complementary skills: Personal skills</h2>
-
-    <p>All of this assumes that you are actually able to talk to people in a constructive way! Often times there are subtleties in relationships between teams. If someone is constantly deprioritising your requests (even if it is the right thing for the business as a whole) you are less likely to want to help them when they ask something of you. Other times the juicy meat of the cross-cutting concerns becomes lost in discussions limited to single individuals or teams. Being able to guide a conversation and address any unspoken anxieties or frustrations is something I think us engineers are historically bad at, yet something crucial that I always try to practice.</p>
+    <ul>
+      <li>Building relationships with content managers revealed that errors are often swallowed when syncing data from the CMS to the landing page rendering service</li>
+      <li>Set up communication with CMS team, SEO and Landing Page teams to define goals</li>
+      <li>Deployed a message queue to contain sync operations between CMS and rendering service. Added error reporting using a dead letter queue.</li>
+    </ul>
 
   </div>
 </template>
