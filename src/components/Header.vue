@@ -3,7 +3,7 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 
 function goHome() {
-  router.replace('/')
+  router.push('/')
 }
 
 </script>
