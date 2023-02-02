@@ -6,6 +6,7 @@ import CopyButton from '@/components/CopyButton.vue'
 import Header from '@/components/Header.vue'
 import IconDownload from '@/components/icons/IconDownload.vue';
 import { EMAIL, PHONE } from '@/ts/constants'
+import JobTitle from '@/components/JobTitle.vue'
 
 </script>
 
@@ -45,10 +46,7 @@ import { EMAIL, PHONE } from '@/ts/constants'
       Relevant Experience
     </h1>
 
-    <div class="flex space-between">
-      <h3>Canva • Senior Software Engineer</h3><i>October 2021 - Current</i>
-    </div>
-
+    <JobTitle company="Canva" role="Senior Software Engineer (Backend)" date-from="October 2021" date-to="Current" />
     <ul>
       <li>Managed all landing pages on <a target="_blank" href="https://www.canva.com/">canva.com</a> and <a target="_blank" href="https://www.canva.cn/">canva.cn</a>. On average these pages receive 30 million requests per day.</li>
       <li>Led projects to enable experimentation and fallback mechanisms in the China region.</li>
@@ -56,38 +54,33 @@ import { EMAIL, PHONE } from '@/ts/constants'
       <li>Led the initiative to let content managers configure page URLs, increasing TTM and decreasing load on engineering teams.</li>
     </ul>
 
-    <div class="flex space-between mt-2">
-      <h3>Two Bulls • Full-Stack Engineer</h3><i>January 2020 - October 2021</i>
-    </div>
+    <JobTitle class="mt-2" company="Two Bulls" role="Software Engineer (Full Stack)" date-from="January 2020" date-to="October 2021" />
     <ul>
       <li>Built numerous web applications with Vue frontend and Serverless / Typescript backend, including deployment using AWS services.</li>
       <li>Projects include: <a target="_blank" href="https://www.kidsdoconcall.com.au/">KidsDoc telehealth</a>, <a target="_blank" href="https://fit.theonetwo.com/">TheOneTwo</a> shopfront, <a target="_blank" href="https://www.service.vic.gov.au/services/border-permit/home">Victorian COVID border permits</a> (reached #3 on the app store!) and the <a target="_blank" href="https://release.me/">Release.Me</a> land sales platform.</li>
     </ul>
 
-    <div class="flex space-between mt-2">
-      <h3>Unico • Associate Developer</h3><i>January 2019 - January 2020</i>
-    </div>
+    <JobTitle class="mt-2" company="Unico" role="Software Engineer (Backend)" date-from="January 2019" date-to="January 2020" />
     <ul>
       <li>Performed database migrations / ETL for large telecommunications vendors</li>
       <li>Wrote <i>Java / Spring</i> applications to move databases of up to 20 million records to the <i>MATRIXX</i> in-memory database</li>
       <li>Gained experience in data-intensive systems and concurrency, plus conducting thorough testing to secure personal data and reverse engineer older systems.</li>
     </ul>
 
-    <div class="flex space-between mt-2">
-      <h3>Monash University Immersive Analytics Team • Developer</h3><i>July 2017 - January 2019</i>
-    </div>
+    <JobTitle class="mt-2" company="Monash University Immersive Analytics Team" role="Software Engineer (Research)" date-from="July 2017" date-to="January 2019" />
     <ul>
       <li>Developed a highly performant web application for 2D and 3D visualisation of protein complexes and cross-link mass
 spectrometry data using <i>Three.js</i> and <i>WebGL</i></li>
     </ul>
 
     <h3 class="mt-2 no-print">Inquire to find out more...</h3>
-    <ul>
-      <li class="only-print">Inquire to find out more: </li>
+    <ul class="no-print">
       <li>UAVs</li>
-      <li>Cluster computing competitions</li>
+      <li>Cluster computing</li>
       <li>Side projects</li>
     </ul>
+    <br class="only-print" />
+    <span class="only-print">Inquire to find out about: UAVs, cluster computing, side projects.</span>
 
     <ImageAndText class="education absolute r-0" :image="monashLogo" :size="'4rem'">
       <p class="mb-0" >Monash University</p>
