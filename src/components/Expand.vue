@@ -41,14 +41,14 @@ function toggle() {
 </script>
 
 <template>
-  <div @click="toggle" class="expand border pa-2">
-    <div>
+  <div class="expand border" style="cursor: pointer;">
+    <div class="pa-2" @click="toggle">
       <div :class="{ arrow: true, rotate: expanded}">▶&nbsp;</div>
       <div class="label" :style="expandedLabel && expanded ? 'display: none;' : ''">{{ label }}</div>
       <div class="label" :style="expandedLabel && expanded ? '' : 'display: none;'">{{ expandedLabel }}</div>
     </div>
 
-    <div class="expand-slot" ref="expandSlot">
+    <div class="expand-slot px-2" ref="expandSlot" style="cursor: initial;">
       <slot></slot>
     </div>
   </div>

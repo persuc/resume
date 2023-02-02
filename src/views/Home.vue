@@ -32,7 +32,7 @@ function goWant() {
 <template>
   <div class="home flex" :style="`background-image: url(${bgImage}); flex-direction: column; height: 100vh; min-width: 100vw; background-position: center;`">
     <div class="content" style="flex-grow: 1">
-      <div class="pa-4 br-1 mx-8" style="background-color: var(--color-background);">
+      <div class="pa-4 br-1 mx-5" style="background-color: var(--color-background);">
         <h1>Hey, I'm Andrew!</h1>
   
         <p>I am great at <b>identifying opportunities</b> for improvement and seeing through the technical implementation to <b>deliver value across teams</b>. I do this by forming relationships and understanding individual needs, before establishing partnerships to tackle immediate, widespread concerns. Then I provide the drive to define goals, and provide the technical knowhow to help deliver them.</p>
