@@ -12,19 +12,19 @@ import { EMAIL, PHONE } from '@/ts/constants'
 const router = useRouter()
 
 function goResume() {
-  router.replace('/resume')
+  router.push('/resume')
 }
 
 function goAccomplishments() {
-  router.replace('/accomplishments')
+  router.push('/accomplishments')
 }
 
 function goTalents() {
-  router.replace('/talents')
+  router.push('/talents')
 }
 
 function goWant() {
-  router.replace('/want')
+  router.push('/want')
 }
 
 </script>
