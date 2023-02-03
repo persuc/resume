@@ -41,6 +41,13 @@ import Quote from '@/components/Quote.vue'
       <li>Added error reporting using a dead letter queue and UI tools to inspect and retry failed sync operations</li>
       <li>Success metrics: Able to sync millions of rows of landing page data without intervention from engineers if there are conflicts between edits or data consistency issues</li>
     </ul>
+
+    <h2>This site!</h2>
+
+    <ul>
+      <li>Built and deployed in a few hours with Vue 3 + Vite + Netlify</li>
+      <li>See the code on <a target="_blank" href="https://github.com/andrew-p-dev/resume">GitHub</a></li>
+    </ul>
   </div>
 </template>
 
