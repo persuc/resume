@@ -1,5 +1,5 @@
 {
-  "name": "typescript-vue",
+  "name": "resume",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",

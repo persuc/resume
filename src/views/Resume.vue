@@ -32,11 +32,11 @@ import JobTitle from '@/components/JobTitle.vue'
     </div>
     
     <h3 class="mt-2">Technical Leadership</h3>
-    <p>Have built relationships and led initiatives across other teams to target cross-cutting concerns and deliver broader value. My leadership style is asking questions based on a solid understanding of business processes and software architecture, and facilitating communication to come up with key goals.
+    <p>I build relationships and lead initiatives across multiple teams to target cross-cutting concerns. My leadership style is asking questions based on a solid understanding of business processes and software architecture, then facilitating communication to define goals.
     </p>
     
     <h3 class="mt-2">Engineering</h3>
-    <p>Experienced with high scale data-intensive workloads across different regions and database architectures. Highly competent in <i>Java</i>, <i>AWS</i>, <i>Terraform</i>, <i>TypeScript</i> and <i>Vue.js</i>.</p>
+    <p>Experienced with high scale data-intensive workloads across different regions and database architectures. Highly competent in <i>Java</i>, <i>AWS</i>, <i>Terraform</i>, <i>TypeScript</i> and <i>Vue.js</i> + many types of databases.</p>
 
     <h3>Personal</h3>
     <p>I always come to work with a smile since I enjoy the work I do, and I love the people who gravitate towards tech. I don’t mind working under pressure, always better to be too busy than bored.
@@ -62,15 +62,15 @@ import JobTitle from '@/components/JobTitle.vue'
 
     <JobTitle class="mt-2" company="Unico" role="Software Engineer (Backend)" date-from="January 2019" date-to="January 2020" />
     <ul>
-      <li>Performed database migrations / ETL for large telecommunications vendors</li>
-      <li>Wrote <i>Java / Spring</i> applications to move databases of up to 20 million records to the <i>MATRIXX</i> in-memory database</li>
+      <li>Performed database migrations / ETL for large telecommunications vendors.</li>
+      <li>Wrote <i>Java / Spring</i> applications to move databases of up to 20 million records to the <i>MATRIXX</i> in-memory database.</li>
       <li>Gained experience in data-intensive systems and concurrency, plus conducting thorough testing to secure personal data and reverse engineer older systems.</li>
     </ul>
 
-    <JobTitle class="mt-2" company="Monash University Immersive Analytics Team" role="Software Engineer (Research)" date-from="July 2017" date-to="January 2019" />
+    <JobTitle class="mt-2" company="Monash Uni Immersive Analytics" role="Software Engineer (Research)" date-from="July 2017" date-to="January 2019" />
     <ul>
       <li>Developed a highly performant web application for 2D and 3D visualisation of protein complexes and cross-link mass
-spectrometry data using <i>Three.js</i> and <i>WebGL</i></li>
+spectrometry data using <i>Three.js</i> and <i>WebGL</i>.</li>
     </ul>
 
     <h3 class="mt-2 no-print">Inquire to find out more...</h3>
@@ -82,7 +82,9 @@ spectrometry data using <i>Three.js</i> and <i>WebGL</i></li>
     <br class="only-print" />
     <span class="only-print">Inquire to find out about: UAVs, cluster computing, side projects.</span>
 
-    <ImageAndText class="education absolute r-0" :image="monashLogo" :size="'4rem'">
+    <div class="no-print flex" style="height: 4.5rem;">&nbsp;</div>
+
+    <ImageAndText class="education absolute l-4" :image="monashLogo" :size="'4rem'">
       <p class="mb-0" >Monash University</p>
       <p class="mb-2" style="font-style: italic;">Bachelor of Computer Science</p>
     </ImageAndText>
