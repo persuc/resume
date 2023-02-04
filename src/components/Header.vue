@@ -11,7 +11,7 @@ function goHome() {
 <template>
   <header>
     <div @click="goHome" class="button text">
-      <span>🠘 Back</span>
+      <span>← Back</span>
     </div>
 
     <slot></slot>
