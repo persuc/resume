@@ -20,13 +20,14 @@ import JobTitle from '@/components/JobTitle.vue'
   </Header>
 
   <div class="resume px-8" style="max-width: 60rem; margin: 0 auto;">
-    <div class="mt-4 flex space-between topRow" style="height: 2.1rem;" >
+    <div class="flex space-between topRow" style="height: 2.1rem;" >
       <h1 class="mb-0">
         Skills
       </h1>
       <ImageAndText class="contact nowrap mt-4" :image="faceImage" :rounded="true">
         <p class="mb-0" style="line-height: 1em;">Andrew Persic</p>
         <CopyButton :value="EMAIL" style="line-height: 1.5em;">{{ EMAIL }}</CopyButton>
+        <br />
         <CopyButton :value="PHONE" style="line-height: 1.2em;">{{ PHONE }}</CopyButton>
       </ImageAndText>
     </div>
@@ -92,7 +93,7 @@ spectrometry data using <i>Three.js</i> and <i>WebGL</i>.</li>
   <div style="height: 10rem;" class="no-print" />
 </template>
 
-<style scoped>
+<style scoped lang="postcss">
 h1 {
   font-weight: 500;
   font-size: 1.5rem;
@@ -109,6 +110,7 @@ h3 {
 @media print{    
   .resume > .topRow {
     flex-direction: row !important;
+    margin-top: 1rem !important;
   }
 
   ul > li {
@@ -126,11 +128,13 @@ h3 {
 
 .resume > .topRow {
   flex-direction: column-reverse;
+  margin-top: 6rem;
 }
 
 @media (min-width: 1024px) {
   .resume > .topRow {
     flex-direction: row;
+    margin-top: 2rem;
   }
 }
 </style>
