@@ -20,8 +20,8 @@ function draw(time: DOMHighResTimeStamp) {
 
   gl.bufferData(
     gl.ARRAY_BUFFER,
-    new Float32Array([0.0, 0.5]),
-    gl.STATIC_DRAW,
+    new Float32Array([0.0, 0.0, 0.5, 0.0]),
+    gl.DYNAMIC_DRAW,
   );
   gl.drawArrays(gl.LINE_STRIP, 0, 2);
 
@@ -39,10 +39,10 @@ onMounted(() => {
     #version 100
     precision highp float;
 
-    attribute float position;
+    attribute vec2 position;
 
     void main() {
-      gl_Position = vec4(position, 0.0, 0.0, 1.0);
+      gl_Position = vec4(position.x, position.y, 0.0, 1.0);
     }
   `);
   gl.compileShader(vertexShader);
@@ -70,11 +70,11 @@ onMounted(() => {
     return;
   }
 
-  // initialize attributes
-  gl.enableVertexAttribArray(0);
+  gl.enableVertexAttribArray(0); // x position of each vert
+  // gl.enableVertexAttribArray(1); // y position of each vert
   buffer = gl.createBuffer()!;
   gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-  gl.vertexAttribPointer(0, 1, gl.FLOAT, false, 0, 0);
+  gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
 
   gl.useProgram(program);
 
