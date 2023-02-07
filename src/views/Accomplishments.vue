@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import Expand from '@/components/Expand.vue'
 import Header from '@/components/Header.vue';
-import Quote from '@/components/Quote.vue'
 
 </script>
 
