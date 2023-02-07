@@ -3,10 +3,15 @@ import Header from '@/components/Header.vue';
 import { onMounted, onUnmounted, ref, type Ref } from 'vue'
 
 const canvas: Ref<HTMLCanvasElement> = ref(null) as unknown as Ref<HTMLCanvasElement>
-const LINES = 10;
 let gl: WebGL2RenderingContext;
 let program: WebGLProgram;
 let buffer: WebGLBuffer;
+const speed = 0.0001;
+let delta = 0;
+let lastFrame: DOMHighResTimeStamp = 0;
+const lines = [
+  new Float32Array([0.0, 0.0, 0.5, 0.0])
+]
 
 function getRandomColor() {
   return [Math.random(), Math.random(), Math.random()];
@@ -14,16 +19,22 @@ function getRandomColor() {
 
 function draw(time: DOMHighResTimeStamp) {
 
-  // TODO: render
-  gl.clearColor(0, 0, 0, 1);
+  delta = (time - lastFrame);
+  lastFrame = time;
+
   gl.clear(gl.COLOR_BUFFER_BIT);
 
-  gl.bufferData(
-    gl.ARRAY_BUFFER,
-    new Float32Array([0.0, 0.0, 0.5, 0.0]),
-    gl.DYNAMIC_DRAW,
-  );
-  gl.drawArrays(gl.LINE_STRIP, 0, 2);
+  for (const line of lines) {
+    for (let i = 0; i < line.length / 2; i++) {
+      line[i * 2] -= delta * speed;
+    }
+    gl.bufferData(
+      gl.ARRAY_BUFFER,
+      line,
+      gl.DYNAMIC_DRAW,
+    );
+    gl.drawArrays(gl.LINE_STRIP, 0, 2);
+  }
 
   window.requestAnimationFrame(draw);
 }
@@ -81,7 +92,7 @@ onMounted(() => {
   // canvas.width = canvas.clientWidth;
   // canvas.height = canvas.clientHeight;
   gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
-  
+
   window.requestAnimationFrame(draw)
 })
 
@@ -109,7 +120,7 @@ onUnmounted(() => {
     
     <h2>Shader playground</h2>
 
-    <canvas ref="canvas" width="800" height="600"></canvas>
+    <canvas ref="canvas" width="800" height="600" style="background-color: black;"></canvas>
 
   </div>
 </template>
