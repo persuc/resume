@@ -9,6 +9,7 @@ const canvas: Ref<HTMLCanvasElement> = ref(null) as unknown as Ref<HTMLCanvasEle
 let gl: WebGL2RenderingContext;
 let program: WebGLProgram;
 let positionBuffer: WebGLBuffer;
+let paused = ref(true);
 const speed = 0.0001;
 let delta = 0;
 let lastFrame: DOMHighResTimeStamp = 0;
@@ -42,13 +43,19 @@ function draw(time: DOMHighResTimeStamp) {
   lastFrame = time;
 
   let lastX = lines[0][lines[0].length - 2];
-
-  if (lastX < -0.01 && (time > flipTime || Math.abs(lines[0][lines[0].length - 1]) >= 0.3)) {
-    flipTime = 200 + (Math.random() * 800) + time;
-    direction = !direction;
-  }
+  let lastY = lines[0][lines[0].length - 1];
   
   while (lastX < -0.01) {
+    if (time > flipTime || Math.abs(lastY) >= 0.3) {
+      flipTime = 200 + (Math.random() * 800) + time;
+      if (lastY >= 0.3) {
+        direction = false;
+      } else if (lastY <= 0.3) {
+        direction = true;
+      } else {
+        direction = !direction;
+      }
+    }
     for (const line of lines) {
       line.push(lastX + 0.01, line[line.length - 1] + (direction ? 0.02 : -0.02))
     }
@@ -84,7 +91,8 @@ function draw(time: DOMHighResTimeStamp) {
     gl.drawArrays(gl.POINTS, 0, line.length / 2);
   }
 
-  window.requestAnimationFrame(draw);
+  if (!paused.value)
+    window.requestAnimationFrame(draw);
 }
 
 onMounted(() => {
@@ -147,8 +155,6 @@ onMounted(() => {
   // canvas.width = canvas.clientWidth;
   // canvas.height = canvas.clientHeight;
   gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
-
-  window.requestAnimationFrame(draw)
 })
 
 function cleanUp() {
@@ -165,6 +171,13 @@ onUnmounted(() => {
   cleanUp();
 })
 
+function togglePaused() {
+  paused.value = !paused.value
+  if (!paused.value) {
+    window.requestAnimationFrame(draw);
+  }
+}
+
 </script>
 
 <template>
@@ -173,7 +186,7 @@ onUnmounted(() => {
 
   <div class="lines px-8 pt-8" style="max-width: 60rem; margin: 0 auto;">
     
-    <h2>Shader playground</h2>
+    <h2>Shader playground <div class="button" style="display: inline-block; font-size: 1rem;" @click="togglePaused">{{ paused ? 'Play' : 'Pause' }}</div></h2>
 
     <canvas ref="canvas" width="800" height="600" style="background-color: white;"></canvas>
 
