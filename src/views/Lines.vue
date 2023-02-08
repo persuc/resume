@@ -2,6 +2,9 @@
 // https://mattdesl.svbtle.com/drawing-lines-is-hard
 // https://blog.scottlogic.com/2019/11/18/drawing-lines-with-webgl.html
 // https://wwwtyro.net/2019/11/18/instanced-lines.html
+// Except instanced arrays were promoted to core and no longer available as an extension
+// https://registry.khronos.org/webgl/extensions/ANGLE_instanced_arrays/
+
 import Header from '@/components/Header.vue';
 import { onMounted, onUnmounted, ref, type Ref } from 'vue'
 
@@ -9,9 +12,12 @@ const canvas: Ref<HTMLCanvasElement> = ref(null) as unknown as Ref<HTMLCanvasEle
 let gl: WebGL2RenderingContext;
 let program: WebGLProgram;
 let positionBuffer: WebGLBuffer;
+let segmentPositionBuffer: WebGLBuffer;
 let paused = ref(true);
 const speed = 0.0001;
 let delta = 0;
+let direction: boolean = false;
+let flipTime: DOMHighResTimeStamp = 0;
 let lastFrame: DOMHighResTimeStamp = 0;
 const LINES = 10;
 const lines: number[][] = [
@@ -34,8 +40,14 @@ for (let i = 0; i < LINES; i++) {
   )
 }
 
-let direction: boolean = false;
-let flipTime: DOMHighResTimeStamp = 0;
+const segmentInstance = [
+  0, -0.5,
+  1, -0.5,
+  1,  0.5,
+  0, -0.5,
+  1,  0.5,
+  0,  0.5,
+];
 
 function draw(time: DOMHighResTimeStamp) {
 
@@ -88,7 +100,7 @@ function draw(time: DOMHighResTimeStamp) {
     );
     gl.uniform3f(gl.getUniformLocation(program, 'uColor'), color[0], color[1], color[2]);
 
-    gl.drawArrays(gl.POINTS, 0, line.length / 2);
+    gl.drawArraysInstanced(gl.TRIANGLES, 0, 6, line.length / 2 - 1);
   }
 
   if (!paused.value)
@@ -105,15 +117,18 @@ onMounted(() => {
   gl.shaderSource(vertexShader, `
     #version 100
     precision highp float;
+    uniform float uWidth;
 
-    attribute vec2 position;
+    attribute vec2 position, pointA, pointB;
     uniform vec3 uColor;
 
     varying lowp vec4 vColor;
 
     void main() {
-      gl_Position = vec4(position.x, position.y, 0.0, 1.0);
-      gl_PointSize = 6.0;
+      vec2 xBasis = pointB - pointA;
+      vec2 yBasis = normalize(vec2(-xBasis.y, xBasis.x));
+      vec2 point = pointA + xBasis * position.x + yBasis * uWidth * position.y;
+      gl_Position = vec4(point, 0, 1);
       vColor = vec4(uColor.r, uColor.g, uColor.b, 1.0);
     }
   `);
@@ -145,12 +160,39 @@ onMounted(() => {
     return;
   }
 
-  gl.enableVertexAttribArray(0); // positions of each vert in each line
+  // gl.enableVertexAttribArray(0); // positions of each vert in each line
+  // positionBuffer = gl.createBuffer()!;
+  // gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+  // gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+
+  segmentPositionBuffer = gl.createBuffer()!;
+  gl.bindBuffer(gl.ARRAY_BUFFER, segmentPositionBuffer);
+  const segmentPositionLocation = gl.getAttribLocation(program, 'position');
+  gl.enableVertexAttribArray(segmentPositionLocation);
+  gl.vertexAttribPointer(segmentPositionLocation, 2, gl.FLOAT, false, 0, 0);
+  gl.vertexAttribDivisor(segmentPositionLocation, 0);
+  gl.bufferData(
+    gl.ARRAY_BUFFER,
+    new Float32Array(segmentInstance),
+    gl.STATIC_DRAW,
+  );
+
   positionBuffer = gl.createBuffer()!;
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-  gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+
+  const pointALocation = gl.getAttribLocation(program, 'pointA');
+  gl.enableVertexAttribArray(pointALocation);
+  gl.vertexAttribPointer(pointALocation, 2, gl.FLOAT, false, 0, 0);
+  gl.vertexAttribDivisor(pointALocation, 1);
+
+  const pointBLocation = gl.getAttribLocation(program, 'pointB');
+  gl.enableVertexAttribArray(pointBLocation);
+  gl.vertexAttribPointer(pointBLocation, 2, gl.FLOAT, false, 0, 2 * Float32Array.BYTES_PER_ELEMENT);
+  gl.vertexAttribDivisor(pointBLocation, 1);
 
   gl.useProgram(program);
+
+  gl.uniform1f(gl.getUniformLocation(program, 'uWidth'), 10.0);
 
   // canvas.width = canvas.clientWidth;
   // canvas.height = canvas.clientHeight;
