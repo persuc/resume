@@ -1,4 +1,7 @@
 <script setup lang="ts">
+// https://mattdesl.svbtle.com/drawing-lines-is-hard
+// https://blog.scottlogic.com/2019/11/18/drawing-lines-with-webgl.html
+// https://wwwtyro.net/2019/11/18/instanced-lines.html
 import Header from '@/components/Header.vue';
 import { onMounted, onUnmounted, ref, type Ref } from 'vue'
 
@@ -9,24 +12,29 @@ let positionBuffer: WebGLBuffer;
 const speed = 0.0001;
 let delta = 0;
 let lastFrame: DOMHighResTimeStamp = 0;
+const LINES = 10;
 const lines: number[][] = [
-  [-0.01, 0.02],
   [-0.01, 0.0],
-  [-0.01, -0.02],
 ]
 
-const colors = [
-  [1.0, 0.0, 0.0],
-  [0.0, 1.0, 0.0],
-  [0.0, 0.0, 1.0],
-]
+const minLineHeight = -0.02 * Math.floor(LINES / 2);
+
+for (let i = 1; i < LINES; i++) {
+  lines.push([-0.01, minLineHeight + 0.02 * i])
+}
+const colors: number[][] = []
+
+for (let i = 0; i < LINES; i++) {
+  const randomLight = () => 0.1 + Math.random() * 0.3;
+  const randomDark = () => 0.6 + Math.random() * 0.3;
+  colors.push(i % 2 === 1
+    ? [randomLight(), randomLight(), randomLight()]
+    : [randomDark(), randomDark(), randomDark()]
+  )
+}
 
 let direction: boolean = false;
 let flipTime: DOMHighResTimeStamp = 0;
-
-function getRandomColor() {
-  return [Math.random(), Math.random(), Math.random()];
-}
 
 function draw(time: DOMHighResTimeStamp) {
 
