@@ -68,8 +68,9 @@ function draw(time: DOMHighResTimeStamp) {
         direction = !direction;
       }
     }
+    const vertical = Math.random() * 0.01;
     for (const line of lines) {
-      line.push(lastX + 0.01, line[line.length - 1] + (direction ? 0.02 : -0.02))
+      line.push(lastX + 0.01, line[line.length - 1] + (direction ? 1 : -1) * vertical)
     }
     lastX += 0.02;
   }
@@ -192,7 +193,7 @@ onMounted(() => {
 
   gl.useProgram(program);
 
-  gl.uniform1f(gl.getUniformLocation(program, 'uWidth'), 0.013);
+  gl.uniform1f(gl.getUniformLocation(program, 'uWidth'), 0.02);
 
   // canvas.width = canvas.clientWidth;
   // canvas.height = canvas.clientHeight;
