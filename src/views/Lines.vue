@@ -192,7 +192,7 @@ onMounted(() => {
 
   gl.useProgram(program);
 
-  gl.uniform1f(gl.getUniformLocation(program, 'uWidth'), 10.0);
+  gl.uniform1f(gl.getUniformLocation(program, 'uWidth'), 0.013);
 
   // canvas.width = canvas.clientWidth;
   // canvas.height = canvas.clientHeight;
