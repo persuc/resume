@@ -5,13 +5,24 @@ import { onMounted, onUnmounted, ref, type Ref } from 'vue'
 const canvas: Ref<HTMLCanvasElement> = ref(null) as unknown as Ref<HTMLCanvasElement>
 let gl: WebGL2RenderingContext;
 let program: WebGLProgram;
-let buffer: WebGLBuffer;
+let positionBuffer: WebGLBuffer;
 const speed = 0.0001;
 let delta = 0;
 let lastFrame: DOMHighResTimeStamp = 0;
-const lines = [
-  new Float32Array([0.0, 0.0, 0.5, 0.0])
+const lines: number[][] = [
+  [-0.01, 0.02],
+  [-0.01, 0.0],
+  [-0.01, -0.02],
 ]
+
+const colors = [
+  [1.0, 0.0, 0.0],
+  [0.0, 1.0, 0.0],
+  [0.0, 0.0, 1.0],
+]
+
+let direction: boolean = false;
+let flipTime: DOMHighResTimeStamp = 0;
 
 function getRandomColor() {
   return [Math.random(), Math.random(), Math.random()];
@@ -22,18 +33,47 @@ function draw(time: DOMHighResTimeStamp) {
   delta = (time - lastFrame);
   lastFrame = time;
 
+  let lastX = lines[0][lines[0].length - 2];
+
+  if (lastX < -0.01 && (time > flipTime || Math.abs(lines[0][lines[0].length - 1]) >= 0.3)) {
+    flipTime = 200 + (Math.random() * 800) + time;
+    direction = !direction;
+  }
+  
+  while (lastX < -0.01) {
+    for (const line of lines) {
+      line.push(lastX + 0.01, line[line.length - 1] + (direction ? 0.02 : -0.02))
+    }
+    lastX += 0.02;
+  }
+
+  let firstX = lines[0][0];
+  
+  while (firstX < -1.0) {
+    for (const line of lines) {
+      line.shift()
+      line.shift()
+    }
+    firstX = lines[0][0];
+  }
+
   gl.clear(gl.COLOR_BUFFER_BIT);
 
-  for (const line of lines) {
+  for (let i = 0; i < lines.length; i++) {
+    let line = lines[i];
+    let color = colors[i];
     for (let i = 0; i < line.length / 2; i++) {
       line[i * 2] -= delta * speed;
     }
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
     gl.bufferData(
       gl.ARRAY_BUFFER,
-      line,
+      new Float32Array(line),
       gl.DYNAMIC_DRAW,
     );
-    gl.drawArrays(gl.LINE_STRIP, 0, 2);
+    gl.uniform3f(gl.getUniformLocation(program, 'uColor'), color[0], color[1], color[2]);
+
+    gl.drawArrays(gl.POINTS, 0, line.length / 2);
   }
 
   window.requestAnimationFrame(draw);
@@ -51,9 +91,14 @@ onMounted(() => {
     precision highp float;
 
     attribute vec2 position;
+    uniform vec3 uColor;
+
+    varying lowp vec4 vColor;
 
     void main() {
       gl_Position = vec4(position.x, position.y, 0.0, 1.0);
+      gl_PointSize = 6.0;
+      vColor = vec4(uColor.r, uColor.g, uColor.b, 1.0);
     }
   `);
   gl.compileShader(vertexShader);
@@ -61,8 +106,11 @@ onMounted(() => {
   gl.shaderSource(fragmentShader, `
     #version 100
     precision mediump float;
+
+    varying lowp vec4 vColor;
+
     void main() {
-      gl_FragColor = vec4(0.18, 0.54, 0.34, 1.0);
+      gl_FragColor = vec4(vColor.r, vColor.g, vColor.b, 1.0);
     }
   `);
   gl.compileShader(fragmentShader);
@@ -81,10 +129,9 @@ onMounted(() => {
     return;
   }
 
-  gl.enableVertexAttribArray(0); // x position of each vert
-  // gl.enableVertexAttribArray(1); // y position of each vert
-  buffer = gl.createBuffer()!;
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+  gl.enableVertexAttribArray(0); // positions of each vert in each line
+  positionBuffer = gl.createBuffer()!;
+  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
   gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
 
   gl.useProgram(program);
@@ -98,8 +145,8 @@ onMounted(() => {
 
 function cleanUp() {
   gl.useProgram(null);
-  if (buffer) {
-    gl.deleteBuffer(buffer);
+  if (positionBuffer) {
+    gl.deleteBuffer(positionBuffer);
   }
   if (program) {
     gl.deleteProgram(program);
@@ -120,7 +167,7 @@ onUnmounted(() => {
     
     <h2>Shader playground</h2>
 
-    <canvas ref="canvas" width="800" height="600" style="background-color: black;"></canvas>
+    <canvas ref="canvas" width="800" height="600" style="background-color: white;"></canvas>
 
   </div>
 </template>
