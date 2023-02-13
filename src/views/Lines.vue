@@ -10,9 +10,11 @@ import { onMounted, onUnmounted, ref, type Ref } from 'vue'
 
 const canvas: Ref<HTMLCanvasElement> = ref(null) as unknown as Ref<HTMLCanvasElement>
 let gl: WebGL2RenderingContext;
-let program: WebGLProgram;
-let positionBuffer: WebGLBuffer;
-let segmentPositionBuffer: WebGLBuffer;
+let segmentProgram: WebGLProgram;
+let joinProgram: WebGLProgram;
+let pointBuffer: WebGLBuffer;
+let segmentBuffer: WebGLBuffer;
+let circleBuffer: WebGLBuffer;
 let paused = ref(true);
 const speed = 0.0001;
 let delta = 0;
@@ -33,7 +35,7 @@ const colors: number[][] = []
 
 for (let i = 0; i < LINES; i++) {
   const randomLight = () => 0.1 + Math.random() * 0.3;
-  const randomDark = () => 0.6 + Math.random() * 0.3;
+  const randomDark = () => 0.55 + Math.random() * 0.3;
   colors.push(i % 2 === 1
     ? [randomLight(), randomLight(), randomLight()]
     : [randomDark(), randomDark(), randomDark()]
@@ -49,8 +51,14 @@ const segmentInstance = [
   0,  0.5,
 ];
 
-function draw(time: DOMHighResTimeStamp) {
+const circleInstance = [0.0, 0.0];
+const circleResolution = 8;
+for (let wedge = 0; wedge <= circleResolution; wedge++) {
+  const theta = (2 * Math.PI * wedge) / circleResolution;
+  circleInstance.push(0.5 * Math.cos(theta), 0.5 * Math.sin(theta));
+}
 
+function draw(time: DOMHighResTimeStamp) {
   delta = (time - lastFrame);
   lastFrame = time;
 
@@ -93,15 +101,26 @@ function draw(time: DOMHighResTimeStamp) {
     for (let i = 0; i < line.length / 2; i++) {
       line[i * 2] -= delta * speed;
     }
-    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    gl.bindBuffer(gl.ARRAY_BUFFER, pointBuffer);
     gl.bufferData(
       gl.ARRAY_BUFFER,
       new Float32Array(line),
       gl.DYNAMIC_DRAW,
     );
-    gl.uniform3f(gl.getUniformLocation(program, 'uColor'), color[0], color[1], color[2]);
-
+    gl.useProgram(segmentProgram);
+    gl.uniform3f(gl.getUniformLocation(segmentProgram, 'uColor'), color[0], color[1], color[2]);
     gl.drawArraysInstanced(gl.TRIANGLES, 0, 6, line.length / 2 - 1);
+
+    if (line.length > 2) {
+      gl.useProgram(joinProgram);
+      gl.bufferData(
+        gl.ARRAY_BUFFER,
+        new Float32Array(line.slice(0, line.length - 2)),
+        gl.DYNAMIC_DRAW,
+      );
+      gl.uniform3f(gl.getUniformLocation(joinProgram, 'uColor'), color[0], color[1], color[2]);
+      gl.drawArraysInstanced(gl.TRIANGLE_FAN, 0, circleResolution + 2, (line.length / 2) - 2);
+    }
   }
 
   if (!paused.value)
@@ -114,8 +133,8 @@ onMounted(() => {
     console.error('GL context could not be obtained');
   }
 
-  const vertexShader = gl.createShader(gl.VERTEX_SHADER)!;
-  gl.shaderSource(vertexShader, `
+  const segmentVertexShader = gl.createShader(gl.VERTEX_SHADER)!;
+  gl.shaderSource(segmentVertexShader, `
     #version 100
     precision highp float;
     uniform float uWidth;
@@ -133,9 +152,9 @@ onMounted(() => {
       vColor = vec4(uColor.r, uColor.g, uColor.b, 1.0);
     }
   `);
-  gl.compileShader(vertexShader);
-  const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER)!;
-  gl.shaderSource(fragmentShader, `
+  gl.compileShader(segmentVertexShader);
+  const segmentFragmentShader = gl.createShader(gl.FRAGMENT_SHADER)!;
+  gl.shaderSource(segmentFragmentShader, `
     #version 100
     precision mediump float;
 
@@ -145,68 +164,138 @@ onMounted(() => {
       gl_FragColor = vec4(vColor.r, vColor.g, vColor.b, 1.0);
     }
   `);
-  gl.compileShader(fragmentShader);
-  program = gl.createProgram()!;
-  gl.attachShader(program, vertexShader);
-  gl.attachShader(program, fragmentShader);
-  gl.linkProgram(program);
-  gl.detachShader(program, vertexShader);
-  gl.detachShader(program, fragmentShader);
-  gl.deleteShader(vertexShader);
-  gl.deleteShader(fragmentShader);
-  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-    const linkErrLog = gl.getProgramInfoLog(program);
+  gl.compileShader(segmentFragmentShader);
+
+  segmentProgram = gl.createProgram()!;
+  gl.attachShader(segmentProgram, segmentVertexShader);
+  gl.attachShader(segmentProgram, segmentFragmentShader);
+  gl.linkProgram(segmentProgram);
+  gl.detachShader(segmentProgram, segmentVertexShader);
+  gl.detachShader(segmentProgram, segmentFragmentShader);
+  gl.deleteShader(segmentVertexShader);
+  gl.deleteShader(segmentFragmentShader);
+  if (!gl.getProgramParameter(segmentProgram, gl.LINK_STATUS)) {
+    const linkErrLog = gl.getProgramInfoLog(segmentProgram);
     cleanUp();
-    console.error(`Shader program did not link successfully. Error log: ${linkErrLog}`);
+    console.error(`Segment program did not link successfully. Error log: ${linkErrLog}`);
     return;
   }
 
-  // gl.enableVertexAttribArray(0); // positions of each vert in each line
-  // positionBuffer = gl.createBuffer()!;
-  // gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-  // gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
-
-  segmentPositionBuffer = gl.createBuffer()!;
-  gl.bindBuffer(gl.ARRAY_BUFFER, segmentPositionBuffer);
-  const segmentPositionLocation = gl.getAttribLocation(program, 'position');
-  gl.enableVertexAttribArray(segmentPositionLocation);
-  gl.vertexAttribPointer(segmentPositionLocation, 2, gl.FLOAT, false, 0, 0);
-  gl.vertexAttribDivisor(segmentPositionLocation, 0);
+  // geometry for line segments
+  segmentBuffer = gl.createBuffer()!;
+  gl.bindBuffer(gl.ARRAY_BUFFER, segmentBuffer);
+  const segmentAttributeLocation = gl.getAttribLocation(segmentProgram, 'position');
+  gl.enableVertexAttribArray(segmentAttributeLocation);
+  gl.vertexAttribPointer(segmentAttributeLocation, 2, gl.FLOAT, false, 0, 0);
+  gl.vertexAttribDivisor(segmentAttributeLocation, 0);
   gl.bufferData(
     gl.ARRAY_BUFFER,
     new Float32Array(segmentInstance),
     gl.STATIC_DRAW,
   );
 
-  positionBuffer = gl.createBuffer()!;
-  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+  pointBuffer = gl.createBuffer()!;
+  gl.bindBuffer(gl.ARRAY_BUFFER, pointBuffer);
 
-  const pointALocation = gl.getAttribLocation(program, 'pointA');
+  const pointALocation = gl.getAttribLocation(segmentProgram, 'pointA');
   gl.enableVertexAttribArray(pointALocation);
   gl.vertexAttribPointer(pointALocation, 2, gl.FLOAT, false, 0, 0);
   gl.vertexAttribDivisor(pointALocation, 1);
 
-  const pointBLocation = gl.getAttribLocation(program, 'pointB');
+  const pointBLocation = gl.getAttribLocation(segmentProgram, 'pointB');
   gl.enableVertexAttribArray(pointBLocation);
   gl.vertexAttribPointer(pointBLocation, 2, gl.FLOAT, false, 0, 2 * Float32Array.BYTES_PER_ELEMENT);
   gl.vertexAttribDivisor(pointBLocation, 1);
 
-  gl.useProgram(program);
+  // line joins
 
-  gl.uniform1f(gl.getUniformLocation(program, 'uWidth'), 0.02);
+  const joinVertexShader = gl.createShader(gl.VERTEX_SHADER)!;
+  gl.shaderSource(joinVertexShader, `
+    #version 100
+    precision highp float;
+    uniform float uWidth;
 
-  // canvas.width = canvas.clientWidth;
-  // canvas.height = canvas.clientHeight;
+    attribute vec2 position, point;
+    uniform vec3 uColor;
+
+    varying lowp vec4 vColor;
+
+    void main() {
+      gl_Position = vec4(uWidth * position + point, 0, 1);
+      vColor = vec4(uColor.r, uColor.g, uColor.b, 1.0);
+    }
+  `);
+  gl.compileShader(joinVertexShader);
+  const joinFragmentShader = gl.createShader(gl.FRAGMENT_SHADER)!;
+  gl.shaderSource(joinFragmentShader, `
+    #version 100
+    precision mediump float;
+
+    varying lowp vec4 vColor;
+
+    void main() {
+      gl_FragColor = vec4(vColor.r, vColor.g, vColor.b, 1.0);
+    }
+  `);
+  gl.compileShader(joinFragmentShader);
+
+  joinProgram = gl.createProgram()!;
+  gl.attachShader(joinProgram, joinVertexShader);
+  gl.attachShader(joinProgram, joinFragmentShader);
+  gl.linkProgram(joinProgram);
+  gl.detachShader(joinProgram, joinVertexShader);
+  gl.detachShader(joinProgram, joinFragmentShader);
+  gl.deleteShader(joinVertexShader);
+  gl.deleteShader(joinFragmentShader);
+  if (!gl.getProgramParameter(joinProgram, gl.LINK_STATUS)) {
+    const linkErrLog = gl.getProgramInfoLog(joinProgram);
+    cleanUp();
+    console.error(`Join program did not link successfully. Error log: ${linkErrLog}`);
+    return;
+  }
+
+  // geometry for line joins
+  circleBuffer = gl.createBuffer()!;
+  gl.bindBuffer(gl.ARRAY_BUFFER, circleBuffer);
+  const circleLocation = gl.getAttribLocation(joinProgram, 'position');
+  gl.enableVertexAttribArray(circleLocation);
+  gl.vertexAttribPointer(circleLocation, 2, gl.FLOAT, false, 0, 0);
+  gl.vertexAttribDivisor(circleLocation, 0);
+  gl.bufferData(
+    gl.ARRAY_BUFFER,
+    new Float32Array(circleInstance),
+    gl.STATIC_DRAW,
+  );
+
+  gl.bindBuffer(gl.ARRAY_BUFFER, pointBuffer);
+  const pointLocation = gl.getAttribLocation(joinProgram, 'point');
+  gl.enableVertexAttribArray(pointLocation);
+  gl.vertexAttribPointer(pointLocation, 2, gl.FLOAT, false, 0, 2 * Float32Array.BYTES_PER_ELEMENT);
+  gl.vertexAttribDivisor(pointLocation, 1);
+
+  gl.useProgram(segmentProgram);
+  gl.uniform1f(gl.getUniformLocation(segmentProgram, 'uWidth'), 0.022);
+  gl.useProgram(joinProgram);
+  gl.uniform1f(gl.getUniformLocation(joinProgram, 'uWidth'), 0.022);
   gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
 })
 
 function cleanUp() {
   gl.useProgram(null);
-  if (positionBuffer) {
-    gl.deleteBuffer(positionBuffer);
+  if (circleBuffer) {
+    gl.deleteBuffer(circleBuffer);
   }
-  if (program) {
-    gl.deleteProgram(program);
+  if (segmentBuffer) {
+    gl.deleteBuffer(segmentBuffer);
+  }
+  if (pointBuffer) {
+    gl.deleteBuffer(pointBuffer);
+  }
+  if (segmentProgram) {
+    gl.deleteProgram(segmentProgram);
+  }
+  if (joinProgram) {
+    gl.deleteProgram(segmentProgram);
   }
 }
 
@@ -217,6 +306,8 @@ onUnmounted(() => {
 function togglePaused() {
   paused.value = !paused.value
   if (!paused.value) {
+    // console.log('unpause', lastFrame, performance.now(), performance.timeOrigin)
+    lastFrame = performance.now();
     window.requestAnimationFrame(draw);
   }
 }
@@ -231,7 +322,7 @@ function togglePaused() {
     
     <h2>Shader playground <div class="button" style="display: inline-block; font-size: 1rem;" @click="togglePaused">{{ paused ? 'Play' : 'Pause' }}</div></h2>
 
-    <canvas ref="canvas" width="800" height="600" style="background-color: white;"></canvas>
+    <canvas ref="canvas" width="1000" height="1200" style="background-color: white;"></canvas>
 
   </div>
 </template>
