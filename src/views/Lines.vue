@@ -4,6 +4,7 @@
 // https://wwwtyro.net/2019/11/18/instanced-lines.html
 // Except instanced arrays were promoted to core and no longer available as an extension
 // https://registry.khronos.org/webgl/extensions/ANGLE_instanced_arrays/
+// https://learnopengl.com/Advanced-OpenGL/Instancing
 
 import Header from '@/components/Header.vue';
 import { onMounted, onUnmounted, ref, type Ref } from 'vue'

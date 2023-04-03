@@ -28,11 +28,16 @@ import Quote from '@/components/Quote.vue'
 
     <Quote class="mx-4" quotation="Any organization that designs a system (defined broadly) will produce a design whose structure is a copy of the organization's communication structure." author="Melvin E. Conway"/>
 
-    <p>It is my belief that by understanding the flow of data, and the architecture of a software product, you can glean valuable insights into where cross-cutting concerns may be found, and thus where the greatest opportunities to deliver value lie.</p>
+    <p>It is my belief that by understanding the flow of data, and the architecture of a software product, you can glean valuable insights into where cross-cutting concerns may be found, and thus where the greatest opportunities to deliver value lie.<sup class="italic">1</sup></p>
 
     <h2>Complementary skills: Personal skills</h2>
 
-    <p>All of this assumes that you are actually able to talk to people in a constructive way! Often times there are subtleties in relationships between teams. If someone is constantly deprioritising your requests (even if it is the right thing for the business as a whole) you are less likely to want to help them when they ask something of you. Other times the juicy meat of the cross-cutting concerns becomes lost in discussions limited to single individuals or teams. Being able to guide a conversation and address any unspoken anxieties or frustrations is something I think us engineers are historically bad at, yet something crucial that I always try to practice.</p>
+    <p>All of this assumes that you are actually able to talk to people in a constructive way! Often times there are subtleties in relationships between teams. If someone is constantly de-prioritising your requests (even if it is the right thing for the business as a whole) you are less likely to want to help them when they ask something of you. Other times the juicy meat of the cross-cutting concerns becomes lost in discussions limited to single individuals or teams. Being able to guide a conversation and address any unspoken anxieties or frustrations is something I think us engineers are stereotypically bad at, yet something crucial to out practice.</p>
+
+    <div class="mt-4" style="font-size: 0.75rem;">
+      <hr class="mt-16" size="1" />
+      <p class="italic my-2">1: This is a commonly quoted passage, and although Mr Conway's was talking about communication structures within organisations, I think it holds for data flow in distributed systems. You can read his full paper <a target="_blank" href="https://www.melconway.com/Home/pdf/committees.pdf">How Do Committees Invent?</a> if you would like to examine his reasoning yourself.</p> 
+    </div>
 
   </div>
 </template>
