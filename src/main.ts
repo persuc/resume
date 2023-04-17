@@ -25,6 +25,11 @@ const router = createRouter({
       name: "Talents",
       component: () => import('./views/Talents.vue')
     },
+    {
+      path: '/binary',
+      name: "BinarySearchWords",
+      component: () => import('./views/BinarySearchWords.vue')
+    },
   ]
 })
 
