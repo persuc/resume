@@ -75,9 +75,9 @@
 
 <template>
   <div class="binary px-8 pt-8" style="max-width: 60rem; margin: 0 auto;">
-    <p>The game is to guess the word. Set the length below and click generate to set the target word.</p>
+    <p>The game is to guess the word. Set the length below and click <b>Generate</b> to set the target word.</p>
     <p>Only lemmas are allowed. E.g. "Avail" is allowed, but not "Avails" or "Availed"</p>
-    <p>Type in your guess and click "Check" to get a hint about how close you were.</p>
+    <p>Type in your guess and click <b>Check</b> to get a hint about how close you were.</p>
     <p>Keep narrowing down your guesses until you find the target word.</p>
     <input type="number" v-model="length" :min="MIN_LENGTH" :max="MAX_LENGTH" />
     <button @click="pick">Generate</button>
