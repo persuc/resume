@@ -29,7 +29,7 @@
   let currentPercentage = 0
 
   function pick() {
-    index = Math.floor(Math.random() * words.length)
+    index = Math.floor(Math.random() * words[length.value - MIN_LENGTH].length)
     currentWord.value = words[length.value - MIN_LENGTH][index]
     currentPercentage = Math.round(index / words[length.value - MIN_LENGTH].length * 100000) / 1000
   }
