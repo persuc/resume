@@ -48,6 +48,9 @@
     if (guessUpper === 'GRACE') {
       message.value = `❤️ You guessed my special person.`
       return
+    } else if (guessUpper === 'PRINCE') {
+      message.value = `👑 What's a mob to a king?`
+      return
     }
 
     if (!guess.value.length) {
@@ -97,7 +100,7 @@
     <br />
     <input type="text" v-model="guess" />
     <button @click="check">Check</button>
-    <h3>{{ message }}</h3>
+    <h3 v-html="message"></h3>
     <i style="font-size: 0.75rem;">If you are stuck, click the button below to reveal one letter at a time.</i>
     <br />
     <button @click="reveal">Reveal letter</button>
