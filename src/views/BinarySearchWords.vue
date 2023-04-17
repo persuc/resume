@@ -29,6 +29,7 @@
   let currentPercentage = 0
 
   function pick() {
+    revealed.value = ''
     index = Math.floor(Math.random() * words[length.value - MIN_LENGTH].length)
     currentWord.value = words[length.value - MIN_LENGTH][index]
     currentPercentage = Math.round(index / words[length.value - MIN_LENGTH].length * 100000) / 1000
@@ -62,17 +63,32 @@
  The answer is ${currentPercentage}% of the way through.`
   }
 
+  let revealed = ref('');
+
+  function reveal() {
+    if (revealed.value.length < currentWord.value.length) {
+      revealed.value += currentWord.value.charAt(revealed.value.length)
+    }
+  }
+
 </script>
 
 <template>
   <div class="binary px-8 pt-8" style="max-width: 60rem; margin: 0 auto;">
+    <p>The game is to guess the word. Set the length below and click generate to set the target word.</p>
+    <p>Only lemmas are allowed. E.g. "Avail" is allowed, but not "Avails" or "Availed"</p>
+    <p>Type in your guess and click "Check" to get a hint about how close you were.</p>
+    <p>Keep narrowing down your guesses until you find the target word.</p>
     <input type="number" v-model="length" :min="MIN_LENGTH" :max="MAX_LENGTH" />
     <button @click="pick">Generate</button>
     <br />
     <input type="text" v-model="guess" />
     <button @click="check">Check</button>
     <h3>{{ message }}</h3>
-    <h1 style="color: white">{{ currentWord }}</h1>
+    <i style="font-size: 0.75rem;">If you are stuck, click the button below to reveal one letter at a time.</i>
+    <br />
+    <button @click="reveal">Reveal letter</button>
+    <h1>{{ revealed }}</h1>
   </div>
 </template>
 
