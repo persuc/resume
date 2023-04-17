@@ -40,6 +40,16 @@
 
   function check() {
     const guessUpper = guess.value.toUpperCase()
+
+    if (currentWord.value.length === 0) {
+      pick()
+    }
+
+    if (guessUpper === 'GRACE') {
+      message.value = `❤️ You guessed my special person.`
+      return
+    }
+
     if (!guess.value.length) {
       return
     }
@@ -58,8 +68,11 @@
       message.value = `⚠️ Your guess "${guessUpper}" was not in the dictionary`
       return
     }
+
     const guessPercentage = Math.round(guessIndex / words[length.value - MIN_LENGTH].length * 100000) / 1000
-    message.value = `Your guess "${guessUpper}" was ${guessPercentage}% of the way through the ${length.value}-letter words.
+    console.log(`Guess "${guessUpper}" is ${guessPercentage}% through the ${length.value}-letter words.\
+ Answer is ${currentPercentage}% of the way through.`)
+    message.value = `Your guess "${guessUpper}" was ${guessPercentage}% of the way through the ${length.value}-letter words.\
  The answer is ${currentPercentage}% of the way through.`
   }
 
