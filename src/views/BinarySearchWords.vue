@@ -65,6 +65,7 @@
       return
     } else if (guessUpper === 'DOOYEON') {
       message.value = 'In the dappled lee of a linden tree'
+      return
     }
 
     if (!guessUpper.length) {
