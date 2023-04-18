@@ -94,8 +94,6 @@ h3 {
 }
 
 .rule {
-  border-left: 1pt solid var(--color-border-hover);
-  width: 1pt;
   height: 80%;
 }
 

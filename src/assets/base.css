@@ -139,6 +139,11 @@ header {
   border-bottom: var(--color-border);
 }
 
+.rule {
+  border-left: 1pt solid var(--color-border-hover);
+  width: 1pt;
+}
+
 .button {
   background-color: var(--color-anchor);
   text-transform: uppercase;
