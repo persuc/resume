@@ -64,7 +64,7 @@
       message.value = `👑 What's a mob to a king?`
       return
     } else if (guessUpper === 'DOOYEON') {
-      message.value = 'In the dappled lee of a linden tree'
+      message.value = '🌲 In the dappled lee of a linden tree'
       return
     }
 
