@@ -151,7 +151,7 @@
   function saveWordlist() {
     const printList: string[] = ['export default <[string, number][]>[\n']
     const negative: string[] = ['export default <[string, number][]>[\n']
-
+    const cornset = new Set(corncob)
     for (const word of lemmas) {
       if (cornset.has(word[0].toUpperCase()) && !propset.has(word[0].toUpperCase())) {
         printList.push(`['${word[0]}',${word[1]}],\n`)

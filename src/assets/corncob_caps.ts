@@ -46295,6 +46295,7 @@ export default [
 "SIGHTSEE",
 "SIGHTSEEING",
 "SIGHTSEERS",
+"SIGIL",
 "SIGMA",
 "SIGMOID",
 "SIGN",
