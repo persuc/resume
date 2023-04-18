@@ -123,15 +123,20 @@
     }
 
     const guessPercentage = getPercentage(guessIndex)
-    console.log(`Guess "${guessUpper}" is ${guessPercentage}% through the ${length.value}-letter words.\
- Answer is ${currentPercentage}% of the way through.`)
-    message.value = `Your guess "${guessUpper}" was ${guessPercentage}% of the way through the ${length.value}-letter words.\
- The answer is ${currentPercentage}% of the way through.`
+
+    if (Math.abs(guessPercentage - currentPercentage) < 0.001) {
+      message.value = `Your guess was almost exactly a match for the target word Both your guess and the target are ${guessPercentage}% of the way through the ${length.value}-letter words.`
+    }
+
+    message.value = `Your guess "${guessUpper}" was ${guessPercentage}% of the way through the ${length.value}-letter words.`
   }
 
   let revealed = ref('');
 
   function reveal() {
+    if (currentWord.value.length === 0) {
+      pick()
+    }
     if (revealed.value.length < currentWord.value.length) {
       revealed.value += currentWord.value.charAt(revealed.value.length)
     }
@@ -178,17 +183,23 @@
     <p>The game is to guess the word. Set the length below and click <b>Generate</b> to set the target word.</p>
     <p>
       You can guess whatever words you like, but the target will always be a dictionary word.
-      E.g. "Avail" is allowed, but not "Avails" or "Availed"
+      E.g. "Avail" is allowed, but not "Avails" or "Availed".
+      British spelling is preferred to American. E.g. "Vapour" is allowed, but not "Vapor".
     </p>
     <p>Type in your guess and click <b>Check</b> to get a hint about how close you were.</p>
     <p>Keep narrowing down your guesses until you find the target word.</p>
+    <p>Letters will automatically be revealed as they are confirmed by your guesses. If you are stuck, click <b>Reveal Letter</b> to reveal a letter.</p>
     <div class="flex">
       <div>
-        <input type="number" v-model="lengthInput" :min="MIN_LENGTH" :max="MAX_LENGTH" />
-        <button class="ml-2" @click="pick">Generate</button>
-        <br class="my-1" />
-        <input type="text" v-model="guess" />
-        <button class="ml-2" @click="check">Check</button>
+        <div class="flex space-between mb-2">
+          <input type="number" v-model="lengthInput" :min="MIN_LENGTH" :max="MAX_LENGTH" style="width: 9rem" />
+          <button class="ml-2" @click="pick">Generate</button>
+        </div>
+        <div class="flex space-between mb-2">
+          <input type="text" v-model="guess" style="width: 9rem" />
+          <button class="ml-2" @click="check">Check</button>
+        </div>
+        <button @click="reveal" style="float: right">Reveal letter</button>
       </div>
       <span class="mx-2 rule"></span>
       <div>
@@ -204,14 +215,13 @@
             getPercentage(closestAbove)
           }%)` : '&nbsp;' }}
         </p>
+        <p> {{ `${revealed}${'?'.repeat(length - revealed.length)} (${ 
+            currentPercentage
+          }%)` }}
+        </p>
       </div>
     </div>
     <h3 v-html="message"></h3>
-    <i style="font-size: 0.75rem;">Letters will automatically be revealed as they are confirmed by your guesses. If you are stuck, click the button below to reveal a letter.</i>
-    <br />
-    <button @click="reveal">Reveal letter</button>
-    <h1>{{ revealed }}</h1>
-
     <!-- <button @click="saveWordlist">Save word list</button> -->
   </div>
 </template>
