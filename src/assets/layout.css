@@ -83,6 +83,16 @@
   justify-content: space-between;
 }
 
+.end {
+  @extend .flex;
+  justify-content: end;
+}
+
+.start {
+  @extend .flex;
+  justify-content: start;
+}
+
 .grid {
   display: grid;
 }

@@ -191,34 +191,37 @@
     <p>Letters will automatically be revealed as they are confirmed by your guesses. If you are stuck, click <b>Reveal Letter</b> to reveal a letter.</p>
     <div class="flex">
       <div>
-        <div class="flex space-between mb-2">
+        <div class="flex space-between center" style="height: 1.75rem;">
           <input type="number" v-model="lengthInput" :min="MIN_LENGTH" :max="MAX_LENGTH" style="width: 9rem" />
           <button class="ml-2" @click="pick">Generate</button>
         </div>
-        <div class="flex space-between mb-2">
+        <div class="flex space-between center" style="height: 1.75rem;">
           <input type="text" v-model="guess" style="width: 9rem" />
           <button class="ml-2" @click="check">Check</button>
         </div>
-        <button @click="reveal" style="float: right">Reveal letter</button>
+        <div class="flex center end" style="height: 1.75rem;">
+          <button @click="reveal" style="float: right">Reveal letter</button>
+        </div>
       </div>
       <span class="mx-2 rule"></span>
       <div>
-        <p> {{ closestBelow >= 0 ? `Your closest guess before the target was "${
+        <div style="height: 1.75rem;">
+          {{ closestBelow >= 0 ? `Your closest guess before the target was "${
             validWords[length - MIN_LENGTH][closestBelow]
           }" (${ 
             getPercentage(closestBelow)
           }%)` : '&nbsp;' }}
-        </p>
-        <p> {{ closestAbove >= 0 ? `Your closest guess after the target was "${
+        </div>
+        <div style="height: 1.75rem;"> {{ closestAbove >= 0 ? `Your closest guess after the target was "${
             validWords[length - MIN_LENGTH][closestAbove]
           }" (${ 
             getPercentage(closestAbove)
           }%)` : '&nbsp;' }}
-        </p>
-        <p> {{ `${revealed}${'?'.repeat(length - revealed.length)} (${ 
+        </div>
+        <div style="height: 1.75rem;"> {{ `${revealed}${'?'.repeat(length - revealed.length)} (${ 
             currentPercentage
           }%)` }}
-        </p>
+        </div>
       </div>
     </div>
     <h3 v-html="message"></h3>
