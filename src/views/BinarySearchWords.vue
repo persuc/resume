@@ -191,16 +191,16 @@
     <p>Letters will automatically be revealed as they are confirmed by your guesses. If you are stuck, click <b>Reveal Letter</b> to reveal a letter.</p>
     <div class="flex" style="flex-wrap: wrap">
       <div class="inputs">
-        <div class="flex center space-between" style="height: 1.75rem; width: 20rem;">
+        <div class="flex center space-between">
           <input type="number" v-model="lengthInput" :min="MIN_LENGTH" :max="MAX_LENGTH" style="width: 11.5rem" />
-          <button style="width: 8rem;" @click="pick">Generate</button>
+          <button @click="pick">Generate</button>
         </div>
-        <div class="flex center space-between" style="height: 1.75rem; width: 20rem;">
+        <div class="flex center space-between">
           <input type="text" v-model="guess" style="width: 11.5rem" />
-          <button style="width: 8rem;" @click="check">Check</button>
+          <button @click="check">Check</button>
         </div>
-        <div class="flex center end" style="height: 1.75rem; width: 20rem;">
-          <button style="width: 8rem; float: right" @click="reveal">Reveal letter</button>
+        <div class="flex center end">
+          <button style="float: right" @click="reveal">Reveal letter</button>
         </div>
       </div>
       <span class="mx-2 rule"></span>
@@ -229,7 +229,17 @@
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="postcss">
+.inputs {
+  & .flex {
+    width: 20rem;
+    height: 1.75rem;
+    & button {
+      width: 8rem;
+    }
+  }
+}
+
 @media (max-width: 1024px) {
   .inputs {
     flex-grow: 1;
