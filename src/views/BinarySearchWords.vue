@@ -189,38 +189,38 @@
     <p>Type in your guess and click <b>Check</b> to get a hint about how close you were.</p>
     <p>Keep narrowing down your guesses until you find the target word.</p>
     <p>Letters will automatically be revealed as they are confirmed by your guesses. If you are stuck, click <b>Reveal Letter</b> to reveal a letter.</p>
-    <div class="flex">
-      <div>
-        <div class="flex space-between center" style="height: 1.75rem;">
-          <input type="number" v-model="lengthInput" :min="MIN_LENGTH" :max="MAX_LENGTH" style="width: 12rem" />
-          <button class="ml-2" style="width: 8rem;" @click="pick">Generate</button>
+    <div class="flex" style="flex-wrap: wrap">
+      <div class="inputs">
+        <div class="flex center space-between" style="height: 1.75rem; width: 20rem;">
+          <input type="number" v-model="lengthInput" :min="MIN_LENGTH" :max="MAX_LENGTH" style="width: 11.5rem" />
+          <button style="width: 8rem;" @click="pick">Generate</button>
         </div>
-        <div class="flex space-between center" style="height: 1.75rem;">
-          <input type="text" v-model="guess" style="width: 12rem" />
-          <button class="ml-2" style="width: 8rem;" @click="check">Check</button>
+        <div class="flex center space-between" style="height: 1.75rem; width: 20rem;">
+          <input type="text" v-model="guess" style="width: 11.5rem" />
+          <button style="width: 8rem;" @click="check">Check</button>
         </div>
-        <div class="flex center end" style="height: 1.75rem;">
-          <button @click="reveal" style="width: 8rem; float: right">Reveal letter</button>
+        <div class="flex center end" style="height: 1.75rem; width: 20rem;">
+          <button style="width: 8rem; float: right" @click="reveal">Reveal letter</button>
         </div>
       </div>
       <span class="mx-2 rule"></span>
       <div>
         <div style="height: 1.75rem;">
-          {{ closestBelow >= 0 ? `Your closest guess before the target was "${
+          {{ closestBelow >= 0 ? `Closest guess < target: "${
             validWords[length - MIN_LENGTH][closestBelow]
           }" (${ 
             getPercentage(closestBelow)
           }%)` : '&nbsp;' }}
         </div>
-        <div style="height: 1.75rem;"> {{ closestAbove >= 0 ? `Your closest guess after the target was "${
+        <div style="height: 1.75rem;">Target: {{ `${revealed}${'?'.repeat(length - revealed.length)} (${ 
+            currentPercentage
+          }%)` }}
+        </div>
+        <div style="height: 1.75rem;"> {{ closestAbove >= 0 ? `Closest guess > target: "${
             validWords[length - MIN_LENGTH][closestAbove]
           }" (${ 
             getPercentage(closestAbove)
           }%)` : '&nbsp;' }}
-        </div>
-        <div style="height: 1.75rem;"> {{ `${revealed}${'?'.repeat(length - revealed.length)} (${ 
-            currentPercentage
-          }%)` }}
         </div>
       </div>
     </div>
@@ -230,4 +230,13 @@
 </template>
 
 <style scoped>
+@media (max-width: 1024px) {
+  .inputs {
+    flex-grow: 1;
+    flex-basis: 100%;
+  }
+  .rule {
+    display: none;
+  }
+}
 </style>

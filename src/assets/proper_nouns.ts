@@ -225,6 +225,8 @@ export default new Set([
 'CRISTOBAL',
 'CRISTOPHER',
 'CRUZ',
+'CUBA',
+'CUBAN',
 'CURTIS',
 'CYRIL',
 'CYRUS',
