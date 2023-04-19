@@ -5262,6 +5262,7 @@ export default new Set([
 'YVONNE',
 'ZADA',
 'ZAIDA',
+'ZAIRE',
 'ZANA',
 'ZANDRA',
 'ZELDA',
