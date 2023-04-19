@@ -33,7 +33,7 @@
   }
 
   for (let i = MIN_LENGTH; i <= MAX_LENGTH; i++) {
-    validWords[i - MIN_LENGTH].sort() 
+    validWords[i - MIN_LENGTH].sort()
   }
 
   function getPercentage(index: number) {
@@ -44,7 +44,7 @@
   let length: Ref<number> = ref(5)
   let currentWord: Ref<string> = ref('')
   let index = 0
-  let currentPercentage = 0
+  let currentPercentage = ref(0)
   let closestBelow = ref(-1)
   let closestAbove = ref(-1)
 
@@ -57,7 +57,7 @@
     const target = targets[length.value - MIN_LENGTH][Math.floor(Math.random() * targets[length.value - MIN_LENGTH].length)]
     index = validWords[length.value - MIN_LENGTH].indexOf(target)
     currentWord.value = validWords[length.value - MIN_LENGTH][index]
-    currentPercentage = getPercentage(index)
+    currentPercentage.value = getPercentage(index)
   }
 
   let message = ref('')
@@ -86,7 +86,7 @@
       return
     }
     if (guessUpper.length != length.value) {
-      message.value = `⚠️ Your guess "${guessUpper}" must be a ${length.value} letter word`
+      message.value = `⚠️ "${guessUpper}" is not a ${length.value} letter word`
       return
     }
 
@@ -124,8 +124,8 @@
 
     const guessPercentage = getPercentage(guessIndex)
 
-    if (Math.abs(guessPercentage - currentPercentage) < 0.001) {
-      message.value = `Your guess was almost exactly a match for the target word Both your guess and the target are ${guessPercentage}% of the way through the ${length.value}-letter words.`
+    if (Math.abs(guessPercentage - currentPercentage.value) < 0.001) {
+      message.value = `😎 Your guess was almost exactly a match for the target word! Both your guess and the target are ${guessPercentage}% of the way through the ${length.value}-letter words.`
     }
 
     message.value = `Your guess "${guessUpper}" was ${guessPercentage}% of the way through the ${length.value}-letter words.`
@@ -192,15 +192,15 @@
     <div class="flex">
       <div>
         <div class="flex space-between center" style="height: 1.75rem;">
-          <input type="number" v-model="lengthInput" :min="MIN_LENGTH" :max="MAX_LENGTH" style="width: 9rem" />
-          <button class="ml-2" @click="pick">Generate</button>
+          <input type="number" v-model="lengthInput" :min="MIN_LENGTH" :max="MAX_LENGTH" style="width: 12rem" />
+          <button class="ml-2" style="width: 8rem;" @click="pick">Generate</button>
         </div>
         <div class="flex space-between center" style="height: 1.75rem;">
-          <input type="text" v-model="guess" style="width: 9rem" />
-          <button class="ml-2" @click="check">Check</button>
+          <input type="text" v-model="guess" style="width: 12rem" />
+          <button class="ml-2" style="width: 8rem;" @click="check">Check</button>
         </div>
         <div class="flex center end" style="height: 1.75rem;">
-          <button @click="reveal" style="float: right">Reveal letter</button>
+          <button @click="reveal" style="width: 8rem; float: right">Reveal letter</button>
         </div>
       </div>
       <span class="mx-2 rule"></span>
