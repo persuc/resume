@@ -192,11 +192,11 @@
     <div class="flex" style="flex-wrap: wrap">
       <div class="inputs">
         <div class="flex center space-between">
-          <input type="number" v-model="lengthInput" :min="MIN_LENGTH" :max="MAX_LENGTH" style="width: 11.5rem" />
+          <input type="number" v-model="lengthInput" :min="MIN_LENGTH" :max="MAX_LENGTH" style="width: 11.5rem" initial-scale=1 maximum-scale=1 />
           <button @click="pick">Generate</button>
         </div>
         <div class="flex center space-between">
-          <input type="text" v-model="guess" style="width: 11.5rem" />
+          <input type="text" v-model="guess" style="width: 11.5rem" initial-scale=1 maximum-scale=1 />
           <button @click="check">Check</button>
         </div>
         <div class="flex center end">
