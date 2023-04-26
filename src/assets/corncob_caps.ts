@@ -57872,6 +57872,7 @@ export default [
 "XRAYED",
 "XRAYING",
 "XRAYS",
+"XYLEM",
 "XYLOPHONE",
 "XYLOPHONIST",
 "YACHT",

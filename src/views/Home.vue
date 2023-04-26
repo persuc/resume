@@ -59,16 +59,17 @@ function goWant() {
         </ImageAndText>
       </div>
     </div>
-    <div class="footer flex center space-between px-4 py-2 mt-8" style="background-color: var(--color-background); justify-content: end;">
+    <div class="footer flex center space-between px-4 py-2 mt-8" style="background-color: var(--color-background);">
+      <a href="/binary">I'm bored</a>
       <div class="flex center contact">
         <span class="mr-2">{{ EMAIL }}</span>
         <span class="ml-1 mr-2 rule"></span>
         <span class="mr-2">{{ PHONE }}</span>
+        <span class="ml-1 mr-2 rule"></span>
+        <a class="plain ml-1" target="_blank" href="https://www.linkedin.com/in/andrew-persic/" style="height: 1.5rem">
+          <img :src="linkedInImage" style="width: 1.5rem;" />
+        </a>
       </div>
-      <span class="ml-1 mr-2 rule"></span>
-      <a class="plain ml-1" target="_blank" href="https://www.linkedin.com/in/andrew-persic/" style="height: 1.5rem">
-        <img :src="linkedInImage" style="width: 1.5rem;" />
-      </a>
     </div>
   </div>
 </template>
