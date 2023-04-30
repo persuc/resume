@@ -295,6 +295,75 @@ body .px-1 {
 .pa-12 {
   padding: 48px !important;
 }
+.px-13 {
+  padding-left: 52px !important;
+  padding-right: 52px !important;
+}
+.py-13 {
+  padding-top: 52px !important;
+  padding-bottom: 52px !important;
+}
+.pl-13 {
+  padding-left: 52px !important;
+}
+.pr-13 {
+  padding-right: 52px !important;
+}
+.pt-13 {
+  padding-top: 52px !important;
+}
+.pb-13 {
+  padding-bottom: 52px !important;
+}
+.pa-13 {
+  padding: 52px !important;
+}
+.px-14 {
+  padding-left: 56px !important;
+  padding-right: 56px !important;
+}
+.py-14 {
+  padding-top: 56px !important;
+  padding-bottom: 56px !important;
+}
+.pl-14 {
+  padding-left: 56px !important;
+}
+.pr-14 {
+  padding-right: 56px !important;
+}
+.pt-14 {
+  padding-top: 56px !important;
+}
+.pb-14 {
+  padding-bottom: 56px !important;
+}
+.pa-14 {
+  padding: 56px !important;
+}
+.px-16 {
+  padding-left: 64px !important;
+  padding-right: 64px !important;
+}
+.py-16 {
+  padding-top: 64px !important;
+  padding-bottom: 64px !important;
+}
+.pl-16 {
+  padding-left: 64px !important;
+}
+.pr-16 {
+  padding-right: 64px !important;
+}
+.pt-16 {
+  padding-top: 64px !important;
+}
+.pb-16 {
+  padding-bottom: 64px !important;
+}
+.pa-16 {
+  padding: 64px !important;
+}
 
 .mx-auto {
   margin-left: auto;

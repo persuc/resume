@@ -40,6 +40,7 @@
     return Math.round(index / validWords[length.value - MIN_LENGTH].length * 100000) / 1000
   }
 
+  let loading = ref(true)
   let lengthInput = 5
   let length: Ref<number> = ref(5)
   let currentWord: Ref<string> = ref('')
@@ -47,6 +48,9 @@
   let currentPercentage = ref(0)
   let closestBelow = ref(-1)
   let closestAbove = ref(-1)
+  let message = ref('')
+  let guess = ref('')
+  let revealed = ref('');
 
   function pick() {
     revealed.value = ''
@@ -59,9 +63,6 @@
     currentWord.value = validWords[length.value - MIN_LENGTH][index]
     currentPercentage.value = getPercentage(index)
   }
-
-  let message = ref('')
-  let guess = ref('')
 
   function check() {
     const guessUpper = guess.value.toUpperCase()
@@ -80,13 +81,16 @@
     } else if (guessUpper === 'DOOYEON') {
       message.value = '🌲 In the dappled lee of a linden tree'
       return
+    } else if (guessUpper === 'SASKIA') {
+      message.value = '🍣 Teach a girl to fish'
+      return
     }
 
     if (!guessUpper.length) {
       return
     }
-    if (guessUpper.length != length.value) {
-      message.value = `⚠️ "${guessUpper}" is not a ${length.value} letter word`
+    if (guessUpper.length !== length.value) {
+      message.value = `⚠️ "${guessUpper}" has ${guessUpper.length} letter${guessUpper.length > 1 ? 's' : ''}, but the target word is ${guessUpper.length > length.value ? 'only ' : ''} ${length.value} letters long`
       return
     }
 
@@ -110,6 +114,20 @@
       closestAbove.value = guessIndex
     }
 
+    autoReveal()
+
+    const guessPercentage = getPercentage(guessIndex)
+
+    if (Math.abs(guessPercentage - currentPercentage.value) < 0.001) {
+      message.value = `😎 Your guess "${guessUpper}" is almost right! Both "${guessUpper}" and the target are <b>${guessPercentage}%</b> of the way through the ${length.value}-letter words.`
+    }
+
+    message.value = `"${guessUpper}" is <b>${guessPercentage}%</b> of the way through the ${length.value}-letter words.`
+
+    saveState()
+  }
+
+  function autoReveal() {
     let prefixMatch = 0;
     for (
       prefixMatch = 0;
@@ -121,17 +139,7 @@
     if (prefixMatch > revealed.value.length) {
       revealed.value = currentWord.value.substring(0, prefixMatch)
     }
-
-    const guessPercentage = getPercentage(guessIndex)
-
-    if (Math.abs(guessPercentage - currentPercentage.value) < 0.001) {
-      message.value = `😎 Your guess was almost exactly a match for the target word! Both your guess and the target are ${guessPercentage}% of the way through the ${length.value}-letter words.`
-    }
-
-    message.value = `Your guess "${guessUpper}" was ${guessPercentage}% of the way through the ${length.value}-letter words.`
   }
-
-  let revealed = ref('');
 
   function reveal() {
     if (currentWord.value.length === 0) {
@@ -139,6 +147,7 @@
     }
     if (revealed.value.length < currentWord.value.length) {
       revealed.value += currentWord.value.charAt(revealed.value.length)
+      saveState()
     }
   }
 
@@ -149,9 +158,72 @@
     } 
   }
 
-  onMounted(() => document.addEventListener( "keyup", onKeyUp ))
+  onMounted(() => {
+    document.addEventListener( "keyup", onKeyUp )
+    loadState()
+    // test code
+    // lengthInput = 10
+    // length.value = 10
+    // pick()
+    // closestBelow.value = 0
+    // closestAbove.value = validWords[length.value - MIN_LENGTH].length - 1
+    // guess.value = 'fool'
+    // check()
+  })
 
   onUnmounted(() => document.removeEventListener( "keyup", onKeyUp ))
+
+  const defaultState = {
+    length: 5,
+    index: 0,
+    closestBelow: -1,
+    closestAbove: -1,
+    revealed: ''
+  }
+  type StateType = typeof defaultState;
+
+  function loadSerialized(serialized: string) {
+    const loadedState: StateType = JSON.parse(serialized)
+    index = loadedState.index
+    currentWord.value = validWords[length.value - MIN_LENGTH][index]
+    currentPercentage.value = getPercentage(index)
+    lengthInput = loadedState.length
+    length.value = loadedState.length
+    closestBelow.value = loadedState.closestBelow
+    closestAbove.value = loadedState.closestAbove
+    revealed.value = loadedState.revealed
+  }
+
+  function loadState() {
+    loading.value = true
+    const defaultSerialized = JSON.stringify(defaultState)
+    const serializedState: string = localStorage.getItem('searchWordState') ?? defaultSerialized
+    try {
+      loadSerialized(serializedState)
+    } catch (e) {
+      console.error(
+        'Error loading state from local storage:',
+        e,
+        'falling back to default state'
+      )
+      console.warn('Serialized state:', serializedState)
+      localStorage.removeItem('state')
+      loadSerialized(defaultSerialized)
+    }
+    autoReveal()
+    loading.value = false
+  }
+
+  function saveState() {
+    const savedState: StateType = {
+      index,
+      length: length.value,
+      closestBelow: closestBelow.value,
+      closestAbove: closestAbove.value,
+      revealed: revealed.value,
+    }
+    localStorage.setItem('searchWordState', JSON.stringify(savedState))
+  }
 
   function saveWordlist() {
     const printList: string[] = ['export default <[string, number][]>[\n']
@@ -179,7 +251,7 @@
 </script>
 
 <template>
-  <div class="binary px-8 pt-8" style="max-width: 60rem; margin: 0 auto;">
+  <div v-show="!loading" class="binary px-8 pt-8" style="max-width: 60rem; margin: 0 auto;">
     <p>The game is to guess the word. Set the length below and click <b>Generate</b> to set the target word.</p>
     <p>
       You can guess whatever words you like, but the target will always be a dictionary word.
@@ -191,45 +263,84 @@
     <p>Letters will automatically be revealed as they are confirmed by your guesses. If you are stuck, click <b>Reveal Letter</b> to reveal a letter.</p>
     <div class="flex" style="flex-wrap: wrap">
       <div class="inputs">
-        <div class="flex center space-between">
-          <input type="number" v-model="lengthInput" :min="MIN_LENGTH" :max="MAX_LENGTH" style="width: 11.5rem" initial-scale=1 maximum-scale=1 />
+        <div class="flex center space-between mb-1">
+          <input type="number" v-model="lengthInput" :min="MIN_LENGTH" :max="MAX_LENGTH" style="width: 11.5rem"/>
           <button @click="pick">Generate</button>
         </div>
-        <div class="flex center space-between">
-          <input type="text" v-model="guess" style="width: 11.5rem" initial-scale=1 maximum-scale=1 />
+        <div class="flex center space-between mb-1">
+          <input type="text" v-model="guess" style="width: 11.5rem"/>
           <button @click="check">Check</button>
         </div>
-        <div class="flex center end">
+        <div class="flex center end mb-1">
           <button style="float: right" @click="reveal">Reveal letter</button>
         </div>
       </div>
-      <span class="mx-2 rule"></span>
-      <div>
-        <div style="height: 1.75rem;">
-          {{ closestBelow >= 0 ? `Closest guess < target: "${
-            validWords[length - MIN_LENGTH][closestBelow]
-          }" (${ 
-            getPercentage(closestBelow)
-          }%)` : '&nbsp;' }}
+      <div id="guessTracker" class="flex border br-1 px-2">
+        <div>
+          <div></div>
+          <div class="mr-1">Target:</div>
+          <div></div>
         </div>
-        <div style="height: 1.75rem;">Target: {{ `${revealed}${'?'.repeat(length - revealed.length)} (${ 
-            currentPercentage
-          }%)` }}
+        <div>
+          <div class="mr-1">
+            {{ closestBelow >= 0 ? validWords[length - MIN_LENGTH][closestBelow]: '' }}
+          </div>
+          <div class="mr-1">
+            {{ `${revealed}${'?'.repeat(length - revealed.length)}` }}
+          </div>
+          <div class="mr-1">
+            {{ closestAbove >= 0 ? validWords[length - MIN_LENGTH][closestAbove] : '' }}
+          </div>
         </div>
-        <div style="height: 1.75rem;"> {{ closestAbove >= 0 ? `Closest guess > target: "${
-            validWords[length - MIN_LENGTH][closestAbove]
-          }" (${ 
-            getPercentage(closestAbove)
-          }%)` : '&nbsp;' }}
+        <div>
+          <div>{{ closestBelow >= 0 ? `(${getPercentage(closestBelow)}%)` : '' }}</div>
+          <div>({{currentPercentage}}%)</div>
+          <div>{{ closestAbove >= 0 ? `(${getPercentage(closestAbove)}%)` : '' }}</div>
         </div>
       </div>
     </div>
-    <h3 v-html="message"></h3>
+    <div v-show="message !== ''" class="message br-1 py-1 px-3 mt-3" v-html="message"></div>
     <!-- <button @click="saveWordlist">Save word list</button> -->
+    <a href="/" class="nohover" style="display: block; width: fit-content; position: relative; left: -32px;"><div class="pt-2 pb-4 px-8 mb-4" style="margin-top: 20vh">&lt; Back</div></a>
   </div>
 </template>
 
 <style scoped lang="postcss">
+
+@media screen and (-webkit-min-device-pixel-ratio:0) { 
+  select,
+  textarea,
+  input {
+    font-size: 16px;
+  }
+}
+
+.binary {
+  font-size: 16px;
+  & button {
+    font-size: 16px;
+  }
+}
+
+.message {
+  background: var(--vt-c-cerulean-superlight);
+}
+
+#guessTracker {
+  height: 5.75rem;
+  width: calc(100% - 20.5rem);
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  margin-left: 0.5rem;
+  & > div {
+    display: flex;
+    flex-direction: column;
+    & > div {
+      flex: 1;
+    }
+  }
+}
+
 .inputs {
   & .flex {
     width: 20rem;
@@ -241,9 +352,16 @@
 }
 
 @media (max-width: 1024px) {
+  #guessTracker {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
   .inputs {
+    & .flex {
+      width: 100%;
+    }
     flex-grow: 1;
-    flex-basis: 100%;
   }
   .rule {
     display: none;

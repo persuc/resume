@@ -14,7 +14,7 @@
 @import "./assets/pad.css";
 
 @media (hover: hover) {
-  a:not(.plain):hover {
+  a:not(.plain):not(.nohover):hover {
     background-color: hsla(240, 100%, 73%, 0.2);
 
     &::before {
