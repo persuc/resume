@@ -66,7 +66,7 @@
 
   function check() {
     const guessUpper = guess.value.toUpperCase()
-    guess.value = ''
+    guess.value = revealed.value
 
     if (currentWord.value.length === 0) {
       pick()
@@ -89,6 +89,9 @@
     if (!guessUpper.length) {
       return
     }
+
+    saveState()
+
     if (guessUpper.length !== length.value) {
       message.value = `⚠️ "${guessUpper}" has ${guessUpper.length} letter${guessUpper.length > 1 ? 's' : ''}, but the target word is ${guessUpper.length > length.value ? 'only ' : ''} ${length.value} letters long`
       return
@@ -115,6 +118,7 @@
     }
 
     autoReveal()
+    guess.value = revealed.value
 
     const guessPercentage = getPercentage(guessIndex)
 
@@ -123,7 +127,6 @@
     }
 
     message.value = `"${guessUpper}" is <b>${guessPercentage}%</b> of the way through the ${length.value}-letter words.`
-
     saveState()
   }
 
@@ -185,10 +188,10 @@
   function loadSerialized(serialized: string) {
     const loadedState: StateType = JSON.parse(serialized)
     index = loadedState.index
-    currentWord.value = validWords[length.value - MIN_LENGTH][index]
-    currentPercentage.value = getPercentage(index)
     lengthInput = loadedState.length
     length.value = loadedState.length
+    currentWord.value = validWords[length.value - MIN_LENGTH][index]
+    currentPercentage.value = getPercentage(index)
     closestBelow.value = loadedState.closestBelow
     closestAbove.value = loadedState.closestAbove
     revealed.value = loadedState.revealed
