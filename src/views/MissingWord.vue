@@ -13,6 +13,9 @@
   const currentBook: Ref<typeof books[0]['books'][0]> = ref(nullBook)
   let before = ref('')
   let after = ref('')
+  let message = ref('')
+  let guess = ref('')
+  let guessSingle = ref('')
 
   async function pick(): Promise<void> {
     author.value = 0
@@ -45,8 +48,15 @@
     message.value = ''
   }
 
-  let message = ref('')
-  let guess = ref('')
+  function checkLetter() {
+    if (!guessSingle.value.length) {
+      return
+    }
+
+    guess.value = guessSingle.value.charAt(0).repeat(length.value)
+    check()
+    guessSingle.value = ''
+  }
 
   function check() {
     const guessLower = guess.value.toLowerCase()
@@ -65,12 +75,6 @@
       return
     }
 
-    if (guessLower === currentWord.value) {
-      message.value = `💯 Well done you win`
-      revealed.value = currentWord.value
-      return
-    }
-
     let correctCharacters = 0
     for (let i = 0; i < guessLower.length; i++) {
       if (guessLower.charAt(i) === currentWord.value.toLowerCase().charAt(i)) {
@@ -79,7 +83,17 @@
       }
     }
 
+    if (revealed.value.indexOf('_') === -1) {
+      message.value = `💯 Well done you win`
+      return
+    }
+
     message.value = `Your guess "${guessLower}" contained ${correctCharacters} correct character${correctCharacters === 1 ? '' : 's'}.`
+  }
+
+  function reset() {
+    currentWord.value = ''
+    message.value = ''
   }
 
   function onKeyUp(e: KeyboardEvent) {
@@ -96,7 +110,7 @@
 </script>
 
 <template>
-  <div class="binary px-8 pt-8" style="max-width: 60rem; margin: 0 auto;">
+  <div class="missing-word px-8 pt-8" style="max-width: 60rem; margin: 0 auto;">
     <p>The game is to guess the missing word from a sentence by a famous author.</p>
     <p>
       You can guess whatever words you like. Remember that some authors might prefer British over American spelling, or vice versa.
@@ -114,9 +128,12 @@
       <div v-show="currentWord !== revealed">
         <input type="text" v-model="guess" style="width: 11.5rem" />
         <button @click="check" class="ml-2">Check</button>
+        <br />
+        <input type="text" v-model="guessSingle" style="width: 11.5rem" maxlength="1" minlength="0" />
+        <button @click="checkLetter" class="ml-2">Check letter</button>
       </div>
       <div v-show="currentWord === revealed">
-        <button @click="pick">Play again</button>
+        <button @click="reset">Play again</button>
       </div>
       <p class="mt-2">Missing word: {{ revealed }} ({{ length }} letters)</p>
       <p>{{ before }}{{ revealed }}{{ after }}</p>
@@ -126,23 +143,5 @@
 </template>
 
 <style scoped lang="postcss">
-.inputs {
-  & .flex {
-    width: 20rem;
-    height: 1.75rem;
-    & button {
-      width: 8rem;
-    }
-  }
-}
-
-@media (max-width: 1024px) {
-  .inputs {
-    flex-grow: 1;
-    flex-basis: 100%;
-  }
-  .rule {
-    display: none;
-  }
-}
+@media (max-width: 1024px) {}
 </style>
