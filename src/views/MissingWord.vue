@@ -1,10 +1,12 @@
 <script setup lang="ts">
   import books from '@/assets/books'
+  import corncob from '@/assets/corncob_caps'
   import { type Ref, ref, onMounted, onUnmounted } from 'vue'
   const MAX_LENGTH = 20
   const MIN_LENGTH = 3
   const VISIBILITY = 200
 
+  const cornset = new Set(corncob)
   let length: Ref<number> = ref(0)
   let currentWord: Ref<string> = ref('')
   let author: Ref<number> = ref(0)
@@ -18,7 +20,6 @@
   let guessSingle = ref('')
 
   async function pick(): Promise<void> {
-    author.value = 0
     const booksOfAuthor = books[author.value]
     currentBook.value = nullBook
 
@@ -28,11 +29,11 @@
     const index = Math.floor(Math.random() * (text.length - VISIBILITY - 30) ) + halfVisibility + 15
 
     let start = index
-    while (/[a-zA-Z]/.test(text.charAt(start - 1))) {
+    while (/[a-zA-Z\-]/.test(text.charAt(start - 1))) {
       start--
     }
     let end = index
-    while (/[a-zA-Z]/.test(text.charAt(end))) {
+    while (/[a-zA-Z\-]/.test(text.charAt(end))) {
       end++
     }
     length.value = end - start
@@ -41,10 +42,16 @@
       return pick()
     }
 
+    currentWord.value = text.substring(start, end)
+
+    if (!cornset.has(currentWord.value.toUpperCase())) {
+      return pick()
+    }
     before.value = text.substring(start - halfVisibility, start)
     after.value = text.substring(end, end + halfVisibility)
-    currentWord.value = text.substring(start, end)
     revealed.value = '_'.repeat(length.value)
+    guessSingle.value = '-'
+    checkLetter()
     message.value = ''
   }
 
@@ -91,6 +98,11 @@
     message.value = `Your guess "${guessLower}" contained ${correctCharacters} correct character${correctCharacters === 1 ? '' : 's'}.`
   }
 
+  function concede() {
+    revealed.value = currentWord.value
+    message.value = ''
+  }
+
   function reset() {
     currentWord.value = ''
     message.value = ''
@@ -129,13 +141,16 @@
         <input type="text" v-model="guess" style="width: 11.5rem" />
         <button @click="check" class="ml-2">Check</button>
         <br />
-        <input type="text" v-model="guessSingle" style="width: 11.5rem" maxlength="1" minlength="0" />
+        <input type="text" v-model="guessSingle" class="mt-2" style="width: 11.5rem" maxlength="1" minlength="0" />
         <button @click="checkLetter" class="ml-2">Check letter</button>
+        <br />
+        <button @click="concede" class="mt-2">Give up</button>
       </div>
       <div v-show="currentWord === revealed">
         <button @click="reset">Play again</button>
       </div>
       <p class="mt-2">Missing word: {{ revealed }} ({{ length }} letters)</p>
+      <h3>{{ currentBook.title }} by {{ books[author].author }}</h3>
       <p>{{ before }}{{ revealed }}{{ after }}</p>
     </div>
     <h3 v-html="message"></h3>
