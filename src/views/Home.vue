@@ -60,7 +60,7 @@ function goWant() {
       </div>
     </div>
     <div class="footer flex center space-between px-4 py-2 mt-8" style="background-color: var(--color-background);">
-      <a href="/binary">I'm bored</a>
+      <a href="/bored">I'm bored</a>
       <div class="flex center contact">
         <span class="mr-2">{{ EMAIL }}</span>
         <span class="ml-1 mr-2 rule"></span>

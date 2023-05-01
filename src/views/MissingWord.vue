@@ -6,33 +6,32 @@
   const MIN_LENGTH = 3
   const VISIBILITY = 200
   const HIDDEN_CHAR = '_'
+  const HALF_VISIBILITY = Math.floor(VISIBILITY / 2)
 
   const cornset = new Set(corncob)
-  let length: Ref<number> = ref(0)
-  let currentWord: Ref<string> = ref('')
-  let author: Ref<number> = ref(0)
-  let revealed = ref('');
+  const length: Ref<number> = ref(0)
+  const currentWord: Ref<string> = ref('')
+  const author: Ref<number> = ref(0)
+  const revealed = ref('');
   const nullBook: typeof books[0]['books'][0] = { title: '', url: ''}
   const currentBook: Ref<typeof books[0]['books'][0]> = ref(nullBook)
-  let before = ref('')
-  let after = ref('')
-  let message = ref('')
-  let guess = ref('')
-  let guessSingle = ref('')
+  const before = ref('')
+  const after = ref('')
+  const message = ref('')
+  const guess = ref('')
+  const guessSingle = ref('')
+  const loading = ref(false)
 
   function hasWon() {
     return revealed.value.indexOf(HIDDEN_CHAR) === -1
   }
 
   async function pick(): Promise<void> {
+    loading.value = true
     const booksOfAuthor = books[author.value]
-    currentBook.value = nullBook
-
     currentBook.value = booksOfAuthor.books[Math.floor(Math.random() * booksOfAuthor.books.length)]
     const text = await (await fetch(currentBook.value.url)).text()
-    const halfVisibility = Math.floor(VISIBILITY / 2)
-    const index = Math.floor(Math.random() * (text.length - VISIBILITY - 30) ) + halfVisibility + 15
-
+    const index = Math.floor(Math.random() * (text.length - VISIBILITY - 30) ) + HALF_VISIBILITY + 15
     let start = index
     while (/[a-zA-Z\-'’]/.test(text.charAt(start - 1))) {
       start--
@@ -47,13 +46,12 @@
       return pick()
     }
 
-    currentWord.value = text.substring(start, end)
-    
+    const candidate = text.substring(start, end)
     let stripped = ''
     let weirdCount = 0
-    for (let i = 0; i < currentWord.value.length; i++) {
-      if (currentWord.value.charAt(i) !== '\'' && currentWord.value.charAt(i) !== '-') {
-        stripped += currentWord.value.charAt(i).toUpperCase()
+    for (let i = 0; i < candidate.length; i++) {
+      if (candidate.charAt(i) !== '\'' && candidate.charAt(i) !== '-') {
+        stripped += candidate.charAt(i).toUpperCase()
       } else {
         weirdCount++
       }
@@ -62,9 +60,10 @@
     if (weirdCount > 1 || !cornset.has(stripped)) {
       return pick()
     }
-    
-    before.value = text.substring(start - halfVisibility, start)
-    after.value = text.substring(end, end + halfVisibility)
+
+    currentWord.value = candidate
+    before.value = text.substring(start - HALF_VISIBILITY, start)
+    after.value = text.substring(end, end + HALF_VISIBILITY)
     revealed.value = HIDDEN_CHAR.repeat(length.value)
     guessSingle.value = '-'
     checkLetter()
@@ -73,6 +72,7 @@
     guessSingle.value = '’'
     checkLetter()
     message.value = ''
+    loading.value = false
   }
 
   function checkLetter() {
@@ -91,10 +91,6 @@
   function check() {
     const guessLower = guess.value.toLowerCase()
     guess.value = ''
-
-    if (currentWord.value.length === 0) {
-      pick()
-    }
 
     if (!guessLower.length) {
       return
@@ -158,7 +154,10 @@
       </select>
       <button @click="pick" class="ml-2 px-2">Play</button>
     </div>
-    <div v-show="currentWord !== ''">
+    <div v-show="loading">
+      Loading...
+    </div>
+    <div v-show="currentWord !== '' && !loading">
       <div class="border br-1 py-1 px-3 mb-3">
         <h3>{{ currentBook.title }} by {{ books[author].author }}</h3>
         <p class="italic">{{ before }}{{ revealed }}{{ after }}</p>
@@ -178,6 +177,7 @@
       </div>
     </div>
     <div v-show="message !== ''" class="br-1 py-1 px-3 mt-3 bg-cerulean-superlight" v-html="message"></div>
+    <a href="/" class="nohover" style="display: block; width: fit-content; position: relative; left: -32px;"><div class="pt-2 pb-4 px-8 mb-4" style="margin-top: 20vh">&lt; Back</div></a>
   </div>
 </template>
 

@@ -254,7 +254,7 @@
 </script>
 
 <template>
-  <div v-show="!loading" class="binary px-8 pt-8" style="max-width: 60rem; margin: 0 auto;">
+  <div v-show="!loading" class="word-pinpoint px-8 pt-8" style="max-width: 60rem; margin: 0 auto;">
     <p>The game is to guess the word. Set the length below and click <b>Generate</b> to set the target word.</p>
     <p>
       You can guess whatever words you like, but the target will always be a dictionary word.
@@ -318,7 +318,7 @@
   }
 }
 
-.binary {
+.word-pinpoint {
   font-size: 16px;
   & button {
     font-size: 16px;

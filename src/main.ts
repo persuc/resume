@@ -26,13 +26,23 @@ const router = createRouter({
       component: () => import('./views/Talents.vue')
     },
     {
+      path: '/bored',
+      name: "Bored",
+      component: () => import('./views/Bored.vue')
+    },
+    {
       path: '/binary',
-      name: "BinarySearchWords",
-      component: () => import('./views/BinarySearchWords.vue')
+      name: "Word Pinpoint",
+      component: () => import('./views/WordPinpoint.vue')
+    },
+    {
+      path: '/word-pinpoint',
+      name: "Word Pinpoint",
+      component: () => import('./views/WordPinpoint.vue')
     },
     {
       path: '/missing-word',
-      name: "MissingWord",
+      name: "Missing Word",
       component: () => import('./views/MissingWord.vue')
     },
   ]
