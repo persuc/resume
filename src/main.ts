@@ -30,6 +30,11 @@ const router = createRouter({
       name: "BinarySearchWords",
       component: () => import('./views/BinarySearchWords.vue')
     },
+    {
+      path: '/missing-word',
+      name: "MissingWord",
+      component: () => import('./views/MissingWord.vue')
+    },
   ]
 })
 
