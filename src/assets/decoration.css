@@ -29,3 +29,7 @@
 .bold {
   font-weight: bold;
 }
+
+.bg-cerulean-superlight {
+  background-color: var(--vt-c-cerulean-superlight);
+}

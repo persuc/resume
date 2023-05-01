@@ -5,6 +5,7 @@
   const MAX_LENGTH = 20
   const MIN_LENGTH = 3
   const VISIBILITY = 200
+  const HIDDEN_CHAR = '_'
 
   const cornset = new Set(corncob)
   let length: Ref<number> = ref(0)
@@ -19,6 +20,10 @@
   let guess = ref('')
   let guessSingle = ref('')
 
+  function hasWon() {
+    return revealed.value.indexOf(HIDDEN_CHAR) === -1
+  }
+
   async function pick(): Promise<void> {
     const booksOfAuthor = books[author.value]
     currentBook.value = nullBook
@@ -29,11 +34,11 @@
     const index = Math.floor(Math.random() * (text.length - VISIBILITY - 30) ) + halfVisibility + 15
 
     let start = index
-    while (/[a-zA-Z\-]/.test(text.charAt(start - 1))) {
+    while (/[a-zA-Z\-'’]/.test(text.charAt(start - 1))) {
       start--
     }
-    let end = index
-    while (/[a-zA-Z\-]/.test(text.charAt(end))) {
+    let end = index + 1
+    while (/[a-zA-Z\-'’]/.test(text.charAt(end))) {
       end++
     }
     length.value = end - start
@@ -43,14 +48,29 @@
     }
 
     currentWord.value = text.substring(start, end)
+    
+    let stripped = ''
+    let weirdCount = 0
+    for (let i = 0; i < currentWord.value.length; i++) {
+      if (currentWord.value.charAt(i) !== '\'' && currentWord.value.charAt(i) !== '-') {
+        stripped += currentWord.value.charAt(i).toUpperCase()
+      } else {
+        weirdCount++
+      }
+    }
 
-    if (!cornset.has(currentWord.value.toUpperCase())) {
+    if (weirdCount > 1 || !cornset.has(stripped)) {
       return pick()
     }
+    
     before.value = text.substring(start - halfVisibility, start)
     after.value = text.substring(end, end + halfVisibility)
-    revealed.value = '_'.repeat(length.value)
+    revealed.value = HIDDEN_CHAR.repeat(length.value)
     guessSingle.value = '-'
+    checkLetter()
+    guessSingle.value = '\''
+    checkLetter()
+    guessSingle.value = '’'
     checkLetter()
     message.value = ''
   }
@@ -62,6 +82,9 @@
 
     guess.value = guessSingle.value.charAt(0).repeat(length.value)
     check()
+    if (!hasWon()) {
+      message.value = `🔎 All ${guessSingle.value}'s were revealed.`
+    }
     guessSingle.value = ''
   }
 
@@ -90,7 +113,7 @@
       }
     }
 
-    if (revealed.value.indexOf('_') === -1) {
+    if (hasWon()) {
       message.value = `💯 Well done you win`
       return
     }
@@ -123,40 +146,56 @@
 
 <template>
   <div class="missing-word px-8 pt-8" style="max-width: 60rem; margin: 0 auto;">
-    <p>The game is to guess the missing word from a sentence by a famous author.</p>
-    <p>
-      You can guess whatever words you like. Remember that some authors might prefer British over American spelling, or vice versa.
-    </p>
-    <p v-show="currentWord === ''">Choose an author and click <b>Generate</b> to play.</p>
-    <p v-show="currentWord !== ''">Type in your guess and click <b>Check</b>.</p>
-    <p v-show="currentWord !== ''">If you are stuck, click <b>Reveal Letter</b> to reveal a letter of the missing word.</p>
     <div v-show="currentWord === ''">
-      <select v-model="author" style="width: 11.5rem">
+      <p>The game is to guess the missing word from a sentence by a famous author.</p>
+      <p>
+        You can guess whatever you like, it doesn't have to be a real word. Remember that some authors might prefer British over American spelling, or vice versa.
+      </p>
+    </div>
+    <div class="mt-3" v-show="currentWord === ''">
+      <select v-model="author" style="width: 14rem">
         <option v-for="(book, i) in books" :value="i">{{ book.author }}</option>
       </select>
-      <button @click="pick" class="ml-2">Generate</button>
+      <button @click="pick" class="ml-2 px-2">Play</button>
     </div>
     <div v-show="currentWord !== ''">
+      <div class="border br-1 py-1 px-3 mb-3">
+        <h3>{{ currentBook.title }} by {{ books[author].author }}</h3>
+        <p class="italic">{{ before }}{{ revealed }}{{ after }}</p>
+        <p class="mt-2">Missing word: {{ revealed }} ({{ length }} letters)</p>
+      </div>
       <div v-show="currentWord !== revealed">
-        <input type="text" v-model="guess" style="width: 11.5rem" />
-        <button @click="check" class="ml-2">Check</button>
+        <input type="text" v-model="guess" style="width: 11.5rem" placeholder="Guess a whole word" />
+        <button @click="check" class="ml-2">Guess</button>
         <br />
-        <input type="text" v-model="guessSingle" class="mt-2" style="width: 11.5rem" maxlength="1" minlength="0" />
-        <button @click="checkLetter" class="ml-2">Check letter</button>
+        <input type="text" v-model="guessSingle" class="mt-2" style="width: 11.5rem" maxlength="1" minlength="0" placeholder="Reveal one letter" />
+        <button @click="checkLetter" class="ml-2">Guess letter</button>
         <br />
-        <button @click="concede" class="mt-2">Give up</button>
+        <button @click="concede" class="ml-2 mt-2" style="margin-left: 12rem">Give up</button>
       </div>
       <div v-show="currentWord === revealed">
         <button @click="reset">Play again</button>
       </div>
-      <p class="mt-2">Missing word: {{ revealed }} ({{ length }} letters)</p>
-      <h3>{{ currentBook.title }} by {{ books[author].author }}</h3>
-      <p>{{ before }}{{ revealed }}{{ after }}</p>
     </div>
-    <h3 v-html="message"></h3>
+    <div v-show="message !== ''" class="br-1 py-1 px-3 mt-3 bg-cerulean-superlight" v-html="message"></div>
   </div>
 </template>
 
 <style scoped lang="postcss">
 @media (max-width: 1024px) {}
+
+.missing-word {
+  font-size: 16px;
+  & button {
+    font-size: 16px;
+  }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) { 
+  select,
+  textarea,
+  input {
+    font-size: 16px;
+  }
+}
 </style>
