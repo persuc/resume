@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import books from '@/assets/books'
   import corncob from '@/assets/corncob_caps'
+  import propset from '@/assets/proper_nouns'
   import { type Ref, ref, onMounted, onUnmounted } from 'vue'
   const MAX_LENGTH = 20
   const MIN_LENGTH = 3
@@ -40,13 +41,13 @@
     while (/[a-zA-Z\-'’]/.test(text.charAt(end))) {
       end++
     }
-    length.value = end - start
+    const candidate = text.substring(start, end)
+    length.value = candidate.length
 
-    if (length.value < MIN_LENGTH || length.value > MAX_LENGTH) {
+    if (length.value < MIN_LENGTH || length.value > MAX_LENGTH || propset.has(candidate)) {
       return pick()
     }
 
-    const candidate = text.substring(start, end)
     let stripped = ''
     let weirdCount = 0
     for (let i = 0; i < candidate.length; i++) {
