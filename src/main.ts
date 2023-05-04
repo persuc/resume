@@ -45,6 +45,11 @@ const router = createRouter({
       name: "Missing Word",
       component: () => import('./views/MissingWord.vue')
     },
+    {
+      path: '/blackout',
+      name: "Blackout Poem",
+      component: () => import('./views/BlackoutPoem.vue')
+    },
   ]
 })
 
