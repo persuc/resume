@@ -57,6 +57,7 @@
     closestBelow.value = -1
     closestAbove.value = -1
     message.value = ''
+    guess.value = ''
     length.value = lengthInput
     const target = targets[length.value - MIN_LENGTH][Math.floor(Math.random() * targets[length.value - MIN_LENGTH].length)]
     index = validWords[length.value - MIN_LENGTH].indexOf(target)
@@ -195,6 +196,7 @@
     closestBelow.value = loadedState.closestBelow
     closestAbove.value = loadedState.closestAbove
     revealed.value = loadedState.revealed
+    guess.value = revealed.value
   }
 
   function loadState() {
