@@ -27,6 +27,7 @@
       .replace(/\-(?:\r\n|\r|\n)/g, '-')
       .replace(/-/g, '&#x2011;')
       .replace(/([\?\!\.\"”])\s?\n/g, '$1' + LINE_BREAK_SYMBOL)
+      .replace(/(?:\r\n|\r|\n)/g, ' ')
       .split(' ').map(s => s)
     ) {
       const lines = word.split(LINE_BREAK_SYMBOL)
