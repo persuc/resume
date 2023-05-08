@@ -13,6 +13,8 @@ import Header from '@/components/Header.vue';
     <a href="/missing-word">Missing word</a>
     <br />
     <a href="/word-pinpoint">Word pinpoint</a>
+    <br />
+    <a href="/blackout">Blackout Poem</a>
     <br/>
     <br />
 

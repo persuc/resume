@@ -27,9 +27,6 @@
       .replace(/\-(?:\r\n|\r|\n)/g, '-')
       .replace(/-/g, '&#x2011;')
       .replace(/([\?\!\.\"”])\s?\n/g, '$1' + LINE_BREAK_SYMBOL)
-      // .replace(/\n/g, ' ')
-      // .replace(/(?:\r\n|\r|\n)/g, ' ')
-      // .replace(/LINE_BREAK_SYMBOL/g, '<br></br>')
       .split(' ').map(s => s)
     ) {
       const lines = word.split(LINE_BREAK_SYMBOL)
@@ -51,6 +48,10 @@
       black.clear()
       words.splice(0)
     }
+  }
+
+  function clear() {
+    black.clear()
   }
 
   function onMouseUp(e: MouseEvent) {
@@ -130,12 +131,12 @@
             :class="{ word, black: black.has(i) }"
           ></span>
           <template v-else>
-            <br />
-            <br />
+            <br class="my-4" />
           </template>
         </template>
       </div>
     </div>
+    <button v-if="words.length > 0" @click="clear" class="mt-4 mb-16 mr-2">Clear</button>
     <button v-if="words.length > 0" @click="reset" class="mt-4 mb-16">Finish</button>
     <a v-else href="/bored" class="nohover" style="display: block; width: fit-content; position: relative; left: -32px;"><div class="pt-2 pb-4 px-8 mb-4" style="margin-top: 20vh">&lt; Back</div></a>
   </div>
