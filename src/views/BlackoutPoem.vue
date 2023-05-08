@@ -3,6 +3,7 @@
   import { type Ref, ref, onMounted, onUnmounted, reactive } from 'vue'
   const VISIBILITY = 1600
   const HALF_VISIBILITY = Math.floor(VISIBILITY / 2)
+  const LINE_BREAK_SYMBOL = 'LINE_BREAK_SYMBOL'
 
   const author: Ref<number> = ref(0)
   const black: Set<number> = reactive(new Set())
@@ -22,31 +23,85 @@
     const snippet = text.substring(index - HALF_VISIBILITY, index + HALF_VISIBILITY)
     debugSnippet.value = snippet
     words.splice(0)
-    words.push(...snippet
+    for (const word of snippet
       .replace(/\-(?:\r\n|\r|\n)/g, '-')
       .replace(/-/g, '&#x2011;')
-      .replace(/([\?\!\.\"”])\s?\n/g, '$1LINE_BREAK_SYMBOL')
+      .replace(/([\?\!\.\"”])\s?\n/g, '$1' + LINE_BREAK_SYMBOL)
       // .replace(/\n/g, ' ')
-      .replace(/(?:\r\n|\r|\n)/g, ' ')
-      .replace(/LINE_BREAK_SYMBOL/g, '<br></br>')
+      // .replace(/(?:\r\n|\r|\n)/g, ' ')
+      // .replace(/LINE_BREAK_SYMBOL/g, '<br></br>')
       .split(' ').map(s => s)
-    )
+    ) {
+      const lines = word.split(LINE_BREAK_SYMBOL)
+      for (let i = 0; i < lines.length; i++) {
+        if (i > 0) {
+          words.push(LINE_BREAK_SYMBOL)
+        }
+        words.push(lines[i])
+      }
+    }
     black.clear()
     loading.value = false
   }
 
-  // function reset() {
-  // }
+  function reset() {
+    const response = confirm("Are you sure you want to finish? Your poem will be discarded.");
 
-  // function onKeyUp(e: KeyboardEvent) {
-  //   if (e.key === 'Space' || e.key === 'Enter') {
-  //     e.preventDefault()
-  //   } 
-  // }
+    if (response) {
+      black.clear()
+      words.splice(0)
+    }
+  }
 
-  // onMounted(() => document.addEventListener( "keyup", onKeyUp ))
+  function onMouseUp(e: MouseEvent) {
+    const selection = window.getSelection()
+    if (selection === null || selection.type !== 'Range') {
+      return
+    }
 
-  // onUnmounted(() => document.removeEventListener( "keyup", onKeyUp ))
+    const anchorNode = selection.anchorNode?.nodeType === 3 ? selection.anchorNode.parentNode! : selection.anchorNode
+    const focusNode = selection.focusNode?.nodeType === 3 ? selection.focusNode.parentNode! : selection.focusNode
+    const parentNodes = [...anchorNode!.parentNode!.children]
+    const focusIndex = parentNodes.indexOf(focusNode as Element)
+    const anchorIndex = parentNodes.indexOf(anchorNode as Element)
+    let idx = Math.min(focusIndex, anchorIndex)
+
+    console.log('idx', idx, anchorNode, focusNode)
+
+    if (idx < 1) {
+      return
+    }
+    let node = anchorIndex > focusIndex ? focusNode : anchorNode
+    const target = anchorIndex > focusIndex ? anchorNode : focusNode
+    const selected = [idx - 1]
+    while (node !== null && node !== target) {
+      if (node.nodeName === 'SPAN') {
+        selected.push(idx)
+      } else {
+        console.log("weirdo", node.nodeName)
+      }
+      idx++
+      do {
+        node = node!.nextSibling
+      } while (node!.nodeName === '#text')
+    }
+
+    console.log('selected', selected)
+    
+    const whiten = selected.some(s => black.has(s))
+    for (const s of selected) {
+      if (whiten) {
+        black.delete(s)
+      } else {
+        black.add(s)
+      }
+    }
+    selection.empty()
+  }
+
+  onMounted(() => document.addEventListener( "mouseup", onMouseUp ))
+
+  onUnmounted(() => document.removeEventListener( "mouseup", onMouseUp ))
 
 </script>
 
@@ -59,34 +114,30 @@
       <select v-model="author" style="width: 14rem">
         <option v-for="(book, i) in books" :value="i">{{ book.author }}</option>
       </select>
-      <button @click="pick" class="ml-2 px-2">Play</button>
+      <button @click="pick" class="ml-2 px-2" style="font-size: 16px">Play</button>
     </div>
     <div v-show="loading">
       Loading...
     </div>
     <div v-show="words.length > 0 && !loading">
-      <div class="border br-1 py-1 px-3 mb-3" style="word-wrap: break-word;">
+      <div class="border br-1 py-1 px-3 mb-3">
         <div class="flex" style="align-items: baseline;"><h3>{{ currentBook.title }}</h3>&nbsp;<i>by {{ books[author].author }}</i></div>
-        <span @click="() => black.has(i) ? black.delete(i) : black.add(i)" :class="{ word, black: black.has(i) }" v-for="(word, i) in words" :key="word + i" v-html="word + '&nbsp;'"></span>
-        <!-- <template v-for="(word, i) in words" :key="word + i">
-          <span v-for="(broken, j) in word.split('\n')" :key="word + 'broken' + j" >{{ broken  }}<br v-if="j > 0" /></span>
-          <span>&nbsp;</span>
-        </template> -->
+        <template v-for="(word, i) in words" :key="word + i">
+          <span
+            v-if="word !== LINE_BREAK_SYMBOL"
+            v-html="word + '&nbsp;'"
+            @click="() => black.has(i) ? black.delete(i) : black.add(i)"
+            :class="{ word, black: black.has(i) }"
+          ></span>
+          <template v-else>
+            <br />
+            <br />
+          </template>
+        </template>
       </div>
-      <!-- <div v-show="currentWord !== revealed">
-        <input type="text" v-model="guess" style="width: 11.5rem" placeholder="Guess a whole word" />
-        <button @click="check" class="ml-2">Guess</button>
-        <br />
-        <input type="text" v-model="guessSingle" class="mt-2" style="width: 11.5rem" maxlength="1" minlength="0" placeholder="Reveal one letter" />
-        <button @click="checkLetter" class="ml-2">Guess letter</button>
-        <br />
-        <button @click="concede" class="ml-2 mt-2" style="margin-left: 12rem">Give up</button>
-      </div>
-      <div v-show="currentWord === revealed">
-        <button @click="reset">Play again</button>
-      </div> -->
     </div>
-    <a href="/bored" class="nohover" style="display: block; width: fit-content; position: relative; left: -32px;"><div class="pt-2 pb-4 px-8 mb-4" style="margin-top: 20vh">&lt; Back</div></a>
+    <button v-if="words.length > 0" @click="reset" class="mt-4 mb-16">Finish</button>
+    <a v-else href="/bored" class="nohover" style="display: block; width: fit-content; position: relative; left: -32px;"><div class="pt-2 pb-4 px-8 mb-4" style="margin-top: 20vh">&lt; Back</div></a>
   </div>
 </template>
 
@@ -100,9 +151,7 @@
 }
 
 .word {
-  word-break: initial;
-  /* white-space: nowrap; */
-  &:hover { background-color: var(--vt-c-divider-light-2) !important; }
+  display:inline-block;
   &.black { background-color: black; }
 }
 
