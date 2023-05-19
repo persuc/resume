@@ -3,7 +3,7 @@ import { useRouter } from 'vue-router'
 import booksImage from '@/assets/books.png'
 import hornImage from '@/assets/postal_horn.png'
 import linkedInImage from '@/assets/linkedin.png'
-import bgImage from '@/assets/lee_ufan.jpeg'
+import bgImage from '@/assets/walter-de-maria-naoshima.jpg'
 import starImage from '@/assets/glowing_star.png'
 import ImageAndText from '@/components/ImageAndText.vue'
 import IconDownload from '@/components/icons/IconDownload.vue';
@@ -30,7 +30,7 @@ function goWant() {
 </script>
 
 <template>
-  <div class="home flex" :style="`background-image: url(${bgImage}); flex-direction: column; height: 100vh; min-width: 100vw; background-position: center;`">
+  <div class="home flex" :style="`background-image: url(${bgImage})`">
     <div class="content" style="flex-grow: 1">
       <div class="pa-4 br-1 mx-5" style="background-color: var(--color-background);">
         <h1>Hey, I'm Andrew!</h1>
@@ -84,8 +84,17 @@ h3 {
   font-size: 1.2rem;
 }
 
+.home {
+  flex-direction: column;
+  height: 100vh;
+  min-width: 100vw;
+  background-position: center;
+  background-size: cover;
+}
+
 .content {
   margin: 2rem auto 0 auto;
+  z-index: 2;
 }
 
 .footer > .contact {
