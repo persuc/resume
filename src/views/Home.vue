@@ -23,10 +23,6 @@ function goTalents() {
   router.push('/talents')
 }
 
-function goWant() {
-  router.push('/want')
-}
-
 </script>
 
 <template>

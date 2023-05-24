@@ -52906,6 +52906,7 @@ export default [
 "TREBLED",
 "TREBLES",
 "TREBLING",
+"TREBUCHET",
 "TREE",
 "TREELESS",
 "TREES",
