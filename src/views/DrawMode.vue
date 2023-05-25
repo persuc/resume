@@ -57,10 +57,8 @@
           fillStyle: "#FDFDFD"
         }
       }),
-   ]
+    ]
   })
-
-  
 
   // add all of the bodies to the world
   Composite.add(engine.world, [boxA, boxB, ground]);
@@ -138,9 +136,7 @@
 
     // add a mouse
     const mouse = Matter.Mouse.create(render.canvas)
-    const mouseConstraint = Matter.MouseConstraint.create(engine, { mouse })
-    Composite.add(engine.world, mouseConstraint)
-    render.mouse = mouseConstraint.mouse
+    render.mouse = mouse
 
     // run the renderer
     Render.run(render)
