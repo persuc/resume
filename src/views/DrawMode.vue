@@ -71,7 +71,11 @@
       e.preventDefault()
     } 
   }
-
+  function startDrawing(e: MouseEvent) {
+    isDrawing.value = true
+    line = new Line(engine)
+    line.addPoint(render.mouse.position)
+  }
   function draw(e: MouseEvent) {
     if (
       isDrawing.value &&
@@ -87,12 +91,7 @@
   }
   function stopDrawing(e: MouseEvent) {
     isDrawing.value = false
-    Body.setParts(line.body, line.body.parts.slice(1))
     Body.setStatic(line.body, false)
-  }
-  function startDrawing(e: MouseEvent) {
-    isDrawing.value = true
-    line = new Line(engine.world)
   }
 
   function onResize() {

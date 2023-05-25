@@ -1,6 +1,6 @@
 // Credit to https://github.com/shundroid/matter-lines/
 
-import { Bodies, type Vector, Composite, type IBodyDefinition, Body } from "matter-js";
+import { Bodies, Vector, Composite, type IBodyDefinition, Body, Events } from "matter-js";
 
 export function distance(p1: Vector, p2: Vector) {
   const a = Math.abs(p1.x - p2.x)
@@ -14,8 +14,9 @@ function getAngleRad(p1: Vector, p2: Vector){
 }
 
 export default class Line {
-  world: Matter.World
+  engine: Matter.Engine
   body: Body
+  parts: Body[] = []
   points: Vector[] = []
   lineWidth: number
   lastPoint: Vector | null = null
@@ -25,16 +26,15 @@ export default class Line {
       fillStyle: "#FF0000",
     },
   }
-  constructor(world: Matter.World, lineWidth = 16) {
-    this.world = world
+  integer: number = 0
+  constructor(engine: Matter.Engine, lineWidth = 16) {
+    this.engine = engine
     this.lineWidth = lineWidth
     this.body = Body.create({
-      // parts: [Bodies.circle(400, 200, this.lineWidth / 2, this.bodyOpts)],
       isStatic: true
     })
-    Body.setParts(this.body, [this.body])
-    // console.log('parts', this.body.parts.slice())
-    Composite.add(this.world, this.body)
+    this.resetParts()
+    Composite.add(this.engine.world, this.body)
     // const color = Common.choose(['#f19648', '#f5d259', '#f55a3c', '#063e7b', '#ececd1']);
   }
   addPoint(point: Vector) {
@@ -42,10 +42,9 @@ export default class Line {
       x: point.x,
       y: point.y
     })
-    this.body.parts.push(Bodies.circle(point.x, point.y, this.lineWidth / 2, this.bodyOpts))
-    // Body.setParts(this.body, this.body.parts.slice(1).concat([Bodies.circle(point.x, point.y, this.lineWidth / 2, this.bodyOpts)]))
+    this.parts.push(Bodies.circle(point.x, point.y, this.lineWidth / 2, this.bodyOpts))
     if (this.lastPoint) {
-      this.body.parts.push(Bodies.rectangle(
+      this.parts.push(Bodies.rectangle(
         (point.x + this.lastPoint.x) / 2,
         (point.y + this.lastPoint.y) / 2,
         distance(point, this.lastPoint),
@@ -56,9 +55,9 @@ export default class Line {
         }
       ))
     }
-    // Composite.remove(this.world, this.body)
-    // Composite.add(this.world, this.body)
     this.lastPoint = this.points[this.points.length - 1]
+
+    this.resetParts()
 
     // TODO: update bounds
     // const bounds = Bounds.create(vertices);
@@ -67,5 +66,16 @@ export default class Line {
     //   y: this.body.position.y - this.body.bounds.min.y + bounds.min.y
     // });
     // Body.setStatic(this.body, true);
+  }
+
+  resetParts() {
+    // Body.setParts messes with transformation.rotation
+    // If this.body is translated/rotated, parts are set with values that are relative.
+    // see https://github.com/liabru/matter-js/issues/1050
+
+    Body.setParts(this.body, [])
+    Body.setAngle(this.body, 0)
+    Body.setPosition(this.body, Vector.create(0, 0))
+    Body.setParts(this.body, this.parts);
   }
 }
