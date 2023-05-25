@@ -29,9 +29,11 @@ export default class Line {
     this.world = world
     this.lineWidth = lineWidth
     this.body = Body.create({
-      parts: [],
+      // parts: [Bodies.circle(400, 200, this.lineWidth / 2, this.bodyOpts)],
       isStatic: true
     })
+    Body.setParts(this.body, [this.body])
+    // console.log('parts', this.body.parts.slice())
     Composite.add(this.world, this.body)
     // const color = Common.choose(['#f19648', '#f5d259', '#f55a3c', '#063e7b', '#ececd1']);
   }
@@ -41,6 +43,7 @@ export default class Line {
       y: point.y
     })
     this.body.parts.push(Bodies.circle(point.x, point.y, this.lineWidth / 2, this.bodyOpts))
+    // Body.setParts(this.body, this.body.parts.slice(1).concat([Bodies.circle(point.x, point.y, this.lineWidth / 2, this.bodyOpts)]))
     if (this.lastPoint) {
       this.body.parts.push(Bodies.rectangle(
         (point.x + this.lastPoint.x) / 2,
@@ -53,6 +56,8 @@ export default class Line {
         }
       ))
     }
+    // Composite.remove(this.world, this.body)
+    // Composite.add(this.world, this.body)
     this.lastPoint = this.points[this.points.length - 1]
 
     // TODO: update bounds

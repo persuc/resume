@@ -59,6 +59,7 @@
   }
   function stopDrawing(e: MouseEvent) {
     isDrawing.value = false
+    Body.setParts(line.body, line.body.parts.slice(1))
     Body.setStatic(line.body, false)
   }
   function startDrawing(e: MouseEvent) {
@@ -98,7 +99,7 @@
         options: {
           // showMousePosition: true,
           wireframes: false,
-          showBounds: true,
+          // showBounds: true,
           hasBounds: true
         },
     })

@@ -1,0 +1,4 @@
+- Save state
+- Level editor
+- Inventions editor
+- Delete off-screen objects
