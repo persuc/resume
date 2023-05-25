@@ -89,6 +89,11 @@
   resolved "https://registry.npmjs.org/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
+"@jridgewell/sourcemap-codec@^1.4.13":
+  version "1.4.15"
+  resolved "https://registry.yarnpkg.com/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.4.15.tgz#d7c6e6755c78567a951e04ab52ef0fd26de59f32"
+  integrity sha512-eF2rxCRulEKXHTRiDrDy6erMYWqNw4LPdQ8UQA4huuxaQsVeRPFl2oM8oDGxMFhJUWZf9McpLtJasDDZb/Bpeg==
+
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.npmjs.org/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz"
@@ -1307,23 +1312,17 @@ magic-string@^0.25.7:
   dependencies:
     sourcemap-codec "^1.4.8"
 
-matter-js@^0.12.0:
-  version "0.12.0"
-  resolved "https://registry.yarnpkg.com/matter-js/-/matter-js-0.12.0.tgz#dcb02d04326c47746c63a3772d1475753d72fe1e"
-  integrity sha512-wCjN2SXGeLNGrL2HgFOrBxGa/JVdGHksVLoTglcN3SYweAZxg/aXPxk7JYMw/bn1KrfsuBby2+reB7bqXfttFg==
+magic-string@^0.30.0:
+  version "0.30.0"
+  resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.30.0.tgz#fd58a4748c5c4547338a424e90fa5dd17f4de529"
+  integrity sha512-LA+31JYDJLs82r2ScLrlz1GjSgu66ZV518eyWT+S8VhyQn/JL0u9MeBOvQMGYiPk1DBiSN9DDMOcXvigJZaViQ==
+  dependencies:
+    "@jridgewell/sourcemap-codec" "^1.4.13"
 
 matter-js@^0.19.0:
   version "0.19.0"
   resolved "https://registry.yarnpkg.com/matter-js/-/matter-js-0.19.0.tgz#185e518146ae4fa20c33826ebc7e6e42685e3642"
   integrity sha512-v2huwvQGOHTGOkMqtHd2hercCG3f6QAObTisPPHg8TZqq2lz7eIY/5i/5YUV8Ibf3mEioFEmwibcPUF2/fnKKQ==
-
-matter-lines@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/matter-lines/-/matter-lines-0.1.0.tgz#930d2ac2378854a54ce13c92f85127365da0434e"
-  integrity sha512-S/TURn9Un1TRItRaRf4VSA4jOnw2KU+KVD9APeLYii650b7tMNDNMGQsyTNycFE4PLFRnoV8xfSEJgEIt93Eug==
-  dependencies:
-    matter-js "^0.12.0"
-    poly-decomp "^0.2.1"
 
 merge2@^1.3.0, merge2@^1.4.1:
   version "1.4.1"
@@ -1451,11 +1450,6 @@ picomatch@^2.3.1:
   version "2.3.1"
   resolved "https://registry.npmjs.org/picomatch/-/picomatch-2.3.1.tgz"
   integrity sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==
-
-poly-decomp@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/poly-decomp/-/poly-decomp-0.2.1.tgz#a5cc4088e9e2974070fa1ee23c7e3f2fc5b516d8"
-  integrity sha512-MRT1Povp45G71+YFk/ZoLtB02Fpldv3BLDYa/A82IVVSZ6rAdNKfpeZPw3jkov2bvDxfrAvRfNv/9ixo3V+eRQ==
 
 poly-decomp@^0.3.0:
   version "0.3.0"

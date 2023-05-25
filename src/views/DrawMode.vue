@@ -2,12 +2,14 @@
   import { onMounted, onUnmounted, reactive, ref } from 'vue'
   import decomp from 'poly-decomp'
   import Matter, { Common } from 'matter-js'
-  import Line from 'matter-lines'
+  import Line from '@/matter-lines/main'
 
   const STATE_KEY = 'drawModeState'
+  const DEBOUNCE_LIMIT = 100
 
   const completed: number[] = reactive([])
   const isDrawing = ref(false)
+  let timeOfLastPoint = 0
 
   Common.setDecomp(decomp)
 
@@ -32,12 +34,6 @@
 
   let render: Matter.Render
 
-  // const segments = reactive([] as Matter.IMousePoint[])
-  // segments.push(
-  //   { x: 50, y: 50 },
-  //   { x: 100, y: 50 },
-  //   { x: 100, y: 100 }
-  // )
   let line: Line
 
   // create two boxes and a ground
@@ -58,9 +54,11 @@
   }
 
   function draw(e: MouseEvent) {
-    if (isDrawing.value && e.target === render.canvas) {
+    const time = Date.now()
+    if (isDrawing.value && e.target === render.canvas && time - timeOfLastPoint > DEBOUNCE_LIMIT) {
       // console.log(render.mouse.position)
       line.addPoint(render.mouse.position)
+      timeOfLastPoint = time
     }
       
   }
@@ -70,7 +68,6 @@
   function startDrawing(e: MouseEvent) {
     isDrawing.value = true
     line = new Line(engine.world, [render.mouse.position])
-    // Composite.add(engine.world, line)
   }
 
   onMounted(() => {
