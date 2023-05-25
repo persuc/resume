@@ -50,6 +50,11 @@ const router = createRouter({
       name: "Blackout Poem",
       component: () => import('./views/BlackoutPoem.vue')
     },
+    {
+      path: '/draw',
+      name: "Draw Mode",
+      component: () => import('./views/DrawMode.vue')
+    },
   ]
 })
 

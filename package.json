@@ -11,12 +11,16 @@
   "dependencies": {
     "@types/file-saver": "^2.0.5",
     "file-saver": "^2.0.5",
+    "matter-js": "^0.19.0",
+    "matter-lines": "^0.1.0",
+    "poly-decomp": "^0.3.0",
     "vue": "^3.2.29",
     "vue-clipboard3": "^2.0.0",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.0",
+    "@types/matter-js": "^0.18.4",
     "@types/node": "^16.11.22",
     "@vitejs/plugin-vue": "^2.1.0",
     "@vue/eslint-config-prettier": "^7.0.0",
