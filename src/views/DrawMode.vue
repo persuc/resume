@@ -1,15 +1,15 @@
 <script setup lang="ts">
   import { onMounted, onUnmounted, reactive, ref } from 'vue'
   import decomp from 'poly-decomp'
-  import Matter, { Common } from 'matter-js'
-  import Line from '@/matter-lines/main'
+  import Matter, { Bounds, Common, Vertices } from 'matter-js'
+  import Line, { distance } from '@/matter-lines/main'
 
   const STATE_KEY = 'drawModeState'
-  const DEBOUNCE_LIMIT = 30
+  const DEBOUNCE_DISTANCE_LIMIT = 10
+  const ASPECT_RATIO = 800 / 600
 
   const completed: number[] = reactive([])
   const isDrawing = ref(false)
-  let timeOfLastPoint = 0
 
   Common.setDecomp(decomp)
 
@@ -21,16 +21,16 @@
       Composite = Matter.Composite;
 
   // create an engine
-  const engine = Engine.create();
+  const engine = Engine.create()
 
   let render: Matter.Render
 
   let line: Line
 
   // create two boxes and a ground
-  const boxA = Bodies.rectangle(400, 200, 80, 80);
-  const boxB = Bodies.rectangle(450, 50, 80, 80);
-  const ground = Bodies.rectangle(400, 610, 810, 60, { isStatic: true });
+  const boxA = Bodies.rectangle(400, 200, 80, 80)
+  const boxB = Bodies.rectangle(450, 50, 80, 80)
+  const ground = Bodies.rectangle(400, 610, 810, 60, { isStatic: true })
 
   // add all of the bodies to the world
   Composite.add(engine.world, [boxA, boxB, ground]);
@@ -45,11 +45,15 @@
   }
 
   function draw(e: MouseEvent) {
-    const time = Date.now()
-    if (isDrawing.value && e.target === render.canvas && time - timeOfLastPoint > DEBOUNCE_LIMIT) {
-      // console.log(render.mouse.position)
+    if (
+      isDrawing.value &&
+      e.target === render.canvas &&
+      (
+        line.points.length === 0 ||
+        (line.points.length > 0 && distance(line.points[line.points.length - 1], render.mouse.position) > DEBOUNCE_DISTANCE_LIMIT)
+      )
+    ) {
       line.addPoint(render.mouse.position)
-      timeOfLastPoint = time
     }
       
   }
@@ -61,11 +65,30 @@
     line = new Line(engine.world)
   }
 
+  function onResize() {
+    const canvases = document.getElementsByTagName('canvas')
+    if (!canvases.length) {
+      return
+    }
+    const canvas: HTMLCanvasElement = canvases[0]
+    canvas.height = window.innerHeight
+    canvas.width = window.innerWidth
+    const aspect = window.innerWidth / window.innerHeight
+    if (aspect > ASPECT_RATIO) {
+      render.options.height = window.innerHeight
+      render.options.width = window.innerHeight * ASPECT_RATIO
+    } else {
+      render.options.width = window.innerWidth
+      render.options.height = window.innerWidth / ASPECT_RATIO
+    }
+  }
+
   onMounted(() => {
-    document.addEventListener( "keyup", onKeyUp )
-    document.addEventListener( "mousemove", draw )
-    document.addEventListener( "mouseup", stopDrawing )
-    document.addEventListener( "mousedown", startDrawing )
+    document.addEventListener("keyup", onKeyUp )
+    document.addEventListener("mousemove", draw )
+    document.addEventListener("mouseup", stopDrawing )
+    document.addEventListener("mousedown", startDrawing )
+    window.addEventListener("resize", onResize)
     loadState()
     // create a renderer
     render = Render.create({
@@ -73,21 +96,25 @@
         engine: engine,
         options: {
           // showMousePosition: true,
-          wireframes: false
+          wireframes: false,
+          showBounds: true,
+          hasBounds: true
         },
-    });
+    })
+
+    onResize()
 
     // add a mouse
-    const mouse = Matter.Mouse.create(render.canvas);
+    const mouse = Matter.Mouse.create(render.canvas)
     const mouseConstraint = Matter.MouseConstraint.create(engine, { mouse })
-    Composite.add(engine.world, mouseConstraint);
-    render.mouse = mouseConstraint.mouse;
+    Composite.add(engine.world, mouseConstraint)
+    render.mouse = mouseConstraint.mouse
 
     // run the renderer
-    Render.run(render);
+    Render.run(render)
 
     // run the engine
-    Runner.run(runner, engine);
+    Runner.run(runner, engine)
   })
 
   onUnmounted(() => {
@@ -134,10 +161,11 @@
 
 </script>
 
+<!-- rgb(20, 21, 31) 0% 0% -->
 <template>
-  <div class="draw-mode px-8 pt-8" style="width: 60rem; margin: 0 auto;">
+  <div class="draw-mode" style="width: 100vw; height: 100vh; margin: 0 auto">
     <div id="render"></div>
-    <a href="/bored" class="nohover" style="display: block; width: fit-content; position: relative; left: -32px;"><div class="pt-2 pb-4 px-8 mb-4" style="margin-top: 20vh">&lt; Back</div></a>
+    <!-- <a href="/bored" class="nohover" style="display: block; width: fit-content; position: relative; left: -32px;"><div class="pt-2 pb-4 px-8 mb-4" style="margin-top: 20vh">&lt; Back</div></a> -->
   </div>
 </template>
 
