@@ -28,9 +28,39 @@
   let line: Line
 
   // create two boxes and a ground
-  const boxA = Bodies.rectangle(400, 200, 80, 80)
-  const boxB = Bodies.rectangle(450, 50, 80, 80)
-  const ground = Bodies.rectangle(400, 610, 810, 60, { isStatic: true })
+  const boxA = Bodies.rectangle(400, 200, 80, 80, {
+    render: {
+      fillStyle: "#BBBBBB"
+    }
+  })
+  const boxB = Bodies.rectangle(450, 50, 80, 80, {
+    render: {
+      fillStyle: "#BBBBBB"
+    }
+  })
+
+  const ground = Body.create({
+    isStatic: true,
+    parts: [
+      Bodies.rectangle(400, 610, 800, 60, {
+        render: {
+          fillStyle: "#FDFDFD"
+        }
+      }),
+      Bodies.rectangle(10, 300, 20, 600, {
+        render: {
+          fillStyle: "#FDFDFD"
+        }
+      }),
+      Bodies.rectangle(790, 300, 20, 600, {
+        render: {
+          fillStyle: "#FDFDFD"
+        }
+      }),
+   ]
+  })
+
+  
 
   // add all of the bodies to the world
   Composite.add(engine.world, [boxA, boxB, ground]);
