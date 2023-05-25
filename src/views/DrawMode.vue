@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { onMounted, onUnmounted, reactive, ref } from 'vue'
   import decomp from 'poly-decomp'
-  import Matter, { Bounds, Common, Vertices } from 'matter-js'
+  import Matter, { Body, Bounds, Common, Vertices } from 'matter-js'
   import Line, { distance } from '@/matter-lines/main'
 
   const STATE_KEY = 'drawModeState'
@@ -59,6 +59,7 @@
   }
   function stopDrawing(e: MouseEvent) {
     isDrawing.value = false
+    Body.setStatic(line.body, false)
   }
   function startDrawing(e: MouseEvent) {
     isDrawing.value = true

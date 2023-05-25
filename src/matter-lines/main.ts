@@ -1,6 +1,6 @@
 // Credit to https://github.com/shundroid/matter-lines/
 
-import { Bodies, type Vector, Composite, type IBodyDefinition } from "matter-js";
+import { Bodies, type Vector, Composite, type IBodyDefinition, Body } from "matter-js";
 
 export function distance(p1: Vector, p2: Vector) {
   const a = Math.abs(p1.x - p2.x)
@@ -15,7 +15,7 @@ function getAngleRad(p1: Vector, p2: Vector){
 
 export default class Line {
   world: Matter.World
-  body: Composite
+  body: Body
   points: Vector[] = []
   lineWidth: number
   lastPoint: Vector | null = null
@@ -24,12 +24,14 @@ export default class Line {
       lineWidth: 0,
       fillStyle: "#FF0000",
     },
-    isStatic: true
   }
   constructor(world: Matter.World, lineWidth = 16) {
     this.world = world
     this.lineWidth = lineWidth
-    this.body = Composite.create()
+    this.body = Body.create({
+      parts: [],
+      isStatic: true
+    })
     Composite.add(this.world, this.body)
     // const color = Common.choose(['#f19648', '#f5d259', '#f55a3c', '#063e7b', '#ececd1']);
   }
@@ -38,11 +40,9 @@ export default class Line {
       x: point.x,
       y: point.y
     })
-    Composite.add(this.body,
-      Bodies.circle(point.x, point.y, this.lineWidth / 2, this.bodyOpts)
-    )
+    this.body.parts.push(Bodies.circle(point.x, point.y, this.lineWidth / 2, this.bodyOpts))
     if (this.lastPoint) {
-      Composite.add(this.body, Bodies.rectangle(
+      this.body.parts.push(Bodies.rectangle(
         (point.x + this.lastPoint.x) / 2,
         (point.y + this.lastPoint.y) / 2,
         distance(point, this.lastPoint),
