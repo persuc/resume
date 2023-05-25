@@ -5,22 +5,13 @@
   import Line from '@/matter-lines/main'
 
   const STATE_KEY = 'drawModeState'
-  const DEBOUNCE_LIMIT = 100
+  const DEBOUNCE_LIMIT = 30
 
   const completed: number[] = reactive([])
   const isDrawing = ref(false)
   let timeOfLastPoint = 0
 
   Common.setDecomp(decomp)
-
-  // Matter.Bodies.decomp = decomp
-  // Matter.Bodies.fromVertices = function(x, y, vertexSets, options, flagInternal, removeCollinear, minimumArea) {
-  //   var decomp: any = decomp
-  //   return Matter.Bodies.fromVertices(x, y, vertexSets, options, flagInternal, removeCollinear, minimumArea)
-  // }
-
-  console.log('decomp', Common.getDecomp())
-  // console.log('decomp', Matter.Bodies.decomp)
 
   // module aliases
   const Engine = Matter.Engine,
@@ -67,7 +58,7 @@
   }
   function startDrawing(e: MouseEvent) {
     isDrawing.value = true
-    line = new Line(engine.world, [render.mouse.position])
+    line = new Line(engine.world)
   }
 
   onMounted(() => {
@@ -82,6 +73,7 @@
         engine: engine,
         options: {
           // showMousePosition: true,
+          wireframes: false
         },
     });
 
