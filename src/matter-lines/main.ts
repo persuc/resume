@@ -51,7 +51,14 @@ export default class Line {
           angle: getAngleRad(point, this.lastPoint)
         }
       ) : null
-    if (this.wouldCollide(circle, rect)) {
+    const collision = this.wouldCollide(circle, rect)
+    if (collision) {
+      // const collidedPart = collision.bodyA === circle || collision.bodyA === rect ? collision.bodyA : collision.bodyB
+      // if (collidedPart === rect) {
+      //   console.log('rect', collision)
+      // } else {
+      //   console.log('circle', collision)
+      // }
       return
     }
     this.points.push({
@@ -103,24 +110,49 @@ export default class Line {
     return bodies
   }
 
-  wouldCollide(circle: Body, rect: Body | null) {
+  wouldCollide(circle: Body, rect: Body | null): Collision | null {
     const bodies = this.getAllBodies().concat(circle).concat(rect === null ? [] : [rect])
 
     const detector = Detector.create({
       bodies
     })
 
-    const collisions = Detector.collisions(detector)
+    const collisions = Detector.collisions(detector).filter((collision: Collision) => {
+        return (collision.bodyA === circle ||
+          collision.bodyA === rect ||
+          collision.bodyB === circle ||
+          collision.bodyB === rect) && !(
+            [circle, rect].includes(collision.bodyA) && [circle, rect].includes(collision.bodyB)
+          )
+      }
+    )
 
-    function filter(collision: Collision) {
-      return (collision.bodyA === circle ||
-        collision.bodyA === rect ||
-        collision.bodyB === circle ||
-        collision.bodyB === rect) && !(
-          [circle, rect].includes(collision.bodyA) && [circle, rect].includes(collision.bodyB)
-        )
+    if (!collisions.length) {
+      return null
+    }
+    
+    
+    if (this.lastPoint === null) {
+      return collisions[0]
     }
 
-    return collisions.some(filter)
+    // here is some code for computing the closest object
+    // but it is incorrect since it considers only the centroid
+    
+    // let result = null
+    // let closeness = 0
+
+    // for (const collision of collisions) {
+    //   collision.penetration.x
+    //   const d = Math.min(distance(collision.bodyA.position, this.lastPoint), distance(collision.bodyB.position, this.lastPoint))
+    //   if (result === null || d < closeness) {
+    //     result = collision
+    //     closeness = d
+    //   }
+    // }
+
+    // return result
+
+    return collisions[0]
   }
 }

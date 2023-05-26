@@ -1,4 +1,4 @@
-- Save state
+- Save states
 - Level editor
 - Inventions editor
 - Delete off-screen objects
