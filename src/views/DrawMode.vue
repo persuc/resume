@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import { onMounted, onUnmounted, reactive, ref } from 'vue'
+  import { onMounted, onUnmounted, reactive, ref, type Ref } from 'vue'
   import decomp from 'poly-decomp'
-  import Matter, { Body, Common, Engine, Render, Runner } from 'matter-js'
+  import Matter, { Body, Common, Composite, Engine, Events, Render, Runner } from 'matter-js'
   import Line, { distance } from '@/ts/draw-mode/MatterLine'
   import { startLevel, type Level } from '@/ts/draw-mode/Level'
   import * as Theme from '@/ts/draw-mode/Theme'
@@ -10,12 +10,14 @@
   import Level_002 from '@/ts/draw-mode/levels/Level_002'
 
   const STATE_KEY = 'drawModeState'
-  const DEBOUNCE_DISTANCE_LIMIT = 10
+  const MINIMUM_DRAW_DISTANCE = 10
+  const CLEANUP_INTERVAL = 5000
   const ASPECT_RATIO = 800 / 600
 
   const completed: number[] = reactive([])
   const isDrawing = ref(false)
   const showEndScreen = ref(false)
+  let timeOfLastCleanup = 0
 
   Common.setDecomp(decomp)
 
@@ -25,8 +27,7 @@
   let render: Matter.Render
 
   let line: Line
-
-  let level: Level
+  let level: Ref<Level> = ref(null) as unknown as Ref<Level> // not defined until mounted
 
   // create runner
   const runner = Runner.create();
@@ -35,18 +36,18 @@
     if (e.key === 'Space' || e.key === 'Enter') {
       e.preventDefault()
     } else if (e.key === 'r') {
-      level.restart()
+      level.value.restart()
     } else if (e.key === 't') {
-      level.applyTheme(themes[(themes.findIndex(t => t === level.theme) + 1 ) % themes.length])
+      level.value.applyTheme(themes[(themes.findIndex(t => t === level.value.theme) + 1 ) % themes.length])
     }
   }
   function startDrawing(e: MouseEvent) {
-    if (e.target !== render.canvas) {
+    if (e.target !== render.canvas && !showEndScreen.value) {
       return
     }
     isDrawing.value = true
     line = new Line(engine)
-    line.setColor(level.theme[Color.DRAW])
+    line.setColor(level.value.theme[Color.DRAW])
     line.addPoint(render.mouse.position)
   }
   function draw(e: MouseEvent) {
@@ -55,20 +56,19 @@
       e.target === render.canvas &&
       (
         line.points.length === 0 ||
-        (line.points.length > 0 && distance(line.points[line.points.length - 1], render.mouse.position) > DEBOUNCE_DISTANCE_LIMIT)
+        (line.points.length > 0 && distance(line.points[line.points.length - 1], render.mouse.position) > MINIMUM_DRAW_DISTANCE)
       )
     ) {
       line.addPoint(render.mouse.position)
     }
       
   }
-  function stopDrawing(e: MouseEvent) {
+  function stopDrawing() {
     isDrawing.value = false
     Body.setStatic(line.body, false)
     for (const body of [line.body].concat(line.parts)) {
-      level.themeMap[body.id] = Color.DRAW
+      level.value.themeMap[body.id] = Color.DRAW
     }
-    // TODO: add line bodies to the level thememap
   }
 
   function onResize() {
@@ -111,8 +111,11 @@
         },
     })
 
-    level = startLevel(engine, Level_002, Theme.DEFAULT, () => {
+    level.value = startLevel(engine, Level_001, Theme.DEFAULT, () => {
       showEndScreen.value = true
+      if (isDrawing.value) {
+        stopDrawing()
+      }
       setTimeout(() => {
         showEndScreen.value = false
       }, 3000)
@@ -129,13 +132,40 @@
 
     // run the engine
     Runner.run(runner, engine)
+
+    Events.on(engine, 'afterUpdate', cleanup)
   })
+
+  function cleanup() {
+    const time = Date.now()
+    if (time - timeOfLastCleanup >= CLEANUP_INTERVAL) {
+      timeOfLastCleanup = time
+      if (!level.value) {
+        return
+      }
+      const bodies = Composite.allBodies(engine.world)
+      if (bodies.length < 10) {
+        return
+      }
+      for (const body of bodies) {
+        if (body.position.x < -1000 || body.position.x > 1000 || body.position.y > 1000 || body.position.y < -1000) {
+          Composite.remove(engine.world, body)
+        }
+      }
+    }
+  }
 
   onUnmounted(() => {
     document.removeEventListener( "keyup", onKeyUp )
     document.removeEventListener( "mousemove", draw )
     document.removeEventListener( "mouseup", stopDrawing )
     document.removeEventListener( "mousedown", startDrawing )
+    Events.off(engine, 'afterTick', cleanup)
+    Engine.clear(engine);
+    Render.stop(render);
+    Runner.stop(runner);
+    render.canvas.remove();
+    render.textures = {};
   })
 
   const defaultState = {
@@ -178,8 +208,8 @@
 <template>
   <div class="draw-mode" style="width: 100vw; height: 100vh; margin: 0 auto">
     <div class="flex hcenter absolute full-width" style="top: 5rem; color: white; z-index: 2">
-      <pre v-show="!showEndScreen">{{ level?.text }}</pre>
-      <span v-show="showEndScreen" style="font-size: 18rem">Great job.</span>
+      <pre v-show="!showEndScreen" v-html="level?.text" style="text-align: center;"></pre>
+      <span v-show="showEndScreen" style="font-size: 20vh">Great job.</span>
     </div>
     <div id="render"></div>
     <!-- <a href="/bored" class="nohover" style="display: block; width: fit-content; position: relative; left: -32px;"><div class="pt-2 pb-4 px-8 mb-4" style="margin-top: 20vh">&lt; Back</div></a> -->

@@ -17,7 +17,7 @@ const level: LevelSpec = {
       { body: target, color: Color.TARGET }
     ]
   },
-  text: "Knock the ball off"
+  text: "<p>Knock the ball off</p><br /><p>If you get stuck, press R to restart</p>"
 }
 
 export default level
