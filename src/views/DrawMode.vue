@@ -42,17 +42,17 @@
     Body.create({
       isStatic: true,
       parts: [
-        Bodies.rectangle(400, 610, 800, 60, {
+        Bodies.rectangle(400, 590, 800, 20, { // floor
           render: {
             fillStyle: "#FDFDFD"
           }
         }),
-        Bodies.rectangle(10, 300, 20, 600, {
+        Bodies.rectangle(10, 300, 20, 600, {  // left wall
           render: {
             fillStyle: "#FDFDFD"
           }
         }),
-        Bodies.rectangle(790, 300, 20, 600, {
+        Bodies.rectangle(790, 300, 20, 600, { // right wall
           render: {
             fillStyle: "#FDFDFD"
           }
@@ -96,21 +96,24 @@
   }
 
   function onResize() {
-    const canvases = document.getElementsByTagName('canvas')
-    if (!canvases.length) {
-      return
-    }
-    const canvas: HTMLCanvasElement = canvases[0]
-    canvas.height = window.innerHeight
-    canvas.width = window.innerWidth
+    const canvas: HTMLCanvasElement = render.canvas
+    const div: HTMLElement = render.canvas.parentElement!
     const aspect = window.innerWidth / window.innerHeight
     if (aspect > ASPECT_RATIO) {
-      render.options.height = window.innerHeight
       render.options.width = window.innerHeight * ASPECT_RATIO
+      render.options.height = window.innerHeight
+      const padding = Math.round((window.innerWidth - render.options.width) / 2)
+      div.style.paddingLeft = `${padding}px`
+      div.style.paddingTop = '0px'
     } else {
       render.options.width = window.innerWidth
       render.options.height = window.innerWidth / ASPECT_RATIO
+      const padding = Math.round((window.innerHeight - render.options.height) / 2)
+      div.style.paddingLeft = '0px'
+      div.style.paddingTop = `${padding}px`
     }
+    canvas.width = render.options.width
+    canvas.height = render.options.height
   }
 
   onMounted(() => {
@@ -189,7 +192,6 @@
 
 </script>
 
-<!-- rgb(20, 21, 31) 0% 0% -->
 <template>
   <div class="draw-mode" style="width: 100vw; height: 100vh; margin: 0 auto">
     <div id="render"></div>
@@ -198,6 +200,10 @@
 </template>
 
 <style scoped lang="postcss">
+
+.draw-mode {
+  background-color: rgb(20, 21, 31);
+}
 
 @media screen and (-webkit-min-device-pixel-ratio:0) { 
   select,
