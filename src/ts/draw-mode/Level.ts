@@ -5,7 +5,8 @@ import { Bodies, Body, Composite, type Engine, type IBodyDefinition } from "matt
 export type ColouredBody = { body: Body, color?: Color, compound?: boolean }
 
 export interface LevelSpec {
-  createBodies(): (Body | ColouredBody)[]
+  createBodies(): (Body | ColouredBody)[],
+  text?: string
 }
 
 export interface Level {
@@ -13,7 +14,8 @@ export interface Level {
   themeMap: Record<number, keyof Theme>
   applyTheme(theme: Theme): void,
   restart(): void
-  theme: Theme
+  theme: Theme,
+  text?: string
 }
 
 export const bodyOpts: IBodyDefinition = {
@@ -27,7 +29,7 @@ export function wallCup(): ColouredBody {
     body: Body.create({
       isStatic: true,
       parts: [
-        Bodies.rectangle(400, 590, 800, 20), // floor
+        Bodies.rectangle(400, 590, 762, 20), // floor
         Bodies.rectangle(10, 300, 20, 600), // left wall
         Bodies.rectangle(790, 300, 20, 600), // right wall
       ],
@@ -48,7 +50,8 @@ export function startLevel(engine: Engine, spec: LevelSpec, theme: Theme): Level
       setBodies(level, spec.createBodies())
       applyTheme(level, level.theme)
     },
-    theme
+    theme,
+    text: spec.text
   }
   
   setBodies(level, spec.createBodies())

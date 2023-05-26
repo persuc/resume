@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { onMounted, onUnmounted, reactive, ref } from 'vue'
   import decomp from 'poly-decomp'
-  import Matter, { Body, Common } from 'matter-js'
+  import Matter, { Body, Common, Engine, Render, Runner } from 'matter-js'
   import Line, { distance } from '@/ts/draw-mode/MatterLine'
   import { startLevel } from '@/ts/draw-mode/Level'
   import * as Theme from '@/ts/draw-mode/Theme'
@@ -16,13 +16,6 @@ import { Color, themes } from '@/ts/draw-mode/Theme'
   const isDrawing = ref(false)
 
   Common.setDecomp(decomp)
-
-  // module aliases
-  const Engine = Matter.Engine,
-      Render = Matter.Render,
-      Runner = Matter.Runner,
-      Bodies = Matter.Bodies,
-      Composite = Matter.Composite;
 
   // create an engine
   const engine = Engine.create()
@@ -175,6 +168,9 @@ import { Color, themes } from '@/ts/draw-mode/Theme'
 
 <template>
   <div class="draw-mode" style="width: 100vw; height: 100vh; margin: 0 auto">
+    <div class="flex hcenter absolute full-width" style="top: 5rem; color: white; z-index: 2">
+      <pre>{{ level.text }}</pre>
+    </div>
     <div id="render"></div>
     <!-- <a href="/bored" class="nohover" style="display: block; width: fit-content; position: relative; left: -32px;"><div class="pt-2 pb-4 px-8 mb-4" style="margin-top: 20vh">&lt; Back</div></a> -->
   </div>
