@@ -73,6 +73,9 @@
     } 
   }
   function startDrawing(e: MouseEvent) {
+    if (e.target !== render.canvas) {
+      return
+    }
     isDrawing.value = true
     line = new Line(engine)
     line.addPoint(render.mouse.position)
