@@ -88,6 +88,13 @@ export default class Line {
     Body.setParts(this.body, this.parts);
   }
 
+  setColor(color: string) {
+    this.bodyOpts.render!.fillStyle = color
+    for (const part of this.parts) {
+      part.render.fillStyle = color
+    }
+  }
+
   getAllBodies(): Body[] {
     const bodies: Body[] = []
 

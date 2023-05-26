@@ -1,8 +1,12 @@
 <script setup lang="ts">
   import { onMounted, onUnmounted, reactive, ref } from 'vue'
   import decomp from 'poly-decomp'
-  import Matter, { Body, Bounds, Common, Vertices } from 'matter-js'
-  import Line, { distance } from '@/matter-lines/main'
+  import Matter, { Body, Common } from 'matter-js'
+  import Line, { distance } from '@/ts/draw-mode/MatterLine'
+  import { startLevel } from '@/ts/draw-mode/Level'
+  import * as Theme from '@/ts/draw-mode/Theme'
+  import Level_001 from '@/ts/draw-mode/levels/Level_001'
+import { Color, themes } from '@/ts/draw-mode/Theme'
 
   const STATE_KEY = 'drawModeState'
   const DEBOUNCE_DISTANCE_LIMIT = 10
@@ -27,42 +31,7 @@
 
   let line: Line
 
-  const bodies = [
-    // Two boxes
-    // Bodies.rectangle(400, 200, 80, 80, {
-    //   render: {
-    //     fillStyle: "#BBBBBB"
-    //   }
-    // }),
-    // Bodies.rectangle(450, 50, 80, 80, {
-    //   render: {
-    //     fillStyle: "#BBBBBB"
-    //   }
-    // }),
-    Body.create({
-      isStatic: true,
-      parts: [
-        Bodies.rectangle(400, 590, 800, 20, { // floor
-          render: {
-            fillStyle: "#FDFDFD"
-          }
-        }),
-        Bodies.rectangle(10, 300, 20, 600, {  // left wall
-          render: {
-            fillStyle: "#FDFDFD"
-          }
-        }),
-        Bodies.rectangle(790, 300, 20, 600, { // right wall
-          render: {
-            fillStyle: "#FDFDFD"
-          }
-        }),
-      ]
-    })
-  ]
-
-  // add all of the bodies to the world
-  Composite.add(engine.world, bodies);
+  const level = startLevel(engine, Level_001, Theme.DEFAULT)
 
   // create runner
   const runner = Runner.create();
@@ -70,7 +39,11 @@
   function onKeyUp(e: KeyboardEvent) {
     if (e.key === 'Space' || e.key === 'Enter') {
       e.preventDefault()
-    } 
+    } else if (e.key === 'r') {
+      level.restart()
+    } else if (e.key === 't') {
+      level.applyTheme(themes[(themes.findIndex(t => t === level.theme) + 1 ) % themes.length])
+    }
   }
   function startDrawing(e: MouseEvent) {
     if (e.target !== render.canvas) {
@@ -78,6 +51,7 @@
     }
     isDrawing.value = true
     line = new Line(engine)
+    line.setColor(level.theme[Color.DRAW])
     line.addPoint(render.mouse.position)
   }
   function draw(e: MouseEvent) {
@@ -96,6 +70,10 @@
   function stopDrawing(e: MouseEvent) {
     isDrawing.value = false
     Body.setStatic(line.body, false)
+    for (const body of [line.body].concat(line.parts)) {
+      level.themeMap[body.id] = Color.DRAW
+    }
+    // TODO: add line bodies to the level thememap
   }
 
   function onResize() {
@@ -206,6 +184,7 @@
 
 .draw-mode {
   background-color: rgb(20, 21, 31);
+  overflow-y: hidden;
 }
 
 @media screen and (-webkit-min-device-pixel-ratio:0) { 
