@@ -33,7 +33,7 @@ export default class Line {
     this.lineWidth = lineWidth
     this.halfLineWidth = lineWidth / 2
     this.body = Body.create({
-      isStatic: true
+      isStatic: true,
     })
     this.resetParts()
     Composite.add(this.engine.world, this.body)

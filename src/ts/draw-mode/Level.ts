@@ -5,7 +5,7 @@ import { Bodies, Body, Composite, type Engine, type IBodyDefinition } from "matt
 export type ColouredBody = { body: Body, color?: Color, compound?: boolean }
 
 export interface LevelSpec {
-  createBodies(): (Body | ColouredBody)[],
+  generateBodies(engine: Engine, onEnd: () => any): (Body | ColouredBody)[],
   text?: string
 }
 
@@ -24,22 +24,35 @@ export const bodyOpts: IBodyDefinition = {
   }
 }
 
-export function wallCup(): ColouredBody {
+export function wallCup(): ColouredBody & {
+  floor: Body,
+  left: Body,
+  right: Body
+} {
+
+  const floor = Bodies.rectangle(400, 590, 762, 20)
+  const left = Bodies.rectangle(10, 300, 20, 600)
+  const right = Bodies.rectangle(790, 300, 20, 600)
+
+  const body = Body.create({
+    isStatic: true,
+    parts: [
+      floor,
+      left,
+      right
+    ],
+  })
   return {
-    body: Body.create({
-      isStatic: true,
-      parts: [
-        Bodies.rectangle(400, 590, 762, 20), // floor
-        Bodies.rectangle(10, 300, 20, 600), // left wall
-        Bodies.rectangle(790, 300, 20, 600), // right wall
-      ],
-    }),
-    color: Color.WALL
+    body,
+    color: Color.WALL,
+    floor,
+    left,
+    right,
   } 
 }
   
 
-export function startLevel(engine: Engine, spec: LevelSpec, theme: Theme): Level {
+export function startLevel(engine: Engine, spec: LevelSpec, theme: Theme, onEnd: () => any): Level {
   const level: Level = {
     engine,
     themeMap: {},
@@ -47,14 +60,14 @@ export function startLevel(engine: Engine, spec: LevelSpec, theme: Theme): Level
       applyTheme(level, theme)
     },
     restart() {
-      setBodies(level, spec.createBodies())
+      setBodies(level, spec.generateBodies(engine, onEnd))
       applyTheme(level, level.theme)
     },
     theme,
     text: spec.text
   }
   
-  setBodies(level, spec.createBodies())
+  setBodies(level, spec.generateBodies(engine, onEnd))
   applyTheme(level, theme)
 
   return level

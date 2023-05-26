@@ -3,10 +3,11 @@
   import decomp from 'poly-decomp'
   import Matter, { Body, Common, Engine, Render, Runner } from 'matter-js'
   import Line, { distance } from '@/ts/draw-mode/MatterLine'
-  import { startLevel } from '@/ts/draw-mode/Level'
+  import { startLevel, type Level } from '@/ts/draw-mode/Level'
   import * as Theme from '@/ts/draw-mode/Theme'
   import Level_001 from '@/ts/draw-mode/levels/Level_001'
-import { Color, themes } from '@/ts/draw-mode/Theme'
+  import { Color, themes } from '@/ts/draw-mode/Theme'
+  import Level_002 from '@/ts/draw-mode/levels/Level_002'
 
   const STATE_KEY = 'drawModeState'
   const DEBOUNCE_DISTANCE_LIMIT = 10
@@ -14,6 +15,7 @@ import { Color, themes } from '@/ts/draw-mode/Theme'
 
   const completed: number[] = reactive([])
   const isDrawing = ref(false)
+  const showEndScreen = ref(false)
 
   Common.setDecomp(decomp)
 
@@ -24,7 +26,7 @@ import { Color, themes } from '@/ts/draw-mode/Theme'
 
   let line: Line
 
-  const level = startLevel(engine, Level_001, Theme.DEFAULT)
+  let level: Level
 
   // create runner
   const runner = Runner.create();
@@ -109,6 +111,13 @@ import { Color, themes } from '@/ts/draw-mode/Theme'
         },
     })
 
+    level = startLevel(engine, Level_002, Theme.DEFAULT, () => {
+      showEndScreen.value = true
+      setTimeout(() => {
+        showEndScreen.value = false
+      }, 3000)
+    })
+
     onResize()
 
     // add a mouse
@@ -169,7 +178,8 @@ import { Color, themes } from '@/ts/draw-mode/Theme'
 <template>
   <div class="draw-mode" style="width: 100vw; height: 100vh; margin: 0 auto">
     <div class="flex hcenter absolute full-width" style="top: 5rem; color: white; z-index: 2">
-      <pre>{{ level.text }}</pre>
+      <pre v-show="!showEndScreen">{{ level?.text }}</pre>
+      <span v-show="showEndScreen" style="font-size: 18rem">Great job.</span>
     </div>
     <div id="render"></div>
     <!-- <a href="/bored" class="nohover" style="display: block; width: fit-content; position: relative; left: -32px;"><div class="pt-2 pb-4 px-8 mb-4" style="margin-top: 20vh">&lt; Back</div></a> -->

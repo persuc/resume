@@ -2,3 +2,4 @@
 - Level editor
 - Inventions editor
 - Delete off-screen objects
+- When you spam draw circles, weird boxes appear at (0, 0)

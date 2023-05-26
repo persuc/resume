@@ -3,10 +3,11 @@ import { Color } from "@/ts/draw-mode/Theme"
 import { Bodies } from "matter-js"
 
 const level: LevelSpec = {
-  createBodies() {
+  generateBodies() {
     return [
-      wallCup(),
-      Bodies.rectangle(400, 540, 80, 80),
+      Bodies.rectangle(400, 540, 80, 80, {
+        isStatic: true
+      }),
       { body: Bodies.circle(400, 515, 40), color: Color.TARGET }
     ]
   },
