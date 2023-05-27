@@ -1,4 +1,4 @@
-import { type LevelSpec } from "@/ts/draw-mode/Level"
+import type { LevelSpec } from "@/ts/draw-mode/Level"
 import { Color } from "@/ts/draw-mode/Theme"
 import { Bodies, Engine, Body } from "matter-js"
 import * as EndCondition from "@/ts/draw-mode/EndCondition"
