@@ -27,6 +27,10 @@ export default class Line {
       lineWidth: 0,
       fillStyle: "#FF0000",
     },
+    collisionFilter: {
+      category: 1,
+      mask: 3,
+    }
   }
   constructor(engine: Matter.Engine, lineWidth = 16) {
     this.engine = engine
@@ -35,8 +39,8 @@ export default class Line {
     this.body = Body.create({
       isStatic: true,
       collisionFilter: {
-        mask: 3,
         category: 1,
+        mask: 3,
       }
     })
     this.resetParts()

@@ -97,6 +97,8 @@ export function startLevel(engine: Engine, spec: LevelSpec, theme: Theme, onEnd:
             color: Color.DRAW,
             opacity: 1
           }
+          body.collisionFilter.mask = 1
+          body.collisionFilter.category = 1
         }
         level.line = null
       } 
