@@ -129,41 +129,6 @@
     mouse = Matter.Mouse.create(render.canvas)
     render.mouse = mouse
 
-    // const img = new Image()
-    // img.onload = () => {
-      // render.textures['testImage'] = img
-      // const test = Bodies.rectangle(
-      // 50, 500, 100, 100, {
-      //     isStatic: true,
-      //     render: {
-      //       fillStyle: '#00DADA',
-      //       // strokeStyle: '#ffffff',
-      //       // https://github.com/liabru/matter-js/blob/ce03208c5f597d4a5bceaf133cc959c428dd5147/src/render/Render.js#L772
-      //       // sprite: {
-      //       //   texture: 'testImage',
-      //       //   xScale: 1,
-      //       //   yScale: 1,
-      //       // }
-      //     }
-      //   }
-      // )
-      // Composite.add(engine.world, test)
-
-    //   Events.on(engine, 'afterUpdate', () => {
-    //     render.context.drawImage(
-    //       img,
-    //       THUMBNAIL_POSITION[0].x - (THUMBNAIL_WIDTH - 28) / 2,
-    //       THUMBNAIL_POSITION[0].y - (THUMBNAIL_HEIGHT - 20) / 2,
-    //       THUMBNAIL_WIDTH - 10,
-    //       THUMBNAIL_HEIGHT - 10 / ASPECT_RATIO,
-    //     )
-    //   })
-    // }
-    // img.onerror = () => {
-    //   console.error('Could not load')
-    // }
-    // img.src = `/draw-mode/Level_001.png`
-
     showLevelSelect()
 
     Render.run(render)
