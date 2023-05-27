@@ -1,5 +1,3 @@
-// Credit to https://github.com/shundroid/matter-lines/
-
 import { Bodies, Vector, Composite, type IBodyDefinition, Body, Events, Detector, Collision } from "matter-js";
 
 export function distance(p1: Vector, p2: Vector) {
@@ -12,6 +10,8 @@ function getAngleRad(p1: Vector, p2: Vector){
   // returns the angle between 2 points in radians
   return Math.atan2(p2.y - p1.y, p2.x - p1.x);
 }
+
+const MINIMUM_DRAW_DISTANCE = 10
 
 export default class Line {
   engine: Matter.Engine
@@ -34,12 +34,18 @@ export default class Line {
     this.halfLineWidth = lineWidth / 2
     this.body = Body.create({
       isStatic: true,
+      collisionFilter: {
+        mask: 3,
+        category: 1,
+      }
     })
     this.resetParts()
     Composite.add(this.engine.world, this.body)
-    // const color = Common.choose(['#f19648', '#f5d259', '#f55a3c', '#063e7b', '#ececd1']);
   }
   addPoint(point: Vector) {
+    if (this.lastPoint && distance(this.lastPoint, point) < MINIMUM_DRAW_DISTANCE) {
+      return
+    }
     const circle = Bodies.circle(point.x, point.y, this.halfLineWidth, this.bodyOpts)
     const rect = this.lastPoint ? Bodies.rectangle(
         (point.x + this.lastPoint.x) / 2,
@@ -118,21 +124,23 @@ export default class Line {
   }
 
   wouldCollide(circle: Body, rect: Body | null): Collision | null {
-    const bodies = this.getAllBodies().concat(circle).concat(rect === null ? [] : [rect])
+    const bodies = [circle]
+    if (rect) {
+      bodies.push(rect)
+    }
+
+    bodies.push(...this.getAllBodies())
 
     const detector = Detector.create({
       bodies
     })
 
     const collisions = Detector.collisions(detector).filter((collision: Collision) => {
-        return (collision.bodyA === circle ||
-          collision.bodyA === rect ||
-          collision.bodyB === circle ||
-          collision.bodyB === rect) && !(
-            [circle, rect].includes(collision.bodyA) && [circle, rect].includes(collision.bodyB)
-          )
-      }
-    )
+      const pair: (Body | null)[] = [collision.bodyA, collision.bodyB]
+      const includesRect = pair.includes(rect)
+      const includesCircle = pair.includes(circle)
+      return includesRect !== includesCircle
+    })
 
     if (!collisions.length) {
       return null

@@ -1,74 +1,87 @@
 <script setup lang="ts">
   import { onMounted, onUnmounted, reactive, ref, type Ref } from 'vue'
   import decomp from 'poly-decomp'
-  import Matter, { Body, Common, Composite, Engine, Events, Render, Runner } from 'matter-js'
-  import Line, { distance } from '@/ts/draw-mode/MatterLine'
-  import { startLevel, type Level } from '@/ts/draw-mode/Level'
+  import Matter, { Bodies, Body, Common, Composite, Engine, Events, Mouse, Render, Runner } from 'matter-js'
+  import { startLevel, type Level, specifications } from '@/ts/draw-mode/Level'
   import * as Theme from '@/ts/draw-mode/Theme'
-  import Level_001 from '@/ts/draw-mode/levels/Level_001'
-  import { Color, themes } from '@/ts/draw-mode/Theme'
-  import Level_002 from '@/ts/draw-mode/levels/Level_002'
+  import { themes } from '@/ts/draw-mode/Theme'
 
   const STATE_KEY = 'drawModeState'
-  const MINIMUM_DRAW_DISTANCE = 10
   const CLEANUP_INTERVAL = 5000
   const ASPECT_RATIO = 800 / 600
 
   const completed: number[] = reactive([])
-  const isDrawing = ref(false)
   const showEndScreen = ref(false)
   let timeOfLastCleanup = 0
 
   Common.setDecomp(decomp)
 
-  // create an engine
   const engine = Engine.create()
-
   let render: Matter.Render
-
-  let line: Line
-  let level: Ref<Level> = ref(null) as unknown as Ref<Level> // not defined until mounted
-
-  // create runner
   const runner = Runner.create();
+
+  let level: Ref<Level | null> = ref(null)
+  let levelIndex = -1
+  let theme = Theme.DEFAULT
+  let mouse: Mouse
 
   function onKeyUp(e: KeyboardEvent) {
     if (e.key === 'Space' || e.key === 'Enter') {
       e.preventDefault()
     } else if (e.key === 'r') {
-      level.value.restart()
+      if (level.value) {
+        level.value.restart()
+      }
     } else if (e.key === 't') {
-      level.value.applyTheme(themes[(themes.findIndex(t => t === level.value.theme) + 1 ) % themes.length])
+      if (level.value) {
+        level.value.applyTheme(themes[(themes.findIndex(t => t === level.value!.theme) + 1 ) % themes.length])
+      }
     }
   }
   function startDrawing(e: MouseEvent) {
     if (e.target !== render.canvas && !showEndScreen.value) {
       return
     }
-    isDrawing.value = true
-    line = new Line(engine)
-    line.setColor(level.value.theme[Color.DRAW])
-    line.addPoint(render.mouse.position)
+    if (level.value) {
+      level.value.startLine(render.mouse.position)
+    }
   }
   function draw(e: MouseEvent) {
-    if (
-      isDrawing.value &&
-      e.target === render.canvas &&
-      (
-        line.points.length === 0 ||
-        (line.points.length > 0 && distance(line.points[line.points.length - 1], render.mouse.position) > MINIMUM_DRAW_DISTANCE)
-      )
-    ) {
-      line.addPoint(render.mouse.position)
+    if (e.target === render.canvas && level.value) {
+      level.value.drawLine(render.mouse.position)
     }
-      
   }
   function stopDrawing() {
-    isDrawing.value = false
-    Body.setStatic(line.body, false)
-    for (const body of [line.body].concat(line.parts)) {
-      level.value.themeMap[body.id] = Color.DRAW
+    if (level.value) {
+      level.value.endLine()
     }
+  }
+
+  const LEVELS_PER_PAGE = 6
+  const LEVELS_PER_ROW = 3
+  const THUMBNAIL_WIDTH = 220
+  const THUMBNAIL_HEIGHT = THUMBNAIL_WIDTH / ASPECT_RATIO
+  const THUMBNAIL_HORIZONTAL_PAD = 30
+  const THUMBNAIL_VERTICAL_PAD = 30
+  const THUMBNAIL_POSITION = new Array(LEVELS_PER_PAGE).fill(null).map((_, i) => ({
+    x: (800 - (LEVELS_PER_ROW * THUMBNAIL_WIDTH - (LEVELS_PER_ROW - 1) * THUMBNAIL_HORIZONTAL_PAD)) * 3 / 4 + i % LEVELS_PER_ROW * (THUMBNAIL_WIDTH + THUMBNAIL_HORIZONTAL_PAD),
+    y: (600 - (LEVELS_PER_PAGE / LEVELS_PER_ROW * THUMBNAIL_HEIGHT - (LEVELS_PER_PAGE / LEVELS_PER_ROW - 1) * THUMBNAIL_VERTICAL_PAD)) * 3 / 5 + Math.floor(i / LEVELS_PER_ROW) * (THUMBNAIL_HEIGHT + THUMBNAIL_VERTICAL_PAD)
+  }))
+  const thumbnailBodies: Body[] = []
+  const page = 0
+  const images: HTMLImageElement[] = []
+  function drawImages() {
+    const realHeight = (THUMBNAIL_HEIGHT / 600) * render.canvas.height
+    const realWidth = (THUMBNAIL_WIDTH / 800) * render.canvas.width
+    images.forEach((image, i) => {
+      render.context.drawImage(
+        image,
+        THUMBNAIL_POSITION[i].x / 800 * render.canvas.width - realWidth / 2,
+        THUMBNAIL_POSITION[i].y / 600 * render.canvas.height - realHeight / 2,
+        realWidth,
+        realHeight,
+      )
+    })
   }
 
   function onResize() {
@@ -90,6 +103,7 @@
     }
     canvas.width = render.options.width
     canvas.height = render.options.height
+    drawImages()
   }
 
   onMounted(() => {
@@ -99,7 +113,6 @@
     document.addEventListener("mousedown", startDrawing )
     window.addEventListener("resize", onResize)
     loadState()
-    // create a renderer
     render = Render.create({
         element: document.getElementById('render')!,
         engine: engine,
@@ -111,30 +124,123 @@
         },
     })
 
-    level.value = startLevel(engine, Level_001, Theme.DEFAULT, () => {
+    onResize()
+
+    mouse = Matter.Mouse.create(render.canvas)
+    render.mouse = mouse
+
+    // const img = new Image()
+    // img.onload = () => {
+      // render.textures['testImage'] = img
+      // const test = Bodies.rectangle(
+      // 50, 500, 100, 100, {
+      //     isStatic: true,
+      //     render: {
+      //       fillStyle: '#00DADA',
+      //       // strokeStyle: '#ffffff',
+      //       // https://github.com/liabru/matter-js/blob/ce03208c5f597d4a5bceaf133cc959c428dd5147/src/render/Render.js#L772
+      //       // sprite: {
+      //       //   texture: 'testImage',
+      //       //   xScale: 1,
+      //       //   yScale: 1,
+      //       // }
+      //     }
+      //   }
+      // )
+      // Composite.add(engine.world, test)
+
+    //   Events.on(engine, 'afterUpdate', () => {
+    //     render.context.drawImage(
+    //       img,
+    //       THUMBNAIL_POSITION[0].x - (THUMBNAIL_WIDTH - 28) / 2,
+    //       THUMBNAIL_POSITION[0].y - (THUMBNAIL_HEIGHT - 20) / 2,
+    //       THUMBNAIL_WIDTH - 10,
+    //       THUMBNAIL_HEIGHT - 10 / ASPECT_RATIO,
+    //     )
+    //   })
+    // }
+    // img.onerror = () => {
+    //   console.error('Could not load')
+    // }
+    // img.src = `/draw-mode/Level_001.png`
+
+    showLevelSelect()
+
+    Render.run(render)
+    Runner.run(runner, engine)
+    Events.on(engine, 'afterUpdate', cleanup)
+  })
+
+  function showLevelSelect() {
+    images.splice(0)
+    for (let i = LEVELS_PER_PAGE * page; i < (page + 1) * LEVELS_PER_PAGE && i < specifications.length; i++) {
+      const body = Bodies.rectangle(
+        THUMBNAIL_POSITION[i % LEVELS_PER_PAGE].x,
+        THUMBNAIL_POSITION[i % LEVELS_PER_PAGE].y,
+        THUMBNAIL_WIDTH,
+        THUMBNAIL_HEIGHT,
+        {
+          isStatic: true,
+          render: {
+            fillStyle: '#CCDCDC',
+            // strokeStyle: '#ffffff',
+            // sprite: {
+            //   texture: `/draw-mode/Level_${String(i + 1).padStart(3, '0')}.png`,
+            //   xScale: 1,
+            //   yScale: 1,
+            // }
+          }
+        }
+      )
+      thumbnailBodies.push(body)
+      Composite.add(engine.world, body)
+      const img = new Image()
+      img.onload = () => {
+        images.push(img)
+        if (images.length === Math.min(LEVELS_PER_PAGE, specifications.length - page * LEVELS_PER_PAGE)) {
+          Events.on(engine, 'afterUpdate', drawImages)
+          drawImages()
+        }
+      }
+      img.src = `/draw-mode/Level_${String(i + 1).padStart(3, '0')}.png`
+    }
+
+    const mouseConstraint = Matter.MouseConstraint.create(
+      engine, {
+        mouse,
+      }
+    );
+    Composite.add(engine.world, mouseConstraint)
+
+    function callback() {
+      const index = thumbnailBodies.findIndex(b => mouseConstraint.body === b)
+      if (index === -1) {
+        return
+      }
+      const levelIndex = page * LEVELS_PER_PAGE + index
+      clickLevel(levelIndex)
+      Events.off(mouseConstraint, 'mousedown', callback)
+      Events.off(engine, 'afterUpdate', drawImages)
+      Composite.remove(engine.world, thumbnailBodies)
+      Composite.remove(engine.world, mouseConstraint)
+    }
+    Events.on(mouseConstraint, 'mousedown', callback)
+  }
+
+  function clickLevel(index: number) {
+    level.value = startLevel(engine, specifications[index], theme, () => {
       showEndScreen.value = true
-      if (isDrawing.value) {
-        stopDrawing()
+      if (level.value?.line) {
+        level.value.endLine()
       }
       setTimeout(() => {
         showEndScreen.value = false
+        Composite.clear(engine.world, false)
+        level.value = null
+        showLevelSelect()
       }, 3000)
     })
-
-    onResize()
-
-    // add a mouse
-    const mouse = Matter.Mouse.create(render.canvas)
-    render.mouse = mouse
-
-    // run the renderer
-    Render.run(render)
-
-    // run the engine
-    Runner.run(runner, engine)
-
-    Events.on(engine, 'afterUpdate', cleanup)
-  })
+  }
 
   function cleanup() {
     const time = Date.now()
