@@ -63,9 +63,9 @@
 
     const anchorNode = selection.anchorNode?.nodeType === 3 ? selection.anchorNode.parentNode! : selection.anchorNode
     const focusNode = selection.focusNode?.nodeType === 3 ? selection.focusNode.parentNode! : selection.focusNode
-    const parentNodes = [...anchorNode!.parentNode!.children]
-    const focusIndex = parentNodes.indexOf(focusNode as Element)
-    const anchorIndex = parentNodes.indexOf(anchorNode as Element)
+    const parentNodes: HTMLElement[] = Array.prototype.slice.call(anchorNode!.parentNode!.children)
+    const focusIndex = parentNodes.indexOf(focusNode as HTMLElement)
+    const anchorIndex = parentNodes.indexOf(anchorNode as HTMLElement)
     let idx = Math.min(focusIndex, anchorIndex)
 
     console.log('idx', idx, anchorNode, focusNode)
