@@ -1,0 +1,4 @@
+- Save states
+- Level editor
+- Inventions editor
+- When you spam draw circles, weird boxes appear at (0, 0)

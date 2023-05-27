@@ -1,0 +1,173 @@
+import { Bodies, Vector, Composite, type IBodyDefinition, Body, Events, Detector, Collision } from "matter-js";
+
+export function distance(p1: Vector, p2: Vector) {
+  const a = Math.abs(p1.x - p2.x)
+  const b = Math.abs(p1.y - p2.y)
+  return Math.sqrt(a * a + b * b);
+}
+
+function getAngleRad(p1: Vector, p2: Vector){
+  // returns the angle between 2 points in radians
+  return Math.atan2(p2.y - p1.y, p2.x - p1.x);
+}
+
+const MINIMUM_DRAW_DISTANCE = 10
+
+export default class Line {
+  engine: Matter.Engine
+  body: Body
+  parts: Body[] = []
+  partsSet: Set<Body> = new Set()
+  points: Vector[] = []
+  lineWidth: number
+  halfLineWidth: number
+  lastPoint: Vector | null = null
+  bodyOpts: IBodyDefinition = {
+    render: {
+      lineWidth: 0,
+      fillStyle: "#FF0000",
+    },
+  }
+  constructor(engine: Matter.Engine, lineWidth = 16) {
+    this.engine = engine
+    this.lineWidth = lineWidth
+    this.halfLineWidth = lineWidth / 2
+    this.body = Body.create({
+      isStatic: true,
+      collisionFilter: {
+        mask: 3,
+        category: 1,
+      }
+    })
+    this.resetParts()
+    Composite.add(this.engine.world, this.body)
+  }
+  addPoint(point: Vector) {
+    if (this.lastPoint && distance(this.lastPoint, point) < MINIMUM_DRAW_DISTANCE) {
+      return
+    }
+    const circle = Bodies.circle(point.x, point.y, this.halfLineWidth, this.bodyOpts)
+    const rect = this.lastPoint ? Bodies.rectangle(
+        (point.x + this.lastPoint.x) / 2,
+        (point.y + this.lastPoint.y) / 2,
+        distance(point, this.lastPoint),
+        this.lineWidth,
+        {
+          ...this.bodyOpts,
+          angle: getAngleRad(point, this.lastPoint)
+        }
+      ) : null
+    const collision = this.wouldCollide(circle, rect)
+    if (collision) {
+      // const collidedPart = collision.bodyA === circle || collision.bodyA === rect ? collision.bodyA : collision.bodyB
+      // if (collidedPart === rect) {
+      //   console.log('rect', collision)
+      // } else {
+      //   console.log('circle', collision)
+      // }
+      return
+    }
+    this.points.push({
+      x: point.x,
+      y: point.y
+    })
+
+    this.parts.push(circle)
+    this.partsSet.add(circle)
+    if (rect) {
+      this.parts.push(rect)
+      this.partsSet.add(rect)
+    }
+    this.lastPoint = this.points[this.points.length - 1]
+
+    this.resetParts()
+  }
+
+  resetParts() {
+    // Body.setParts messes with transformation.rotation
+    // If this.body is translated/rotated, parts are set with values that are relative.
+    // see https://github.com/liabru/matter-js/issues/1050
+
+    Body.setParts(this.body, [])
+    Body.setAngle(this.body, 0)
+    Body.setPosition(this.body, Vector.create(0, 0))
+    Body.setParts(this.body, this.parts);
+  }
+
+  setColor(color: string) {
+    this.bodyOpts.render!.fillStyle = color
+    for (const part of this.parts) {
+      part.render.fillStyle = color
+    }
+  }
+
+  getAllBodies(): Body[] {
+    const bodies: Body[] = []
+
+    for (const body of Composite.allBodies(this.engine.world)) {
+      if (body.parts.length > 1) {
+        for (let i = 1; i < body.parts.length; i++) {
+          if (body.parts[i] === this.body || this.parts.includes(body.parts[i])) {
+            continue
+          }
+          bodies.push(body.parts[i])
+        }
+      } else {
+        if (body === this.body || this.partsSet.has(body)) {
+          continue
+        }
+        bodies.push(body)
+      }
+    }
+
+    return bodies
+  }
+
+  wouldCollide(circle: Body, rect: Body | null): Collision | null {
+    const bodies = [circle]
+    if (rect) {
+      bodies.push(rect)
+    }
+
+    bodies.push(...this.getAllBodies())
+
+    const detector = Detector.create({
+      bodies
+    })
+
+    const collisions = Detector.collisions(detector).filter((collision: Collision) => {
+      const pair: (Body | null)[] = [collision.bodyA, collision.bodyB]
+      const includesRect = pair.includes(rect)
+      const includesCircle = pair.includes(circle)
+      return includesRect !== includesCircle
+    })
+
+    if (!collisions.length) {
+      return null
+    }
+    
+    
+    if (this.lastPoint === null) {
+      return collisions[0]
+    }
+
+    // here is some code for computing the closest object
+    // but it is incorrect since it considers only the centroid
+    
+    // let result = null
+    // let closeness = 0
+
+    // for (const collision of collisions) {
+    //   collision.penetration.x
+    //   const d = Math.min(distance(collision.bodyA.position, this.lastPoint), distance(collision.bodyB.position, this.lastPoint))
+    //   if (result === null || d < closeness) {
+    //     result = collision
+    //     closeness = d
+    //   }
+    // }
+
+    // return result
+
+    return collisions[0]
+  }
+}

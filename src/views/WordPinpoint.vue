@@ -212,7 +212,7 @@
         'falling back to default state'
       )
       console.warn('Serialized state:', serializedState)
-      localStorage.removeItem('state')
+      localStorage.removeItem('searchWordState')
       loadSerialized(defaultSerialized)
     }
     autoReveal()

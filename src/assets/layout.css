@@ -76,6 +76,10 @@
   &.center {
     align-items: center;
   }
+
+  &.hcenter {
+    justify-content: center;
+  }
 }
 
 .space-between {
@@ -95,4 +99,8 @@
 
 .grid {
   display: grid;
+}
+
+.full-width {
+  width: 100%;
 }
