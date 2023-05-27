@@ -18,11 +18,13 @@
 
   const engine = Engine.create()
   let render: Matter.Render
-  const runner = Runner.create();
+  const runner = Runner.create()
+
+  const container: Ref<HTMLElement> = ref() as Ref<HTMLElement>
 
   let level: Ref<Level | null> = ref(null)
   let levelIndex = -1
-  let theme = Theme.DEFAULT
+  let theme = Theme.DARK
   let mouse: Mouse
 
   function onKeyUp(e: KeyboardEvent) {
@@ -33,9 +35,7 @@
         level.value.restart()
       }
     } else if (e.key === 't') {
-      if (level.value) {
-        level.value.applyTheme(themes[(themes.findIndex(t => t === level.value!.theme) + 1 ) % themes.length])
-      }
+      applyTheme(themes[(themes.findIndex(t => t === theme) + 1 ) % themes.length])
     }
   }
   function startDrawing(e: MouseEvent) {
@@ -55,6 +55,15 @@
     if (level.value) {
       level.value.endLine()
     }
+  }
+  function applyTheme(newTheme: Theme.Theme) {
+    if (level.value !== null) {
+      level.value.applyTheme(newTheme)
+    }
+    render.canvas.style.background = newTheme.background
+    container.value.style.background = newTheme.background
+    container.value.style.color = newTheme.text
+    theme = newTheme
   }
 
   const LEVELS_PER_PAGE = 6
@@ -134,6 +143,8 @@
     Render.run(render)
     Runner.run(runner, engine)
     Events.on(engine, 'afterUpdate', cleanup)
+
+    applyTheme(Theme.DARK)
   })
 
   function showLevelSelect() {
@@ -277,8 +288,8 @@
 </script>
 
 <template>
-  <div class="draw-mode" style="width: 100vw; height: 100vh; margin: 0 auto">
-    <div class="flex hcenter absolute full-width" style="top: 5rem; color: white; z-index: 2">
+  <div class="draw-mode" ref="container" style="width: 100vw; height: 100vh; margin: 0 auto">
+    <div class="flex hcenter absolute full-width" style="top: 5rem; z-index: 2">
       <pre v-show="!showEndScreen" v-html="level?.text" style="text-align: center;"></pre>
       <span v-show="showEndScreen" style="font-size: 20vh">Great job.</span>
     </div>
@@ -290,7 +301,7 @@
 <style scoped lang="postcss">
 
 .draw-mode {
-  background-color: rgb(20, 21, 31);
+  /* background-color: rgb(20, 21, 31); */
   overflow-y: hidden;
 }
 

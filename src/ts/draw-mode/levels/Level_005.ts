@@ -1,6 +1,6 @@
 import { wallCup, type LevelSpec } from "@/ts/draw-mode/Level"
 import { Color } from "@/ts/draw-mode/Theme"
-import { Bodies, Body, Constraint, Engine } from "matter-js"
+import { Bodies, Engine } from "matter-js"
 import * as EndCondition from "@/ts/draw-mode/EndCondition"
 
 const level: LevelSpec = {
@@ -17,11 +17,11 @@ const level: LevelSpec = {
     })
 
     const noDraw = {
-      body: Bodies.rectangle(494, 290, 568, 580, {
+      body: Bodies.rectangle(495, 290, 570, 580, {
         isStatic: true,
         collisionFilter: {
           category: 2,
-          mask: 3,
+          mask: 2,
         }
       }),
       color: Color.NO_DRAW,

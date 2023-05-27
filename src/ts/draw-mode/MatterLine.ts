@@ -28,7 +28,7 @@ export default class Line {
       fillStyle: "#FF0000",
     },
     collisionFilter: {
-      category: 1,
+      category: 2,
       mask: 3,
     }
   }
@@ -39,7 +39,7 @@ export default class Line {
     this.body = Body.create({
       isStatic: true,
       collisionFilter: {
-        category: 1,
+        category: 2,
         mask: 3,
       }
     })
