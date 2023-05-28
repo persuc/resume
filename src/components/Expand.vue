@@ -6,7 +6,9 @@ interface Props {
   expandedLabel?: string,
 }
 
-defineProps<Props>();
+defineProps<Props>()
+
+const emit = defineEmits(['expand', 'collapse'])
 
 let expanded = ref(false)
 
@@ -26,14 +28,16 @@ onUnmounted(() => {
 })
 
 function onResize() {
-  height = expandSlot.value.scrollHeight + 'px';
+  height = (expandSlot.value.scrollHeight + 4) + 'px';
 }
 
 function toggle() {
   if (expanded.value) {
     expandSlot.value.style.height = COLLAPSED_HEIGHT;
+    emit('collapse')
   } else {
     expandSlot.value.style.height = height;
+    emit('expand')
   }
   expanded.value = !expanded.value;
 }
@@ -48,7 +52,7 @@ function toggle() {
       <div class="label" :style="expandedLabel && expanded ? '' : 'display: none;'">{{ expandedLabel }}</div>
     </div>
 
-    <div class="expand-slot px-2" ref="expandSlot" style="cursor: initial;">
+    <div class="expand-slot px-2" ref="expandSlot" style="cursor: initial; margin-bottom: 4px">
       <slot></slot>
     </div>
   </div>

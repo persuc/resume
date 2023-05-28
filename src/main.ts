@@ -1,6 +1,11 @@
 import { createApp } from "vue";
 import { createRouter, createWebHistory } from 'vue-router'
-import App from "./App.vue";
+import VueHighlightJS from 'vue3-highlightjs'
+import 'highlight.js/styles/shades-of-purple.css'
+import highlightCore from 'highlight.js/lib/core' // this line tells the following grammars where the types are
+import cpp from 'highlight.js/lib/languages/cpp'
+import assembly from 'highlight.js/lib/languages/armasm'
+import App from "./App.vue"
 
 const router = createRouter({
   history: createWebHistory(),
@@ -24,6 +29,16 @@ const router = createRouter({
       path: '/talents',
       name: "Talents",
       component: () => import('./views/Talents.vue')
+    },
+    {
+      path: '/blog',
+      name: "Blog",
+      component: () => import('./views/blog/Blog.vue')
+    },
+    {
+      path: '/blog/if-vs-ternary',
+      name: "Simple Optimization",
+      component: () => import('./views/blog/IfVsTernary.vue')
     },
     {
       path: '/bored',
@@ -60,4 +75,10 @@ const router = createRouter({
 
 const app = createApp(App)
 app.use(router)
+app.use(VueHighlightJS, {
+	languages: {
+		cpp,
+    assembly
+	}
+});
 app.mount('#app')

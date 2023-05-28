@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { saveAs } from 'file-saver';
+  import { saveAs } from 'file-saver'
   import corncob from '@/assets/corncob_caps'
   import propset from '@/assets/proper_nouns'
   import lemmas from '@/assets/lemmas'

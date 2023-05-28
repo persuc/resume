@@ -4,7 +4,7 @@ import monashLogo from '@/assets/monash.png'
 import ImageAndText from '@/components/ImageAndText.vue'
 import CopyButton from '@/components/CopyButton.vue'
 import Header from '@/components/Header.vue'
-import IconDownload from '@/components/icons/IconDownload.vue';
+import IconDownload from '@/components/icons/IconDownload.vue'
 import { EMAIL, PHONE } from '@/ts/constants'
 import JobTitle from '@/components/JobTitle.vue'
 
@@ -37,11 +37,7 @@ import JobTitle from '@/components/JobTitle.vue'
     </p>
     
     <h3 class="mt-2">Engineering</h3>
-    <p>Experienced with high scale data-intensive workloads across different regions and database architectures. Highly competent in <i>Java</i>, <i>AWS</i>, <i>Terraform</i>, <i>TypeScript</i> and <i>Vue.js</i> + many types of databases.</p>
-
-    <h3>Personal</h3>
-    <p>I always come to work with a smile since I enjoy the work I do, and I love the people who gravitate towards tech. I don’t mind working under pressure, always better to be too busy than bored.
-    </p>
+    <p>Experienced with high scale, data-intensive workloads across different regions and architectures. Highly competent in web technologies such as <i>Node.js</i>, <i>Vue.js</i> &amp; <i>React</i>. Backend expertise includes <i>AWS</i>, <i>Terraform</i>, <i>TypeScript</i> + many SQL &amp; NoSQL databases.</p>
 
     <h1 class="mt-4 mb-0">
       Relevant Experience
@@ -51,8 +47,8 @@ import JobTitle from '@/components/JobTitle.vue'
     <ul>
       <li>Managed all landing pages on <a target="_blank" href="https://www.canva.com/">canva.com</a> and <a target="_blank" href="https://www.canva.cn/">canva.cn</a>. On average these pages receive 30 million requests per day.</li>
       <li>Led projects to enable experimentation and fallback mechanisms in the China region.</li>
-      <li>Worked on CMS and page rendering backend features in <i>Typescript</i> and <i>Java</i>, including syncing millions of rows of data between DynamoDB and Postgres databases.</li>
-      <li>Led the initiative to let content managers configure page URLs, increasing TTM and decreasing load on engineering teams.</li>
+      <li>Worked on CMS and page rendering backend features in <i>Typescript</i>, <i>React</i> and <i>Java</i>, including syncing millions of rows of data between DynamoDB and Postgres databases.</li>
+      <li>Created a way of managing page URLs directly from Canva's CMS, increasing TTM and decreasing load on engineering teams.</li>
     </ul>
 
     <JobTitle class="mt-2" company="Two Bulls" role="Software Engineer (Full Stack)" date-from="January 2020" date-to="October 2021" />

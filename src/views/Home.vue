@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import booksImage from '@/assets/books.png'
+import conicalFlaskImage from '@/assets/conical-flask.png'
 import hornImage from '@/assets/postal_horn.png'
 import linkedInImage from '@/assets/linkedin.png'
 import bgImage from '@/assets/walter-de-maria-naoshima.jpg'
 import starImage from '@/assets/glowing_star.png'
 import ImageAndText from '@/components/ImageAndText.vue'
-import IconDownload from '@/components/icons/IconDownload.vue';
+import IconDownload from '@/components/icons/IconDownload.vue'
 import { EMAIL, PHONE } from '@/ts/constants'
 
 const router = useRouter()
@@ -15,12 +16,16 @@ function goResume() {
   router.push('/resume')
 }
 
+function goTalents() {
+  router.push('/talents')
+}
+
 function goAccomplishments() {
   router.push('/accomplishments')
 }
 
-function goTalents() {
-  router.push('/talents')
+function goBlog() {
+  router.push('/blog')
 }
 
 </script>
@@ -52,6 +57,10 @@ function goTalents() {
   
         <ImageAndText class="border br-1 mb-2" @click="goAccomplishments" style="cursor: pointer;" :image="hornImage">
           <h2>What I've done</h2>
+        </ImageAndText>
+
+        <ImageAndText class="border br-1 mb-2" @click="goBlog" style="cursor: pointer;" :image="conicalFlaskImage">
+          <h2>Blog</h2><span>This is a work in progress don't expect anything, ok?</span>
         </ImageAndText>
       </div>
     </div>
