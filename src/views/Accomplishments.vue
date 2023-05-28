@@ -21,13 +21,13 @@ import Header from '@/components/Header.vue'
 
     <Expand class="ml-4 my-2" label="Read more" expanded-label="Read less">
       <div class="ml-2">
-        <p>When I arrived at Canva the China region as a whole was somewhat neglected. Unfortunately, this is also Canva's fastest growing customer base, so letting  looked like a huge mistake. To enable these features I had to deploy a proxy service in the China region, responsible for looking at each incoming request and either passing it to the page rendering service or serving a cached version. This entails:
-          <ol>
-            <li>Setting up a new ECS Fargate deployment for an Nginx instance in the CN AWS region</li>
-            <li>Refactoring our existing Nginx configuration to support mutliple environments</li>
-            <li>Creating a scraper and S3 bucket to cache pages so they can be used for fallback</li>
-          </ol>
-        </p>
+        <p>When I arrived at Canva the China region as a whole was somewhat neglected. Unfortunately, this is also Canva's fastest growing customer base, so letting our CN landing pages fall behind the US looked like a huge mistake. To enable these features I had to deploy a proxy service in the China region, responsible for looking at each incoming request and either passing it to the page rendering service or serving a cached version. This entailed:</p>
+        <ol>
+          <li>Setting up a new ECS Fargate deployment for an Nginx instance in the CN AWS region</li>
+          <li>Refactoring our existing Nginx configuration to support multiple environments</li>
+          <li>Creating a scraper and S3 bucket to cache pages so they can be used for fallback</li>
+        </ol>
+        <p>Only once this preliminary work was complete could I actually reach out to the feature control team and begin working on an experimentation framework for testing different page layouts and reporting back on their performance in terms of conversion rate, average time spent on the page, and technical metrics such as TTL.</p>
       </div>
     </Expand>
 

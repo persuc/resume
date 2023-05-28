@@ -1,6 +1,10 @@
 # My resume
 
-Simple SPA built with Vue 3 & Vite. Houses my resume, contact info and some hiring details
+Simple SPA built with Vue 3 & Vite. Houses my resume, contact info and some hiring details. My goals with this site were:
+- To build it without using too many frameworks (in the past I have use nuxt.js, tailwind, vuetify) since I wanted to understand how to build components, styles and other common elements from the ground up.
+- Not to spend too long (the main pages were completed in a matter of hours)
+- To show some real examples of code, not contrived examples that I have spent a lot of time making look good
+- Hide some fun stuff for people to find if they look carefully
 
 ## Deployment
 
