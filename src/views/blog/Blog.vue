@@ -3,7 +3,7 @@ import Header from '@/components/Header.vue'
 
 const posts = [{
   path: 'if-vs-ternary',
-  title: 'Does identical logic produce the same source code?'
+  title: 'Does identical logic produce the same instructions?'
 }]
 
 </script>

@@ -36,7 +36,7 @@ import Quote from '@/components/Quote.vue'
 
     <div class="mt-4" style="font-size: 0.75rem;">
       <hr class="mt-16" size="1" />
-      <p class="italic my-2">1: This is a commonly quoted passage, and although Mr Conway's was talking about communication structures within organisations, I think it holds for data flow in distributed systems. You can read his full paper <a target="_blank" href="https://www.melconway.com/Home/pdf/committees.pdf">How Do Committees Invent?</a> if you would like to examine his reasoning yourself.</p> 
+      <p class="italic my-2">1: This is a commonly quoted passage, and although Mr Conway was talking about communication structures within organisations, I think it holds for data flow in distributed systems. You can read his full paper <a target="_blank" href="https://www.melconway.com/Home/pdf/committees.pdf">How Do Committees Invent?</a> for more details.</p> 
     </div>
 
   </div>
