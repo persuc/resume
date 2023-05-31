@@ -1,6 +1,6 @@
 import Line from "@/ts/draw-mode/MatterLine"
 import { Color } from "@/ts/draw-mode/Theme"
-import type Theme from "@/ts/draw-mode/Theme"
+import type { Theme } from "@/ts/draw-mode/Theme"
 import Level_001 from "@/ts/draw-mode/levels/Level_001"
 import Level_002 from "@/ts/draw-mode/levels/Level_002"
 import Level_003 from "@/ts/draw-mode/levels/Level_003"
@@ -97,7 +97,7 @@ export function startLevel(engine: Engine, spec: LevelSpec, theme: Theme, onEnd:
             color: Color.DRAW,
             opacity: 1
           }
-          body.collisionFilter.mask = 1
+          body.collisionFilter.mask = -1
           body.collisionFilter.category = 1
         }
         level.line = null
@@ -135,7 +135,7 @@ function setBodies(level: Level, bodies: (Body | ColouredBody | Constraint)[]) {
     let realBody: Body = (('body' in body) ? body.body : body) as Body
     level.themeMap[realBody.id] = {
       color,
-      opacity
+      opacity,
     }
     for (const part of realBody.parts) {
       level.themeMap[part.id] = {
@@ -143,6 +143,7 @@ function setBodies(level: Level, bodies: (Body | ColouredBody | Constraint)[]) {
         opacity
       }
     }
+    realBody.frictionAir = 0
     Composite.add(level.engine.world, realBody)
   }
 }
