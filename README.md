@@ -1,5 +1,7 @@
 # My resume
 
+See the live site at https://persic.cloud
+
 Simple SPA built with Vue 3 & Vite. Houses my resume, contact info and some hiring details. My goals with this site were:
 - To build it without using too many frameworks (in the past I have use nuxt.js, tailwind, vuetify) since I wanted to understand how to build components, styles and other common elements from the ground up.
 - Not to spend too long (the main pages were completed in a matter of hours)

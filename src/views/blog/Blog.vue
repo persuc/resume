@@ -3,7 +3,8 @@ import Header from '@/components/Header.vue'
 
 const posts = [{
   path: 'if-vs-ternary',
-  title: 'Does identical logic produce the same instructions?'
+  title: 'Does identical logic produce the same instructions?',
+  subtitle: 'Assembly, C++'
 }]
 
 </script>
@@ -18,7 +19,10 @@ const posts = [{
 
     <div v-for="post in posts" :key="post.title" style="border-top: 1pt solid var(--color-border);">
       <a :href="`/blog/${post.path}`" class="flex space-between center plain" style="color: var(--color-text)">
-        <h2 class="my-2">{{ post.title  }}</h2>
+        <div>
+          <h2 class="mt-2 mb-0">{{ post.title  }}</h2>
+          <span style="color: var(--color-subheading)">{{ post.subtitle }}</span>
+        </div>
         <span>→</span>
       </a>
     </div>

@@ -3,6 +3,7 @@ import faceImage from '@/assets/face.png'
 import monashLogo from '@/assets/monash.png'
 import ImageAndText from '@/components/ImageAndText.vue'
 import CopyButton from '@/components/CopyButton.vue'
+import TechList from '@/components/TechList.vue'
 import Header from '@/components/Header.vue'
 import IconDownload from '@/components/icons/IconDownload.vue'
 import { EMAIL, PHONE } from '@/ts/constants'
@@ -25,7 +26,7 @@ import JobTitle from '@/components/JobTitle.vue'
         Skills
       </h1>
       <ImageAndText class="contact nowrap mt-4" :image="faceImage" :rounded="true">
-        <p class="mb-0" style="line-height: 1em;">Andrew Persic</p>
+        <p class="mb-1" style="line-height: 1em;">Andrew Persic</p>
         <CopyButton :value="EMAIL" style="line-height: 1.5em;">{{ EMAIL }}</CopyButton>
         <br />
         <CopyButton :value="PHONE" style="line-height: 1.2em;">{{ PHONE }}</CopyButton>
@@ -33,11 +34,11 @@ import JobTitle from '@/components/JobTitle.vue'
     </div>
     
     <h3 class="mt-2">Technical Leadership</h3>
-    <p>I build relationships and lead initiatives across multiple teams to target cross-cutting concerns. My leadership style is asking questions based on a solid understanding of business processes and software architecture, then facilitating communication to define goals.
+    <p>I build relationships and lead initiatives across multiple teams to target cross-cutting concerns. My leadership style is asking questions based on a solid understanding of business processes and software architecture, then facilitating communication to define goals. I enjoy mentoring, with the aim of helping more junior engineers hone their skills so they can deliver projects without relying on other teams.
     </p>
     
     <h3 class="mt-2">Engineering</h3>
-    <p>Experienced with high scale, data-intensive workloads across different regions and architectures. Highly competent in web technologies such as <i>Node.js</i>, <i>Vue.js</i> &amp; <i>React</i>. Backend expertise includes <i>AWS</i>, <i>Terraform</i>, <i>TypeScript</i> + many SQL &amp; NoSQL databases.</p>
+    <p>Experienced with high scale, data-intensive workloads across different regions and architectures. Highly competent in web technologies such as <i>Node.js</i>, <i>Vue.js</i> &amp; <i>React</i>. Backend expertise includes <i>AWS</i>, <i>Terraform</i>, <i>Java</i> and <i>SQL</i> + <i>NoSQL</i> databases.</p>
 
     <h1 class="mt-4 mb-0">
       Relevant Experience
@@ -45,20 +46,24 @@ import JobTitle from '@/components/JobTitle.vue'
 
     <JobTitle company="Canva" role="Senior Software Engineer (Backend)" date-from="October 2021" date-to="Current" />
     <ul>
+      <li><TechList :tech="[ 'TypeScript', 'React', 'Java', 'Terraform', 'AWS', 'GraphQL', 'Protobuf', 'PostgreSQL', 'DynamoDB' ]" /></li>
       <li>Managed all landing pages on <a target="_blank" href="https://www.canva.com/">canva.com</a> and <a target="_blank" href="https://www.canva.cn/">canva.cn</a>. On average these pages receive 30 million requests per day.</li>
       <li>Led projects to enable experimentation and fallback mechanisms in the China region.</li>
-      <li>Worked on CMS and page rendering backend features in <i>Typescript</i>, <i>React</i> and <i>Java</i>, including syncing millions of rows of data between DynamoDB and Postgres databases.</li>
-      <li>Created a way of managing page URLs directly from Canva's CMS, increasing TTM and decreasing load on engineering teams.</li>
+      <li>Worked on CMS and page rendering backend features, syncing millions of rows of data between DynamoDB and Postgres databases.</li>
+      <li>Moved page URLs from hardcoded strings to Canva's CMS, increasing TTM and decreasing load on engineering teams.</li>
     </ul>
 
     <JobTitle class="mt-2" company="Two Bulls" role="Software Engineer (Full Stack)" date-from="January 2020" date-to="October 2021" />
     <ul>
+      <li><TechList :tech="[ 'Vue.js', 'TypeScript', 'Node.js', 'C#', 'python', 'AWS', 'MySQL', 'DynamoDB' ]" /></li>
       <li>Built numerous web applications with Vue frontend and Serverless / Typescript backend, including deployment using AWS services.</li>
+      <li>Created a framework for bootstrapping web projects at Two Bulls, which is still used today</li>
       <li>Projects include: <a target="_blank" href="https://www.kidsdoconcall.com.au/">KidsDoc telehealth</a>, <a target="_blank" href="https://fit.theonetwo.com/">TheOneTwo</a> shopfront, <a target="_blank" href="https://www.service.vic.gov.au/services/border-permit/home">Victorian COVID border permits</a> (reached #3 on the app store!) and the <a target="_blank" href="https://release.me/">Release.Me</a> land sales platform.</li>
     </ul>
 
     <JobTitle class="mt-2" company="Unico" role="Software Engineer (Backend)" date-from="January 2019" date-to="January 2020" />
     <ul>
+      <li><TechList :tech="[ 'Java', 'MySQL', 'python', 'MATRIXX', 'Linux', 'Docker' ]" /></li>
       <li>Performed database migrations / ETL for large telecommunications vendors.</li>
       <li>Wrote <i>Java / Spring</i> applications to move databases of up to 20 million records to the <i>MATRIXX</i> in-memory database.</li>
       <li>Gained experience in data-intensive systems and concurrency, plus conducting thorough testing to secure personal data and reverse engineer older systems.</li>
@@ -66,6 +71,7 @@ import JobTitle from '@/components/JobTitle.vue'
 
     <JobTitle class="mt-2" company="Monash Uni Immersive Analytics" role="Software Engineer (Research)" date-from="July 2017" date-to="January 2019" />
     <ul>
+      <li><TechList :tech="[ 'JavaScript', 'Three.js', 'WebGL', 'python', 'R' ]" /></li>
       <li>Developed a highly performant web application for 2D and 3D visualisation of protein complexes and cross-link mass
 spectrometry data using <i>Three.js</i> and <i>WebGL</i>.</li>
     </ul>
