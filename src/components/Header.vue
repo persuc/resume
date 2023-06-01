@@ -2,8 +2,16 @@
 import { useRouter } from 'vue-router'
 const router = useRouter()
 
+interface Props {
+  backRoute?: string,
+}
+
+const props = withDefaults( defineProps<Props>(), {
+  backRoute: '/'
+})
+
 function goHome() {
-  router.push('/')
+  router.push(props.backRoute)
 }
 
 </script>

@@ -10,7 +10,7 @@ Simple SPA built with Vue 3 & Vite. Houses my resume, contact info and some hiri
 
 ## Deployment
 
-Deployed with Netlify to [persic.netlify.app](https://app.netlify.com/sites/persic/)
+Deployed with [Cloudflare Pages](https://pages.cloudflare.com/) as an SPA
 
 ## Recommended IDE Setup
 

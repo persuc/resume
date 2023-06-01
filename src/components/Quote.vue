@@ -5,16 +5,12 @@ interface Props {
 }
 
 defineProps<Props>();
-
 </script>
 
 <template>
-  <p class="pa-2" style="border-left: 2pt solid var(--color-border); background-color: var(--color-background-hover);">
+  <Note>
     “{{ quotation }}”
     <br />
     <i class="ml-2" style="">— {{ author }}</i>
-  </p>
+  </Note>
 </template>
-
-<style scoped>
-</style>

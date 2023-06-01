@@ -6,16 +6,11 @@ import { type Ref, ref } from 'vue'
 
 const expanded: Ref<boolean> = ref(false)
 
-function test() {
-  console.log('ah')
-  expanded.value = true
-}
-
 </script>
 
 <template>
 
-  <Header />
+  <Header back-route="/blog" />
 
   <article class="article px-8 pt-8" style="max-width: 60rem; margin: 0 auto;">
     
@@ -45,7 +40,7 @@ int max2(int x, int y) {
 
 <br />
 
-<Expand class="my-2" label="find_max.s" @expand="test">
+<Expand class="my-2" label="find_max.s" @expand="expanded = true">
   <pre v-highlightjs><code class="assembly br-1">.section	__TEXT,__text,regular,pure_instructions
     .build_version macos, 13, 0	sdk_version 13, 3
     .globl	__Z3maxii                       ; -- Begin function _Z3maxii

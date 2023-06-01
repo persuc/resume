@@ -5,6 +5,7 @@ import 'highlight.js/styles/shades-of-purple.css'
 import highlightCore from 'highlight.js/lib/core' // this line tells the following grammars where the types are
 import cpp from 'highlight.js/lib/languages/cpp'
 import assembly from 'highlight.js/lib/languages/armasm'
+import python from 'highlight.js/lib/languages/python'
 import App from "./App.vue"
 
 const router = createRouter({
@@ -37,8 +38,13 @@ const router = createRouter({
     },
     {
       path: '/blog/if-vs-ternary',
-      name: "Simple Optimization",
+      name: "Simple Compiler Analysis",
       component: () => import('./views/blog/IfVsTernary.vue')
+    },
+    {
+      path: '/blog/algs-in-three-levels',
+      name: "Algorithms in Three Levels",
+      component: () => import('./views/blog/AlgsInThreeLevels.vue')
     },
     {
       path: '/bored',
@@ -77,8 +83,9 @@ const app = createApp(App)
 app.use(router)
 app.use(VueHighlightJS, {
 	languages: {
+    assembly,
 		cpp,
-    assembly
+    python,
 	}
 });
 app.mount('#app')

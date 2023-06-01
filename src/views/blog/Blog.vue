@@ -1,11 +1,18 @@
 <script setup lang="ts">
 import Header from '@/components/Header.vue'
 
-const posts = [{
+const posts = [
+  {
   path: 'if-vs-ternary',
   title: 'Does identical logic produce the same instructions?',
   subtitle: 'Assembly, C++'
-}]
+  },
+  {
+  path: 'algs-in-three-levels',
+  title: 'Algorithms in Three Levels',
+  subtitle: 'Python, Algorithms & Data Structures'
+}
+]
 
 </script>
 
@@ -19,7 +26,7 @@ const posts = [{
 
     <div v-for="post in posts" :key="post.title" style="border-top: 1pt solid var(--color-border);">
       <a :href="`/blog/${post.path}`" class="flex space-between center plain" style="color: var(--color-text)">
-        <div>
+        <div class="mb-2">
           <h2 class="mt-2 mb-0">{{ post.title  }}</h2>
           <span style="color: var(--color-subheading)">{{ post.subtitle }}</span>
         </div>
