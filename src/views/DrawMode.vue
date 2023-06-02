@@ -10,7 +10,7 @@
   const CLEANUP_INTERVAL = 5000
   const ASPECT_RATIO = 800 / 600
 
-  const completed: number[] = reactive([])
+  const completed: Set<number> = reactive(new Set([0]))
   const showEndScreen = ref(false)
   let timeOfLastCleanup = 0
 
@@ -30,7 +30,7 @@
     if (e.key === 'Space' || e.key === 'Enter') {
       e.preventDefault()
     } else if (e.key === 'r') {
-      if (level.value) {
+      if (level.value && !showEndScreen.value) {
         level.value.restart()
       }
     } else if (e.key === 't') {
@@ -81,7 +81,7 @@
   const THUMBNAIL_WIDTH = 220
   const THUMBNAIL_HEIGHT = THUMBNAIL_WIDTH / ASPECT_RATIO
   const THUMBNAIL_HORIZONTAL_PAD = 30
-  const THUMBNAIL_VERTICAL_PAD = 30
+  const THUMBNAIL_VERTICAL_PAD = 50
   const THUMBNAIL_POSITION = new Array(LEVELS_PER_PAGE).fill(null).map((_, i) => ({
     x: (800 - (LEVELS_PER_ROW * THUMBNAIL_WIDTH - (LEVELS_PER_ROW - 1) * THUMBNAIL_HORIZONTAL_PAD)) * 3 / 4 + i % LEVELS_PER_ROW * (THUMBNAIL_WIDTH + THUMBNAIL_HORIZONTAL_PAD),
     y: (600 - (LEVELS_PER_PAGE / LEVELS_PER_ROW * THUMBNAIL_HEIGHT - (LEVELS_PER_PAGE / LEVELS_PER_ROW - 1) * THUMBNAIL_VERTICAL_PAD)) * 3 / 5 + Math.floor(i / LEVELS_PER_ROW) * (THUMBNAIL_HEIGHT + THUMBNAIL_VERTICAL_PAD)
@@ -92,13 +92,24 @@
   function drawImages() {
     const realHeight = (THUMBNAIL_HEIGHT / 600) * render.canvas.height
     const realWidth = (THUMBNAIL_WIDTH / 800) * render.canvas.width
+    render.context.font = "20px serif"
+    render.context.fillStyle = theme.text
     images.forEach((image, i) => {
+      if (!completed.has(page * LEVELS_PER_PAGE + i)) {
+        render.context.globalAlpha = 0.1
+      }
       render.context.drawImage(
         image,
         THUMBNAIL_POSITION[i].x / 800 * render.canvas.width - realWidth / 2,
         THUMBNAIL_POSITION[i].y / 600 * render.canvas.height - realHeight / 2,
         realWidth,
         realHeight,
+      )
+      render.context.globalAlpha = 1
+      render.context.fillText(
+        `${String(page * LEVELS_PER_PAGE + i + 1).padStart(3, '0')}`,
+        THUMBNAIL_POSITION[i].x / 800 * render.canvas.width - realWidth / 2,
+        THUMBNAIL_POSITION[i].y / 600 * render.canvas.height - realHeight / 2 - 12,
       )
     })
   }
@@ -161,26 +172,28 @@
     images.splice(0).push(...new Array(Math.min(LEVELS_PER_PAGE, specifications.length - page * LEVELS_PER_PAGE)).fill(null))
     let loaded = 0
     for (let i = LEVELS_PER_PAGE * page; i < (page + 1) * LEVELS_PER_PAGE && i < specifications.length; i++) {
-      const body = Bodies.rectangle(
-        THUMBNAIL_POSITION[i % LEVELS_PER_PAGE].x,
-        THUMBNAIL_POSITION[i % LEVELS_PER_PAGE].y,
-        THUMBNAIL_WIDTH,
-        THUMBNAIL_HEIGHT,
-        {
-          isStatic: true,
-          render: {
-            visible: false,
-            fillStyle: '#CCDCDC',
-            // sprite: {
-            //   texture: `/draw-mode/Level_${String(i + 1).padStart(3, '0')}.png`,
-            //   xScale: 1,
-            //   yScale: 1,
-            // }
+      if (completed.has(i)) {
+        const body = Bodies.rectangle(
+          THUMBNAIL_POSITION[i % LEVELS_PER_PAGE].x,
+          THUMBNAIL_POSITION[i % LEVELS_PER_PAGE].y,
+          THUMBNAIL_WIDTH,
+          THUMBNAIL_HEIGHT,
+          {
+            isStatic: true,
+            render: {
+              visible: false,
+              fillStyle: '#CCDCDC',
+              // sprite: {
+              //   texture: `/draw-mode/Level_${String(i + 1).padStart(3, '0')}.png`,
+              //   xScale: 1,
+              //   yScale: 1,
+              // }
+            }
           }
-        }
-      )
-      thumbnailBodies.push(body)
-      Composite.add(engine.world, body)
+        )
+        thumbnailBodies.push(body)
+        Composite.add(engine.world, body)
+      }
       const img = new Image()
       img.onload = () => {
         images[i % LEVELS_PER_PAGE] = img
@@ -234,6 +247,8 @@
         showEndScreen.value = false
         Composite.clear(engine.world, false)
         level.value = null
+        completed.add(index + 1)
+        saveState()
         showLevelSelect()
       }, 3000)
     })
@@ -272,14 +287,17 @@
   })
 
   const defaultState = {
-    completed: [] as number[]
+    completed: [0]
   }
   type StateType = typeof defaultState;
 
   function loadSerialized(serialized: string) {
     const loadedState: StateType = JSON.parse(serialized)
-    completed.splice(0)
-    completed.push(...loadedState.completed)
+    completed.clear()
+    completed.add(0)
+    for (const v of loadedState.completed) {
+      completed.add(v)
+    }
   }
 
   function loadState() {
@@ -301,7 +319,7 @@
 
   function saveState() {
     const savedState: StateType = {
-      completed
+      completed: Array.from(completed)
     }
     localStorage.setItem(STATE_KEY, JSON.stringify(savedState))
   }
@@ -310,9 +328,9 @@
 
 <template>
   <div class="draw-mode" ref="container" style="width: 100vw; height: 100vh; margin: 0 auto">
-    <div class="flex hcenter absolute full-width" style="top: 5rem; z-index: 2">
-      <pre v-show="!showEndScreen" v-html="level?.text" style="text-align: center;"></pre>
-      <span v-show="showEndScreen" style="font-size: 20vh">Great job.</span>
+    <div class="flex hcenter absolute full-width" style="top: 5rem; z-index: 2; pointer-events: none;">
+      <pre v-show="!showEndScreen" v-html="level?.text" style="text-align: center; pointer-events: none;"></pre>
+      <span v-show="showEndScreen" style="font-size: 20vh; pointer-events: none;">Great job.</span>
     </div>
     <div id="render"></div>
     <!-- <a href="/bored" class="nohover" style="display: block; width: fit-content; position: relative; left: -32px;"><div class="pt-2 pb-4 px-8 mb-4" style="margin-top: 20vh">&lt; Back</div></a> -->
