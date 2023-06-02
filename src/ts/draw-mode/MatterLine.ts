@@ -1,6 +1,6 @@
 import { Bodies, Vector, Composite, type IBodyDefinition, Body, Events, Detector, Collision } from "matter-js";
 
-export function distance(p1: Vector, p2: Vector) {
+function distance(p1: Vector, p2: Vector) {
   const a = Math.abs(p1.x - p2.x)
   const b = Math.abs(p1.y - p2.y)
   return Math.sqrt(a * a + b * b);
@@ -11,7 +11,7 @@ function getAngleRad(p1: Vector, p2: Vector){
   return Math.atan2(p2.y - p1.y, p2.x - p1.x);
 }
 
-const MINIMUM_DRAW_DISTANCE = 10
+const MINIMUM_DRAW_DISTANCE = 6
 
 export default class Line {
   engine: Matter.Engine
@@ -47,28 +47,129 @@ export default class Line {
     Composite.add(this.engine.world, this.body)
   }
   addPoint(point: Vector) {
-    if (this.lastPoint && distance(this.lastPoint, point) < MINIMUM_DRAW_DISTANCE) {
+    const distanceToLast = this.lastPoint ? distance(this.lastPoint, point) : Infinity
+
+    if (distanceToLast < MINIMUM_DRAW_DISTANCE) {
       return
     }
-    const circle = Bodies.circle(point.x, point.y, this.halfLineWidth, this.bodyOpts)
+
+    const circle = Bodies.circle(point.x, point.y, this.halfLineWidth, {
+      ...this.bodyOpts,
+      label: 'drawnPoint_' + this.points.length + 1
+    })
     const rect = this.lastPoint ? Bodies.rectangle(
         (point.x + this.lastPoint.x) / 2,
         (point.y + this.lastPoint.y) / 2,
-        distance(point, this.lastPoint),
+        distanceToLast,
         this.lineWidth,
         {
           ...this.bodyOpts,
-          angle: getAngleRad(point, this.lastPoint)
+          collisionFilter: {
+            category: 2,
+            mask: 3,
+          },
+          angle: getAngleRad(point, this.lastPoint),
+          label: 'drawnRect_' + this.points.length + 1
         }
       ) : null
-    const collision = this.wouldCollide(circle, rect)
-    if (collision) {
-      // const collidedPart = collision.bodyA === circle || collision.bodyA === rect ? collision.bodyA : collision.bodyB
-      // if (collidedPart === rect) {
-      //   console.log('rect', collision)
-      // } else {
-      //   console.log('circle', collision)
-      // }
+    const collisions = this.wouldCollide(circle, rect)
+
+    if (collisions.length) {
+      if (!this.lastPoint) {
+        return
+      }
+      const lineBits = [circle, rect]
+      const otherCollidedObjects = collisions.reduce(
+        (acc, c) => {
+          if (!lineBits.includes(c.bodyA)) {
+            acc.add(c.bodyA)
+          }
+          if (!lineBits.includes(c.bodyB)) {
+            acc.add(c.bodyB)
+          }
+          return acc
+        }, new Set<Body>()
+      )
+      if (otherCollidedObjects.size > 1) {
+        return
+      }
+
+      // TODO: think about collisions with "rect" later
+      const collision = collisions.find(c => c.bodyA === circle || c.bodyB === circle)
+
+      if (!collision) {
+        return
+      }
+      
+      const newPoint: Vector = {
+        x: circle.position.x - collision.penetration.x + -collision.normal.x,
+        y: circle.position.y - collision.penetration.y + -collision.normal.y
+      }
+
+      const {
+        closestPoint,
+        distanceToClosest
+      } = this.points.reduce(
+        (result, p) => {
+          const d = distance(p, newPoint)
+          if (d < result.distanceToClosest) {
+            return {
+              closestPoint: p,
+              distanceToClosest: d,
+            }
+          }
+          return result
+        },
+        {
+          closestPoint: this.lastPoint,
+          distanceToClosest: Infinity,
+        }
+      )
+
+      if (distanceToClosest < MINIMUM_DRAW_DISTANCE) {
+        return
+      }
+
+      const newCircle = Bodies.circle(newPoint.x, newPoint.y, this.halfLineWidth, {
+        ...this.bodyOpts,
+        label: 'drawnPoint_' + this.points.length + 1
+      })
+      const newRect = Bodies.rectangle(
+        (newPoint.x + closestPoint.x) / 2,
+        (newPoint.y + closestPoint.y) / 2,
+        distanceToClosest,
+        this.lineWidth,
+        {
+          ...this.bodyOpts,
+          collisionFilter: {
+            category: 2,
+            mask: 3,
+          },
+          label: 'drawnRect_' + this.points.length + 1,
+          angle: getAngleRad(newPoint, closestPoint)
+        }
+      )
+
+      const detector = Detector.create({
+        bodies: this.getAllBodies().concat(newCircle, newRect)
+      })
+
+      const collisionsTwo = Detector.collisions(detector).filter((collision: Collision) => {
+        const pair: (Body | null)[] = [collision.bodyA, collision.bodyB]
+        return pair.includes(newRect) !== pair.includes(newCircle)
+      })
+
+      if (collisionsTwo.length) {
+        return 
+      }
+
+      this.points.push(newPoint)
+      this.parts.push(newCircle)
+      this.partsSet.add(newCircle)
+      this.parts.push(newRect)
+      this.partsSet.add(newRect)
+      this.lastPoint = newPoint
+      this.resetParts()
       return
     }
     this.points.push({
@@ -111,7 +212,7 @@ export default class Line {
     for (const body of Composite.allBodies(this.engine.world)) {
       if (body.parts.length > 1) {
         for (let i = 1; i < body.parts.length; i++) {
-          if (body.parts[i] === this.body || this.parts.includes(body.parts[i])) {
+          if (body.parts[i] === this.body || this.partsSet.has(body.parts[i])) {
             continue
           }
           bodies.push(body.parts[i])
@@ -127,13 +228,12 @@ export default class Line {
     return bodies
   }
 
-  wouldCollide(circle: Body, rect: Body | null): Collision | null {
-    const bodies = [circle]
+  wouldCollide(circle: Body, rect: Body | null): Collision[] {
+    const bodies = this.getAllBodies().concat(circle)
+    
     if (rect) {
       bodies.push(rect)
     }
-
-    bodies.push(...this.getAllBodies())
 
     const detector = Detector.create({
       bodies
@@ -141,37 +241,45 @@ export default class Line {
 
     const collisions = Detector.collisions(detector).filter((collision: Collision) => {
       const pair: (Body | null)[] = [collision.bodyA, collision.bodyB]
-      const includesRect = pair.includes(rect)
-      const includesCircle = pair.includes(circle)
-      return includesRect !== includesCircle
+      return pair.includes(rect) !== pair.includes(circle)
     })
-
-    if (!collisions.length) {
-      return null
-    }
     
-    
-    if (this.lastPoint === null) {
-      return collisions[0]
-    }
+    return collisions
 
-    // here is some code for computing the closest object
-    // but it is incorrect since it considers only the centroid
-    
-    // let result = null
-    // let closeness = 0
-
-    // for (const collision of collisions) {
-    //   collision.penetration.x
-    //   const d = Math.min(distance(collision.bodyA.position, this.lastPoint), distance(collision.bodyB.position, this.lastPoint))
-    //   if (result === null || d < closeness) {
-    //     result = collision
-    //     closeness = d
+    // if the segment between points on the line collides with anything, just give up
+    // if (rect) {
+    //   const rectCollision = collisions.find(c => c.bodyA === rect || c.bodyB === rect)
+    //   if (rectCollision) {
+    //     return {
+    //       collision: rectCollision,
+    //       closestLinePart: null
+    //     }
     //   }
     // }
 
-    // return result
+    // TODO: draw rays from each part on the line to each collision point
+    // return the shortest one
 
-    return collisions[0]
+    // let result: Collision = collisions[0]
+    // let closeness = Infinity
+    // const circleParts = this.parts.filter(p => p.circleRadius !== 0)
+    // let linePart = circleParts[0]
+
+    // for (const collision of collisions) {
+    //   for (const part of circleParts) {
+    //     const circleOrRect = collision.bodyA === rect || collision.bodyA === circle ? collision.bodyA : collision.bodyB
+    //     let distanceToPart = distance(circleOrRect.position, part.position)
+    //     if (distanceToPart < closeness) {
+    //         linePart = part
+    //         result = collision
+    //         closeness = distanceToPart
+    //     }
+    //   }
+    // }
+    
+    // return {
+    //   collision: result,
+    //   closestLinePart: linePart
+    // }
   }
 }
