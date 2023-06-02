@@ -54,3 +54,9 @@ yarn build
 ```sh
 yarn lint
 ```
+
+## License
+
+Source code is licensed under the GPL3 license.
+
+Contents of this site are © Copyright 2023 Andrew Persic. All rights reserved.
