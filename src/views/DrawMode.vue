@@ -17,13 +17,13 @@
   Common.setDecomp(decomp)
 
   const engine = Engine.create()
-  let render: Matter.Render
+  let render: Matter.Render // created on load
   const runner = Runner.create()
 
   const container: Ref<HTMLElement> = ref() as Ref<HTMLElement>
 
   let level: Ref<Level | null> = ref(null)
-  let theme = Theme.DARK
+  let themeIdx = 0
   let mouse: Mouse
 
   function onKeyUp(e: KeyboardEvent) {
@@ -34,22 +34,13 @@
         level.value.restart()
       }
     } else if (e.key === 't') {
-      applyTheme(themes[(themes.findIndex(t => t === theme) + 1 ) % themes.length])
+      applyTheme((themeIdx + 1 ) % themes.length)
     } else if (e.key === 'Escape') {
-      if (!level.value) {
-        return
-      }
-      if (level.value?.line) {
-        level.value.endLine()
-      }
-      showEndScreen.value = false
-      Composite.clear(engine.world, false)
-      level.value = null
-      showLevelSelect()
+      returnToLevelSelect()
     }
   }
   function startDrawing(e: MouseEvent) {
-    if (e.target !== render.canvas && !showEndScreen.value) {
+    if (e.target !== render.canvas || showEndScreen.value) {
       return
     }
     if (level.value) {
@@ -66,14 +57,18 @@
       level.value.endLine()
     }
   }
-  function applyTheme(newTheme: Theme.Theme) {
-    if (level.value !== null) {
-      level.value.applyTheme(newTheme)
+  function applyTheme(index: number) {
+    if (index < 0 || index >= themes.length) {
+      return
     }
+    themeIdx = index
+    const newTheme = themes[index]
     render.canvas.style.background = newTheme.background
     container.value.style.background = newTheme.background
     container.value.style.color = newTheme.text
-    theme = newTheme
+    if (level.value !== null) {
+      level.value.applyTheme(newTheme)
+    }
   }
 
   const LEVELS_PER_PAGE = 6
@@ -93,7 +88,7 @@
     const realHeight = (THUMBNAIL_HEIGHT / 600) * render.canvas.height
     const realWidth = (THUMBNAIL_WIDTH / 800) * render.canvas.width
     render.context.font = "20px serif"
-    render.context.fillStyle = theme.text
+    render.context.fillStyle = themes[themeIdx].text
     images.forEach((image, i) => {
       if (!completed.has(page * LEVELS_PER_PAGE + i)) {
         render.context.globalAlpha = 0.1
@@ -165,7 +160,7 @@
     Runner.run(runner, engine)
     Events.on(engine, 'afterUpdate', cleanup)
 
-    applyTheme(Theme.DARK)
+    applyTheme(themeIdx)
   })
 
   function showLevelSelect() {
@@ -238,20 +233,29 @@
   }
 
   function clickLevel(index: number) {
-    level.value = startLevel(engine, specifications[index], theme, () => {
+    level.value = startLevel(engine, specifications[index], themes[themeIdx], () => {
       showEndScreen.value = true
       if (level.value?.line) {
         level.value.endLine()
       }
-      setTimeout(() => {
-        showEndScreen.value = false
-        Composite.clear(engine.world, false)
-        level.value = null
-        completed.add(index + 1)
-        saveState()
-        showLevelSelect()
-      }, 3000)
+      completed.add(index + 1)
+      saveState()
+      setTimeout(returnToLevelSelect, 3000)
     })
+  }
+
+  function returnToLevelSelect() {
+    if (!level.value) {
+      return
+    }
+
+    if (level.value.line) {
+      level.value.endLine()
+    }
+    showEndScreen.value = false
+    Composite.clear(engine.world, false)
+    level.value = null
+    showLevelSelect()
   }
 
   function cleanup() {
@@ -287,7 +291,8 @@
   })
 
   const defaultState = {
-    completed: [0]
+    completed: [0],
+    theme: 0
   }
   type StateType = typeof defaultState;
 
@@ -297,6 +302,9 @@
     completed.add(0)
     for (const v of loadedState.completed) {
       completed.add(v)
+    }
+    if (loadedState.theme < themes.length && loadedState.theme >= 0) {
+      themeIdx = loadedState.theme
     }
   }
 
@@ -319,7 +327,8 @@
 
   function saveState() {
     const savedState: StateType = {
-      completed: Array.from(completed)
+      completed: Array.from(completed),
+      theme: themeIdx
     }
     localStorage.setItem(STATE_KEY, JSON.stringify(savedState))
   }
