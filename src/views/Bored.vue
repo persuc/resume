@@ -16,6 +16,9 @@ import Header from '@/components/Header.vue'
     <br />
     <a href="/blackout">Blackout Poem</a>
     <br/>
+    <a href="/draw">Super sicko draw mode</a>
+    <span class="ml-4" style="color: var(--color-subheading)">Clone of the popular drawing puzzle game <a target="_blank" href="https://store.steampowered.com/app/2246110/Q_REMASTERED/">"Q"</a>. Not mobile friendly.</span>
+    <br/>
     <br />
 
     I also recommend <a target="_blank" href="https://youtu.be/DMQ_HcNSOAI">this video</a>.
