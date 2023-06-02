@@ -35,6 +35,17 @@
       }
     } else if (e.key === 't') {
       applyTheme(themes[(themes.findIndex(t => t === theme) + 1 ) % themes.length])
+    } else if (e.key === 'Escape') {
+      if (!level.value) {
+        return
+      }
+      if (level.value?.line) {
+        level.value.endLine()
+      }
+      showEndScreen.value = false
+      Composite.clear(engine.world, false)
+      level.value = null
+      showLevelSelect()
     }
   }
   function startDrawing(e: MouseEvent) {
@@ -158,6 +169,7 @@
         {
           isStatic: true,
           render: {
+            visible: false,
             fillStyle: '#CCDCDC',
             // sprite: {
             //   texture: `/draw-mode/Level_${String(i + 1).padStart(3, '0')}.png`,
@@ -187,6 +199,9 @@
         mouse,
       }
     )
+    mouseConstraint.constraint.render.type = 'pin'
+    mouseConstraint.constraint.render.anchors = false
+    mouseConstraint.constraint.render
     mouse = mouseConstraint.mouse
     render.mouse = mouse
     Composite.add(engine.world, mouseConstraint)

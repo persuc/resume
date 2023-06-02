@@ -16,7 +16,7 @@ const level: LevelSpec = {
       { body: target, color: Color.TARGET }
     ]
   },
-  text: "Knock the ball off"
+  text: "<span>Knock the ball off</span><br /><span>[R] to restart, [Esc] to go back, [T] to change the theme</span>"
 }
 
 export default level
