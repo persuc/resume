@@ -1,2 +1,3 @@
 - Level editor
 - Inventions editor
+- remove theme from level, they should be separate abstractions

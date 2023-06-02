@@ -91,15 +91,14 @@ export function startLevel(engine: Engine, spec: LevelSpec, theme: Theme, onEnd:
     },
     endLine() {
       if (level.line) {
-        Body.setStatic(level.line.body, false)
+        level.line.end()
         for (const body of [level.line.body].concat(level.line.parts)) {
           level.themeMap[body.id] = {
             color: Color.DRAW,
             opacity: 1
           }
-          body.collisionFilter.mask = -1
-          body.collisionFilter.category = 1
         }
+
         level.line = null
       } 
     },

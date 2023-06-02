@@ -30,7 +30,7 @@ export default class Line {
     collisionFilter: {
       category: 2,
       mask: 3,
-    }
+    },
   }
   constructor(engine: Matter.Engine, lineWidth = 16) {
     this.engine = engine
@@ -45,7 +45,7 @@ export default class Line {
       render: {
         visible: false
       },
-      label: 'lineContainer'
+      label: 'lineContainer',
     })
     this.resetParts()
     Composite.add(this.engine.world, this.body)
@@ -199,6 +199,15 @@ export default class Line {
     this.body.render.visible = true
   }
 
+  end() {
+    Body.setStatic(this.body, false)
+    for (const body of this.body.parts) {
+      body.collisionFilter.mask = -1
+      body.collisionFilter.category = 1
+    }
+    Body.setMass(this.body, Math.max(1.6, this.points.length / 3))
+  }
+
   resetParts() {
     // Body.setParts messes with transformation.rotation
     // If this.body is translated/rotated, parts are set with values that are relative.
@@ -208,7 +217,6 @@ export default class Line {
     Body.setAngle(this.body, 0)
     Body.setPosition(this.body, Vector.create(0, 0))
     Body.setParts(this.body, this.parts)
-    console.log('parts', this.body.parts)
   }
 
   setColor(color: string) {
