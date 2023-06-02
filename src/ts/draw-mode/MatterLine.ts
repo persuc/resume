@@ -78,6 +78,16 @@ export default class Line {
       if (!this.lastPoint) {
         return
       }
+
+      let d = distance(this.lastPoint, point)
+      for (const previous of this.points) {
+        const dd = distance(previous, point)
+        if (dd < d) {
+          d = dd
+          this.lastPoint = previous
+        }
+      }
+
       const lineBits = [circle, rect]
       const otherCollidedObjects = collisions.reduce(
         (acc, c) => {
@@ -150,14 +160,7 @@ export default class Line {
         }
       )
 
-      const detector = Detector.create({
-        bodies: this.getAllBodies().concat(newCircle, newRect)
-      })
-
-      const collisionsTwo = Detector.collisions(detector).filter((collision: Collision) => {
-        const pair: (Body | null)[] = [collision.bodyA, collision.bodyB]
-        return pair.includes(newRect) !== pair.includes(newCircle)
-      })
+      const collisionsTwo = this.wouldCollide(newCircle, newRect)
 
       if (collisionsTwo.length) {
         return 
@@ -245,41 +248,5 @@ export default class Line {
     })
     
     return collisions
-
-    // if the segment between points on the line collides with anything, just give up
-    // if (rect) {
-    //   const rectCollision = collisions.find(c => c.bodyA === rect || c.bodyB === rect)
-    //   if (rectCollision) {
-    //     return {
-    //       collision: rectCollision,
-    //       closestLinePart: null
-    //     }
-    //   }
-    // }
-
-    // TODO: draw rays from each part on the line to each collision point
-    // return the shortest one
-
-    // let result: Collision = collisions[0]
-    // let closeness = Infinity
-    // const circleParts = this.parts.filter(p => p.circleRadius !== 0)
-    // let linePart = circleParts[0]
-
-    // for (const collision of collisions) {
-    //   for (const part of circleParts) {
-    //     const circleOrRect = collision.bodyA === rect || collision.bodyA === circle ? collision.bodyA : collision.bodyB
-    //     let distanceToPart = distance(circleOrRect.position, part.position)
-    //     if (distanceToPart < closeness) {
-    //         linePart = part
-    //         result = collision
-    //         closeness = distanceToPart
-    //     }
-    //   }
-    // }
-    
-    // return {
-    //   collision: result,
-    //   closestLinePart: linePart
-    // }
   }
 }

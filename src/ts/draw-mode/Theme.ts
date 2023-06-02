@@ -27,7 +27,7 @@ export const DARK: Theme = {
 }
 
 export const LIGHT: Theme = {
-  [Color.DEFAULT]: '#FDFDFD',
+  [Color.DEFAULT]: '#DADADA',
   [Color.TARGET]: '#FDADA0',
   [Color.DRAW]: '#FFAF77',
   [Color.WALL]: '#DADADA',
