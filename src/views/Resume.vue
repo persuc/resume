@@ -63,7 +63,7 @@ import JobTitle from '@/components/JobTitle.vue'
 
     <JobTitle class="mt-2" company="Unico" role="Software Engineer (Backend)" date-from="2019" date-to="2020" />
     <ul>
-      <li><TechList :tech="[ 'Java', 'MySQL', 'python', 'MATRIXX', 'Linux', 'Docker' ]" /></li>
+      <li><TechList :tech="[ 'Java', 'MySQL', 'python', 'MATRIXX', 'Linux', 'Docker', 'Spring' ]" /></li>
       <li>Performed database migrations (ETL) for large telecommunications vendors.</li>
       <li>Wrote <i>Java / Spring</i> applications to move databases of up to 20 million records to the <i>MATRIXX</i> in-memory database.</li>
       <li>Gained experience in data-intensive systems and concurrency, sensitive data and reverse engineering older systems.</li>
