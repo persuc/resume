@@ -44,32 +44,32 @@ import JobTitle from '@/components/JobTitle.vue'
       Relevant Experience
     </h1>
 
-    <JobTitle company="Canva" role="Senior Software Engineer (Backend)" date-from="October 2021" date-to="Current" />
+    <JobTitle company="Canva" role="Senior Software Engineer (Full Stack)" date-from="2022" date-to="Current" />
     <ul>
       <li><TechList :tech="[ 'TypeScript', 'React', 'Java', 'Terraform', 'AWS', 'GraphQL', 'Protobuf', 'PostgreSQL', 'DynamoDB' ]" /></li>
-      <li>Managed all landing pages on <a target="_blank" href="https://www.canva.com/">canva.com</a> and <a target="_blank" href="https://www.canva.cn/">canva.cn</a>. On average these pages receive 30 million requests per day.</li>
-      <li>Led projects to enable experimentation and fallback mechanisms in the China region.</li>
-      <li>Worked on CMS and page rendering backend features, syncing millions of rows of data between DynamoDB and Postgres databases.</li>
-      <li>Moved page URLs from hardcoded strings to Canva's CMS, increasing TTM and decreasing load on engineering teams.</li>
+      <li>Managed all pages on <a target="_blank" href="https://www.canva.com/">canva.com</a> and <a target="_blank" href="https://www.canva.cn/">canva.cn</a>. These 32,590 pages receive ~30 million requests per day.</li>
+      <li>Led projects to enable page experimentation and fallback mechanisms in the China region.</li>
+      <li>Worked on CMS and page rendering features, syncing millions of rows of data between DynamoDB and Postgres databases and creating UIs for content managers.</li>
+      <li>Implemented URL management in Canva's CMS, replacing over 10,000 hardcoded URL strings, increasing TTM and decreasing load on engineers.</li>
     </ul>
 
-    <JobTitle class="mt-2" company="Two Bulls" role="Software Engineer (Full Stack)" date-from="January 2020" date-to="October 2021" />
+    <JobTitle class="mt-2" company="Two Bulls" role="Software Engineer (Full Stack)" date-from="2020" date-to="2022" />
     <ul>
       <li><TechList :tech="[ 'Vue.js', 'TypeScript', 'Node.js', 'C#', 'python', 'AWS', 'MySQL', 'DynamoDB' ]" /></li>
-      <li>Built numerous web applications with Vue frontend and Serverless / Typescript backend, including deployment using AWS services.</li>
+      <li>Built numerous web applications with Vue frontend and Serverless / Typescript backend, deployed with AWS.</li>
       <li>Created a framework for bootstrapping web projects at Two Bulls, which is still used today</li>
-      <li>Projects include: <a target="_blank" href="https://www.kidsdoconcall.com.au/">KidsDoc telehealth</a>, <a target="_blank" href="https://fit.theonetwo.com/">TheOneTwo</a> shopfront, <a target="_blank" href="https://www.service.vic.gov.au/services/border-permit/home">Victorian COVID border permits</a> (reached #3 on the app store!) and the <a target="_blank" href="https://release.me/">Release.Me</a> land sales platform.</li>
+      <li>Projects include: <a target="_blank" href="https://www.kidsdoconcall.com.au/">KidsDoc</a> telehealth, <a target="_blank" href="https://fit.theonetwo.com/">TheOneTwo</a> shopfront, <a target="_blank" href="https://www.service.vic.gov.au/services/border-permit/home">Victorian COVID border permits</a> (reached #3 on the app store!) and the <a target="_blank" href="https://release.me/">Release.Me</a> land sales platform.</li>
     </ul>
 
-    <JobTitle class="mt-2" company="Unico" role="Software Engineer (Backend)" date-from="January 2019" date-to="January 2020" />
+    <JobTitle class="mt-2" company="Unico" role="Software Engineer (Backend)" date-from="2019" date-to="2020" />
     <ul>
       <li><TechList :tech="[ 'Java', 'MySQL', 'python', 'MATRIXX', 'Linux', 'Docker' ]" /></li>
-      <li>Performed database migrations / ETL for large telecommunications vendors.</li>
+      <li>Performed database migrations (ETL) for large telecommunications vendors.</li>
       <li>Wrote <i>Java / Spring</i> applications to move databases of up to 20 million records to the <i>MATRIXX</i> in-memory database.</li>
-      <li>Gained experience in data-intensive systems and concurrency, plus conducting thorough testing to secure personal data and reverse engineer older systems.</li>
+      <li>Gained experience in data-intensive systems and concurrency, sensitive data and reverse engineering older systems.</li>
     </ul>
 
-    <JobTitle class="mt-2" company="Monash Uni Immersive Analytics" role="Software Engineer (Research)" date-from="July 2017" date-to="January 2019" />
+    <JobTitle class="mt-2" company="Monash Uni Immersive Analytics" role="Software Engineer (Research)" date-from="2017" date-to="2019" />
     <ul>
       <li><TechList :tech="[ 'JavaScript', 'Three.js', 'WebGL', 'python', 'R' ]" /></li>
       <li>Developed a highly performant web application for 2D and 3D visualisation of protein complexes and cross-link mass
