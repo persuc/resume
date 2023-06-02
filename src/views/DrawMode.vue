@@ -23,7 +23,6 @@
   const container: Ref<HTMLElement> = ref() as Ref<HTMLElement>
 
   let level: Ref<Level | null> = ref(null)
-  let levelIndex = -1
   let theme = Theme.DARK
   let mouse: Mouse
 
@@ -148,7 +147,8 @@
   })
 
   function showLevelSelect() {
-    images.splice(0)
+    images.splice(0).push(...new Array(Math.min(LEVELS_PER_PAGE, specifications.length - page * LEVELS_PER_PAGE)).fill(null))
+    let loaded = 0
     for (let i = LEVELS_PER_PAGE * page; i < (page + 1) * LEVELS_PER_PAGE && i < specifications.length; i++) {
       const body = Bodies.rectangle(
         THUMBNAIL_POSITION[i % LEVELS_PER_PAGE].x,
@@ -159,7 +159,6 @@
           isStatic: true,
           render: {
             fillStyle: '#CCDCDC',
-            // strokeStyle: '#ffffff',
             // sprite: {
             //   texture: `/draw-mode/Level_${String(i + 1).padStart(3, '0')}.png`,
             //   xScale: 1,
@@ -172,8 +171,9 @@
       Composite.add(engine.world, body)
       const img = new Image()
       img.onload = () => {
-        images.push(img)
-        if (images.length === Math.min(LEVELS_PER_PAGE, specifications.length - page * LEVELS_PER_PAGE)) {
+        images[i % LEVELS_PER_PAGE] = img
+        loaded++
+        if (loaded === images.length) {
           Events.on(engine, 'afterUpdate', drawImages)
           drawImages()
         }
@@ -182,25 +182,31 @@
     }
 
     const mouseConstraint = Matter.MouseConstraint.create(
-      engine, {
+      engine,
+      {
         mouse,
       }
-    );
+    )
+    mouse = mouseConstraint.mouse
+    render.mouse = mouse
     Composite.add(engine.world, mouseConstraint)
 
-    function callback() {
+    function onMouseDown() {
       const index = thumbnailBodies.findIndex(b => mouseConstraint.body === b)
       if (index === -1) {
         return
       }
       const levelIndex = page * LEVELS_PER_PAGE + index
       clickLevel(levelIndex)
-      Events.off(mouseConstraint, 'mousedown', callback)
+      Events.off(mouseConstraint, 'mousedown', onMouseDown)
       Events.off(engine, 'afterUpdate', drawImages)
       Composite.remove(engine.world, thumbnailBodies)
       Composite.remove(engine.world, mouseConstraint)
+      thumbnailBodies.splice(0)
+      mouse = Matter.Mouse.create(render.canvas)
+      render.mouse = mouse
     }
-    Events.on(mouseConstraint, 'mousedown', callback)
+    Events.on(mouseConstraint, 'mousedown', onMouseDown)
   }
 
   function clickLevel(index: number) {
