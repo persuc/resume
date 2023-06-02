@@ -41,7 +41,11 @@ export default class Line {
       collisionFilter: {
         category: 2,
         mask: 3,
-      }
+      },
+      render: {
+        visible: false
+      },
+      label: 'lineContainer'
     })
     this.resetParts()
     Composite.add(this.engine.world, this.body)
@@ -171,8 +175,7 @@ export default class Line {
       this.partsSet.add(newCircle)
       this.parts.push(newRect)
       this.partsSet.add(newRect)
-      this.lastPoint = newPoint
-      this.resetParts()
+      this.onPointAdded()
       return
     }
     this.points.push({
@@ -186,9 +189,14 @@ export default class Line {
       this.parts.push(rect)
       this.partsSet.add(rect)
     }
-    this.lastPoint = this.points[this.points.length - 1]
+    this.onPointAdded()
+    
+  }
 
+  onPointAdded() {
     this.resetParts()
+    this.lastPoint = this.points[this.points.length - 1]
+    this.body.render.visible = true
   }
 
   resetParts() {
@@ -199,7 +207,8 @@ export default class Line {
     Body.setParts(this.body, [])
     Body.setAngle(this.body, 0)
     Body.setPosition(this.body, Vector.create(0, 0))
-    Body.setParts(this.body, this.parts);
+    Body.setParts(this.body, this.parts)
+    console.log('parts', this.body.parts)
   }
 
   setColor(color: string) {
