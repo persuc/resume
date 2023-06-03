@@ -26,7 +26,7 @@ const level: LevelSpec = {
     })
 
     const noDraw = {
-      body: Bodies.rectangle(400, 350, 800, 500, {
+      body: Bodies.rectangle(400, 353, 800, 495, {
         isStatic: true,
         collisionFilter: {
           category: 2,

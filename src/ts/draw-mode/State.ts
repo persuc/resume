@@ -40,7 +40,9 @@ function loadState(state: State) {
       state.completed.add(v)
     }
     if (loadedState.theme >= themes.length || loadedState.theme < 0) {
-      loadedState.theme = 0
+      state.theme = 0
+    } else {
+      state.theme = loadedState.theme
     }
   }
 

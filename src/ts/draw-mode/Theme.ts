@@ -35,18 +35,18 @@ export const LIGHT: Theme = {
   [Color.DRAW]: '#FFAF77',
   [Color.WALL]: '#DADADA',
   [Color.NO_DRAW]: '#AF4242',
-  [Color.ZONE]: '#AFAF42',
+  [Color.ZONE]: '#EFECD2',
   background: '#FCFCFC',
   text: '#2D2D2D'
 }
 
 export const MOONLIGHT: Theme = {
-  [Color.DEFAULT]: '#CA00DC',
+  [Color.DEFAULT]: '#EF81EF',
   [Color.TARGET]: '#FD118A',
-  [Color.DRAW]: '#2100EF',
-  [Color.WALL]: '#112185',
+  [Color.DRAW]: '#A120EF',
+  [Color.WALL]: '#2100EF',
   [Color.NO_DRAW]: '#4242AF',
-  [Color.ZONE]: '#EF21EF',
+  [Color.ZONE]: '#EF81EF',
   background: '#000040',
   text: '#FEFEFE'
 }
@@ -57,7 +57,7 @@ export const NAOKI: Theme = {
   [Color.DRAW]: '#811515',
   [Color.WALL]: '#CA0000',
   [Color.NO_DRAW]: '#AF4242',
-  [Color.ZONE]: '#EF21EF',
+  [Color.ZONE]: '#EFA16F',
   background: '#360000',
   text: '#FEFEFE'
 }
