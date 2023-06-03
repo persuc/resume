@@ -1,5 +1,6 @@
-export const CLEANUP_INTERVAL = 5000
 export const ASPECT_RATIO = 800 / 600
+export const CLEANUP_INTERVAL = 5000
+export const MINIMUM_DRAW_DISTANCE = 6
 export const LEVELS_PER_PAGE = 6
 export const LEVELS_PER_ROW = 3
 export const PAGE_MAJORITY_REQUIRED = 3

@@ -187,6 +187,8 @@
     render.mouse = mouse
 
     showLevelSelect()
+    // debug new levels by commenting the above and using:
+    // clickLevel(idx)
 
     Render.run(render)
     Runner.run(runner, engine)
@@ -302,8 +304,6 @@
         return
       }
 
-      const levelIndex = page * LEVELS_PER_PAGE + index
-      clickLevel(levelIndex)
       Events.off(mouseConstraint, 'mousedown', onMouseDown)
       Events.off(engine, 'afterUpdate', drawImages)
       Composite.remove(engine.world, thumbnailBodies)
@@ -315,6 +315,7 @@
       Composite.remove(engine.world, mouseConstraint)
       mouse = Matter.Mouse.create(render.canvas)
       render.mouse = mouse
+      clickLevel(page * LEVELS_PER_PAGE + index)
     }
     Events.on(mouseConstraint, 'mousedown', onMouseDown)
   }

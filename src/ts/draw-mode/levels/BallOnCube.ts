@@ -7,7 +7,7 @@ const level: LevelSpec = {
   generateBodies(engine: Engine, onEnd: () => void) {
 
     const target = Bodies.circle(400, 515, 40)
-    EndCondition.onPredicate(engine, target, (target: Body) => target.position.y > 700, onEnd)
+    EndCondition.onCondition(engine, () => target.position.y > 700, onEnd)
 
     return [
       Bodies.rectangle(400, 540, 80, 80, {

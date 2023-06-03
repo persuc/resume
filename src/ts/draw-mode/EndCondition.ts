@@ -1,21 +1,18 @@
-import { Engine, Events, Body, type IEventCollision } from "matter-js"
+import { Engine, Events, Body, type IEventCollision, Collision, Pairs } from "matter-js"
 
-export function onCollision(engine: Engine, body1: Body, body2: Body, onEnd: () => any) {
-  function callback(event: IEventCollision<Body>) {
-    if (event.pairs.some(p => {
-      const bodies = [p.bodyA, p.bodyB]
-      return bodies.includes(body1) && bodies.includes(body2)
-    })) {
+export function onCollision(engine: Engine, bodyA: Body, bodyB: Body, onEnd: () => any) {
+  function callback() {
+    if (Collision.collides(bodyA, bodyB, undefined as unknown as Pairs)) {
       onEnd()
-      Events.off(engine, 'collisionStart', callback)
+      Events.off(engine, 'afterUpdate', callback)
     }
   }
   Events.on(engine, 'collisionStart', callback)
 }
 
-export function onPredicate(engine: Engine, body: Body, predicate: (body: Body) => boolean, onEnd: () => any) {
+export function onCondition(engine: Engine, condition: () => boolean, onEnd: () => any) {
   function callback() {
-    if (predicate(body)) {
+    if (condition()) {
       onEnd()
       Events.off(engine, 'afterUpdate', callback)
     }

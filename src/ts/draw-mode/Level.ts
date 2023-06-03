@@ -1,6 +1,7 @@
 import Line from "@/ts/draw-mode/MatterLine"
 import { Color } from "@/ts/draw-mode/Theme"
 import type { Theme } from "@/ts/draw-mode/Theme"
+import { Bodies, Body, Composite, type IMousePoint, type Engine, type IBodyDefinition, Constraint } from "matter-js"
 import BallOnCube from "@/ts/draw-mode/levels/BallOnCube"
 import BallOnFloor from "@/ts/draw-mode/levels/BallOnFloor"
 import BallInCup from "@/ts/draw-mode/levels/BallInCup"
@@ -8,7 +9,8 @@ import NoDrawOverhang from "@/ts/draw-mode/levels/NoDrawOverhang"
 import BallBesideHill from "@/ts/draw-mode/levels/BallBesideHill"
 import BallUnderClutter from "@/ts/draw-mode/levels/BallUnderClutter"
 import BallOnRope from "@/ts/draw-mode/levels/BallOnRope"
-import { Bodies, Body, Composite, type IMousePoint, type Engine, type IBodyDefinition, Constraint } from "matter-js"
+import NoDrawRamp from "@/ts/draw-mode/levels/NoDrawRamp"
+import NoDrawRampTarget from "@/ts/draw-mode/levels/NoDrawRampTarget"
 
 export type ColouredBody = { body: Body, color?: Color, opacity?: number }
 
@@ -161,4 +163,4 @@ function setBodies(level: Level, bodies: (Body | ColouredBody | Constraint)[]) {
   }
 }
 
-export const specifications = [BallOnCube, BallOnFloor, BallInCup, NoDrawOverhang, BallBesideHill, BallUnderClutter, BallOnRope]
+export const specifications = [BallOnCube, BallOnFloor, BallInCup, NoDrawOverhang, BallBesideHill, BallUnderClutter, BallOnRope, NoDrawRamp, NoDrawRampTarget]

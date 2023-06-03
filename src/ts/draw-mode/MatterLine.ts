@@ -1,17 +1,6 @@
+import { MINIMUM_DRAW_DISTANCE } from "@/ts/draw-mode/Config"
+import { distance, getAngleRad } from "@/ts/draw-mode/Util"
 import { Bodies, Vector, Composite, type IBodyDefinition, Body, Events, Detector, Collision } from "matter-js";
-
-function distance(p1: Vector, p2: Vector) {
-  const a = Math.abs(p1.x - p2.x)
-  const b = Math.abs(p1.y - p2.y)
-  return Math.sqrt(a * a + b * b);
-}
-
-function getAngleRad(p1: Vector, p2: Vector){
-  // returns the angle between 2 points in radians
-  return Math.atan2(p2.y - p1.y, p2.x - p1.x);
-}
-
-const MINIMUM_DRAW_DISTANCE = 6
 
 export default class Line {
   engine: Matter.Engine
