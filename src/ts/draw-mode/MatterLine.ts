@@ -1,4 +1,4 @@
-import { MINIMUM_DRAW_DISTANCE } from "@/ts/draw-mode/Config"
+import { DEFAULT_FRICTION, DEFAULT_FRICTION_AIR, DEFAULT_FRICTION_STATIC, DEFAULT_SLOP, MINIMUM_DRAW_DISTANCE } from "@/ts/draw-mode/Config"
 import { distance, getAngleRad } from "@/ts/draw-mode/Util"
 import { Bodies, Vector, Composite, type IBodyDefinition, Body, Events, Detector, Collision } from "matter-js";
 
@@ -20,6 +20,10 @@ export default class Line {
       category: 2,
       mask: 3,
     },
+    friction: DEFAULT_FRICTION,
+    frictionAir: DEFAULT_FRICTION_AIR,
+    frictionStatic: DEFAULT_FRICTION_STATIC,
+    slop:  DEFAULT_SLOP
   }
   constructor(engine: Matter.Engine, lineWidth = 16) {
     this.engine = engine
@@ -29,7 +33,7 @@ export default class Line {
       isStatic: true,
       collisionFilter: {
         category: 2,
-        mask: 3,
+        mask: 0,
       },
       render: {
         visible: false
@@ -179,20 +183,22 @@ export default class Line {
       this.partsSet.add(rect)
     }
     this.onPointAdded()
-    
   }
 
   onPointAdded() {
     this.resetParts()
     this.lastPoint = this.points[this.points.length - 1]
     this.body.render.visible = true
+    this.body.collisionFilter.mask = -1
   }
 
   end() {
     Body.setStatic(this.body, false)
-    for (const body of this.body.parts) {
-      body.collisionFilter.mask = -1
-      body.collisionFilter.category = 1
+    if (this.body.parts.length > 1) {
+      for (const body of this.body.parts) {
+        body.collisionFilter.mask = -1
+        body.collisionFilter.category = 1
+      }
     }
     Body.setMass(this.body, Math.max(1.6, this.points.length / 3))
   }

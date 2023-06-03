@@ -11,6 +11,7 @@ import BallUnderClutter from "@/ts/draw-mode/levels/BallUnderClutter"
 import BallOnRope from "@/ts/draw-mode/levels/BallOnRope"
 import NoDrawRamp from "@/ts/draw-mode/levels/NoDrawRamp"
 import NoDrawRampTarget from "@/ts/draw-mode/levels/NoDrawRampTarget"
+import { DEFAULT_FRICTION, DEFAULT_FRICTION_AIR, DEFAULT_FRICTION_STATIC, DEFAULT_SLOP } from "@/ts/draw-mode/Config"
 
 export type ColouredBody = { body: Body, color?: Color, opacity?: number }
 
@@ -158,9 +159,15 @@ function setBodies(level: Level, bodies: (Body | ColouredBody | Constraint)[]) {
         opacity
       }
     }
-    realBody.frictionAir = 0
+    realBody.frictionAir = DEFAULT_FRICTION_AIR
+    realBody.frictionStatic = DEFAULT_FRICTION_STATIC
+    realBody.friction = DEFAULT_FRICTION
+    realBody.slop = DEFAULT_SLOP
     Composite.add(level.engine.world, realBody)
   }
 }
 
-export const specifications = [BallOnCube, BallOnFloor, BallInCup, NoDrawOverhang, BallBesideHill, BallUnderClutter, BallOnRope, NoDrawRamp, NoDrawRampTarget]
+export const specifications = [
+  BallOnCube, BallOnFloor, BallInCup, NoDrawOverhang, BallBesideHill, BallUnderClutter,
+  BallOnRope, NoDrawRamp, NoDrawRampTarget
+]

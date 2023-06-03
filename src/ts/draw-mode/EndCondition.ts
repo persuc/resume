@@ -7,7 +7,7 @@ export function onCollision(engine: Engine, bodyA: Body, bodyB: Body, onEnd: () 
       Events.off(engine, 'afterUpdate', callback)
     }
   }
-  Events.on(engine, 'collisionStart', callback)
+  Events.on(engine, 'afterUpdate', callback)
 }
 
 export function onCondition(engine: Engine, condition: () => boolean, onEnd: () => any) {

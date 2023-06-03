@@ -10,6 +10,7 @@
   const showEndScreen = ref(false)
   const state = createState()
   let timeOfLastCleanup = 0
+  let returnToLevelSelectTimeouts: number[] = []
 
   Common.setDecomp(decomp)
 
@@ -328,7 +329,7 @@
       }
       state.completed.add(specifications[index].id)
       state.save()
-      setTimeout(returnToLevelSelect, 3000)
+      returnToLevelSelectTimeouts.push(setTimeout(returnToLevelSelect, 3000))
     })
   }
 
@@ -343,6 +344,9 @@
     showEndScreen.value = false
     Composite.clear(engine.world, false)
     level.value = null
+    while (returnToLevelSelectTimeouts.length) {
+      clearTimeout(returnToLevelSelectTimeouts.pop())
+    }
     showLevelSelect()
   }
 
