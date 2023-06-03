@@ -37,13 +37,23 @@ export const LIGHT: Theme = {
 }
 
 export const MOONLIGHT: Theme = {
-  [Color.DEFAULT]: '#DC00DC',
-  [Color.TARGET]: '#FDAD00',
+  [Color.DEFAULT]: '#CA00DC',
+  [Color.TARGET]: '#FD118A',
   [Color.DRAW]: '#2100EF',
-  [Color.WALL]: '#111165',
+  [Color.WALL]: '#112185',
   [Color.NO_DRAW]: '#4242AF',
-  background: '#00004A',
+  background: '#000040',
   text: '#FEFEFE'
 }
 
-export const themes = [DARK, LIGHT, MOONLIGHT]
+export const NAOKI: Theme = {
+  [Color.DEFAULT]: '#DD4020',
+  [Color.TARGET]: '#FD112A',
+  [Color.DRAW]: '#811515',
+  [Color.WALL]: '#CA0000',
+  [Color.NO_DRAW]: '#AF4242',
+  background: '#360000',
+  text: '#FEFEFE'
+}
+
+export const themes = [DARK, LIGHT, MOONLIGHT, NAOKI]

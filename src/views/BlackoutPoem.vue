@@ -68,8 +68,6 @@
     const anchorIndex = parentNodes.indexOf(anchorNode as HTMLElement)
     let idx = Math.min(focusIndex, anchorIndex)
 
-    console.log('idx', idx, anchorNode, focusNode)
-
     if (idx < 1) {
       return
     }
@@ -79,8 +77,6 @@
     while (node !== null && node !== target) {
       if (node.nodeName === 'SPAN') {
         selected.push(idx)
-      } else {
-        console.log("weirdo", node.nodeName)
       }
       idx++
       do {
@@ -88,8 +84,6 @@
       } while (node!.nodeName === '#text')
     }
 
-    console.log('selected', selected)
-    
     const whiten = selected.some(s => black.has(s))
     for (const s of selected) {
       if (whiten) {

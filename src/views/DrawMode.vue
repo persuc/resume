@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { onMounted, onUnmounted, reactive, ref, type Ref } from 'vue'
   import decomp from 'poly-decomp'
-  import Matter, { Bodies, Body, Common, Composite, Engine, Events, Mouse, Render, Runner } from 'matter-js'
+  import Matter, { Bodies, Body, Common, Composite, Engine, Events, Mouse, Render, Runner, Vertices } from 'matter-js'
   import { startLevel, type Level, specifications } from '@/ts/draw-mode/Level'
   import * as Theme from '@/ts/draw-mode/Theme'
   import { themes } from '@/ts/draw-mode/Theme'
@@ -66,6 +66,12 @@
     render.canvas.style.background = newTheme.background
     container.value.style.background = newTheme.background
     container.value.style.color = newTheme.text
+    if (arrowBodies) {
+      for (const part of arrowBodies.left.parts.concat(arrowBodies.right.parts)) {
+        part.render.fillStyle = newTheme.text
+      }
+    }
+    saveState()
     if (level.value !== null) {
       level.value.applyTheme(newTheme)
     }
@@ -73,40 +79,78 @@
 
   const LEVELS_PER_PAGE = 6
   const LEVELS_PER_ROW = 3
-  const THUMBNAIL_WIDTH = 220
+  const THUMBNAIL_WIDTH = 200
   const THUMBNAIL_HEIGHT = THUMBNAIL_WIDTH / ASPECT_RATIO
   const THUMBNAIL_HORIZONTAL_PAD = 30
   const THUMBNAIL_VERTICAL_PAD = 50
   const THUMBNAIL_POSITION = new Array(LEVELS_PER_PAGE).fill(null).map((_, i) => ({
-    x: (800 - (LEVELS_PER_ROW * THUMBNAIL_WIDTH - (LEVELS_PER_ROW - 1) * THUMBNAIL_HORIZONTAL_PAD)) * 3 / 4 + i % LEVELS_PER_ROW * (THUMBNAIL_WIDTH + THUMBNAIL_HORIZONTAL_PAD),
+    x: (800 - (LEVELS_PER_ROW * THUMBNAIL_WIDTH - (LEVELS_PER_ROW - 1) * THUMBNAIL_HORIZONTAL_PAD)) / 2 + THUMBNAIL_WIDTH / 4 + i % LEVELS_PER_ROW * (THUMBNAIL_WIDTH + THUMBNAIL_HORIZONTAL_PAD),
     y: (600 - (LEVELS_PER_PAGE / LEVELS_PER_ROW * THUMBNAIL_HEIGHT - (LEVELS_PER_PAGE / LEVELS_PER_ROW - 1) * THUMBNAIL_VERTICAL_PAD)) * 3 / 5 + Math.floor(i / LEVELS_PER_ROW) * (THUMBNAIL_HEIGHT + THUMBNAIL_VERTICAL_PAD)
   }))
   const thumbnailBodies: Body[] = []
-  const page = 0
-  const images: HTMLImageElement[] = []
+  let arrowBodies: {
+    left: Body,
+    right: Body,
+  } | null = null
+  let page = 0
+  const images: (HTMLImageElement | null)[] = new Array(specifications.length).fill(null)
+  function fetchImages() {
+    Events.off(engine, 'afterUpdate', drawImages)
+    if (arrowBodies) {
+      arrowBodies.left.render.visible = page > 0
+      arrowBodies.right.render.visible = LEVELS_PER_PAGE * (page + 1) < specifications.length
+    }
+    let loaded = 0
+    const numberToLoad = Math.min(LEVELS_PER_PAGE, images.length - page * LEVELS_PER_PAGE)
+    for (let i = page * LEVELS_PER_PAGE; i < Math.min(images.length, (page + 1) * LEVELS_PER_PAGE); i++) {
+      if (images[i] !== null) {
+        loaded++
+      } else {
+        const img = new Image()
+        img.onload = () => {
+          images[i] = img
+          loaded++
+          if (loaded === numberToLoad) {
+            Events.on(engine, 'afterUpdate', drawImages)
+            drawImages()
+          }
+        }
+        img.src = `/draw-mode/Level_${String(i + 1).padStart(3, '0')}.png`
+      }
+    }
+    if (loaded === numberToLoad) {
+      Events.on(engine, 'afterUpdate', drawImages)
+      drawImages()
+    }
+  }
   function drawImages() {
     const realHeight = (THUMBNAIL_HEIGHT / 600) * render.canvas.height
     const realWidth = (THUMBNAIL_WIDTH / 800) * render.canvas.width
     render.context.font = "20px serif"
     render.context.fillStyle = themes[themeIdx].text
-    images.forEach((image, i) => {
-      if (!completed.has(page * LEVELS_PER_PAGE + i)) {
+    for (let i = page * LEVELS_PER_PAGE; i < Math.min((page + 1) * LEVELS_PER_PAGE, images.length); i++) {
+      const image = images[i]
+      if (image === null) {
+        continue
+      }
+      if (!completed.has(i)) {
         render.context.globalAlpha = 0.1
       }
+      const position = THUMBNAIL_POSITION[i % LEVELS_PER_PAGE]
       render.context.drawImage(
         image,
-        THUMBNAIL_POSITION[i].x / 800 * render.canvas.width - realWidth / 2,
-        THUMBNAIL_POSITION[i].y / 600 * render.canvas.height - realHeight / 2,
+        position.x / 800 * render.canvas.width - realWidth / 2,
+        position.y / 600 * render.canvas.height - realHeight / 2,
         realWidth,
         realHeight,
       )
       render.context.globalAlpha = 1
       render.context.fillText(
-        `${String(page * LEVELS_PER_PAGE + i + 1).padStart(3, '0')}`,
-        THUMBNAIL_POSITION[i].x / 800 * render.canvas.width - realWidth / 2,
-        THUMBNAIL_POSITION[i].y / 600 * render.canvas.height - realHeight / 2 - 12,
+        `${String(i + 1).padStart(3, '0')}`,
+        position.x / 800 * render.canvas.width - realWidth / 2,
+        position.y / 600 * render.canvas.height - realHeight / 2 - 12,
       )
-    })
+    }
   }
 
   function onResize() {
@@ -164,41 +208,71 @@
   })
 
   function showLevelSelect() {
-    images.splice(0).push(...new Array(Math.min(LEVELS_PER_PAGE, specifications.length - page * LEVELS_PER_PAGE)).fill(null))
-    let loaded = 0
-    for (let i = LEVELS_PER_PAGE * page; i < (page + 1) * LEVELS_PER_PAGE && i < specifications.length; i++) {
-      if (completed.has(i)) {
-        const body = Bodies.rectangle(
-          THUMBNAIL_POSITION[i % LEVELS_PER_PAGE].x,
-          THUMBNAIL_POSITION[i % LEVELS_PER_PAGE].y,
-          THUMBNAIL_WIDTH,
-          THUMBNAIL_HEIGHT,
-          {
-            isStatic: true,
-            render: {
-              visible: false,
-              fillStyle: '#CCDCDC',
-              // sprite: {
-              //   texture: `/draw-mode/Level_${String(i + 1).padStart(3, '0')}.png`,
-              //   xScale: 1,
-              //   yScale: 1,
-              // }
-            }
+    const ARROW_HEIGHT = 20
+    const ARROW_WIDTH = 10
+
+    const left = Bodies.fromVertices(30, 300, [[
+      { x: -ARROW_WIDTH, y: 0 },
+      { x: 0, y: -ARROW_HEIGHT },
+      { x: ARROW_WIDTH, y: -ARROW_HEIGHT },
+      { x: 0, y: 0 },
+      { x: ARROW_WIDTH, y: ARROW_HEIGHT },
+      { x: 0, y: ARROW_HEIGHT },
+    ]], {
+      isStatic: true,
+      render: {
+        visible: true,
+        fillStyle: themes[themeIdx].text,
+        strokeStyle: 'none'
+      }
+    })
+    Composite.add(engine.world, left)
+    
+    const verts = [
+      { x: ARROW_WIDTH, y: 0 },
+      { x: 0, y: -ARROW_HEIGHT },
+      { x: -ARROW_WIDTH, y: -ARROW_HEIGHT },
+      { x: 0, y: 0 },
+      { x: -ARROW_WIDTH, y: ARROW_HEIGHT },
+      { x: 0, y: ARROW_HEIGHT },
+    ]
+    const right = Bodies.fromVertices(770, 300, [verts], {
+      isStatic: true,
+      render: {
+        visible: true,
+        fillStyle: themes[themeIdx].text,
+        strokeStyle: 'none'
+      }
+    }, false, 0, 0, 0)
+    Composite.add(engine.world, right)
+
+    arrowBodies = {
+      left,
+      right
+    }
+
+    for (let i = 0; i < LEVELS_PER_PAGE; i++) {
+      const body = Bodies.rectangle(
+        THUMBNAIL_POSITION[i % LEVELS_PER_PAGE].x,
+        THUMBNAIL_POSITION[i % LEVELS_PER_PAGE].y,
+        THUMBNAIL_WIDTH,
+        THUMBNAIL_HEIGHT,
+        {
+          isStatic: true,
+          render: {
+            visible: false,
+            fillStyle: '#CCDCDC',
+            // sprite: {
+            //   texture: `/draw-mode/Level_${String(i + 1).padStart(3, '0')}.png`,
+            //   xScale: 1,
+            //   yScale: 1,
+            // }
           }
-        )
-        thumbnailBodies.push(body)
-        Composite.add(engine.world, body)
-      }
-      const img = new Image()
-      img.onload = () => {
-        images[i % LEVELS_PER_PAGE] = img
-        loaded++
-        if (loaded === images.length) {
-          Events.on(engine, 'afterUpdate', drawImages)
-          drawImages()
         }
-      }
-      img.src = `/draw-mode/Level_${String(i + 1).padStart(3, '0')}.png`
+      )
+      thumbnailBodies.push(body)
+      Composite.add(engine.world, body)
+      fetchImages()
     }
 
     const mouseConstraint = Matter.MouseConstraint.create(
@@ -215,17 +289,42 @@
     Composite.add(engine.world, mouseConstraint)
 
     function onMouseDown() {
-      const index = thumbnailBodies.findIndex(b => mouseConstraint.body === b)
-      if (index === -1) {
+      if (render.mouse.position.x < 50) {
+        if (page > 0) {
+          page -= 1
+          fetchImages()
+        }
         return
       }
+
+      if (render.mouse.position.x > 750) {
+        if ((page + 1) * LEVELS_PER_PAGE < specifications.length) {
+          page += 1
+          fetchImages()
+        }
+        return
+      }
+
+      const index = thumbnailBodies.findIndex(b => mouseConstraint.body === b)
+      if (index === -1 || index >= specifications.length - page * LEVELS_PER_PAGE) {
+        return
+      }
+
+      if (!completed.has(index + page * LEVELS_PER_PAGE)) {
+        return
+      }
+
       const levelIndex = page * LEVELS_PER_PAGE + index
       clickLevel(levelIndex)
       Events.off(mouseConstraint, 'mousedown', onMouseDown)
       Events.off(engine, 'afterUpdate', drawImages)
       Composite.remove(engine.world, thumbnailBodies)
-      Composite.remove(engine.world, mouseConstraint)
       thumbnailBodies.splice(0)
+      if (arrowBodies) {
+        Composite.remove(engine.world, [arrowBodies.left, arrowBodies.right])
+        arrowBodies = null
+      }
+      Composite.remove(engine.world, mouseConstraint)
       mouse = Matter.Mouse.create(render.canvas)
       render.mouse = mouse
     }

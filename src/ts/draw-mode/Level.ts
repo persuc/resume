@@ -6,6 +6,8 @@ import Level_002 from "@/ts/draw-mode/levels/Level_002"
 import Level_003 from "@/ts/draw-mode/levels/Level_003"
 import Level_004 from "@/ts/draw-mode/levels/Level_004"
 import Level_005 from "@/ts/draw-mode/levels/Level_005"
+import Level_006 from "@/ts/draw-mode/levels/Level_006"
+import Level_007 from "@/ts/draw-mode/levels/Level_007"
 import { Bodies, Body, Composite, type IMousePoint, type Engine, type IBodyDefinition, Constraint } from "matter-js"
 
 export type ColouredBody = { body: Body, color?: Color, opacity?: number }
@@ -113,6 +115,12 @@ export function startLevel(engine: Engine, spec: LevelSpec, theme: Theme, onEnd:
 function applyTheme(level: Level, theme: Theme) {
   level.theme = theme
   for (const body of Composite.allBodies(level.engine.world)) {
+    if ((body as any).type === 'constraint') {
+      const renderTheme = level.themeMap[body.id]
+      body.render.strokeStyle = theme[renderTheme.color ?? Color.DEFAULT]
+      body.render.opacity = renderTheme.opacity ?? 1
+      continue
+    }
     for (const part of body.parts.concat(body)) {
       const renderTheme = level.themeMap[part.id]
       part.render.fillStyle = theme[renderTheme.color ?? Color.DEFAULT]
@@ -126,7 +134,12 @@ function setBodies(level: Level, bodies: (Body | ColouredBody | Constraint)[]) {
   Composite.clear(level.engine.world, false)
   for (const body of bodies) {
     if ((body as any).type === 'constraint') {
-      Composite.add(level.engine.world, body as Constraint)
+      const constraint = body as Constraint
+      Composite.add(level.engine.world, constraint)
+      level.themeMap[constraint.id] = {
+        color: Color.WALL,
+        opacity: 1,
+      }
       continue
     }
     let color: Color = ('color' in body) ? (body.color as Color) : Color.DEFAULT
@@ -147,4 +160,4 @@ function setBodies(level: Level, bodies: (Body | ColouredBody | Constraint)[]) {
   }
 }
 
-export const specifications = [Level_001, Level_002, Level_003, Level_004, Level_005]
+export const specifications = [Level_001, Level_002, Level_003, Level_004, Level_005, Level_006, Level_007]
