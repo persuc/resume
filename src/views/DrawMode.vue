@@ -1,17 +1,14 @@
 <script setup lang="ts">
-  import { onMounted, onUnmounted, reactive, ref, type Ref } from 'vue'
+  import { onMounted, onUnmounted, ref, type Ref } from 'vue'
   import decomp from 'poly-decomp'
   import Matter, { Bodies, Body, Common, Composite, Engine, Events, Mouse, Render, Runner, Vertices } from 'matter-js'
   import { startLevel, type Level, specifications } from '@/ts/draw-mode/Level'
-  import * as Theme from '@/ts/draw-mode/Theme'
   import { themes } from '@/ts/draw-mode/Theme'
-
-  const STATE_KEY = 'drawModeState'
-  const CLEANUP_INTERVAL = 5000
-  const ASPECT_RATIO = 800 / 600
-
-  const completed: Set<number> = reactive(new Set([0]))
+  import { createState } from '@/ts/draw-mode/State'
+  import { LEVELS_PER_PAGE, THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH, THUMBNAIL_POSITION, ASPECT_RATIO, CLEANUP_INTERVAL } from '@/ts/draw-mode/Config'
+  
   const showEndScreen = ref(false)
+  const state = createState()
   let timeOfLastCleanup = 0
 
   Common.setDecomp(decomp)
@@ -23,7 +20,6 @@
   const container: Ref<HTMLElement> = ref() as Ref<HTMLElement>
 
   let level: Ref<Level | null> = ref(null)
-  let themeIdx = 0
   let mouse: Mouse
 
   function onKeyUp(e: KeyboardEvent) {
@@ -34,7 +30,7 @@
         level.value.restart()
       }
     } else if (e.key === 't') {
-      applyTheme((themeIdx + 1 ) % themes.length)
+      applyTheme((state.theme + 1 ) % themes.length)
     } else if (e.key === 'Escape') {
       returnToLevelSelect()
     }
@@ -61,7 +57,7 @@
     if (index < 0 || index >= themes.length) {
       return
     }
-    themeIdx = index
+    state.theme = index
     const newTheme = themes[index]
     render.canvas.style.background = newTheme.background
     container.value.style.background = newTheme.background
@@ -71,22 +67,12 @@
         part.render.fillStyle = newTheme.text
       }
     }
-    saveState()
+    state.save()
     if (level.value !== null) {
       level.value.applyTheme(newTheme)
     }
   }
 
-  const LEVELS_PER_PAGE = 6
-  const LEVELS_PER_ROW = 3
-  const THUMBNAIL_WIDTH = 200
-  const THUMBNAIL_HEIGHT = THUMBNAIL_WIDTH / ASPECT_RATIO
-  const THUMBNAIL_HORIZONTAL_PAD = 30
-  const THUMBNAIL_VERTICAL_PAD = 50
-  const THUMBNAIL_POSITION = new Array(LEVELS_PER_PAGE).fill(null).map((_, i) => ({
-    x: (800 - (LEVELS_PER_ROW * THUMBNAIL_WIDTH - (LEVELS_PER_ROW - 1) * THUMBNAIL_HORIZONTAL_PAD)) / 2 + THUMBNAIL_WIDTH / 4 + i % LEVELS_PER_ROW * (THUMBNAIL_WIDTH + THUMBNAIL_HORIZONTAL_PAD),
-    y: (600 - (LEVELS_PER_PAGE / LEVELS_PER_ROW * THUMBNAIL_HEIGHT - (LEVELS_PER_PAGE / LEVELS_PER_ROW - 1) * THUMBNAIL_VERTICAL_PAD)) * 3 / 5 + Math.floor(i / LEVELS_PER_ROW) * (THUMBNAIL_HEIGHT + THUMBNAIL_VERTICAL_PAD)
-  }))
   const thumbnailBodies: Body[] = []
   let arrowBodies: {
     left: Body,
@@ -115,7 +101,7 @@
             drawImages()
           }
         }
-        img.src = `/draw-mode/Level_${String(i + 1).padStart(3, '0')}.png`
+        img.src = `/draw-mode/${specifications[i].id}.png`
       }
     }
     if (loaded === numberToLoad) {
@@ -127,16 +113,18 @@
     const realHeight = (THUMBNAIL_HEIGHT / 600) * render.canvas.height
     const realWidth = (THUMBNAIL_WIDTH / 800) * render.canvas.width
     render.context.font = "20px serif"
-    render.context.fillStyle = themes[themeIdx].text
+    render.context.fillStyle = themes[state.theme].text
+    const hasPageMajority = state.hasPageMajority(page - 1)
     for (let i = page * LEVELS_PER_PAGE; i < Math.min((page + 1) * LEVELS_PER_PAGE, images.length); i++) {
       const image = images[i]
+      const modi = i % LEVELS_PER_PAGE
       if (image === null) {
         continue
       }
-      if (!completed.has(i)) {
+      if (!hasPageMajority) {
         render.context.globalAlpha = 0.1
       }
-      const position = THUMBNAIL_POSITION[i % LEVELS_PER_PAGE]
+      const position = THUMBNAIL_POSITION[modi]
       render.context.drawImage(
         image,
         position.x / 800 * render.canvas.width - realWidth / 2,
@@ -146,7 +134,7 @@
       )
       render.context.globalAlpha = 1
       render.context.fillText(
-        `${String(i + 1).padStart(3, '0')}`,
+        `${String(i + 1).padStart(3, '0')}${state.completed.has(specifications[i].id) ? ' - Completed' : ''}`,
         position.x / 800 * render.canvas.width - realWidth / 2,
         position.y / 600 * render.canvas.height - realHeight / 2 - 12,
       )
@@ -181,7 +169,7 @@
     document.addEventListener("mouseup", stopDrawing )
     document.addEventListener("mousedown", startDrawing )
     window.addEventListener("resize", onResize)
-    loadState()
+    state.load()
     render = Render.create({
         element: document.getElementById('render')!,
         engine: engine,
@@ -204,7 +192,7 @@
     Runner.run(runner, engine)
     Events.on(engine, 'afterUpdate', cleanup)
 
-    applyTheme(themeIdx)
+    applyTheme(state.theme)
   })
 
   function showLevelSelect() {
@@ -222,7 +210,7 @@
       isStatic: true,
       render: {
         visible: true,
-        fillStyle: themes[themeIdx].text,
+        fillStyle: themes[state.theme].text,
         strokeStyle: 'none'
       }
     })
@@ -240,7 +228,7 @@
       isStatic: true,
       render: {
         visible: true,
-        fillStyle: themes[themeIdx].text,
+        fillStyle: themes[state.theme].text,
         strokeStyle: 'none'
       }
     }, false, 0, 0, 0)
@@ -283,7 +271,7 @@
     )
     mouseConstraint.constraint.render.type = 'pin'
     mouseConstraint.constraint.render.anchors = false
-    mouseConstraint.constraint.render
+    mouseConstraint.constraint.render.visible = false
     mouse = mouseConstraint.mouse
     render.mouse = mouse
     Composite.add(engine.world, mouseConstraint)
@@ -310,7 +298,7 @@
         return
       }
 
-      if (!completed.has(index + page * LEVELS_PER_PAGE)) {
+      if (!state.hasPageMajority(page - 1)) {
         return
       }
 
@@ -332,13 +320,13 @@
   }
 
   function clickLevel(index: number) {
-    level.value = startLevel(engine, specifications[index], themes[themeIdx], () => {
+    level.value = startLevel(engine, specifications[index], themes[state.theme], () => {
       showEndScreen.value = true
       if (level.value?.line) {
         level.value.endLine()
       }
-      completed.add(index + 1)
-      saveState()
+      state.completed.add(specifications[index].id)
+      state.save()
       setTimeout(returnToLevelSelect, 3000)
     })
   }
@@ -377,10 +365,10 @@
   }
 
   onUnmounted(() => {
-    document.removeEventListener( "keyup", onKeyUp )
-    document.removeEventListener( "mousemove", draw )
-    document.removeEventListener( "mouseup", stopDrawing )
-    document.removeEventListener( "mousedown", startDrawing )
+    document.removeEventListener("keyup", onKeyUp)
+    document.removeEventListener("mousemove", draw)
+    document.removeEventListener("mouseup", stopDrawing)
+    document.removeEventListener("mousedown", startDrawing)
     Events.off(engine, 'afterTick', cleanup)
     Engine.clear(engine);
     Render.stop(render);
@@ -388,49 +376,6 @@
     render.canvas.remove();
     render.textures = {};
   })
-
-  const defaultState = {
-    completed: [0],
-    theme: 0
-  }
-  type StateType = typeof defaultState;
-
-  function loadSerialized(serialized: string) {
-    const loadedState: StateType = JSON.parse(serialized)
-    completed.clear()
-    completed.add(0)
-    for (const v of loadedState.completed) {
-      completed.add(v)
-    }
-    if (loadedState.theme < themes.length && loadedState.theme >= 0) {
-      themeIdx = loadedState.theme
-    }
-  }
-
-  function loadState() {
-    const defaultSerialized = JSON.stringify(defaultState)
-    const serializedState: string = localStorage.getItem(STATE_KEY) ?? defaultSerialized
-    try {
-      loadSerialized(serializedState)
-    } catch (e) {
-      console.error(
-        'Error loading state from local storage:',
-        e,
-        'falling back to default state'
-      )
-      console.warn('Serialized state:', serializedState)
-      localStorage.removeItem(STATE_KEY)
-      loadSerialized(defaultSerialized)
-    }
-  }
-
-  function saveState() {
-    const savedState: StateType = {
-      completed: Array.from(completed),
-      theme: themeIdx
-    }
-    localStorage.setItem(STATE_KEY, JSON.stringify(savedState))
-  }
 
 </script>
 

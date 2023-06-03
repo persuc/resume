@@ -27,6 +27,7 @@ const level: LevelSpec = {
       { body: target, color: Color.TARGET }
     ]
   },
+  id: 'BallBesideHill',
   text: "<p>Make the ball touch the right wall</p>"
 }
 

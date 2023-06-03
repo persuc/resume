@@ -16,6 +16,7 @@ const level: LevelSpec = {
       { body: target, color: Color.TARGET }
     ]
   },
+  id: 'BallOnCube',
   text: "<span>Knock the ball off</span><br /><span>[R] to restart, [Esc] to go back, [T] to change the theme</span>"
 }
 

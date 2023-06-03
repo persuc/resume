@@ -1,18 +1,19 @@
 import Line from "@/ts/draw-mode/MatterLine"
 import { Color } from "@/ts/draw-mode/Theme"
 import type { Theme } from "@/ts/draw-mode/Theme"
-import Level_001 from "@/ts/draw-mode/levels/Level_001"
-import Level_002 from "@/ts/draw-mode/levels/Level_002"
-import Level_003 from "@/ts/draw-mode/levels/Level_003"
-import Level_004 from "@/ts/draw-mode/levels/Level_004"
-import Level_005 from "@/ts/draw-mode/levels/Level_005"
-import Level_006 from "@/ts/draw-mode/levels/Level_006"
-import Level_007 from "@/ts/draw-mode/levels/Level_007"
+import BallOnCube from "@/ts/draw-mode/levels/BallOnCube"
+import BallOnFloor from "@/ts/draw-mode/levels/BallOnFloor"
+import BallInCup from "@/ts/draw-mode/levels/BallInCup"
+import NoDrawOverhang from "@/ts/draw-mode/levels/NoDrawOverhang"
+import BallBesideHill from "@/ts/draw-mode/levels/BallBesideHill"
+import BallUnderClutter from "@/ts/draw-mode/levels/BallUnderClutter"
+import BallOnRope from "@/ts/draw-mode/levels/BallOnRope"
 import { Bodies, Body, Composite, type IMousePoint, type Engine, type IBodyDefinition, Constraint } from "matter-js"
 
 export type ColouredBody = { body: Body, color?: Color, opacity?: number }
 
 export interface LevelSpec {
+  id: string,
   generateBodies(engine: Engine, onEnd: () => any): (Body | ColouredBody | Constraint)[],
   text?: string
 }
@@ -160,4 +161,4 @@ function setBodies(level: Level, bodies: (Body | ColouredBody | Constraint)[]) {
   }
 }
 
-export const specifications = [Level_001, Level_002, Level_003, Level_004, Level_005, Level_006, Level_007]
+export const specifications = [BallOnCube, BallOnFloor, BallInCup, NoDrawOverhang, BallBesideHill, BallUnderClutter, BallOnRope]

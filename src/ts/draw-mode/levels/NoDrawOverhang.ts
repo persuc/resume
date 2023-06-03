@@ -37,6 +37,7 @@ const level: LevelSpec = {
       { body: target, color: Color.TARGET }
     ]
   },
+  id: 'NoDrawOverhang',
   text: "<p>Make the ball touch the right wall</p>"
 }
 
