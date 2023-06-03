@@ -6,6 +6,7 @@
   import { themes } from '@/ts/draw-mode/Theme'
   import { createState } from '@/ts/draw-mode/State'
   import { LEVELS_PER_PAGE, THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH, THUMBNAIL_POSITION, ASPECT_RATIO, CLEANUP_INTERVAL } from '@/ts/draw-mode/Config'
+import { cleanupEndConditions } from '@/ts/draw-mode/EndCondition'
   
   const showEndScreen = ref(false)
   const state = createState()
@@ -343,6 +344,7 @@
     }
     showEndScreen.value = false
     Composite.clear(engine.world, false)
+    cleanupEndConditions(engine)
     level.value = null
     while (returnToLevelSelectTimeouts.length) {
       clearTimeout(returnToLevelSelectTimeouts.pop())
@@ -374,7 +376,7 @@
     document.removeEventListener("mousemove", draw)
     document.removeEventListener("mouseup", stopDrawing)
     document.removeEventListener("mousedown", startDrawing)
-    Events.off(engine, 'afterTick', cleanup)
+    Events.off(engine, 'afterUpdate', cleanup)
     Engine.clear(engine);
     Render.stop(render);
     Runner.stop(runner);

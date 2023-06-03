@@ -1,5 +1,5 @@
 import { Color } from "@/ts/draw-mode/Theme"
-import { Bodies, Body, Engine } from "matter-js"
+import { Bodies, Body, Engine, Events } from "matter-js"
 import * as EndCondition from "@/ts/draw-mode/EndCondition"
 import type { LevelSpec } from "@/ts/draw-mode/Level"
 

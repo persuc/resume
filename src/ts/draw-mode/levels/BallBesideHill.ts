@@ -11,12 +11,14 @@ const level: LevelSpec = {
     const hill = Body.create({
       parts: [
         Bodies.rectangle(370, 530, 10, 100, {
-          angle: 1
+          angle: 1,
+          density: 0.01
         }),
         Bodies.rectangle(450, 530, 10, 100, {
-          angle: -1
+          angle: -1,
+          density: 0.01
         }),
-      ]
+      ],
     })
 
     EndCondition.onCollision(engine, walls.right, target, onEnd)
