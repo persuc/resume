@@ -20,6 +20,8 @@ import { cleanupEndConditions } from '@/ts/draw-mode/EndCondition'
   const runner = Runner.create()
 
   const container: Ref<HTMLElement> = ref() as Ref<HTMLElement>
+  const levelText: Ref<HTMLElement> = ref() as Ref<HTMLElement>
+  const successText: Ref<HTMLElement> = ref() as Ref<HTMLElement>
 
   let level: Ref<Level | null> = ref(null)
   let mouse: Mouse
@@ -69,10 +71,14 @@ import { cleanupEndConditions } from '@/ts/draw-mode/EndCondition'
         part.render.fillStyle = newTheme.text
       }
     }
-    state.save()
     if (level.value !== null) {
       level.value.applyTheme(newTheme)
+      if (level.value.textBackground) {
+        levelText.value.style.background = newTheme.background
+        successText.value.style.background = newTheme.background
+      }
     }
+    state.save()
   }
 
   const thumbnailBodies: Body[] = []
@@ -332,6 +338,13 @@ import { cleanupEndConditions } from '@/ts/draw-mode/EndCondition'
       state.save()
       returnToLevelSelectTimeouts.push(setTimeout(returnToLevelSelect, 3000))
     })
+    if (level.value.textBackground) {
+      levelText.value.style.background = themes[state.theme].background
+      successText.value.style.background = themes[state.theme].background
+    } else {
+      levelText.value.style.background = 'none'
+      successText.value.style.background = 'none'
+    }
   }
 
   function returnToLevelSelect() {
@@ -389,8 +402,8 @@ import { cleanupEndConditions } from '@/ts/draw-mode/EndCondition'
 <template>
   <div class="draw-mode" ref="container" style="width: 100vw; height: 100vh; margin: 0 auto">
     <div class="flex hcenter absolute full-width" style="top: 5rem; z-index: 2; pointer-events: none;">
-      <pre v-show="!showEndScreen" v-html="level?.text" style="text-align: center; pointer-events: none;"></pre>
-      <span v-show="showEndScreen" style="font-size: 20vh; pointer-events: none;">Great job.</span>
+      <pre ref="levelText" v-show="!showEndScreen" v-html="level?.text" style="text-align: center; pointer-events: none;"></pre>
+      <span ref="successText" v-show="showEndScreen" style="font-size: 20vh; pointer-events: none;">Great job.</span>
     </div>
     <div id="render"></div>
     <!-- <a href="/bored" class="nohover" style="display: block; width: fit-content; position: relative; left: -32px;"><div class="pt-2 pb-4 px-8 mb-4" style="margin-top: 20vh">&lt; Back</div></a> -->

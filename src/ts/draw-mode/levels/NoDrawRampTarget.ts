@@ -3,6 +3,7 @@ import { Bodies, Body, Engine, Vector } from "matter-js"
 import * as EndCondition from "@/ts/draw-mode/EndCondition"
 import type { LevelSpec } from "@/ts/draw-mode/Level"
 import { distance } from "@/ts/draw-mode/Util"
+import { NO_DRAW_AREA_OPACITY } from "@/ts/draw-mode/Config"
 
 const level: LevelSpec = {
   generateBodies(engine: Engine, onEnd: () => any) {
@@ -34,7 +35,7 @@ const level: LevelSpec = {
         }
       }),
       color: Color.NO_DRAW,
-      opacity: 0.2
+      opacity: NO_DRAW_AREA_OPACITY
     }
 
     const target = {

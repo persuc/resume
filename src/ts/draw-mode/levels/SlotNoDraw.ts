@@ -1,29 +1,24 @@
-import { Color } from "@/ts/draw-mode/Theme"
-import { Bodies, Body, Engine, Events } from "matter-js"
-import * as EndCondition from "@/ts/draw-mode/EndCondition"
 import type { LevelSpec } from "@/ts/draw-mode/Level"
+import { Color } from "@/ts/draw-mode/Theme"
+import { Bodies, Body, Engine } from "matter-js"
+import * as EndCondition from "@/ts/draw-mode/EndCondition"
 import { NO_DRAW_AREA_OPACITY } from "@/ts/draw-mode/Config"
 
 const level: LevelSpec = {
   generateBodies(engine: Engine, onEnd: () => any) {
 
-    const target = Bodies.circle(30, 30, 20)
+    const target = Bodies.circle(400, 300, 20)
 
-    const ramp = Body.create({
+    const slot = Body.create({
       isStatic: true,
       parts: [
-        Bodies.rectangle(25, 100, 50, 10),
-        Bodies.rectangle(135, 147.5, 200, 10, {
-          angle: 0.5
-        }),
-        Bodies.rectangle(500, 400, 300, 10, {
-          angle: 0.5
-        })
+        Bodies.rectangle(400, 140, 400, 280),
+        Bodies.rectangle(400, 460, 400, 280),
       ]
     })
 
     const noDraw = {
-      body: Bodies.rectangle(400, 353, 800, 495, {
+      body: Bodies.rectangle(500, 300, 200, 40, {
         isStatic: true,
         collisionFilter: {
           category: 2,
@@ -34,16 +29,17 @@ const level: LevelSpec = {
       opacity: NO_DRAW_AREA_OPACITY
     }
 
-    EndCondition.onCondition(engine, () => target.position.x > 820, onEnd)
+    EndCondition.onCondition(engine, () => target.position.x <= 180 || target.position.x >= 620, onEnd)
 
     return [
-      ramp,
+      slot,
       noDraw,
       { body: target, color: Color.TARGET }
     ]
   },
-  id: 'NoDrawRamp',
-  text: "<p>Make the ball fall off the right side</p>"
+  id: 'SlotNoDraw',
+  text: "<p class=\"mb-0 px-2\">Get the ball out.</p>",
+  textBackground: true,
 }
 
 export default level

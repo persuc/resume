@@ -2,6 +2,7 @@ import type { LevelSpec } from "@/ts/draw-mode/Level"
 import { Color } from "@/ts/draw-mode/Theme"
 import { Bodies, Body, Composite, Engine } from "matter-js"
 import * as EndCondition from "@/ts/draw-mode/EndCondition"
+import { NO_DRAW_AREA_OPACITY } from "@/ts/draw-mode/Config"
 
 const level: LevelSpec = {
   generateBodies(engine: Engine, onEnd: () => any) {
@@ -9,15 +10,14 @@ const level: LevelSpec = {
     const leftWall = Bodies.rectangle(10, 320, 20, 560)
     const rightWall = Bodies.rectangle(790, 320, 20, 560)
 
-    const wallBody = Body.create({
-      isStatic: true,
-      parts: [
-        leftWall,
-        rightWall,
-      ],
-    })
     const walls = {
-      body: wallBody,
+      body: Body.create({
+        isStatic: true,
+        parts: [
+          leftWall,
+          rightWall,
+        ],
+      }),
       color: Color.WALL,
     }
     const target = Bodies.circle(400, 300, 40, {
@@ -36,7 +36,7 @@ const level: LevelSpec = {
         }
       }),
       color: Color.NO_DRAW,
-      opacity: 0.2
+      opacity: NO_DRAW_AREA_OPACITY
     }
     
     EndCondition.onAnyCollision(engine, target, () => {

@@ -9,15 +9,14 @@ const level: LevelSpec = {
     const leftWall = Bodies.rectangle(10, 320, 20, 560)
     const rightWall = Bodies.rectangle(790, 320, 20, 560)
 
-    const wallBody = Body.create({
-      isStatic: true,
-      parts: [
-        leftWall,
-        rightWall,
-      ],
-    })
     const walls = {
-      body: wallBody,
+      body: Body.create({
+        isStatic: true,
+        parts: [
+          leftWall,
+          rightWall,
+        ],
+      }),
       color: Color.WALL,
     }
     const target = Bodies.circle(400, 300, 40, {

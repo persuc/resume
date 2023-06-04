@@ -15,24 +15,28 @@ import NoDrawRampTarget from "@/ts/draw-mode/levels/NoDrawRampTarget"
 import SleepingBall from "@/ts/draw-mode/levels/SleepingBall"
 import NoDrawAfterAwaken from "@/ts/draw-mode/levels/NoDrawAfterAwaken"
 import Windmill from "@/ts/draw-mode/levels/Windmill"
+import Slot from "@/ts/draw-mode/levels/Slot"
+import SlotNoDraw from "@/ts/draw-mode/levels/SlotNoDraw"
 
 export type ColouredBody = { body: Body, color?: Color, opacity?: number }
 
 export interface LevelSpec {
   id: string,
   generateBodies(engine: Engine, onEnd: () => any): (Body | ColouredBody | Constraint)[],
-  text?: string
+  text?: string,
+  textBackground?: boolean
 }
 
 export interface Level {
   engine: Engine
-  theme: Theme,
+  theme: Theme
   themeMap: Record<number, {
     color: keyof Theme,
     opacity?: number
   }>
-  applyTheme(theme: Theme): void,
-  text?: string,
+  applyTheme(theme: Theme): void
+  text?: string
+  textBackground: boolean
   line: Line | null
   startLine(point: IMousePoint): void
   drawLine(point: IMousePoint): void
@@ -72,6 +76,29 @@ export function wallCup(): ColouredBody & {
     right,
   } 
 }
+
+export function wallSides(): ColouredBody & {
+  left: Body,
+  right: Body
+} {
+
+  const left = Bodies.rectangle(10, 300, 20, 600)
+  const right = Bodies.rectangle(790, 300, 20, 600)
+
+  const body = Body.create({
+    isStatic: true,
+    parts: [
+      left,
+      right
+    ],
+  })
+  return {
+    body,
+    color: Color.WALL,
+    left,
+    right,
+  } 
+}
   
 
 export function startLevel(engine: Engine, spec: LevelSpec, theme: Theme, onEnd: () => any): Level {
@@ -87,6 +114,7 @@ export function startLevel(engine: Engine, spec: LevelSpec, theme: Theme, onEnd:
     },
     theme,
     text: spec.text,
+    textBackground: spec.textBackground ?? false,
     line: null,
     startLine(point: IMousePoint) {
       level.line = new Line(level.engine)
@@ -172,5 +200,6 @@ function setBodies(level: Level, bodies: (Body | ColouredBody | Constraint)[]) {
 
 export const specifications = [
   BallOnCube, BallOnFloor, BallInCup, NoDrawOverhang, BallBesideHill, BallUnderClutter,
-  BallOnRope, NoDrawRamp, NoDrawRampTarget, SleepingBall, NoDrawAfterAwaken, Windmill
+  BallOnRope, NoDrawRamp, NoDrawRampTarget, SleepingBall, NoDrawAfterAwaken, Windmill,
+  Slot, SlotNoDraw,
 ]

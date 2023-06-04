@@ -2,6 +2,7 @@ import { wallCup, type LevelSpec } from "@/ts/draw-mode/Level"
 import { Color } from "@/ts/draw-mode/Theme"
 import { Bodies, Engine } from "matter-js"
 import * as EndCondition from "@/ts/draw-mode/EndCondition"
+import { NO_DRAW_AREA_OPACITY } from "@/ts/draw-mode/Config"
 
 const level: LevelSpec = {
   generateBodies(engine: Engine, onEnd: () => any) {
@@ -25,7 +26,7 @@ const level: LevelSpec = {
         }
       }),
       color: Color.NO_DRAW,
-      opacity: 0.2
+      opacity: NO_DRAW_AREA_OPACITY
     }
 
     EndCondition.onCollision(engine, walls.right, target, onEnd)
