@@ -6,7 +6,8 @@ const STATE_KEY = 'drawModeState'
 
 const defaultState = {
   completed: [] as string[],
-  theme: 0
+  theme: 0,
+  unlockAllLevels: false
 }
 type SerializableState = typeof defaultState
 
@@ -16,6 +17,7 @@ interface State {
   load: () => void
   save: () => void
   hasPageMajority: (page: number) => boolean,
+  unlockAllLevels: boolean
   // completedInRange: (start: number, end: number) => number
 }
 
@@ -26,6 +28,7 @@ export function createState(): State {
     load: () => loadState(state),
     save: () => saveState(state),
     hasPageMajority: (page: number) => hasPageMajority(state, page),
+    unlockAllLevels: false,
     // completedInRange: (start: number, end: number) => completedInRange(state, start, end),
   }
 
@@ -44,6 +47,7 @@ function loadState(state: State) {
     } else {
       state.theme = loadedState.theme
     }
+    state.unlockAllLevels = loadedState.unlockAllLevels
   }
 
   const defaultSerialized = JSON.stringify(defaultState)
@@ -64,8 +68,8 @@ function loadState(state: State) {
 
 function saveState(state: State) {
   const savedState: SerializableState = {
+    ...state,
     completed: Array.from(state.completed),
-    theme: state.theme
   }
   localStorage.setItem(STATE_KEY, JSON.stringify(savedState))
 }
@@ -86,7 +90,7 @@ function completedInRange(state: State, start: number, end: number) {
   return result
 }
 function hasPageMajority(state: State, page: number): boolean {
-  if (page < 0) {
+  if (page < 0 || state.unlockAllLevels) {
     return true
   }
   return completedInRange(state, page * LEVELS_PER_PAGE, (page + 1) * LEVELS_PER_PAGE) >= PAGE_MAJORITY_REQUIRED

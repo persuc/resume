@@ -194,15 +194,21 @@ import { cleanupEndConditions } from '@/ts/draw-mode/EndCondition'
     mouse = Matter.Mouse.create(render.canvas)
     render.mouse = mouse
 
-    // showLevelSelect()
+    showLevelSelect()
     // debug new levels by commenting the above and using:
-    clickLevel(15)
+    // clickLevel(16)
 
     Render.run(render)
     Runner.run(runner, engine)
     Events.on(engine, 'afterUpdate', cleanup)
 
-    applyTheme(state.theme)
+    applyTheme(state.theme);
+
+    (window as any)['unlockAllLevels'] = () => {
+      state.unlockAllLevels = true
+      state.save()
+      console.info("All levels unlocked!")
+    }
   })
 
   function showLevelSelect() {
