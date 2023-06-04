@@ -47,7 +47,7 @@ const level: LevelSpec = {
     ]
   },
   id: 'TargetBehindL',
-  text: "<p>Make the ball hit the target</p>",
+  text: "<p>Make the ball hit the target.</p>",
 }
 
 export default level
