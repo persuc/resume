@@ -7,7 +7,7 @@ const level: LevelSpec = {
   generateBodies(engine: Engine, onEnd: () => any) {
 
     const walls = wallCup()
-    const target = Bodies.circle(400, 560, 40)
+    const target = Bodies.circle(400, 540, 40)
     
     EndCondition.onCollision(engine, walls.left, target, onEnd)
 
