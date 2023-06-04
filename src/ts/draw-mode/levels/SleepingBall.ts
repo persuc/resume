@@ -19,19 +19,19 @@ const level: LevelSpec = {
       }),
       color: Color.WALL,
     }
-    const target = Bodies.circle(400, 300, 40, {
+    const ball = Bodies.circle(400, 300, 40, {
       isSleeping: true
     })
     
-    EndCondition.onAnyCollision(engine, target, () => {
-      target.isSleeping = false
+    EndCondition.onAnyCollision(engine, ball, () => {
+      ball.isSleeping = false
     })
 
-    EndCondition.onCondition(engine, () => target.position.y > 700, onEnd)
+    EndCondition.onCondition(engine, () => ball.position.y > 700, onEnd)
 
     return [
       walls,
-      { body: target, color: Color.TARGET }
+      { body: ball, color: Color.TARGET }
     ]
   },
   id: 'SleepingBall',

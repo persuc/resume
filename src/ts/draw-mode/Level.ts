@@ -18,6 +18,7 @@ import Windmill from "@/ts/draw-mode/levels/Windmill"
 import Slot from "@/ts/draw-mode/levels/Slot"
 import SlotNoDraw from "@/ts/draw-mode/levels/SlotNoDraw"
 import Chasm from "@/ts/draw-mode/levels/Chasm"
+import TargetBehindL from "@/ts/draw-mode/levels/TargetBehindL"
 
 export type ColouredBody = { body: Body, color?: Color, opacity?: number }
 
@@ -202,5 +203,5 @@ function setBodies(level: Level, bodies: (Body | ColouredBody | Constraint)[]) {
 export const specifications = [
   BallOnCube, BallOnFloor, BallInCup, NoDrawOverhang, BallBesideHill, BallUnderClutter,
   BallOnRope, NoDrawRamp, NoDrawRampTarget, SleepingBall, NoDrawAfterAwaken, Windmill,
-  Slot, SlotNoDraw, Chasm
+  Slot, SlotNoDraw, Chasm, TargetBehindL
 ]

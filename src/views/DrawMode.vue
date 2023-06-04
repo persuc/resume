@@ -194,9 +194,9 @@ import { cleanupEndConditions } from '@/ts/draw-mode/EndCondition'
     mouse = Matter.Mouse.create(render.canvas)
     render.mouse = mouse
 
-    showLevelSelect()
+    // showLevelSelect()
     // debug new levels by commenting the above and using:
-    // clickLevel(14)
+    clickLevel(15)
 
     Render.run(render)
     Runner.run(runner, engine)
