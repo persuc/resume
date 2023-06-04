@@ -35,7 +35,7 @@ const level: LevelSpec = {
       opacity: NO_DRAW_AREA_OPACITY
     }
     
-    EndCondition.onCondition(engine, () => target.position.x >= 560, onEnd)
+    EndCondition.onCondition(engine, () => target.position.x >= 560 && target.position.y < 640, onEnd)
 
     return [
       leftCliff,
