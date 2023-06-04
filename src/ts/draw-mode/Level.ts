@@ -14,6 +14,7 @@ import NoDrawRamp from "@/ts/draw-mode/levels/NoDrawRamp"
 import NoDrawRampTarget from "@/ts/draw-mode/levels/NoDrawRampTarget"
 import SleepingBall from "@/ts/draw-mode/levels/SleepingBall"
 import NoDrawAfterAwaken from "@/ts/draw-mode/levels/NoDrawAfterAwaken"
+import Windmill from "@/ts/draw-mode/levels/Windmill"
 
 export type ColouredBody = { body: Body, color?: Color, opacity?: number }
 
@@ -171,5 +172,5 @@ function setBodies(level: Level, bodies: (Body | ColouredBody | Constraint)[]) {
 
 export const specifications = [
   BallOnCube, BallOnFloor, BallInCup, NoDrawOverhang, BallBesideHill, BallUnderClutter,
-  BallOnRope, NoDrawRamp, NoDrawRampTarget, SleepingBall, NoDrawAfterAwaken
+  BallOnRope, NoDrawRamp, NoDrawRampTarget, SleepingBall, NoDrawAfterAwaken, Windmill
 ]
