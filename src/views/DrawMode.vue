@@ -196,7 +196,7 @@ import { cleanupEndConditions } from '@/ts/draw-mode/EndCondition'
 
     showLevelSelect()
     // debug new levels by commenting the above and using:
-    // clickLevel(idx)
+    // clickLevel(14)
 
     Render.run(render)
     Runner.run(runner, engine)
@@ -400,7 +400,7 @@ import { cleanupEndConditions } from '@/ts/draw-mode/EndCondition'
 </script>
 
 <template>
-  <div class="draw-mode" ref="container" style="width: 100vw; height: 100vh; margin: 0 auto">
+  <div class="draw-mode unselectable" ref="container" style="width: 100vw; height: 100vh; margin: 0 auto">
     <div class="flex hcenter absolute full-width" style="top: 5rem; z-index: 2; pointer-events: none;">
       <pre ref="levelText" v-show="!showEndScreen" v-html="level?.text" style="text-align: center; pointer-events: none;"></pre>
       <span ref="successText" v-show="showEndScreen" style="font-size: 20vh; pointer-events: none;">Great job.</span>
