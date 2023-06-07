@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import useClipboard from 'vue-clipboard3'
 import { reactive } from 'vue'
-import IconCopy from '@/components/icons/IconCopy.vue'
+import Icon from '@/components/Icon.vue'
 
 interface Props {
   value: string,
@@ -31,8 +31,7 @@ async function copy(text: string) {
 <template>
   <div class="copy" @click="copy(value)" style="cursor: pointer;">
     <slot></slot>
-    <IconCopy class="no-print" style="position: relative;">
-    </IconCopy>
+    <Icon class="no-print" style="position: relative;" name="copy"></Icon>
 
     <span :style="`transition: opacity 0.2s; opacity: ${showCopied[value] ? '1' : '0'}`" class="green copy-confirmation">Copied!</span>
   </div>

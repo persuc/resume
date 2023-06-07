@@ -1,53 +1,53 @@
-import { LEVELS_PER_PAGE, PAGE_MAJORITY_REQUIRED } from "@/ts/draw-mode/Config"
-import { specifications } from "@/ts/draw-mode/Level"
-import { themes } from "@/ts/draw-mode/Theme"
+import { themes, type Theme } from "@/ts/draw-mode/Theme"
+import { reactive, ref, shallowRef, type Ref } from "vue"
 
 const STATE_KEY = 'drawModeState'
 
-const defaultState = {
-  completed: [] as string[],
-  theme: 0,
+type SerializableState = {
+  completed: string[],
+  theme: keyof typeof themes
+  unlockAllLevels: boolean
+}
+
+const defaultState: SerializableState = {
+  completed: [],
+  theme: 'DARK',
   unlockAllLevels: false
 }
-type SerializableState = typeof defaultState
 
-interface State {
+export interface DrawModeState {
   completed: Set<string>,
-  theme: number,
+  theme: Ref<Theme>,
   load: () => void
   save: () => void
-  hasPageMajority: (page: number) => boolean,
-  unlockAllLevels: boolean
-  // completedInRange: (start: number, end: number) => number
+  unlockAllLevels: Ref<boolean>
 }
 
-export function createState(): State {
-  const state: State = {
-    completed: new Set<string>(),
-    theme: 0,
+export function createState(): DrawModeState {
+  const state: DrawModeState = {
+    completed: reactive(new Set<string>()),
+    theme: shallowRef(themes.DARK),
     load: () => loadState(state),
     save: () => saveState(state),
-    hasPageMajority: (page: number) => hasPageMajority(state, page),
-    unlockAllLevels: false,
-    // completedInRange: (start: number, end: number) => completedInRange(state, start, end),
+    unlockAllLevels: ref(false),
   }
 
   return state
 }
 
-function loadState(state: State) {
+function loadState(state: DrawModeState) {
   function loadSerialized(serialized: string) {
     const loadedState: SerializableState = JSON.parse(serialized)
     state.completed.clear()
     for (const v of loadedState.completed) {
       state.completed.add(v)
     }
-    if (loadedState.theme >= themes.length || loadedState.theme < 0) {
-      state.theme = 0
+    if (Object.keys(themes).includes(loadedState.theme)) {
+      state.theme.value = themes[loadedState.theme]
     } else {
-      state.theme = loadedState.theme
+      state.theme.value = themes.DARK
     }
-    state.unlockAllLevels = loadedState.unlockAllLevels
+    state.unlockAllLevels.value = loadedState.unlockAllLevels
   }
 
   const defaultSerialized = JSON.stringify(defaultState)
@@ -66,33 +66,12 @@ function loadState(state: State) {
   }
 }
 
-function saveState(state: State) {
+function saveState(state: DrawModeState) {
   const savedState: SerializableState = {
-    ...state,
+    unlockAllLevels: state.unlockAllLevels.value,
+    theme: Object.entries(themes).find(([_, value]) => value === state.theme.value)![0] as keyof typeof themes,
     completed: Array.from(state.completed),
   }
   localStorage.setItem(STATE_KEY, JSON.stringify(savedState))
-}
-
-function completedInRange(state: State, start: number, end: number) {
-  start = Math.max(start, 0)
-  if (start > end) {
-    throw new Error("start must be < end")
-  }
-
-
-  let result = 0
-  for (let i = start; i < Math.min(specifications.length, end); i++) {
-    if (state.completed.has(specifications[i].id)) {
-      result++
-    }
-  }
-  return result
-}
-function hasPageMajority(state: State, page: number): boolean {
-  if (page < 0 || state.unlockAllLevels) {
-    return true
-  }
-  return completedInRange(state, page * LEVELS_PER_PAGE, (page + 1) * LEVELS_PER_PAGE) >= PAGE_MAJORITY_REQUIRED
 }
 

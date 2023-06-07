@@ -3,24 +3,6 @@ import { Color } from "@/ts/draw-mode/Theme"
 import type { Theme } from "@/ts/draw-mode/Theme"
 import { Bodies, Body, Composite, type IMousePoint, type Engine, type IBodyDefinition, Constraint } from "matter-js"
 import { DEFAULT_FRICTION, DEFAULT_FRICTION_AIR, DEFAULT_FRICTION_STATIC, DEFAULT_SLOP } from "@/ts/draw-mode/Config"
-import BallOnCube from "@/ts/draw-mode/levels/BallOnCube"
-import BallOnFloor from "@/ts/draw-mode/levels/BallOnFloor"
-import BallInCup from "@/ts/draw-mode/levels/BallInCup"
-import NoDrawOverhang from "@/ts/draw-mode/levels/NoDrawOverhang"
-import BallBesideHill from "@/ts/draw-mode/levels/BallBesideHill"
-import BallUnderClutter from "@/ts/draw-mode/levels/BallUnderClutter"
-import BallOnRope from "@/ts/draw-mode/levels/BallOnRope"
-import NoDrawRamp from "@/ts/draw-mode/levels/NoDrawRamp"
-import NoDrawRampTarget from "@/ts/draw-mode/levels/NoDrawRampTarget"
-import SleepingBall from "@/ts/draw-mode/levels/SleepingBall"
-import NoDrawAfterAwaken from "@/ts/draw-mode/levels/NoDrawAfterAwaken"
-import Windmill from "@/ts/draw-mode/levels/Windmill"
-import Slot from "@/ts/draw-mode/levels/Slot"
-import SlotNoDraw from "@/ts/draw-mode/levels/SlotNoDraw"
-import Chasm from "@/ts/draw-mode/levels/Chasm"
-import TargetBehindL from "@/ts/draw-mode/levels/TargetBehindL"
-import BallOnStilts from "@/ts/draw-mode/levels/BallOnStilts"
-import BalancedBetweenSticks from "@/ts/draw-mode/levels/BalancedBetweenSticks"
 
 export type ColouredBody = { body: Body, color?: Color, opacity?: number }
 
@@ -122,7 +104,7 @@ export function startLevel(engine: Engine, spec: LevelSpec, theme: Theme, onEnd:
     line: null,
     startLine(point: IMousePoint) {
       level.line = new Line(level.engine)
-      level.line.setColor(level.theme[Color.DRAW])
+      level.line.setColor(level.theme.DRAW)
       level.line.addPoint(point)
     },
     drawLine(point: IMousePoint) {
@@ -153,7 +135,13 @@ export function startLevel(engine: Engine, spec: LevelSpec, theme: Theme, onEnd:
 
 function applyTheme(level: Level, theme: Theme) {
   level.theme = theme
+  if (level.line) {
+    level.line.setColor(theme.DRAW)
+  }
   for (const body of Composite.allBodies(level.engine.world)) {
+    if (level.line?.body === body) {
+      continue
+    }
     if ((body as any).type === 'constraint') {
       const renderTheme = level.themeMap[body.id]
       body.render.strokeStyle = theme[renderTheme.color ?? Color.DEFAULT]
@@ -201,9 +189,3 @@ function setBodies(level: Level, bodies: (Body | ColouredBody | Constraint)[]) {
     Composite.add(level.engine.world, realBody)
   }
 }
-
-export const specifications = [
-  BallOnCube, BallOnFloor, BallInCup, NoDrawOverhang, BallBesideHill, BallUnderClutter,
-  BallOnRope, NoDrawRamp, NoDrawRampTarget, SleepingBall, NoDrawAfterAwaken, Windmill,
-  Slot, SlotNoDraw, Chasm, TargetBehindL, BallOnStilts, BalancedBetweenSticks
-]

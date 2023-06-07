@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import Note from '@/components/Note.vue'
+
 interface Props {
   quotation: string,
   author: string,

@@ -1,12 +1,12 @@
 <script setup lang="ts">
+import { EMAIL, PHONE } from '@/ts/constants'
 import faceImage from '@/assets/face.png'
 import monashLogo from '@/assets/monash.png'
 import ImageAndText from '@/components/ImageAndText.vue'
 import CopyButton from '@/components/CopyButton.vue'
 import Header from '@/components/Header.vue'
-import IconDownload from '@/components/icons/IconDownload.vue'
-import { EMAIL, PHONE } from '@/ts/constants'
 import JobTitle from '@/components/JobTitle.vue'
+import Icon from '@/components/Icon.vue'
 
 </script>
 
@@ -14,7 +14,7 @@ import JobTitle from '@/components/JobTitle.vue'
   <Header class="no-print">
     <a href="/andrew_persic_resume.pdf" download>
       <div class="button">
-        <IconDownload class="mr-2" />Download
+        <Icon name="download" class="mr-2" />Download
       </div>
     </a>
   </Header>
@@ -51,21 +51,21 @@ import JobTitle from '@/components/JobTitle.vue'
       <li>Implemented URL management in Canva's CMS, replacing over 10,000 hardcoded URL strings, increasing TTM and decreasing load on engineers.</li>
     </ul>
 
-    <JobTitle class="mt-2" company="Two Bulls" role="Software Engineer (Full Stack)" date-from="2020" date-to="2022" :tech="[ 'Vue.js', 'TypeScript', 'Node.js', 'C#', 'python', 'AWS', 'MySQL', 'DynamoDB' ]" />
+    <JobTitle company="Two Bulls" role="Software Engineer (Full Stack)" date-from="2020" date-to="2022" :tech="[ 'Vue.js', 'TypeScript', 'Node.js', 'C#', 'python', 'AWS', 'MySQL', 'DynamoDB' ]" />
     <ul>
       <li><b class="only-print">Role: </b>Built numerous web applications with Vue frontend and Serverless / Typescript backend, deployed with AWS.</li>
       <li>Created a framework for bootstrapping web projects at Two Bulls, which is still used today</li>
       <li>Projects include: <a target="_blank" href="https://www.kidsdoconcall.com.au/">KidsDoc</a> telehealth, <a target="_blank" href="https://fit.theonetwo.com/">TheOneTwo</a> shopfront, <a target="_blank" href="https://www.service.vic.gov.au/services/border-permit/home">Victorian COVID border permits</a> (reached #3 on the app store!) and the <a target="_blank" href="https://release.me/">Release.Me</a> land sales platform.</li>
     </ul>
 
-    <JobTitle class="mt-2" company="Unico" role="Software Engineer (Backend)" date-from="2019" date-to="2020" :tech="[ 'Java', 'MySQL', 'python', 'MATRIXX', 'Linux', 'Docker', 'Spring' ]" />
+    <JobTitle company="Unico" role="Software Engineer (Backend)" date-from="2019" date-to="2020" :tech="[ 'Java', 'MySQL', 'python', 'MATRIXX', 'Linux', 'Docker', 'Spring' ]" />
     <ul>
       <li><b class="only-print">Role: </b>Performed database migrations (ETL) for large telecommunications vendors.</li>
       <li>Wrote <i>Java / Spring</i> applications to move databases of up to 20 million records to the <i>MATRIXX</i> in-memory database.</li>
       <li>Gained experience in data-intensive systems and concurrency, sensitive data and reverse engineering older systems.</li>
     </ul>
 
-    <JobTitle class="mt-2" company="Monash Uni Immersive Analytics" role="Software Engineer (Research)" date-from="2017" date-to="2019" :tech="[ 'JavaScript', 'Three.js', 'WebGL', 'python', 'R' ]" />
+    <JobTitle company="Monash Uni Immersive Analytics" role="Software Engineer (Research)" date-from="2017" date-to="2019" :tech="[ 'JavaScript', 'Three.js', 'WebGL', 'python', 'R' ]" />
     <ul>
       <li><b class="only-print">Role: </b>Developed a highly performant web application for 2D and 3D visualisation of protein complexes and cross-link mass
 spectrometry data using <i>Three.js</i> and <i>WebGL</i>.</li>

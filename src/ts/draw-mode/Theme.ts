@@ -1,3 +1,14 @@
+export enum Color {
+  DEFAULT = 'DEFAULT',
+  TARGET = 'TARGET',
+  DRAW = 'DRAW',
+  WALL = 'WALL',
+  NO_DRAW = 'NO_DRAW',
+  ZONE = 'ZONE',
+  BACKGROUND = 'BACKGROUND',
+  TEXT = 'TEXT',
+}
+
 export interface Theme {
   [Color.DEFAULT]: string
   [Color.TARGET]: string
@@ -5,61 +16,49 @@ export interface Theme {
   [Color.WALL]: string
   [Color.NO_DRAW]: string
   [Color.ZONE]: string
-  background: string
-  text: string
+  [Color.BACKGROUND]: string
+  [Color.TEXT]: string
 }
 
-export enum Color {
-  DEFAULT,
-  TARGET,
-  DRAW,
-  WALL,
-  NO_DRAW,
-  ZONE
+export const themes: Record<string, Theme> = {
+  DARK: {
+    DEFAULT: '#FDFDFD',
+    TARGET: '#FDAD00',
+    DRAW: '#FDFDFD',
+    WALL: '#FDFDFD',
+    NO_DRAW: '#AF4242',
+    ZONE: '#4242AF',
+    BACKGROUND: '#000000',
+    TEXT: '#FAFAFA'
+  },
+  LIGHT: {
+    DEFAULT: '#DADADA',
+    TARGET: '#FDADA0',
+    DRAW: '#FFAF77',
+    WALL: '#DADADA',
+    NO_DRAW: '#AF4242',
+    ZONE: '#EFECD2',
+    BACKGROUND: '#FCFCFC',
+    TEXT: '#2D2D2D'
+  },
+  MOONLIGHT: {
+    DEFAULT: '#EF81EF',
+    TARGET: '#FD118A',
+    DRAW: '#A120EF',
+    WALL: '#2100EF',
+    NO_DRAW: '#4242AF',
+    ZONE: '#EF81EF',
+    BACKGROUND: '#000040',
+    TEXT: '#FEFEFE'
+  },
+  NAOKI: {
+    DEFAULT: '#DD4020',
+    TARGET: '#FD112A',
+    DRAW: '#811515',
+    WALL: '#CA0000',
+    NO_DRAW: '#AF4242',
+    ZONE: '#EFA16F',
+    BACKGROUND: '#360000',
+    TEXT: '#FEFEFE'
+  }
 }
-
-export const DARK: Theme = {
-  [Color.DEFAULT]: '#FDFDFD',
-  [Color.TARGET]: '#FDAD00',
-  [Color.DRAW]: '#FDFDFD',
-  [Color.WALL]: '#FDFDFD',
-  [Color.NO_DRAW]: '#AF4242',
-  [Color.ZONE]: '#4242AF',
-  background: '#000000',
-  text: '#FAFAFA'
-}
-
-export const LIGHT: Theme = {
-  [Color.DEFAULT]: '#DADADA',
-  [Color.TARGET]: '#FDADA0',
-  [Color.DRAW]: '#FFAF77',
-  [Color.WALL]: '#DADADA',
-  [Color.NO_DRAW]: '#AF4242',
-  [Color.ZONE]: '#EFECD2',
-  background: '#FCFCFC',
-  text: '#2D2D2D'
-}
-
-export const MOONLIGHT: Theme = {
-  [Color.DEFAULT]: '#EF81EF',
-  [Color.TARGET]: '#FD118A',
-  [Color.DRAW]: '#A120EF',
-  [Color.WALL]: '#2100EF',
-  [Color.NO_DRAW]: '#4242AF',
-  [Color.ZONE]: '#EF81EF',
-  background: '#000040',
-  text: '#FEFEFE'
-}
-
-export const NAOKI: Theme = {
-  [Color.DEFAULT]: '#DD4020',
-  [Color.TARGET]: '#FD112A',
-  [Color.DRAW]: '#811515',
-  [Color.WALL]: '#CA0000',
-  [Color.NO_DRAW]: '#AF4242',
-  [Color.ZONE]: '#EFA16F',
-  background: '#360000',
-  text: '#FEFEFE'
-}
-
-export const themes = [DARK, LIGHT, MOONLIGHT, NAOKI]

@@ -7,7 +7,7 @@ import linkedInImage from '@/assets/linkedin.png'
 import bgImage from '@/assets/walter-de-maria-naoshima.jpg'
 import starImage from '@/assets/glowing_star.png'
 import ImageAndText from '@/components/ImageAndText.vue'
-import IconDownload from '@/components/icons/IconDownload.vue'
+import Icon from '@/components/Icon.vue'
 import { EMAIL, PHONE } from '@/ts/constants'
 
 const router = useRouter()
@@ -45,7 +45,7 @@ function goBlog() {
             <h2>Resume</h2>
             <a href="/andrew_persic_resume.pdf" download @click.stop class="plain"> 
               <div class="button text">
-                <IconDownload class="mr-2" style="opacity: 0.8;" />Download
+                <Icon name="download" class="mr-2" style="opacity: 0.8;" />Download
               </div>
             </a>
           </div>
