@@ -1,12 +1,13 @@
-import { wallCup, type LevelSpec } from "@/ts/draw-mode/Level"
+import BodyUtil from "@/ts/draw-mode/BodyUtil"
+import * as EndCondition from "@/ts/draw-mode/EndCondition"
+import type { LevelSpec } from "@/ts/draw-mode/Level"
 import { Color } from "@/ts/draw-mode/Theme"
 import { Bodies, Body, Engine } from "matter-js"
-import * as EndCondition from "@/ts/draw-mode/EndCondition"
 
 const level: LevelSpec = {
   generateBodies(engine: Engine, onEnd: () => any) {
 
-    const walls = wallCup()
+    const walls = BodyUtil.wallCup()
     const target = Bodies.circle(400, 515, 30)
     const cup = Body.create({
       parts: [

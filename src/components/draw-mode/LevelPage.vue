@@ -23,6 +23,7 @@ import Slot from '@/ts/draw-mode/levels/begin/Slot'
 import SlotNoDraw from '@/ts/draw-mode/levels/begin/SlotNoDraw'
 import TargetBehindL from '@/ts/draw-mode/levels/begin/TargetBehindL'
 import Windmill from '@/ts/draw-mode/levels/begin/Windmill'
+import Scales from '@/ts/draw-mode/levels/bloom/Scales'
 
 interface Props {
   state: DrawModeState,
@@ -51,7 +52,7 @@ const worlds = [
     BallOnRope, NoDrawRamp, NoDrawRampTarget, SleepingBall, NoDrawAfterAwaken, Windmill,
     Slot, SlotNoDraw, Chasm, TargetBehindL, BallOnStilts, BalancedBetweenSticks
   ]),
-  createWorldData('bloom', []),
+  createWorldData('bloom', [ Scales ]),
   createWorldData('flourish', []),
   createWorldData('burn', []),
 ]

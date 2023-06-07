@@ -8,7 +8,7 @@ There are two easy ways to contribute:
 
 Larger initiatives include:
 1. Making your own worlds (see [How do I make my own worlds?](#how-do-i-make-my-own-worlds))
-2. Improving the drawing code for better performance (see [src/ts/draw-mode/MatterLine.ts](src/ts/draw-mode/MatterLine.ts))
+2. Improving the drawing code for better performance (see [MatterLine.ts](src/ts/draw-mode/MatterLine.ts))
 3. Improving the game physics to prevent objects from intersecting / sliding through each other.
 4. Adding sound effects / music
 
@@ -42,8 +42,9 @@ To go over everything in one example, if I added a level called `MyLevel` to the
 Tips for creating levels:
 - The matter-js coordinate system places (0, 0) in the top left of the canvas.
 - Every level is 800x600 units (w x h)
-- There are many ways you can create a win-condition for a level including: when two objects touch, when an object touches any object, when some function on the objects in the level is true, etc. See existing levels and [EndCondition.ts](src/ts/draw-mode/EndCondition.ts) for examples
 - There are many types of objects you can use in levels such as hard-body objects, soft-body objects, ropes, pin joints, areas in which the player cannot draw, and more. See existing levels and [matter.js docs](https://brm.io/matter-js/) for examples.
+- There are many ways you can create a win-condition for a level including: when two objects touch, when an object touches any object, when some function on the objects in the level is true, etc. See existing levels and [EndCondition.ts](src/ts/draw-mode/EndCondition.ts) for examples
+- There are also helper functions in [BodyUtil.ts](src/ts/draw-mode/BodyUtil.ts) for creating different types of objects
 - Try to make levels that you can beat yourself consistently once you have worked out the answer. Levels that incorporate too much random chance are boring to play.
 - If you make lots of difficult levels, intersperse some easier levels in between, since a player needs to beat at least half of the levels on a page to unlock the next levels
 - Worlds can have any number of levels, but the target number is 18 levels per world

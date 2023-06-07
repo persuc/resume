@@ -1,10 +1,11 @@
 import Line from "@/ts/draw-mode/MatterLine"
 import { Color } from "@/ts/draw-mode/Theme"
 import type { Theme } from "@/ts/draw-mode/Theme"
-import { Bodies, Body, Composite, type IMousePoint, type Engine, type IBodyDefinition, Constraint } from "matter-js"
+import { Body, Composite, type IMousePoint, type Engine, Constraint } from "matter-js"
 import { DEFAULT_FRICTION, DEFAULT_FRICTION_AIR, DEFAULT_FRICTION_STATIC, DEFAULT_SLOP } from "@/ts/draw-mode/Config"
+import BodyUtil from "@/ts/draw-mode/BodyUtil"
 
-export type ColouredBody = { body: Body, color?: Color, opacity?: number }
+export type ColouredBody = { body: Body | Composite, color?: Color, opacity?: number }
 
 export interface LevelSpec {
   id: string,
@@ -28,64 +29,7 @@ export interface Level {
   drawLine(point: IMousePoint): void
   endLine(): void
   restart(): void
-}
-
-export const bodyOpts: IBodyDefinition = {
-  render: {
-    fillStyle: '#FFFFFF'
-  }
-}
-
-export function wallCup(): ColouredBody & {
-  floor: Body,
-  left: Body,
-  right: Body
-} {
-
-  const floor = Bodies.rectangle(400, 590, 762, 20)
-  const left = Bodies.rectangle(10, 300, 20, 600)
-  const right = Bodies.rectangle(790, 300, 20, 600)
-
-  const body = Body.create({
-    isStatic: true,
-    parts: [
-      floor,
-      left,
-      right
-    ],
-  })
-  return {
-    body,
-    color: Color.WALL,
-    floor,
-    left,
-    right,
-  } 
-}
-
-export function wallSides(): ColouredBody & {
-  left: Body,
-  right: Body
-} {
-
-  const left = Bodies.rectangle(10, 300, 20, 600)
-  const right = Bodies.rectangle(790, 300, 20, 600)
-
-  const body = Body.create({
-    isStatic: true,
-    parts: [
-      left,
-      right
-    ],
-  })
-  return {
-    body,
-    color: Color.WALL,
-    left,
-    right,
-  } 
-}
-  
+} 
 
 export function createLevel(engine: Engine, spec: LevelSpec, theme: Theme, onEnd: () => any): Level {
   const level: Level = {
@@ -160,7 +104,7 @@ function setBodies(level: Level, bodies: (Body | ColouredBody | Constraint)[]) {
   level.themeMap = {}
   Composite.clear(level.engine.world, false)
   for (const body of bodies) {
-    if ((body as any).type === 'constraint') {
+    if (BodyUtil.isConstraint(body)) {
       const constraint = body as Constraint
       Composite.add(level.engine.world, constraint)
       level.themeMap[constraint.id] = {
@@ -171,21 +115,37 @@ function setBodies(level: Level, bodies: (Body | ColouredBody | Constraint)[]) {
     }
     let color: Color = ('color' in body) ? (body.color as Color) : Color.DEFAULT
     let opacity: number = ('opacity' in body) ? (body.opacity as number) : 1
-    let realBody: Body = (('body' in body) ? body.body : body) as Body
-    level.themeMap[realBody.id] = {
+    let unwrappedBody: Body | Composite = 'body' in body ? body.body : body
+    level.themeMap[unwrappedBody.id] = {
       color,
       opacity,
     }
-    for (const part of realBody.parts) {
+    const parts = [unwrappedBody]
+    if (BodyUtil.isBody(unwrappedBody)) {
+      parts.push(...unwrappedBody.parts)
+      setPhysics(unwrappedBody)
+    } else if (BodyUtil.isComposite(unwrappedBody)) {
+      for (const part of unwrappedBody.bodies.flatMap(b => b.parts)) {
+        parts.push(part)
+        setPhysics(part)
+      }
+      for (const constraint of unwrappedBody.constraints) {
+        Composite.add(level.engine.world, constraint)
+      }
+    }
+    for (const part of parts) {
       level.themeMap[part.id] = {
         color,
         opacity
       }
     }
-    realBody.frictionAir = DEFAULT_FRICTION_AIR
-    realBody.frictionStatic = DEFAULT_FRICTION_STATIC
-    realBody.friction = DEFAULT_FRICTION
-    realBody.slop = DEFAULT_SLOP
-    Composite.add(level.engine.world, realBody)
+    Composite.add(level.engine.world, unwrappedBody)
   }
+}
+
+function setPhysics(body: Body) {
+  body.frictionAir = DEFAULT_FRICTION_AIR
+  body.frictionStatic = DEFAULT_FRICTION_STATIC
+  body.friction = DEFAULT_FRICTION
+  body.slop = DEFAULT_SLOP
 }
