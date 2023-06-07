@@ -141,13 +141,13 @@ export default {
       right,
     } 
   },
-  isConstraint(object: Object): object is Constraint {
+  isConstraint(object: any): object is Constraint {
     return 'type' in object && object.type === 'constraint'
   },
-  isBody(object: Object): object is Body {
+  isBody(object: any): object is Body {
     return 'type' in object && object.type === 'body'
   },
-  isComposite(object: Object): object is Composite {
+  isComposite(object: any): object is Composite {
     return 'type' in object && object.type === 'composite'
   },
   vectorCup(width: number, height: number, thickness: number): Vector[] {
