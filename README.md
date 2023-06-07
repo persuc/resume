@@ -18,7 +18,7 @@ Deployed with [Cloudflare Pages](https://pages.cloudflare.com/) as an SPA
 
 ## Type Support for `.vue` Imports in TS
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.vscode-typescript-vue-plugin) to make the [TypeScript language service](https://github.com/microsoft/TypeScript/wiki/Using-the-Language-Service-API) aware of `.vue` types.
 
 If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
 
@@ -27,33 +27,47 @@ If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has a
     2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
 2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
 ## Project Setup
 
 ```sh
 yarn
 ```
 
-### Compile and Hot-Reload for Development
+### Project commands
+
+Compile and Hot-Reload for Development:
 
 ```sh
 yarn dev
 ```
 
-### Type-Check, Compile and Minify for Production
+Type-Check, Compile and Minify for Production:
 
 ```sh
 yarn build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+Type-Check, Compile, Minify for Production and Start Development Server:
+
+```sh
+yarn preview
+```
+
+Lint with [ESLint](https://eslint.org/):
 
 ```sh
 yarn lint
 ```
+
+Rebundle Dependencies and Start Development Server:
+
+```sh
+yarn clean
+```
+
+## Contributing
+
+I am accepting contributions to my physics game [Super Sicko Draw Mode](https://persic.cloud/draw) (name not finalised). See [CONTRIBUTORS.md](./CONTRIBUTORS.md)
 
 ## License
 

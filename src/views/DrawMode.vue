@@ -3,7 +3,7 @@
   import decomp from 'poly-decomp'
   import LevelPage from '@/components/draw-mode/LevelPage.vue'
   import Matter, { Common, Composite, Engine, Events, Mouse, Render, Runner } from 'matter-js'
-  import { startLevel, type Level, type LevelSpec } from '@/ts/draw-mode/Level'
+  import { createLevel, type Level, type LevelSpec } from '@/ts/draw-mode/Level'
   import { themes, type Theme } from '@/ts/draw-mode/Theme'
   import { createState } from '@/ts/draw-mode/State'
   import { ASPECT_RATIO, CLEANUP_INTERVAL } from '@/ts/draw-mode/Config'
@@ -122,8 +122,8 @@
     }
   })
 
-  function onLevelClicked(spec: LevelSpec) {
-    level.value = startLevel(engine, spec, state.theme.value, () => {
+  function startLevel(spec: LevelSpec) {
+    level.value = createLevel(engine, spec, state.theme.value, () => {
       showEndScreen.value = true
       if (level.value?.line) {
         level.value.endLine()
@@ -188,7 +188,7 @@
 <template>
   <div class="draw-mode unselectable flex center hcenter" :style="`width: 100vw; height: 100vh; background: ${state.theme.value.BACKGROUND}`">
     <div ref="container">
-      <LevelPage :state="state" @input="onLevelClicked" v-show="level === null" />
+      <LevelPage :state="state" @input="startLevel" v-show="level === null" />
       <div
         class="flex hcenter absolute full-width"
         :style="`top: 5rem; z-index: 2; pointer-events: none; color: ${state.theme.value.TEXT}`"

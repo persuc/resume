@@ -87,7 +87,7 @@ export function wallSides(): ColouredBody & {
 }
   
 
-export function startLevel(engine: Engine, spec: LevelSpec, theme: Theme, onEnd: () => any): Level {
+export function createLevel(engine: Engine, spec: LevelSpec, theme: Theme, onEnd: () => any): Level {
   const level: Level = {
     engine,
     themeMap: {},

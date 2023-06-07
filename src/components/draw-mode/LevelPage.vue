@@ -1,30 +1,28 @@
 
 <script setup lang="ts">
-import { computed, onMounted, ref, type Ref } from 'vue'
+import { computed, ref, type Ref } from 'vue'
 import Icon from '@/components/Icon.vue'
 import { LEVELS_PER_PAGE, PAGE_MAJORITY_REQUIRED } from '@/ts/draw-mode/Config'
 import type { LevelSpec } from '@/ts/draw-mode/Level'
 import type { DrawModeState } from '@/ts/draw-mode/State'
-import { themes } from '@/ts/draw-mode/Theme'
-import BalancedBetweenSticks from '@/ts/draw-mode/levels/BalancedBetweenSticks'
-import BallBesideHill from '@/ts/draw-mode/levels/BallBesideHill'
-import BallInCup from '@/ts/draw-mode/levels/BallInCup'
-import BallOnCube from '@/ts/draw-mode/levels/BallOnCube'
-import BallOnFloor from '@/ts/draw-mode/levels/BallOnFloor'
-import BallOnRope from '@/ts/draw-mode/levels/BallOnRope'
-import BallOnStilts from '@/ts/draw-mode/levels/BallOnStilts'
-import BallUnderClutter from '@/ts/draw-mode/levels/BallUnderClutter'
-import Chasm from '@/ts/draw-mode/levels/Chasm'
-import NoDrawAfterAwaken from '@/ts/draw-mode/levels/NoDrawAfterAwaken'
-import NoDrawOverhang from '@/ts/draw-mode/levels/NoDrawOverhang'
-import NoDrawRamp from '@/ts/draw-mode/levels/NoDrawRamp'
-import NoDrawRampTarget from '@/ts/draw-mode/levels/NoDrawRampTarget'
-import SleepingBall from '@/ts/draw-mode/levels/SleepingBall'
-import Slot from '@/ts/draw-mode/levels/Slot'
-import SlotNoDraw from '@/ts/draw-mode/levels/SlotNoDraw'
-import TargetBehindL from '@/ts/draw-mode/levels/TargetBehindL'
-import Windmill from '@/ts/draw-mode/levels/Windmill'
-import level from '@/ts/draw-mode/levels/BalancedBetweenSticks'
+import BalancedBetweenSticks from '@/ts/draw-mode/levels/begin/BalancedBetweenSticks'
+import BallBesideHill from '@/ts/draw-mode/levels/begin/BallBesideHill'
+import BallInCup from '@/ts/draw-mode/levels/begin/BallInCup'
+import BallOnCube from '@/ts/draw-mode/levels/begin/BallOnCube'
+import BallOnFloor from '@/ts/draw-mode/levels/begin/BallOnFloor'
+import BallOnRope from '@/ts/draw-mode/levels/begin/BallOnRope'
+import BallOnStilts from '@/ts/draw-mode/levels/begin/BallOnStilts'
+import BallUnderClutter from '@/ts/draw-mode/levels/begin/BallUnderClutter'
+import Chasm from '@/ts/draw-mode/levels/begin/Chasm'
+import NoDrawAfterAwaken from '@/ts/draw-mode/levels/begin/NoDrawAfterAwaken'
+import NoDrawOverhang from '@/ts/draw-mode/levels/begin/NoDrawOverhang'
+import NoDrawRamp from '@/ts/draw-mode/levels/begin/NoDrawRamp'
+import NoDrawRampTarget from '@/ts/draw-mode/levels/begin/NoDrawRampTarget'
+import SleepingBall from '@/ts/draw-mode/levels/begin/SleepingBall'
+import Slot from '@/ts/draw-mode/levels/begin/Slot'
+import SlotNoDraw from '@/ts/draw-mode/levels/begin/SlotNoDraw'
+import TargetBehindL from '@/ts/draw-mode/levels/begin/TargetBehindL'
+import Windmill from '@/ts/draw-mode/levels/begin/Windmill'
 
 interface Props {
   state: DrawModeState,
@@ -57,36 +55,6 @@ const worlds = [
   createWorldData('flourish', []),
   createWorldData('burn', []),
 ]
-
-// const worldImages: (HTMLImageElement | null)[] = new Array(worlds.length).fill(null)
-
-// Math.min(LEVELS_PER_PAGE, images.length - page * LEVELS_PER_PAGE)
-
-// async function fetchImages(images: (HTMLImageElement | null)[], paths: string[], start: number) {
-//   const promises: Promise<HTMLImageElement>[] = []
-//   const end = Math.min(start + LEVELS_PER_PAGE, images.length)
-//   for (let i = start; i < end; i++) {
-//     const existingImage = images[i]
-//     if (existingImage !== null) {
-//       promises.push(Promise.resolve(existingImage))
-//     } else {
-//       const image = new Image()
-//       promises.push(new Promise((resolve, reject) => {
-//         image.onload = () => {
-//           images[i] = image
-//           resolve(image)
-//         }
-//         image.onerror = reject
-//       }))
-//       image.src = `/draw-mode/${paths[i]}.png`
-//     }
-//   }
-
-//   return Promise.all(promises)
-// }
-
-onMounted(() => {
-})
 
 function hasPageMajority(world: WorldData, page: number): boolean {
   if (page < 0 || state.unlockAllLevels.value) {
