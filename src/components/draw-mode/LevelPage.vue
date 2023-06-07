@@ -153,8 +153,8 @@ const emit = defineEmits<{
             :src="world === null ? `/draw-mode/${worlds[LEVELS_PER_PAGE * worldPage + i - 1].name}/${worlds[LEVELS_PER_PAGE * worldPage + i - 1].name}.png` : `/draw-mode/${world.name}/${world.levelSpecs[LEVELS_PER_PAGE * levelPage + i - 1].id}.png`"
             :style="`
               width: 100%;
-              border: 1pt solid ${state.theme.value.TEXT};
-              box-shadow: 6px 6px 0px 0px ${state.theme.value.DRAW};
+              border: 1pt solid ${state.theme.value.TARGET};
+              box-shadow: 6px 6px 0px 0px ${state.theme.value.TARGET};
               opacity: ${world === null || levelPage === 0 || hasPageMajority(world, levelPage - 1) ? 1 : 0.2}`"
           /> 
         </div>
