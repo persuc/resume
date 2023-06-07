@@ -32,6 +32,21 @@ export function onCollision(engine: Engine, bodyA: Body, bodyB: Body, onEnd: () 
   })
 }
 
+export function onNoCollision(engine: Engine, bodyA: Body, bodyB: Body, onEnd: () => any) {
+  const eventType = 'afterUpdate'
+  function callback() {
+    if (!Collision.collides(bodyA, bodyB, undefined as unknown as Pairs)) {
+      onEnd()
+      Events.off(engine, eventType, callback)
+    }
+  }
+  Events.on(engine, eventType, callback)
+  eventsToRemove.push({
+    eventType,
+    callback
+  })
+}
+
 export function onCondition(engine: Engine, condition: () => boolean, onEnd: () => any) {
   const eventType = 'afterUpdate'
   function callback() {

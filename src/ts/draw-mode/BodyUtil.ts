@@ -13,7 +13,8 @@ export default {
    */
   isosceles(x: number, y: number, width: number, height: number, options?: IBodyDefinition): Body {
     return Bodies.fromVertices(x, y, [
-      // Ensure vertices are provided in clockwise order when us
+      // Ensure vertices are provided in clockwise order when using Bodies.fromVertices
+      // See https://brm.io/matter-js/docs/classes/Bodies.html#method_fromVertices
       [
         {
           x: x,
@@ -42,7 +43,7 @@ export default {
   },
   wallFloor(): ColouredBody {
     return {
-      body: Bodies.rectangle(400, 590, 762, 20, { isStatic: true }),
+      body: Bodies.rectangle(400, 590, 800, 20, { isStatic: true }),
       color: Color.WALL,
     }
   },
