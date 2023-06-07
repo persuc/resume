@@ -32,6 +32,52 @@ export default {
     ], options)
   },
   /**
+   * 
+   * @param width length of the triangle's horizontal edge
+   * @param height length of the triangle's vertical edge
+   * @param orientation Cardinal direction of the slanted edge of the triangle
+   */
+  rightAngle(x: number, y: number, width: number, height: number, orientation: 'NE' | 'NW' | 'SE' | 'SW', options?: IBodyDefinition): Body {
+    const ySign = {
+      NE: -1,
+      NW: -1,
+      SE: 1,
+      SW: 1
+    }[orientation]
+
+    const xSign = {
+      NE: 0,
+      NW: 1,
+      SE: 0,
+      SW: 1
+    }[orientation]
+
+    const zeroVert = {
+      x: 0,
+      y: 0,
+    }
+
+    const widthVert = {
+      x: width,
+      y: 0,
+    }
+
+    const angleVert = {
+      x: xSign * width,
+      y: ySign * height,
+    }
+
+    const verts = ySign > 0 ? [
+      zeroVert, angleVert, widthVert
+    ] : [
+      zeroVert, widthVert, angleVert
+    ]
+
+    return Bodies.fromVertices(x, y, [
+      verts
+    ], options)
+  },
+  /**
    * @param x x-coordinate of the top left corner of the rectangle
    * @param y y-coordinate of the top left corner of the rectangle
    * @param width width of the rectangle

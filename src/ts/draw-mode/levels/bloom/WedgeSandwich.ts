@@ -48,9 +48,42 @@ const level: LevelSpec = {
           y: 0,
         },
       ]
-    ])
+    ], {
+      render: {
+        strokeStyle: 'none'
+      }
+    })
 
     const ball = Bodies.circle(410, 510, 20)
+
+    const wedgeCap = Bodies.fromVertices(WEDGE_X - 60, WEDGE_Y - 100, [
+      [
+        {
+          x: -WEDGE_WIDTH / 2 - 1,
+          y: -1,
+        },
+        {
+          x: -WEDGE_WIDTH / 2 - 41,
+          y: -1,
+        },
+        {
+          x: -WEDGE_WIDTH / 2 - 41,
+          y: -WEDGE_HEIGHT - 1 - 55,
+        },
+        {
+          x: WEDGE_WIDTH / 2 + 90,
+          y: -1,
+        },
+        {
+          x: WEDGE_WIDTH / 2 - 1,
+          y: -1,
+        },
+        {
+          x: -WEDGE_WIDTH / 2 - 1,
+          y: -WEDGE_HEIGHT - 1,
+        },
+      ]
+    ])
     
     const slotCollision = Bodies.rectangle(0, 0, 100, 60, {
       collisionFilter: {
@@ -71,12 +104,13 @@ const level: LevelSpec = {
 
     return [
       { body: ball, color: Color.TARGET },
-      slotCollision,
+      // slotCollision,
       floor,
       wedge,
+      wedgeCap,
     ]
   },
-  id: 'SlottedWedge',
+  id: 'WedgeSandwich',
   text: "<p>Take the ball out.</p>"
 }
 

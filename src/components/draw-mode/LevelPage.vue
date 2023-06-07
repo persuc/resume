@@ -27,6 +27,8 @@ import Scales from '@/ts/draw-mode/levels/bloom/Scales'
 import ScalesSwap from '@/ts/draw-mode/levels/bloom/ScalesSwap'
 import ScalesWeight from '@/ts/draw-mode/levels/bloom/ScalesWeight'
 import SlottedWedge from '@/ts/draw-mode/levels/bloom/SlottedWedge'
+import WedgeSandwich from '@/ts/draw-mode/levels/bloom/WedgeSandwich'
+import BetweenWedges from '@/ts/draw-mode/levels/bloom/BetweenWedges'
 
 interface Props {
   state: DrawModeState,
@@ -55,7 +57,9 @@ const worlds = [
     BallOnRope, NoDrawRamp, NoDrawRampTarget, SleepingBall, NoDrawAfterAwaken, Windmill,
     Slot, SlotNoDraw, Chasm, TargetBehindL, BallOnStilts, BalancedBetweenSticks
   ]),
-  createWorldData('bloom', [ Scales, ScalesSwap, ScalesWeight, SlottedWedge ]),
+  createWorldData('bloom', [
+    Scales, ScalesSwap, ScalesWeight, SlottedWedge, WedgeSandwich, BetweenWedges
+  ]),
   createWorldData('flourish', []),
   createWorldData('burn', []),
 ]
