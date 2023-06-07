@@ -1,6 +1,5 @@
 import type { LevelSpec } from "@/ts/draw-mode/Level"
-import { Color } from "@/ts/draw-mode/Theme"
-import { Bodies, Body, Engine, Events, Vector } from "matter-js"
+import { Bodies, Engine } from "matter-js"
 import * as EndCondition from "@/ts/draw-mode/EndCondition"
 import BodyUtil from "@/ts/draw-mode/BodyUtil"
 
@@ -9,7 +8,14 @@ const level: LevelSpec = {
 
     const walls = BodyUtil.wallSides()
 
-    const rod = Bodies.rectangle(400, 100, 200, 20)
+    const leftBlock = Bodies.rectangle(30, 260, 20, 20, {
+      isStatic: true
+    })
+    const rightBlock = Bodies.rectangle(770, 260, 20, 20, {
+      isStatic: true
+    })
+
+    const rod = Bodies.rectangle(400, 100, 450, 20)
 
     const leftWedge = BodyUtil.rightAngle(140, 400, 360, 100, 'NE', {
       isStatic: true
@@ -25,7 +31,9 @@ const level: LevelSpec = {
       walls,
       rod,
       leftWedge,
-      rightWedge
+      rightWedge,
+      leftBlock,
+      rightBlock
     ]
   },
   id: 'BetweenWedges',
