@@ -40,6 +40,12 @@ export default {
   rectangleTopLeftCoords(x: number, y: number, width: number, height: number, options?: IBodyDefinition): Body {
     return Bodies.rectangle(x + width / 2, y + height / 2, width, height, options)
   },
+  wallFloor(): ColouredBody {
+    return {
+      body: Bodies.rectangle(400, 590, 762, 20, { isStatic: true }),
+      color: Color.WALL,
+    }
+  },
   wallCup(): ColouredBody & {
     floor: Body,
     left: Body,

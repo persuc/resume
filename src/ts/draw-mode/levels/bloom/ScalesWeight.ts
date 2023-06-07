@@ -94,7 +94,7 @@ const level: LevelSpec = {
     })
     
     const target = {
-      body: Bodies.rectangle(150, 250, 40, 40, {
+      body: Bodies.rectangle(150, 500, 40, 40, {
         isStatic: true,
         collisionFilter: {
           mask: 0,
@@ -102,6 +102,10 @@ const level: LevelSpec = {
       }),
       color: Color.ZONE
     }
+
+    const weight = Bodies.rectangle(650, 350, 40, 40, {
+      density: 0.005
+    })
 
     EndCondition.onCondition(engine, () => {
       return distance(ball.position, target.body.position) < 40
@@ -111,10 +115,11 @@ const level: LevelSpec = {
       { body: ball, color: Color.TARGET },
       floor,
       target,
+      weight,
       { body: scales }
     ]
   },
-  id: 'Scales',
+  id: 'ScalesWeight',
   text: "<p>Make the ball hit the target.</p>"
 }
 

@@ -94,7 +94,7 @@ const level: LevelSpec = {
     })
     
     const target = {
-      body: Bodies.rectangle(150, 250, 40, 40, {
+      body: Bodies.rectangle(650, 250, 40, 40, {
         isStatic: true,
         collisionFilter: {
           mask: 0,
@@ -114,7 +114,7 @@ const level: LevelSpec = {
       { body: scales }
     ]
   },
-  id: 'Scales',
+  id: 'ScalesSwap',
   text: "<p>Make the ball hit the target.</p>"
 }
 
