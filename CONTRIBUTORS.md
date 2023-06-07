@@ -3,11 +3,11 @@
 ## What is the easiest way to contribute?
 
 There are two easy ways to contribute:
-1. Making your own levels (see [How do I make my own levels?](#how-do-i-make-my-own-levels?))
+1. Making your own levels (see [How do I make my own levels?](#how-do-i-make-my-own-levels))
 2. Making your own themes (see [How do I make my own themes?](#how-do-i-make-my-own-themes))
 
 Larger initiatives include:
-1. Making your own worlds (see [How do I make my own worlds?](#how-do-i-make-my-own-worlds?))
+1. Making your own worlds (see [How do I make my own worlds?](#how-do-i-make-my-own-worlds))
 2. Improving the drawing code for better performance (see [src/ts/draw-mode/MatterLine.ts](src/ts/draw-mode/MatterLine.ts))
 3. Improving the game physics to prevent objects from intersecting / sliding through each other.
 4. Adding sound effects / music
@@ -28,7 +28,7 @@ Feel free to open a PR without any code if you would like to leave suggestions.
 ## How do I make my own levels?
 
 1. Copy an existing level from [/src/ts/draw-mode/levels/begin](./src/ts/draw-mode/levels/begin) and give it a unique name
-2. Choose a world for your level to be in. You can add it to an existing world by dropping it into a subfolder of [/src/ts/draw-mode/levels/](./src/ts/draw-mode/levels/). To create your own world, see [How do I make my own worlds?](#how-do-i-make-my-own-worlds?)
+2. Choose a world for your level to be in. You can add it to an existing world by dropping it into a subfolder of [/src/ts/draw-mode/levels/](./src/ts/draw-mode/levels/). To create your own world, see [How do I make my own worlds?](#how-do-i-make-my-own-worlds)
 3. Add your level to the world's definition, which can be found in the "worlds" attribute inside [LevelPage.vue](src/components/draw-mode/LevelPage.vue)
 4. Create a thumbnail for your level. It must be an 800x600 PNG image named the same as your level. Place the image in the world's [public asset folder](public/draw-mode/).
 5. Modify the level you copied in step 1 as needed. Modify `MyLevel.ts` as needed, being sure to update the `id` field to `MyLevel` as well as updating the `text` field to tell players what the goal is.
