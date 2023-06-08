@@ -7,7 +7,7 @@ import { NO_DRAW_AREA_OPACITY } from "@/ts/draw-mode/Config"
 const level: LevelSpec = {
   generateBodies(engine: Engine, onEnd: () => any) {
 
-    const target = Bodies.circle(100, 100, 20)
+    const ball = Bodies.circle(100, 100, 20)
 
     const leftCliff = {
       body: Bodies.rectangle(125, 450, 250, 300, {
@@ -35,13 +35,13 @@ const level: LevelSpec = {
       opacity: NO_DRAW_AREA_OPACITY
     }
     
-    EndCondition.onCondition(engine, () => target.position.x >= 560 && target.position.y < 640, onEnd)
+    EndCondition.onCondition(engine, () => ball.position.x >= 560 && ball.position.y < 640, onEnd)
 
     return [
       leftCliff,
       rightCliff,
       noDraw,
-      { body: target, color: Color.TARGET }
+      { body: ball, color: Color.TARGET }
     ]
   },
   id: 'Chasm',
