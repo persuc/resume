@@ -150,6 +150,19 @@ export default {
   isComposite(object: any): object is Composite {
     return 'type' in object && object.type === 'composite'
   },
+  bodyCup(x: number, y: number, width: number, height: number, thickness = 20, options?: IBodyDefinition) {
+    const halfWidth = width / 2
+    const halfHeight = height / 2
+    const halfThickness = thickness / 2
+    return Body.create({
+      ...options,
+      parts: [
+        Bodies.rectangle(x + -halfWidth + halfThickness, y + halfHeight, thickness, height), // left
+        Bodies.rectangle(x + halfWidth - halfThickness, y + halfHeight, thickness, height), // right
+        Bodies.rectangle(x, y + height - halfThickness, width - 2 * thickness, thickness), // bottom
+      ].concat(options?.parts ?? [])
+    },)
+  },
   vectorCup(width: number, height: number, thickness: number): Vector[] {
     const halfWidth = width / 2
 

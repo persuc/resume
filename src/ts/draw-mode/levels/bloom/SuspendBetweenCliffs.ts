@@ -64,7 +64,8 @@ const level: LevelSpec = {
           mask: 0,
         }
       }),
-      color: Color.ZONE
+      color: Color.ZONE,
+      opacity: 0.6
     }
 
     EndCondition.onAnyCollision(engine, ball, () => {
@@ -81,7 +82,7 @@ const level: LevelSpec = {
       leftPinJoint,
       rightPinJoint,
       target,
-      noDraw,
+      noDraw, 
       { body: ball, color: Color.TARGET }
     ]
   },
