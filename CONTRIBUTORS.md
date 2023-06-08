@@ -45,6 +45,7 @@ Tips for creating levels:
 - There are many types of objects you can use in levels such as hard-body objects, soft-body objects, ropes, pin joints, areas in which the player cannot draw, and more. See existing levels and [matter.js docs](https://brm.io/matter-js/) for examples.
 - There are many ways you can create a win-condition for a level including: when two objects touch, when an object touches any object, when some function on the objects in the level is true, etc. See existing levels and [EndCondition.ts](src/ts/draw-mode/EndCondition.ts) for examples
 - There are also helper functions in [BodyUtil.ts](src/ts/draw-mode/BodyUtil.ts) for creating different types of objects
+- To quickly test a level during development, see the comments in `onMounted()` in [LevelPage.vue](src/components/draw-mode/LevelPage.vue)
 - Try to make levels that you can beat yourself consistently once you have worked out the answer. Levels that incorporate too much random chance are boring to play.
 - If you make lots of difficult levels, intersperse some easier levels in between, since a player needs to beat at least half of the levels on a page to unlock the next levels
 - Worlds can have any number of levels, but the target number is 18 levels per world

@@ -24,7 +24,7 @@ const level: LevelSpec = {
     ]
   },
   id: 'BallOnRope',
-  text: "<p>Make the ball touch the left wall</p>"
+  text: "<span>Make the ball touch the left wall</span>"
 }
 
 export default level

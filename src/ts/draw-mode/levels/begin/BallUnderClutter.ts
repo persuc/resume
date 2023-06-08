@@ -22,7 +22,7 @@ const level: LevelSpec = {
     ]
   },
   id: 'BallUnderClutter',
-  text: "<p>Make the ball touch the right wall.</p>"
+  text: "<span>Make the ball touch the right wall.</span>"
 }
 
 export default level

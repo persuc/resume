@@ -37,7 +37,7 @@ const level: LevelSpec = {
     ]
   },
   id: 'BetweenWedges',
-  text: "<p>Fit it through the gap.</p>"
+  text: "<span>Fit it through the gap.</span>"
 }
 
 export default level

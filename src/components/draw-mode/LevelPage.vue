@@ -1,6 +1,6 @@
 
 <script setup lang="ts">
-import { computed, ref, type Ref } from 'vue'
+import { computed, onMounted, ref, type Ref } from 'vue'
 import Icon from '@/components/Icon.vue'
 import { LEVELS_PER_PAGE, PAGE_MAJORITY_REQUIRED } from '@/ts/draw-mode/Config'
 import type { LevelSpec } from '@/ts/draw-mode/Level'
@@ -29,6 +29,7 @@ import ScalesWeight from '@/ts/draw-mode/levels/bloom/ScalesWeight'
 import SlottedWedge from '@/ts/draw-mode/levels/bloom/SlottedWedge'
 import WedgeSandwich from '@/ts/draw-mode/levels/bloom/WedgeSandwich'
 import BetweenWedges from '@/ts/draw-mode/levels/bloom/BetweenWedges'
+import RaiseT from '@/ts/draw-mode/levels/bloom/RaiseT'
 
 interface Props {
   state: DrawModeState,
@@ -58,7 +59,8 @@ const worlds = [
     Slot, SlotNoDraw, Chasm, TargetBehindL, BallOnStilts, BalancedBetweenSticks
   ]),
   createWorldData('bloom', [
-    Scales, ScalesSwap, ScalesWeight, SlottedWedge, WedgeSandwich, BetweenWedges
+    Scales, ScalesSwap, ScalesWeight, SlottedWedge, WedgeSandwich, BetweenWedges,
+    RaiseT,
   ]),
   createWorldData('flourish', []),
   createWorldData('burn', []),
@@ -105,6 +107,11 @@ function clickLeftArrow() {
 const emit = defineEmits<{
   (e: 'input', level: LevelSpec): void
 }>()
+
+onMounted(() => {
+  // Uncomment me during development
+  // emit('input', MyLevel)
+})
 
 </script>
 

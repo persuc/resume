@@ -16,7 +16,7 @@ const level: LevelSpec = {
       parts: [
         Bodies.rectangle(400, 425, 300, 10),
         Bodies.rectangle(400, 425, 300, 10, {
-          angle: 1.5708
+          angle: Math.PI / 2
         }),
       ]
     })
@@ -53,7 +53,7 @@ const level: LevelSpec = {
     ]
   },
   id: 'Windmill',
-  text: "<p>Make the ball touch the right wall.</p>"
+  text: "<span>Make the ball touch the right wall.</span>"
 }
 
 export default level

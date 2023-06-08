@@ -197,6 +197,7 @@
         <pre
           v-show="!showEndScreen"
           v-html="level?.text"
+          class="px-2"
           :style="`text-align: center; pointer-events: none; background: ${state.theme.value.BACKGROUND}`" />
         <span
           v-show="showEndScreen"

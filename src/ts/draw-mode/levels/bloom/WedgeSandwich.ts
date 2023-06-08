@@ -111,7 +111,7 @@ const level: LevelSpec = {
     ]
   },
   id: 'WedgeSandwich',
-  text: "<p>Take the ball out.</p>"
+  text: "<span>Take the ball out.</span>"
 }
 
 export default level

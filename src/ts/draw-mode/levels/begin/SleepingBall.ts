@@ -35,7 +35,7 @@ const level: LevelSpec = {
     ]
   },
   id: 'SleepingBall',
-  text: "<p>This ball is sleeping. It will awaken when something touches it.</p><br /><p>Make the ball fall.</p>"
+  text: "<span>This ball is sleeping. It will awaken when something touches it.</span><br /><p>Make the ball fall.</p>"
 }
 
 export default level

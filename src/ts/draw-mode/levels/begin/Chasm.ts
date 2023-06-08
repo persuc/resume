@@ -45,7 +45,7 @@ const level: LevelSpec = {
     ]
   },
   id: 'Chasm',
-  text: "<p>Get the ball to the other side</p>"
+  text: "<span>Get the ball to the other side</span>"
 }
 
 export default level

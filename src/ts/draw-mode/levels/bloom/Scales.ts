@@ -115,7 +115,7 @@ const level: LevelSpec = {
     ]
   },
   id: 'Scales',
-  text: "<p>Make the ball hit the target.</p>"
+  text: "<span>Make the ball hit the target.</span>"
 }
 
 export default level

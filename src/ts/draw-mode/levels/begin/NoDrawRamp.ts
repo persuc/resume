@@ -43,7 +43,7 @@ const level: LevelSpec = {
     ]
   },
   id: 'NoDrawRamp',
-  text: "<p>Make the ball fall off the right side</p>"
+  text: "<span>Make the ball fall off the right side</span>"
 }
 
 export default level
