@@ -30,6 +30,7 @@ import SlottedWedge from '@/ts/draw-mode/levels/bloom/SlottedWedge'
 import WedgeSandwich from '@/ts/draw-mode/levels/bloom/WedgeSandwich'
 import BetweenWedges from '@/ts/draw-mode/levels/bloom/BetweenWedges'
 import RaiseT from '@/ts/draw-mode/levels/bloom/RaiseT'
+import SuspendBetweenCliffs from '@/ts/draw-mode/levels/bloom/SuspendBetweenCliffs'
 
 interface Props {
   state: DrawModeState,
@@ -46,25 +47,36 @@ type WorldData = {
   levelSpecs: LevelSpec[]
 }
 
-const createWorldData = (name: string, levelSpecs: LevelSpec[]): WorldData => {
-  return {
-    name: name,
-    levelSpecs,
-  }
-}
-const worlds = [
-  createWorldData('begin', [
-    BallOnCube, BallOnFloor, BallInCup, NoDrawOverhang, BallBesideHill, BallUnderClutter,
-    BallOnRope, NoDrawRamp, NoDrawRampTarget, SleepingBall, NoDrawAfterAwaken, Windmill,
-    Slot, SlotNoDraw, Chasm, TargetBehindL, BallOnStilts, BalancedBetweenSticks
-  ]),
-  createWorldData('bloom', [
-    Scales, ScalesSwap, ScalesWeight, SlottedWedge, WedgeSandwich, BetweenWedges,
-    RaiseT,
-  ]),
-  createWorldData('flourish', []),
-  createWorldData('burn', []),
+const worlds: WorldData[] = [
+  {
+    name: 'begin',
+    levelSpecs: [
+      BallOnCube, BallOnFloor, BallInCup, NoDrawOverhang, BallBesideHill, BallUnderClutter,
+      BallOnRope, NoDrawRamp, NoDrawRampTarget, SleepingBall, NoDrawAfterAwaken, Windmill,
+      Slot, SlotNoDraw, Chasm, TargetBehindL, BallOnStilts, BalancedBetweenSticks
+    ]
+  },
+  {
+    name: 'bloom',
+    levelSpecs: [
+      Scales, ScalesSwap, ScalesWeight, SlottedWedge, WedgeSandwich, BetweenWedges,
+      RaiseT, SuspendBetweenCliffs
+    ]
+  },
+  {
+    name: 'flourish',
+    levelSpecs: []
+  },
+  {
+    name: 'burn',
+    levelSpecs: []
+  },
 ]
+
+onMounted(() => {
+  // Uncomment me during development
+  // emit('input', SuspendBetweenCliffs)
+})
 
 function hasPageMajority(world: WorldData, page: number): boolean {
   if (page < 0 || state.unlockAllLevels.value) {
@@ -107,11 +119,6 @@ function clickLeftArrow() {
 const emit = defineEmits<{
   (e: 'input', level: LevelSpec): void
 }>()
-
-onMounted(() => {
-  // Uncomment me during development
-  // emit('input', MyLevel)
-})
 
 </script>
 

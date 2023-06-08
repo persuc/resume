@@ -35,7 +35,13 @@ Feel free to open a PR without any code if you would like to leave suggestions.
 
 To go over everything in one example, if I added a level called `MyLevel` to the `bloom` world, I would:
 1. Copy [src/ts/draw-mode/levels/begin/BallOnCube.ts](src/ts/draw-mode/levels/begin/BallOnCube.ts) to [src/ts/draw-mode/levels/bloom/MyLevel.ts](src/ts/draw-mode/levels/bloom/MyLevel.ts)
-2. Edit [LevelPage.vue](src/components/draw-mode/LevelPage.vue) by importing `MyLevel` and adding it to the bloom world data: `createWorldData('bloom', [])` -> `createWorldData('bloom', [ MyLevel ])`
+2. Edit [LevelPage.vue](src/components/draw-mode/LevelPage.vue) by importing `MyLevel` and adding it to the 'bloom' world data in the `worlds` data property:
+    ```js
+    {
+      name: 'bloom',
+      levelSpecs: [ MyLevel ]
+    }
+    ```
 3. Create a thumbnail and place it in [/public/draw-mode/bloom/MyLevel.png](/public/draw-mode/bloom/MyLevel.png)
 4. Modify `MyLevel.ts` by updating the `id` field to `MyLevel` as well as updating the `text` field to, for example: `<span>This is my level</span>`. You don't have to use HTML in the `text`, but it is helpful for custom styling
 
@@ -54,7 +60,13 @@ Tips for creating levels:
 
 A world is a grouping of levels. To make your own world:
 1. Create a new folder in [src/ts/draw-mode/levels](src/ts/draw-mode/levels) and name it what you want your world to be called. This is where the levels for your world will live
-2. Edit [LevelPage.vue](src/components/draw-mode/LevelPage.vue) by adding a calling `createWorld()` with your world data. e.g. `createWorldData('my-world', [])`
+2. Edit [LevelPage.vue](src/components/draw-mode/LevelPage.vue) by adding an entry to the `worlds` data property with your world data. e.g.
+    ```js
+    {
+      name: 'my-world',
+      levelSpecs: []
+    }
+    ```
 3. Create a folder with the same name in [public/draw-mode][public/draw-mode]. This is where the thumbnail for your world and its levels will live
 4. Create a thumbnail for your world. It must be an 800x600 PNG image named the same as your world. Place the image in the thumbnail folder you created in step 2
 
