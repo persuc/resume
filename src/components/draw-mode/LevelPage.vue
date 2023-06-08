@@ -31,8 +31,10 @@ import WedgeSandwich from '@/ts/draw-mode/levels/bloom/WedgeSandwich'
 import BetweenWedges from '@/ts/draw-mode/levels/bloom/BetweenWedges'
 import RaiseT from '@/ts/draw-mode/levels/bloom/RaiseT'
 import SuspendBetweenCliffs from '@/ts/draw-mode/levels/bloom/SuspendBetweenCliffs'
+import CannonHinged from '@/ts/draw-mode/levels/bloom/CannonHinged'
 import Cannon from '@/ts/draw-mode/levels/bloom/Cannon'
-import HingedCannon from '@/ts/draw-mode/levels/bloom/HingedCannon'
+import CannonBackwards from '@/ts/draw-mode/levels/bloom/CannonBackwards'
+import WedgeFork from '@/ts/draw-mode/levels/bloom/WedgeFork'
 
 interface Props {
   state: DrawModeState,
@@ -62,12 +64,12 @@ const worlds: WorldData[] = [
     name: 'bloom',
     levelSpecs: [
       Scales, ScalesSwap, ScalesWeight, SlottedWedge, WedgeSandwich, BetweenWedges,
-      RaiseT, SuspendBetweenCliffs, HingedCannon, Cannon, 
+      RaiseT, SuspendBetweenCliffs, CannonHinged, Cannon, CannonBackwards
     ]
   },
   {
     name: 'flourish',
-    levelSpecs: []
+    levelSpecs: [ WedgeFork, ]
   },
   {
     name: 'burn',
@@ -77,7 +79,7 @@ const worlds: WorldData[] = [
 
 onMounted(() => {
   // Uncomment me during development
-  // emit('input', HingedCannon)
+  // emit('input', WedgeFork)
 })
 
 function hasPageMajority(world: WorldData, page: number): boolean {

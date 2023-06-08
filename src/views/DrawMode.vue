@@ -194,11 +194,11 @@
         :style="`top: 5rem; z-index: 2; pointer-events: none; color: ${state.theme.value.TEXT}`"
         v-show="level !== null"
       >
-        <pre
+        <div
           v-show="!showEndScreen"
           v-html="level?.text"
-          class="px-2"
-          :style="`text-align: center; pointer-events: none; background: ${state.theme.value.BACKGROUND}`" />
+          class="px-2 py-1"
+          :style="`text-align: center; pointer-events: none; background: ${state.theme.value.BACKGROUND}; max-width: 80vw; font-family: monospace`" />
         <span
           v-show="showEndScreen"
           :style="`font-size: 20vh; pointer-events: none; background: ${state.theme.value.BACKGROUND}`"

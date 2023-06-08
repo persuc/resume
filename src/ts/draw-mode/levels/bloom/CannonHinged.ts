@@ -45,7 +45,7 @@ const level: LevelSpec = {
       { body: ball, color: Color.TARGET }
     ]
   },
-  id: 'HingedCannon',
+  id: 'CannonHinged',
   text: "<span>Hit the target.</span>"
 }
 
