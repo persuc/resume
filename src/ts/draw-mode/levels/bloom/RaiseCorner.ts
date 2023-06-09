@@ -79,7 +79,7 @@ const level: LevelSpec = {
     ]
   },
   id: 'RaiseCorner',
-  text: "<span>Keep the <div style=\"transform: rotate(180deg); display: inline-block; font-weight: 1000; font-size: 1.5em; top: 0.1em;\">∟</div> into the upper zone for 3 seconds</span>"
+  text: "<span>Keep the <div style=\"transform: rotate(180deg); display: inline-block; font-weight: 1000; font-size: 1.5em; top: 0.1em;\">∟</div> in the upper zone for 3 seconds</span>"
 }
 
 export default level
