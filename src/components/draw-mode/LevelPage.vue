@@ -36,6 +36,7 @@ import Cannon from '@/ts/draw-mode/levels/bloom/Cannon'
 import CannonBackwards from '@/ts/draw-mode/levels/bloom/CannonBackwards'
 import WedgeFork from '@/ts/draw-mode/levels/bloom/WedgeFork'
 import NoDrawUnderneath from '@/ts/draw-mode/levels/bloom/NoDrawUnderneath'
+import RaiseCorner from '@/ts/draw-mode/levels/bloom/RaiseCorner'
 
 interface Props {
   state: DrawModeState,
@@ -65,7 +66,8 @@ const worlds: WorldData[] = [
     name: 'bloom',
     levelSpecs: [
       Scales, ScalesSwap, ScalesWeight, SlottedWedge, WedgeSandwich, BetweenWedges,
-      RaiseT, SuspendBetweenCliffs, NoDrawUnderneath, CannonHinged, Cannon, CannonBackwards
+      RaiseT, RaiseCorner, SuspendBetweenCliffs, CannonHinged, Cannon, CannonBackwards,
+      NoDrawUnderneath,
     ]
   },
   {
@@ -80,7 +82,7 @@ const worlds: WorldData[] = [
 
 onMounted(() => {
   // Uncomment me during development
-  // emit('input', NoDrawUnderneath)
+  // emit('input', RaiseT)
 })
 
 function hasPageMajority(world: WorldData, page: number): boolean {
