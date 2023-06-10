@@ -162,15 +162,28 @@ export default class Line {
       }
 
       this.addPointBodies(newPoint, closestPoint, newCircle, newRect)
+      this.resetParts()
 
       return
     }
     this.addPointBodies(point, this.lastPoint, circle, rect)
+    this.resetParts()
   }
 
-  addPointWithoutChecks(point: Vector, from: Vector | null) {
-    const { circle, rect } = this.generatePointBodies(point, from)
-    this.addPointBodies(point, from, circle, rect)
+  addPointWithoutChecks(position: Vector, from: Vector | null) {
+    this.addPointsWithoutChecks([{
+      position,
+      from
+    }])
+  }
+
+  addPointsWithoutChecks(points: { position: Vector, from: Vector | null}[]) {
+    for (const p of points) {
+      const { circle, rect } = this.generatePointBodies(p.position, p.from)
+      this.addPointBodies(p.position, p.from, circle, rect)
+    }
+    if (points.length)
+      this.resetParts()
   }
 
   addPointBodies(point: Vector, from: Vector | null, circle: Body, rect: Body | null) {
@@ -192,7 +205,6 @@ export default class Line {
       this.parts.push(rect)
       this.partsSet.add(rect)
     }
-    this.resetParts()
     this.lastPoint = this.points[this.points.length - 1].position
     this.body.render.visible = true
     this.body.collisionFilter.mask = -1

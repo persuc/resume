@@ -29,7 +29,7 @@ export interface Level {
   textBackground: boolean
   line: Line | null
   startTime: number
-  startLine(point: IMousePoint): void
+  startLine(): Line
   drawLine(point: IMousePoint): void
   saveReplay(): void
   endLine(): void
@@ -48,10 +48,10 @@ export function createLevel(engine: Engine, spec: LevelSpec, theme: Theme, onEnd
     line: null,
     lineHistory: [],
     startTime: performance.now(),
-    startLine(point: IMousePoint) {
+    startLine(): Line {
       level.line = new Line(level.engine)
       level.line.setColor(level.theme.DRAW)
-      level.line.addPoint(point)
+      return level.line
     },
     drawLine(point: IMousePoint) {
       if (level.line) {

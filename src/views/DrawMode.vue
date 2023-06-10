@@ -62,7 +62,7 @@ import { onMounted, onUnmounted, ref, type Ref } from 'vue'
       return
     }
     if (level.value) {
-      level.value.startLine(render.mouse.position)
+      level.value.startLine().addPoint(render.mouse.position)
     }
   }
   function draw(e: MouseEvent) {

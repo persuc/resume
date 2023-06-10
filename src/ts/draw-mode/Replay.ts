@@ -47,25 +47,30 @@ export const ReplayPlayer: {
     }
   },
   render() {
-    if (!spec || !level?.value || level.value.spec.id !== spec.id) {
+    if (!spec || !level?.value) {
       return
     }
+    const time = performance.now()
+    let pointsToAdd = []
 
-    while (lineIdx < lineHistory.length && performance.now() >= lineHistory[lineIdx][pointIdx].time + level.value.startTime) {
+    while (lineIdx < lineHistory.length && time >= lineHistory[lineIdx][pointIdx].time + level.value.startTime) {
       const point = lineHistory[lineIdx][pointIdx]
       if (pointIdx === 0) {
-        level.value.startLine(point.position)
-      } else {
-        level.value.line!.addPointWithoutChecks(point.position, point.from)
+        level.value.startLine()
       }
+      pointsToAdd.push(point)
       if (pointIdx < lineHistory[lineIdx].length - 1) {
         pointIdx++
       } else {
+        level.value.line!.addPointsWithoutChecks(pointsToAdd)
+        pointsToAdd = []
         level.value.endLine()
         lineIdx++
         pointIdx = 0
       }
     }
+    level.value.line!.addPointsWithoutChecks(pointsToAdd)
+    pointsToAdd = []
   },
   stop() {
     lineIdx = lineHistory.length
