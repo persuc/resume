@@ -56,11 +56,7 @@ export const worlds: WorldData[] = [
     ]
   },
   {
-    name: 'flourish',
+    name: 'deepen',
     levelSpecs: [ WedgeFork, ]
-  },
-  {
-    name: 'burn',
-    levelSpecs: []
   },
 ]
