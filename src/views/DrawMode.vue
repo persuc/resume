@@ -200,6 +200,7 @@
           class="px-2 py-1"
           :style="`text-align: center; pointer-events: none; background: ${state.theme.value.BACKGROUND}; max-width: 80vw; font-family: monospace`" />
         <span
+          class="px-2"
           v-show="showEndScreen"
           :style="`font-size: 20vh; pointer-events: none; background: ${state.theme.value.BACKGROUND}`"
         >
