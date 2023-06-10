@@ -90,6 +90,7 @@ const emit = defineEmits<{
         position: absolute;
         top: 2rem;
         z-index: 2;
+        cursor: pointer;
       `"
       @click="clickBackButton"
     >
@@ -141,8 +142,11 @@ const emit = defineEmits<{
         <Icon name="chevron-right" style="width: 2rem" v-show="showRightArrow" />
       </div>
     </div>
-    <div class="flex center" style="height: 100vh" v-show="showMenu">
-      <input ref="file" v-on:change="uploadReplay"  type="file" />
+    <div style="height: 100vh; margin-left: 4rem; padding-top: 8rem" v-show="showMenu">
+      <label for="replay-upload" class="button br-0" style="width: fit-content; font-size: 1.25rem;">
+        <Icon name="upload" style="width: 2rem" class="mr-2" />Upload Replay
+      </label>
+      <input ref="file" id="replay-upload" v-on:change="uploadReplay" type="file" style="display: none" />
     </div>
   </div>
 </template>
