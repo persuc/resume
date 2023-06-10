@@ -3,9 +3,10 @@
 import { computed, onMounted, ref, type Ref } from 'vue'
 import Icon from '@/components/Icon.vue'
 import { LEVELS_PER_PAGE, PAGE_MAJORITY_REQUIRED } from '@/ts/draw-mode/Config'
-import type { LevelSpec, Replay } from '@/ts/draw-mode/Level'
+import type { LevelSpec } from '@/ts/draw-mode/Level'
 import type { DrawModeState } from '@/ts/draw-mode/State'
 import { worlds, type WorldData } from '@/ts/draw-mode/World'
+import type { Replay, SerialisedReplay } from '@/ts/draw-mode/Replay'
 
 interface Props {
   state: DrawModeState,
@@ -71,7 +72,15 @@ function clickBackButton() {
 
 const file = ref(null) as unknown as Ref<HTMLInputElement>
 async function uploadReplay() {
-  emit('replay', JSON.parse(await file.value.files![0].text()))
+  const parsed: SerialisedReplay = JSON.parse(await file.value.files![0].text())
+  const spec = worlds.flatMap(w => w.levelSpecs).find(l => l.id === parsed.specId)
+  if (!spec) {
+    return
+  }
+  emit('replay', {
+    lineHistory: parsed.lineHistory,
+    spec,
+  })
 }
 
 const emit = defineEmits<{

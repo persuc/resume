@@ -1,22 +1,22 @@
 <script setup lang="ts">
-  import { onMounted, onUnmounted, ref, type Ref } from 'vue'
-  import decomp from 'poly-decomp'
-  import { saveAs } from 'file-saver'
-  import Icon from '@/components/Icon.vue'
   import LevelPage from '@/components/draw-mode/LevelPage.vue'
-  import Matter, { Common, Composite, Engine, Events, Mouse, Render, Runner, Vector } from 'matter-js'
-  import { createLevel, type Level, type LevelSpec, type Replay } from '@/ts/draw-mode/Level'
-  import { themes, type Theme } from '@/ts/draw-mode/Theme'
-  import { createState } from '@/ts/draw-mode/State'
-  import { ASPECT_RATIO, CLEANUP_INTERVAL } from '@/ts/draw-mode/Config'
-  import { cleanupEndConditions } from '@/ts/draw-mode/EndCondition'
-import { worlds } from '@/ts/draw-mode/World'
+import Icon from '@/components/Icon.vue'
+import { ASPECT_RATIO, CLEANUP_INTERVAL } from '@/ts/draw-mode/Config'
+import { cleanupEndConditions } from '@/ts/draw-mode/EndCondition'
+import { createLevel, type Level, type LevelSpec } from '@/ts/draw-mode/Level'
+import { ReplayPlayer, type Replay } from '@/ts/draw-mode/Replay'
+import { createState } from '@/ts/draw-mode/State'
+import { themes, type Theme } from '@/ts/draw-mode/Theme'
+import Matter, { Common, Composite, Engine, Events, Mouse, Render, Runner } from 'matter-js'
+import decomp from 'poly-decomp'
+import { onMounted, onUnmounted, ref, type Ref } from 'vue'
   
   const showEndScreen = ref(false)
   const state = createState()
   let timeOfLastCleanup = 0
   let returnToLevelSelectTimeouts: number[] = []
   const isReplay = ref(false)
+  const replayPlayer = ReplayPlayer
 
   Common.setDecomp(decomp)
 
@@ -34,14 +34,27 @@ import { worlds } from '@/ts/draw-mode/World'
       e.preventDefault()
     } else if (e.key === 'r') {
       if (level.value && !showEndScreen.value) {
-        level.value.restart()
+        if (isReplay.value) {
+          replayPlayer.stop()
+          const replay = replayPlayer.getReplay()
+          resetEngine()
+          if (replay) {
+            startReplay(replay)
+          }
+        } else {
+          level.value.restart()
+        }
       }
     } else if (e.key === 't') {
       const themesValues = Object.values(themes)
       const themeIdx = themesValues.findIndex(theme => state.theme.value === theme)
       applyTheme(themesValues[(themeIdx + 1) % themesValues.length])
     } else if (e.key === 'Escape') {
-      returnToLevelSelect()
+      if (isReplay.value) {
+        endReplay()
+      } else {
+        returnToLevelSelect()
+      }
     }
   }
   function startDrawing(e: MouseEvent) {
@@ -134,7 +147,7 @@ import { worlds } from '@/ts/draw-mode/World'
       }
       state.completed.add(spec.id)
       state.save()
-      returnToLevelSelectTimeouts.push(setTimeout(returnToLevelSelect, 3000))
+      // returnToLevelSelectTimeouts.push(setTimeout(returnToLevelSelect, 3000))
     })
   }
 
@@ -146,6 +159,11 @@ import { worlds } from '@/ts/draw-mode/World'
     if (level.value.line) {
       level.value.endLine()
     }
+
+    resetEngine()
+  }
+
+  function resetEngine() {
     showEndScreen.value = false
     Composite.clear(engine.world, false)
     cleanupEndConditions(engine)
@@ -175,55 +193,20 @@ import { worlds } from '@/ts/draw-mode/World'
   }
 
   function startReplay(replay: Replay) {
-    const spec = worlds.flatMap(w => w.levelSpecs).find(l => l.id === replay.specId)
-    if (!spec) {
-      return
-    }
     isReplay.value = true
-    level.value = createLevel(engine, spec, state.theme.value, () => {
+  
+    level.value = createLevel(engine, replay.spec, state.theme.value, () => {
       showEndScreen.value = true
     })
-    let lineIdx = 0
-    let pointIdx = 0
-    function drawReplay() {
-      while (lineIdx < replay.lineHistory.length && Date.now() >= replay.lineHistory[lineIdx][pointIdx].time + level.value!.startTime) {
-        const point = replay.lineHistory[lineIdx][pointIdx]
-        if (pointIdx === 0) {
-          level.value!.startLine(point.position)
-        } else {
-          level.value!.line!.addPointWithoutChecks(point.position, point.from)
-        }
-        if (pointIdx < replay.lineHistory[lineIdx].length - 1) {
-          pointIdx++
-        } else {
-          level.value!.endLine()
-          lineIdx++
-          pointIdx = 0
-        }
-      }
-      if (lineIdx === replay.lineHistory.length) {
-        Events.off(engine, 'afterUpdate', drawReplay)
-      }
-    }
-    Events.on(engine, 'afterUpdate', drawReplay)
-  }
 
-  function saveReplay() {
-    if (!level.value) {
-      return
-    }
-
-    const replay: Replay = {
-      lineHistory: level.value.lineHistory,
-      specId: level.value.spec.id,
-    }
-
-    var blob = new Blob([JSON.stringify(replay)], {type: "text/plain;charset=utf-8"});
-    saveAs(blob, `${level.value.spec.id}.replay`)
+    replayPlayer.start(replay, level)
+    
+    Events.on(engine, 'afterUpdate', replayPlayer.render)
   }
 
   function endReplay() {
     isReplay.value = false
+    Events.off(engine, 'afterUpdate', replayPlayer.render)
     returnToLevelSelect()
   }
 
@@ -262,11 +245,21 @@ import { worlds } from '@/ts/draw-mode/World'
           :style="`pointer-events: none; background: ${state.theme.value.BACKGROUND}`"
         >
           <p style="font-size: 20vh;">Great job.</p>
-            <div class="button" @click="saveReplay" style="pointer-events: all;" v-show="!isReplay">
-              <Icon name="download" class="mr-2" />Save replay
-            </div>
-            <div class="button" @click="endReplay" style="pointer-events: all;" v-show="isReplay">
-              <Icon name="chevron-left" class="mr-2" style="width: 1.75rem" />Back
+            <div class="mx-4 mb-4">
+              <div v-show="!isReplay">
+                <div class="button br-0 pl-2" @click="returnToLevelSelect" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block">
+                  <Icon name="chevron-left" class="mr-1" style="height: 1.25rem; top: 0.15rem" />Back <span class="ml-2" style="font-family: monospace; font-size: 1rem">[Esc]</span>
+                </div>
+                <!-- <div class="button br-0 pl-2" @click="nextLevel" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block">
+                  <Icon name="chevron-right" class="mr-2" style="width: 1.75rem" />Next <span class="ml-2" style="font-family: monospace; font-size: 1rem; top:0.1rem">[Esc]</span>
+                </div> -->
+                <div class="button br-0 ml-4 flex center" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block" @click="level!.saveReplay">
+                  <Icon name="download" style="height: 1.25rem; top: 0.2rem" class="mr-3" />Save replay
+                </div>
+              </div>
+              <div class="button br-0 pl-2" @click="endReplay" style="width: fit-content; font-size: 1.25rem; pointer-events: all;" v-show="isReplay">
+                <Icon name="chevron-left" class="mr-2" style="height: 1.25rem" />Back <span class="ml-2" style="font-family: monospace; font-size: 1rem; top:0.1rem">[Esc]</span>
+              </div>
             </div>
         </div>
       </div>

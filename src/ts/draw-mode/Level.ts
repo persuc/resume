@@ -4,17 +4,10 @@ import type { Theme } from "@/ts/draw-mode/Theme"
 import { Body, Composite, type IMousePoint, type Engine, Constraint, Vector } from "matter-js"
 import { DEFAULT_FRICTION, DEFAULT_FRICTION_AIR, DEFAULT_FRICTION_STATIC, DEFAULT_SLOP } from "@/ts/draw-mode/Config"
 import BodyUtil from "@/ts/draw-mode/BodyUtil"
+import type { Replay } from "@/ts/draw-mode/Replay"
+import saveAs from "file-saver"
 
 export type ColouredBody = { body: Body | Composite, color?: Color, opacity?: number }
-
-export interface Replay {
-  lineHistory: {
-    position: Vector,
-    from: Vector | null,
-    time: number
-  }[][],
-  specId: string
-}
 
 export interface LevelSpec {
   id: string,
@@ -38,6 +31,7 @@ export interface Level {
   startTime: number
   startLine(point: IMousePoint): void
   drawLine(point: IMousePoint): void
+  saveReplay(): void
   endLine(): void
   lineHistory: Replay['lineHistory']
   restart(): void
@@ -53,7 +47,7 @@ export function createLevel(engine: Engine, spec: LevelSpec, theme: Theme, onEnd
     textBackground: spec.textBackground ?? false,
     line: null,
     lineHistory: [],
-    startTime: Date.now(),
+    startTime: performance.now(),
     startLine(point: IMousePoint) {
       level.line = new Line(level.engine)
       level.line.setColor(level.theme.DRAW)
@@ -84,11 +78,20 @@ export function createLevel(engine: Engine, spec: LevelSpec, theme: Theme, onEnd
       setBodies(level, spec.generateBodies(engine, onEnd))
       applyTheme(level, level.theme),
       level.lineHistory = []
-      level.startTime = Date.now()
+      level.startTime = performance.now()
     },
     applyTheme(theme: Theme) {
       applyTheme(level, theme)
     },
+    saveReplay() {
+      const replay = {
+        lineHistory: level.lineHistory,
+        specId: level.spec.id,
+      }
+    
+      var blob = new Blob([JSON.stringify(replay)], {type: "text/plain;charset=utf-8"});
+      saveAs(blob, `${level.spec.id}.replay`)
+  },
   }
   
   setBodies(level, spec.generateBodies(engine, onEnd))

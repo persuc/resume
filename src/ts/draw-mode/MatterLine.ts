@@ -179,7 +179,7 @@ export default class Line {
         x: from.x,
         y: from.y,
       } : null,
-      time: Date.now()
+      time: performance.now()
     })
 
     this.parts.push(circle)
