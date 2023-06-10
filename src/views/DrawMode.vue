@@ -1,18 +1,22 @@
 <script setup lang="ts">
   import { onMounted, onUnmounted, ref, type Ref } from 'vue'
   import decomp from 'poly-decomp'
+  import { saveAs } from 'file-saver'
+  import Icon from '@/components/Icon.vue'
   import LevelPage from '@/components/draw-mode/LevelPage.vue'
-  import Matter, { Common, Composite, Engine, Events, Mouse, Render, Runner } from 'matter-js'
-  import { createLevel, type Level, type LevelSpec } from '@/ts/draw-mode/Level'
+  import Matter, { Common, Composite, Engine, Events, Mouse, Render, Runner, Vector } from 'matter-js'
+  import { createLevel, type Level, type LevelSpec, type Replay } from '@/ts/draw-mode/Level'
   import { themes, type Theme } from '@/ts/draw-mode/Theme'
   import { createState } from '@/ts/draw-mode/State'
   import { ASPECT_RATIO, CLEANUP_INTERVAL } from '@/ts/draw-mode/Config'
   import { cleanupEndConditions } from '@/ts/draw-mode/EndCondition'
+import { worlds } from '@/ts/draw-mode/World'
   
   const showEndScreen = ref(false)
   const state = createState()
   let timeOfLastCleanup = 0
   let returnToLevelSelectTimeouts: number[] = []
+  const isReplay = ref(false)
 
   Common.setDecomp(decomp)
 
@@ -41,7 +45,7 @@
     }
   }
   function startDrawing(e: MouseEvent) {
-    if (e.target !== render.canvas || showEndScreen.value) {
+    if (e.target !== render.canvas || showEndScreen.value || isReplay.value) {
       return
     }
     if (level.value) {
@@ -49,12 +53,12 @@
     }
   }
   function draw(e: MouseEvent) {
-    if (e.target === render.canvas && level.value) {
+    if (e.target === render.canvas && level.value && !isReplay.value) {
       level.value.drawLine(render.mouse.position)
     }
   }
   function stopDrawing() {
-    if (level.value) {
+    if (level.value && !isReplay.value) {
       level.value.endLine()
     }
   }
@@ -170,6 +174,59 @@
     }
   }
 
+  function startReplay(replay: Replay) {
+    const spec = worlds.flatMap(w => w.levelSpecs).find(l => l.id === replay.specId)
+    if (!spec) {
+      return
+    }
+    isReplay.value = true
+    level.value = createLevel(engine, spec, state.theme.value, () => {
+      showEndScreen.value = true
+    })
+    let lineIdx = 0
+    let pointIdx = 0
+    function drawReplay() {
+      while (lineIdx < replay.lineHistory.length && Date.now() >= replay.lineHistory[lineIdx][pointIdx].time + level.value!.startTime) {
+        const point = replay.lineHistory[lineIdx][pointIdx]
+        if (pointIdx === 0) {
+          level.value!.startLine(point.position)
+        } else {
+          level.value!.line!.addPointWithoutChecks(point.position, point.from)
+        }
+        if (pointIdx < replay.lineHistory[lineIdx].length - 1) {
+          pointIdx++
+        } else {
+          level.value!.endLine()
+          lineIdx++
+          pointIdx = 0
+        }
+      }
+      if (lineIdx === replay.lineHistory.length) {
+        Events.off(engine, 'afterUpdate', drawReplay)
+      }
+    }
+    Events.on(engine, 'afterUpdate', drawReplay)
+  }
+
+  function saveReplay() {
+    if (!level.value) {
+      return
+    }
+
+    const replay: Replay = {
+      lineHistory: level.value.lineHistory,
+      specId: level.value.spec.id,
+    }
+
+    var blob = new Blob([JSON.stringify(replay)], {type: "text/plain;charset=utf-8"});
+    saveAs(blob, `${level.value.spec.id}.replay`)
+  }
+
+  function endReplay() {
+    isReplay.value = false
+    returnToLevelSelect()
+  }
+
   onUnmounted(() => {
     document.removeEventListener("keyup", onKeyUp)
     document.removeEventListener("mousemove", draw)
@@ -188,7 +245,7 @@
 <template>
   <div class="draw-mode unselectable flex center hcenter" :style="`width: 100vw; height: 100vh; background: ${state.theme.value.BACKGROUND}`">
     <div ref="container">
-      <LevelPage :state="state" @input="startLevel" v-show="level === null" />
+      <LevelPage :state="state" @input="startLevel" @replay="startReplay" v-show="level === null" />
       <div
         class="flex hcenter absolute full-width"
         :style="`top: 5rem; z-index: 2; pointer-events: none; color: ${state.theme.value.TEXT}`"
@@ -199,13 +256,19 @@
           v-html="level?.text"
           class="px-2 py-1"
           :style="`text-align: center; pointer-events: none; background: ${state.theme.value.BACKGROUND}; max-width: 80vw; font-family: monospace`" />
-        <span
+        <div
           class="px-2"
           v-show="showEndScreen"
-          :style="`font-size: 20vh; pointer-events: none; background: ${state.theme.value.BACKGROUND}`"
+          :style="`pointer-events: none; background: ${state.theme.value.BACKGROUND}`"
         >
-          Great job.
-        </span>
+          <p style="font-size: 20vh;">Great job.</p>
+            <div class="button" @click="saveReplay" style="pointer-events: all;" v-show="!isReplay">
+              <Icon name="download" class="mr-2" />Save replay
+            </div>
+            <div class="button" @click="endReplay" style="pointer-events: all;" v-show="isReplay">
+              <Icon name="chevron-left" class="mr-2" style="width: 1.75rem" />Back
+            </div>
+        </div>
       </div>
       <div id="render" v-show="level !== null"></div>
     </div>

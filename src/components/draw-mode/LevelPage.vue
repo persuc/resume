@@ -3,41 +3,9 @@
 import { computed, onMounted, ref, type Ref } from 'vue'
 import Icon from '@/components/Icon.vue'
 import { LEVELS_PER_PAGE, PAGE_MAJORITY_REQUIRED } from '@/ts/draw-mode/Config'
-import type { LevelSpec } from '@/ts/draw-mode/Level'
+import type { LevelSpec, Replay } from '@/ts/draw-mode/Level'
 import type { DrawModeState } from '@/ts/draw-mode/State'
-import BalancedBetweenSticks from '@/ts/draw-mode/levels/begin/BalancedBetweenSticks'
-import BallBesideHill from '@/ts/draw-mode/levels/begin/BallBesideHill'
-import BallInCup from '@/ts/draw-mode/levels/begin/BallInCup'
-import BallOnCube from '@/ts/draw-mode/levels/begin/BallOnCube'
-import BallOnFloor from '@/ts/draw-mode/levels/begin/BallOnFloor'
-import BallOnRope from '@/ts/draw-mode/levels/begin/BallOnRope'
-import BallOnStilts from '@/ts/draw-mode/levels/begin/BallOnStilts'
-import BallUnderClutter from '@/ts/draw-mode/levels/begin/BallUnderClutter'
-import Chasm from '@/ts/draw-mode/levels/begin/Chasm'
-import NoDrawAfterAwaken from '@/ts/draw-mode/levels/begin/NoDrawAfterAwaken'
-import NoDrawOverhang from '@/ts/draw-mode/levels/begin/NoDrawOverhang'
-import NoDrawRamp from '@/ts/draw-mode/levels/begin/NoDrawRamp'
-import NoDrawRampTarget from '@/ts/draw-mode/levels/begin/NoDrawRampTarget'
-import SleepingBall from '@/ts/draw-mode/levels/begin/SleepingBall'
-import Slot from '@/ts/draw-mode/levels/begin/Slot'
-import SlotNoDraw from '@/ts/draw-mode/levels/begin/SlotNoDraw'
-import TargetBehindL from '@/ts/draw-mode/levels/begin/TargetBehindL'
-import Windmill from '@/ts/draw-mode/levels/begin/Windmill'
-import Scales from '@/ts/draw-mode/levels/bloom/Scales'
-import ScalesSwap from '@/ts/draw-mode/levels/bloom/ScalesSwap'
-import ScalesWeight from '@/ts/draw-mode/levels/bloom/ScalesWeight'
-import SlottedWedge from '@/ts/draw-mode/levels/bloom/SlottedWedge'
-import WedgeSandwich from '@/ts/draw-mode/levels/bloom/WedgeSandwich'
-import BetweenWedges from '@/ts/draw-mode/levels/bloom/BetweenWedges'
-import RaiseT from '@/ts/draw-mode/levels/bloom/RaiseT'
-import SuspendBetweenCliffs from '@/ts/draw-mode/levels/bloom/SuspendBetweenCliffs'
-import CannonHinged from '@/ts/draw-mode/levels/bloom/CannonHinged'
-import Cannon from '@/ts/draw-mode/levels/bloom/Cannon'
-import CannonBackwards from '@/ts/draw-mode/levels/bloom/CannonBackwards'
-import WedgeFork from '@/ts/draw-mode/levels/bloom/WedgeFork'
-import NoDrawUnderneath from '@/ts/draw-mode/levels/bloom/NoDrawUnderneath'
-import RaiseCorner from '@/ts/draw-mode/levels/bloom/RaiseCorner'
-import BallOnPlatform from '@/ts/draw-mode/levels/bloom/BallOnPlatform'
+import { worlds, type WorldData } from '@/ts/draw-mode/World'
 
 interface Props {
   state: DrawModeState,
@@ -48,38 +16,7 @@ const { state } = defineProps<Props>()
 const worldPage = ref(0)
 const levelPage = ref(0)
 const world: Ref<WorldData | null> = ref(null)
-
-type WorldData = {
-  name: string,
-  levelSpecs: LevelSpec[]
-}
-
-const worlds: WorldData[] = [
-  {
-    name: 'begin',
-    levelSpecs: [
-      BallOnCube, BallOnFloor, BallInCup, NoDrawOverhang, BallBesideHill, BallUnderClutter,
-      BallOnRope, NoDrawRamp, NoDrawRampTarget, SleepingBall, NoDrawAfterAwaken, Windmill,
-      Slot, SlotNoDraw, Chasm, TargetBehindL, BallOnStilts, BalancedBetweenSticks
-    ]
-  },
-  {
-    name: 'bloom',
-    levelSpecs: [
-      Scales, ScalesSwap, ScalesWeight, SlottedWedge, WedgeSandwich, BetweenWedges,
-      RaiseT, RaiseCorner, SuspendBetweenCliffs, CannonHinged, Cannon, CannonBackwards,
-      NoDrawUnderneath, BallOnPlatform
-    ]
-  },
-  {
-    name: 'flourish',
-    levelSpecs: [ WedgeFork, ]
-  },
-  {
-    name: 'burn',
-    levelSpecs: []
-  },
-]
+const showMenu = ref(false)
 
 onMounted(() => {
   // Uncomment me during development
@@ -124,30 +61,45 @@ function clickLeftArrow() {
   }
 }
 
+function clickBackButton() {
+  if (world.value !== null) {
+    world.value = null
+  } else {
+    showMenu.value = !showMenu.value
+  }
+}
+
+const file = ref(null) as unknown as Ref<HTMLInputElement>
+async function uploadReplay() {
+  emit('replay', JSON.parse(await file.value.files![0].text()))
+}
+
 const emit = defineEmits<{
-  (e: 'input', level: LevelSpec): void
+  (e: 'input', level: LevelSpec): void,
+  (e: 'replay', replay: Replay): void
 }>()
 
 </script>
 
 <template>
   <div class="level-page">
-    <div class="flex center" :style="`
+    <div class="py-1" :style="`
         background: ${state.theme.value.TEXT};
         color: ${state.theme.value.BACKGROUND};
         font-size: 1.5rem;
-        padding: 0.2rem 1rem 0.2rem 0.5rem;
         position: absolute;
         top: 2rem;
         z-index: 2;
       `"
-      v-show="world !== null"
-      @click="() => world = null"
+      @click="clickBackButton"
     >
-      <Icon name="chevron-left" class="pr-1" style="width: 1.75rem" />
-      BACK TO WORLDS
+      <div v-show="world !== null" class="pr-4 pl-2 flex center">
+        <Icon name="chevron-left" class="pr-1" style="width: 1.75rem" />
+        <span >BACK TO WORLDS</span>
+      </div>
+      <span v-show="world === null" class="px-4">{{ showMenu ? 'WORLDS' : 'MENU' }}</span>
     </div>
-    <div class="flex center" style="height: 100vh">
+    <div v-show="!showMenu" class="flex center" style="height: 100vh">
       <div
         class="leftArrow flex center"
         :style="`
@@ -188,6 +140,9 @@ const emit = defineEmits<{
       >
         <Icon name="chevron-right" style="width: 2rem" v-show="showRightArrow" />
       </div>
+    </div>
+    <div class="flex center" style="height: 100vh" v-show="showMenu">
+      <input ref="file" v-on:change="uploadReplay"  type="file" />
     </div>
   </div>
 </template>

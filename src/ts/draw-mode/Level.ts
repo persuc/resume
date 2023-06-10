@@ -1,11 +1,20 @@
 import Line from "@/ts/draw-mode/MatterLine"
 import { Color } from "@/ts/draw-mode/Theme"
 import type { Theme } from "@/ts/draw-mode/Theme"
-import { Body, Composite, type IMousePoint, type Engine, Constraint } from "matter-js"
+import { Body, Composite, type IMousePoint, type Engine, Constraint, Vector } from "matter-js"
 import { DEFAULT_FRICTION, DEFAULT_FRICTION_AIR, DEFAULT_FRICTION_STATIC, DEFAULT_SLOP } from "@/ts/draw-mode/Config"
 import BodyUtil from "@/ts/draw-mode/BodyUtil"
 
 export type ColouredBody = { body: Body | Composite, color?: Color, opacity?: number }
+
+export interface Replay {
+  lineHistory: {
+    position: Vector,
+    from: Vector | null,
+    time: number
+  }[][],
+  specId: string
+}
 
 export interface LevelSpec {
   id: string,
@@ -16,6 +25,7 @@ export interface LevelSpec {
 
 export interface Level {
   engine: Engine
+  spec: LevelSpec
   theme: Theme
   themeMap: Record<number, {
     color: keyof Theme,
@@ -25,27 +35,25 @@ export interface Level {
   text?: string
   textBackground: boolean
   line: Line | null
+  startTime: number
   startLine(point: IMousePoint): void
   drawLine(point: IMousePoint): void
   endLine(): void
+  lineHistory: Replay['lineHistory']
   restart(): void
 } 
 
 export function createLevel(engine: Engine, spec: LevelSpec, theme: Theme, onEnd: () => any): Level {
   const level: Level = {
     engine,
+    spec,
     themeMap: {},
-    applyTheme(theme: Theme) {
-      applyTheme(level, theme)
-    },
-    restart() {
-      setBodies(level, spec.generateBodies(engine, onEnd))
-      applyTheme(level, level.theme)
-    },
     theme,
     text: spec.text,
     textBackground: spec.textBackground ?? false,
     line: null,
+    lineHistory: [],
+    startTime: Date.now(),
     startLine(point: IMousePoint) {
       level.line = new Line(level.engine)
       level.line.setColor(level.theme.DRAW)
@@ -58,16 +66,28 @@ export function createLevel(engine: Engine, spec: LevelSpec, theme: Theme, onEnd
     },
     endLine() {
       if (level.line) {
-        level.line.end()
+        this.lineHistory.push(level.line.end().map(l => ({
+          position: l.position,
+          from: l.from,
+          time: l.time - level.startTime
+        })))
         for (const body of [level.line.body].concat(level.line.parts)) {
           level.themeMap[body.id] = {
             color: Color.DRAW,
             opacity: 1
           }
         }
-
         level.line = null
       } 
+    },
+    restart() {
+      setBodies(level, spec.generateBodies(engine, onEnd))
+      applyTheme(level, level.theme),
+      level.lineHistory = []
+      level.startTime = Date.now()
+    },
+    applyTheme(theme: Theme) {
+      applyTheme(level, theme)
     },
   }
   

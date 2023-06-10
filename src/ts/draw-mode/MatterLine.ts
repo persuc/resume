@@ -1,4 +1,5 @@
 import { DEFAULT_FRICTION, DEFAULT_FRICTION_AIR, DEFAULT_FRICTION_STATIC, DEFAULT_SLOP, MINIMUM_DRAW_DISTANCE } from "@/ts/draw-mode/Config"
+import type { Replay } from "@/ts/draw-mode/Level"
 import { distance, getAngleRad } from "@/ts/draw-mode/Util"
 import { Bodies, Vector, Composite, type IBodyDefinition, Body, Events, Detector, Collision } from "matter-js";
 
@@ -7,7 +8,7 @@ export default class Line {
   body: Body
   parts: Body[] = []
   partsSet: Set<Body> = new Set()
-  points: Vector[] = []
+  points: Replay['lineHistory'][0] = []
   lineWidth: number
   halfLineWidth: number
   lastPoint: Vector | null = null
@@ -43,32 +44,40 @@ export default class Line {
     this.resetParts()
     Composite.add(this.engine.world, this.body)
   }
+
+  generatePointBodies(point: Vector, from: Vector | null) {
+    const distanceToLast = from ? distance(point, from) : Infinity
+    return {
+      circle: Bodies.circle(point.x, point.y, this.halfLineWidth, {
+        ...this.bodyOpts,
+        label: 'drawnPoint_' + this.points.length + 1
+      }),
+      rect: from ? Bodies.rectangle(
+          (point.x + from.x) / 2,
+          (point.y + from.y) / 2,
+          distanceToLast,
+          this.lineWidth,
+          {
+            ...this.bodyOpts,
+            collisionFilter: {
+              category: 2,
+              mask: 3,
+            },
+            angle: getAngleRad(point, from),
+            label: 'drawnRect_' + this.points.length + 1
+          }
+        ) : null,
+        distanceToLast
+    }
+  }
+
   addPoint(point: Vector) {
-    const distanceToLast = this.lastPoint ? distance(this.lastPoint, point) : Infinity
+    const { circle, rect, distanceToLast } = this.generatePointBodies(point, this.lastPoint)
 
     if (distanceToLast < MINIMUM_DRAW_DISTANCE) {
       return
     }
-
-    const circle = Bodies.circle(point.x, point.y, this.halfLineWidth, {
-      ...this.bodyOpts,
-      label: 'drawnPoint_' + this.points.length + 1
-    })
-    const rect = this.lastPoint ? Bodies.rectangle(
-        (point.x + this.lastPoint.x) / 2,
-        (point.y + this.lastPoint.y) / 2,
-        distanceToLast,
-        this.lineWidth,
-        {
-          ...this.bodyOpts,
-          collisionFilter: {
-            category: 2,
-            mask: 3,
-          },
-          angle: getAngleRad(point, this.lastPoint),
-          label: 'drawnRect_' + this.points.length + 1
-        }
-      ) : null
+    
     const collisions = this.wouldCollide(circle, rect)
 
     if (collisions.length) {
@@ -76,12 +85,12 @@ export default class Line {
         return
       }
 
-      let d = distance(this.lastPoint, point)
+      let smallestDistance = distanceToLast
       for (const previous of this.points) {
-        const dd = distance(previous, point)
-        if (dd < d) {
-          d = dd
-          this.lastPoint = previous
+        const distanceToPrevious = distance(previous.position, point)
+        if (distanceToPrevious < smallestDistance) {
+          smallestDistance = distanceToPrevious
+          this.lastPoint = previous.position
         }
       }
 
@@ -118,10 +127,10 @@ export default class Line {
         distanceToClosest
       } = this.points.reduce(
         (result, p) => {
-          const d = distance(p, newPoint)
+          const d = distance(p.position, newPoint)
           if (d < result.distanceToClosest) {
             return {
-              closestPoint: p,
+              closestPoint: p.position,
               distanceToClosest: d,
             }
           }
@@ -137,25 +146,10 @@ export default class Line {
         return
       }
 
-      const newCircle = Bodies.circle(newPoint.x, newPoint.y, this.halfLineWidth, {
-        ...this.bodyOpts,
-        label: 'drawnPoint_' + this.points.length + 1
-      })
-      const newRect = Bodies.rectangle(
-        (newPoint.x + closestPoint.x) / 2,
-        (newPoint.y + closestPoint.y) / 2,
-        distanceToClosest,
-        this.lineWidth,
-        {
-          ...this.bodyOpts,
-          collisionFilter: {
-            category: 2,
-            mask: 3,
-          },
-          label: 'drawnRect_' + this.points.length + 1,
-          angle: getAngleRad(newPoint, closestPoint)
-        }
-      )
+      const newBodies = this.generatePointBodies(newPoint, closestPoint)
+      const newCircle = newBodies.circle
+
+      const newRect = newBodies.rect
 
       const collisionsTwo = this.wouldCollide(newCircle, newRect)
 
@@ -163,17 +157,29 @@ export default class Line {
         return 
       }
 
-      this.points.push(newPoint)
-      this.parts.push(newCircle)
-      this.partsSet.add(newCircle)
-      this.parts.push(newRect)
-      this.partsSet.add(newRect)
-      this.onPointAdded()
+      this.addPointBodies(newPoint, closestPoint, newCircle, newRect)
+
       return
     }
+    this.addPointBodies(point, this.lastPoint, circle, rect)
+  }
+
+  addPointWithoutChecks(point: Vector, from: Vector | null) {
+    const { circle, rect } = this.generatePointBodies(point, from)
+    this.addPointBodies(point, from, circle, rect)
+  }
+
+  addPointBodies(point: Vector, from: Vector | null, circle: Body, rect: Body | null) {
     this.points.push({
-      x: point.x,
-      y: point.y
+      position: {
+        x: point.x,
+        y: point.y
+      },
+      from: from ? {
+        x: from.x,
+        y: from.y,
+      } : null,
+      time: Date.now()
     })
 
     this.parts.push(circle)
@@ -182,12 +188,8 @@ export default class Line {
       this.parts.push(rect)
       this.partsSet.add(rect)
     }
-    this.onPointAdded()
-  }
-
-  onPointAdded() {
     this.resetParts()
-    this.lastPoint = this.points[this.points.length - 1]
+    this.lastPoint = this.points[this.points.length - 1].position
     this.body.render.visible = true
     this.body.collisionFilter.mask = -1
   }
@@ -201,6 +203,8 @@ export default class Line {
       }
     }
     Body.setMass(this.body, Math.max(1.6, this.points.length / 3))
+
+    return this.points
   }
 
   resetParts() {
