@@ -1,5 +1,5 @@
 import { DEFAULT_FRICTION, DEFAULT_FRICTION_AIR, DEFAULT_FRICTION_STATIC, DEFAULT_SLOP, MINIMUM_DRAW_DISTANCE } from "@/ts/draw-mode/Config"
-import type { Replay } from "@/ts/draw-mode/Level"
+import type { Replay } from "@/ts/draw-mode/Replay"
 import { distance, getAngleRad } from "@/ts/draw-mode/Util"
 import { Bodies, Vector, Composite, type IBodyDefinition, Body, Events, Detector, Collision } from "matter-js";
 
@@ -8,7 +8,11 @@ export default class Line {
   body: Body
   parts: Body[] = []
   partsSet: Set<Body> = new Set()
-  points: Replay['lineHistory'][0] = []
+  points: {
+    position: Vector,
+    from: Vector | null,
+    time: number
+  }[] = []
   lineWidth: number
   halfLineWidth: number
   lastPoint: Vector | null = null
