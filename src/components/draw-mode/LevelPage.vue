@@ -47,7 +47,7 @@ function onKeyUp(e: KeyboardEvent) {
       return
     }
 
-    if (e.key === CONTROL_KEY.FORWARD.code && nextLevelIdx.value >= 0) {
+    if (e.key === CONTROL_KEY.FORWARD.code) {
       nextLevel()
     }
   } 
@@ -153,18 +153,18 @@ const nextLevelIdx = computed(() => {
 })
 
 function nextLevel() {
-  if (nextWorldIdx.value < 0 || nextLevelIdx.value < 0) {
+  if (nextWorldIdx.value !== navigation.worldIdx) {
+    if (nextWorldIdx.value >= 0) {
+      navigation.worldPage = Math.floor(nextWorldIdx.value / LEVELS_PER_PAGE)
+      navigation.world = null
+    }
     emit('end')
     return
   }
 
-  const nwi = nextWorldIdx.value
-  const nli = nextLevelIdx.value
-  const nextSpec = worlds[nwi].levelSpecs[nli]
-  navigation.levelIdx = nli
-  navigation.worldIdx = nwi
-  navigation.levelPage = Math.floor(nli / LEVELS_PER_PAGE)
-  navigation.worldPage = Math.floor(nwi / LEVELS_PER_PAGE)
+  const nextSpec = worlds[nextWorldIdx.value].levelSpecs[nextLevelIdx.value]
+  navigation.levelIdx = nextLevelIdx.value
+  navigation.levelPage = Math.floor(navigation.levelIdx / LEVELS_PER_PAGE)
   emit('end')
   emit('input', nextSpec)
 }
@@ -288,8 +288,8 @@ const emit = defineEmits<{
           <div class="button br-0 pl-2" @click="emit('end')" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block">
             <Icon name="chevron-left" class="mr-2" style="height: 1.25rem; top: 0.15rem" />Back <span class="ml-2 keyLabel">[{{ CONTROL_KEY.BACK.label }}]</span>
           </div>
-          <div class="button br-0 pl-2 ml-4" @click="nextLevel" v-show="nextLevelIdx >= 0" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block">
-            <Icon name="chevron-right" class="mr-2" style="height: 1.25rem; top: 0.15rem" />Next <span class="ml-2 keyLabel">[{{ CONTROL_KEY.FORWARD.label }}]</span>
+          <div class="button br-0 pl-2 ml-4" @click="nextLevel" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block">
+            <Icon name="chevron-right" class="mr-2" style="height: 1.25rem; top: 0.15rem" />{{ nextWorldIdx === navigation.worldIdx ? 'Next' : 'Next World' }}<span class="ml-2 keyLabel">[{{ CONTROL_KEY.FORWARD.label }}]</span>
           </div>
           <div class="button br-0 ml-4 flex center" v-show="!navigation.isReplay" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block" @click="navigation.level!.saveReplay">
             <Icon name="download" style="height: 1.25rem; top: 0.2rem" class="mr-3" />Save replay
