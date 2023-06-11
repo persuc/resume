@@ -1,11 +1,12 @@
 
 <script setup lang="ts">
 import Icon from '@/components/Icon.vue'
-import { CONTROL_KEY, LEVELS_PER_PAGE, PAGE_MAJORITY_REQUIRED } from '@/ts/draw-mode/Config'
+import { CONTROL_KEY, LEVELS_PER_PAGE, PAGE_MAJORITY_REQUIRED, THUMBNAIL_KEYCODES } from '@/ts/draw-mode/Config'
 import type { LevelSpec } from '@/ts/draw-mode/Level'
 import type { Replay, SerialisedReplay } from '@/ts/draw-mode/Replay'
 import type { DrawModeState } from '@/ts/draw-mode/State'
 import { worlds, type DrawModeNavigation, type WorldData } from '@/ts/draw-mode/World'
+import level from '@/ts/draw-mode/levels/begin/BalancedBetweenSticks'
 import { computed, onMounted, onUnmounted, ref, type Ref } from 'vue'
 
 interface Props {
@@ -19,25 +20,22 @@ const showMenu = ref(false)
 
 onMounted(() => {
   document.addEventListener("keyup", onKeyUp )
+  let levelToTest: string = ''
   // Uncomment me during development
-  // emit('input', CubeAnchorHigher)
+  // levelToTest = 'BallOnPlatform'
+  const testSpec = worlds.flatMap(w => w.levelSpecs).find(s => s.id === levelToTest)
+  if (testSpec) {
+    emit('input', testSpec)
+  } else if (levelToTest) {
+    console.warn(`Test level ${levelToTest} is not a valid level ID`)
+  }
 })
 
 onUnmounted(() => {
   document.removeEventListener("keyup", onKeyUp )
 })
 
-const thumbnailKeys = [
-  CONTROL_KEY.THUMBNAIL_1,
-  CONTROL_KEY.THUMBNAIL_2,
-  CONTROL_KEY.THUMBNAIL_3,
-  CONTROL_KEY.THUMBNAIL_4,
-  CONTROL_KEY.THUMBNAIL_5,
-  CONTROL_KEY.THUMBNAIL_6,
-].map(k => k.code)
-
 function onKeyUp(e: KeyboardEvent) {
-
   if (navigation.level) {
     if (e.key === CONTROL_KEY.BACK.code) {
       emit('end')
@@ -52,7 +50,7 @@ function onKeyUp(e: KeyboardEvent) {
     }
   } 
   
-  const thumbnailIndex = thumbnailKeys.indexOf(e.key)
+  const thumbnailIndex = THUMBNAIL_KEYCODES.indexOf(e.key)
   if (e.key === CONTROL_KEY.BACK.code) {
     if (navigation.world) {
       navigation.world = null
@@ -191,7 +189,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <div class="level-page" v-show="navigation.level === null">
+  <div class="ui" v-show="navigation.level === null">
     <div class="py-1" :style="`
         background: ${state.theme.value.TEXT};
         color: ${state.theme.value.BACKGROUND};

@@ -20,10 +20,12 @@ import Windmill from '@/ts/draw-mode/levels/begin/Windmill'
 import AnchorAbove from '@/ts/draw-mode/levels/bloom/AnchorAbove'
 import AnchorAboveBlocked from '@/ts/draw-mode/levels/bloom/AnchorAboveBlocked'
 import BallOnPlatform from '@/ts/draw-mode/levels/bloom/BallOnPlatform'
+import BallOnPlatformOverhang from '@/ts/draw-mode/levels/bloom/BallOnPlatformOverhang'
 import BetweenWedges from '@/ts/draw-mode/levels/bloom/BetweenWedges'
 import Cannon from '@/ts/draw-mode/levels/bloom/Cannon'
 import CannonBackwards from '@/ts/draw-mode/levels/bloom/CannonBackwards'
 import CannonHinged from '@/ts/draw-mode/levels/bloom/CannonHinged'
+import NoDrawBothUnderneath from '@/ts/draw-mode/levels/bloom/NoDrawBothUnderneath'
 import NoDrawUnderneath from '@/ts/draw-mode/levels/bloom/NoDrawUnderneath'
 import RaiseCorner from '@/ts/draw-mode/levels/bloom/RaiseCorner'
 import RaiseT from '@/ts/draw-mode/levels/bloom/RaiseT'
@@ -54,7 +56,7 @@ export const worlds: WorldData[] = [
     levelSpecs: [
       Scales, ScalesSwap, ScalesWeight, SlottedWedge, WedgeSandwich, BetweenWedges,
       RaiseT, RaiseCorner, SuspendBetweenCliffs, CannonHinged, Cannon, CannonBackwards,
-      NoDrawUnderneath, BallOnPlatform, AnchorAbove, AnchorAboveBlocked
+      NoDrawUnderneath, NoDrawBothUnderneath, BallOnPlatform, BallOnPlatformOverhang, AnchorAbove, AnchorAboveBlocked
     ]
   },
   {

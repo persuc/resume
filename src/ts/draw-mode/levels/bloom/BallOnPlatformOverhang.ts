@@ -12,12 +12,17 @@ const level: LevelSpec = {
 
     const ball = Bodies.circle(400, 400, 20)
 
-    const platform = Bodies.rectangle(400, 440, 200, 20, {
+    const platform = Body.create({
+      parts: [
+        Bodies.rectangle(400, 440, 200, 20),
+        Bodies.rectangle(335, 480, 70, 60),
+        Bodies.rectangle(465, 480, 70, 60),
+      ],
       isStatic: true
     })
 
     const winZone = {
-      body: Bodies.rectangle(400, 520, 40, 40, {
+      body: Bodies.rectangle(400, 480, 40, 40, {
         isStatic: true,
         collisionFilter: {
           mask: 0,
@@ -37,7 +42,7 @@ const level: LevelSpec = {
       { body: ball, color: Color.TARGET }
     ]
   },
-  id: 'BallOnPlatform',
+  id: 'BallOnPlatformOverhang',
   text: "<span>Keep the ball in the target zone for 3 seconds</span>"
 }
 

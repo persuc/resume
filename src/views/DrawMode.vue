@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import LevelPage from '@/components/draw-mode/LevelPage.vue'
+import UI from '@/components/draw-mode/UI.vue'
 import { ASPECT_RATIO, CLEANUP_INTERVAL } from '@/ts/draw-mode/Config'
 import { cleanupEndConditions } from '@/ts/draw-mode/EndCondition'
 import { createLevel, type LevelSpec } from '@/ts/draw-mode/Level'
@@ -223,7 +223,7 @@ import { onMounted, onUnmounted, reactive, ref, type Ref } from 'vue'
 <template>
   <div class="draw-mode unselectable flex center hcenter" :style="`width: 100vw; height: 100vh; background: ${state.theme.value.BACKGROUND}`">
     <div ref="container">
-      <LevelPage :state="state" @input="startLevel" @replay="startReplay" :navigation="navigation" @end="endLevel" />
+      <UI :state="state" @input="startLevel" @replay="startReplay" :navigation="navigation" @end="endLevel" />
       <div id="render" v-show="navigation.level !== null"></div>
     </div>
   </div>
