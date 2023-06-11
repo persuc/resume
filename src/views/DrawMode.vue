@@ -52,10 +52,6 @@ import { onMounted, onUnmounted, reactive, ref, type Ref } from 'vue'
       const themesValues = Object.values(themes)
       const themeIdx = themesValues.findIndex(theme => state.theme.value === theme)
       applyTheme(themesValues[(themeIdx + 1) % themesValues.length])
-    } else if (e.key === 'Escape') {
-      if (navigation.level) {
-        endLevel()
-      }
     }
   }
   function startDrawing(e: MouseEvent) {

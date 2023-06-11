@@ -17,3 +17,57 @@ export const THUMBNAIL_POSITION = new Array(LEVELS_PER_PAGE).fill(null).map((_, 
   y: (600 - (LEVELS_PER_PAGE / LEVELS_PER_ROW * THUMBNAIL_HEIGHT - (LEVELS_PER_PAGE / LEVELS_PER_ROW - 1) * THUMBNAIL_VERTICAL_PAD)) * 3 / 5 + Math.floor(i / LEVELS_PER_ROW) * (THUMBNAIL_HEIGHT + THUMBNAIL_VERTICAL_PAD)
 }))
 export const NO_DRAW_AREA_OPACITY = 0.4
+
+export const CONTROL_KEY = {
+  LEFT: {
+    code: 'z',
+    altCode: 'ArrowLeft',
+    label: 'Z',
+  },
+  RIGHT: {
+    code: 'x',
+    altCode: 'ArrowRight',
+    label: 'X',
+  },
+  BACK: {
+    code: 'Escape',
+    label: 'Esc',
+  },
+  FORWARD: {
+    code: 'Enter',
+    altCode: 'Space',
+    label: 'Ret',
+  },
+  RESTART: {
+    code: 'r',
+    label: 'R',
+  },
+  THEME: {
+    code: 't',
+    label: 'T'
+  },
+  THUMBNAIL_1: {
+    code: 'q',
+    label: 'Q',
+  },
+  THUMBNAIL_2: {
+    code: 'w',
+    label: 'W',
+  },
+  THUMBNAIL_3: {
+    code: 'e',
+    label: 'E',
+  },
+  THUMBNAIL_4: {
+    code: 'a',
+    label: 'A',
+  },
+  THUMBNAIL_5: {
+    code: 's',
+    label: 'S',
+  },
+  THUMBNAIL_6: {
+    code: 'd',
+    label: 'D',
+  },
+}

@@ -1,7 +1,7 @@
 
 <script setup lang="ts">
 import Icon from '@/components/Icon.vue'
-import { LEVELS_PER_PAGE, PAGE_MAJORITY_REQUIRED } from '@/ts/draw-mode/Config'
+import { CONTROL_KEY, LEVELS_PER_PAGE, PAGE_MAJORITY_REQUIRED } from '@/ts/draw-mode/Config'
 import type { LevelSpec } from '@/ts/draw-mode/Level'
 import type { Replay, SerialisedReplay } from '@/ts/draw-mode/Replay'
 import type { DrawModeState } from '@/ts/draw-mode/State'
@@ -27,13 +27,44 @@ onUnmounted(() => {
   document.removeEventListener("keyup", onKeyUp )
 })
 
+const thumbnailKeys = [
+  CONTROL_KEY.THUMBNAIL_1,
+  CONTROL_KEY.THUMBNAIL_2,
+  CONTROL_KEY.THUMBNAIL_3,
+  CONTROL_KEY.THUMBNAIL_4,
+  CONTROL_KEY.THUMBNAIL_5,
+  CONTROL_KEY.THUMBNAIL_6,
+].map(k => k.code)
+
 function onKeyUp(e: KeyboardEvent) {
-  if (e.key === 'Escape' && !navigation.level) {
-    navigation.world = null
-  } else if (e.key === 'Space' || e.key === 'Enter') {
-    if (navigation.showEndScreen && nextLevelIdx.value >= 0) {
+
+  if (navigation.level) {
+    if (e.key === CONTROL_KEY.BACK.code) {
+      emit('end')
+    }
+
+    if (!navigation.showEndScreen) {
+      return
+    }
+
+    if (e.key === CONTROL_KEY.FORWARD.code && nextLevelIdx.value >= 0) {
       nextLevel()
     }
+  } 
+  
+  const thumbnailIndex = thumbnailKeys.indexOf(e.key)
+  if (e.key === CONTROL_KEY.BACK.code) {
+    if (navigation.world) {
+      navigation.world = null
+    } else {
+      showMenu.value = !showMenu.value
+    }
+  } else if ([CONTROL_KEY.RIGHT.code, CONTROL_KEY.RIGHT.altCode].includes(e.key)) {
+    clickRightArrow()
+  } else if ([CONTROL_KEY.LEFT.code, CONTROL_KEY.LEFT.altCode].includes(e.key)) {
+    clickLeftArrow()
+  } else if (thumbnailIndex >= 0) {
+    clickThumbnail(thumbnailIndex + 1)
   }
 }
 
@@ -72,9 +103,18 @@ const showRightArrow = computed(() => {
 
 function clickLeftArrow() {
   if (navigation.world === null && navigation.worldPage > 0) {
-    navigation.worldPage -= 1
+    navigation.worldPage = Math.max(navigation.worldPage - 1, 0)
   } else if (navigation.levelPage > 0) {
-    navigation.levelPage -= 1
+    navigation.levelPage = Math.max(navigation.levelPage - 1, 0)
+  }
+}
+
+function clickRightArrow() {
+  if (!showRightArrow.value) return
+  if (navigation.world === null) {
+    navigation.worldPage += 1
+  } else {
+    navigation.levelPage += 1
   }
 }
 
@@ -118,7 +158,13 @@ function nextLevel() {
     return
   }
 
-  const nextSpec = worlds[nextWorldIdx.value].levelSpecs[nextLevelIdx.value]
+  const nwi = nextWorldIdx.value
+  const nli = nextLevelIdx.value
+  const nextSpec = worlds[nwi].levelSpecs[nli]
+  navigation.levelIdx = nli
+  navigation.worldIdx = nwi
+  navigation.levelPage = Math.floor(nli / LEVELS_PER_PAGE)
+  navigation.worldPage = Math.floor(nwi / LEVELS_PER_PAGE)
   emit('end')
   emit('input', nextSpec)
 }
@@ -158,10 +204,11 @@ const emit = defineEmits<{
       @click="clickBackButton"
     >
       <div v-show="navigation.world !== null" class="pr-4 pl-2 flex center">
-        <Icon name="chevron-left" class="pr-1" style="width: 1.75rem" />
-        <span >BACK TO WORLDS</span>
+        <Icon name="chevron-left" class="pr-1" style="height: 1.5rem" />
+        <span>BACK TO WORLDS</span>
+        <span class="ml-2 keyLabel" style="top: 0.15rem">[{{ CONTROL_KEY.BACK.label }}]</span>
       </div>
-      <span v-show="navigation.world === null" class="px-4">{{ showMenu ? 'WORLDS' : 'MENU' }}</span>
+      <span v-show="navigation.world === null" class="px-4">{{ showMenu ? 'WORLDS' : 'MENU' }}<span class="ml-2 keyLabel">[{{ CONTROL_KEY.BACK.label }}]</span></span>
     </div>
     <div v-show="!showMenu" class="flex center" style="height: 100vh">
       <div
@@ -173,7 +220,10 @@ const emit = defineEmits<{
           `"
         @click="clickLeftArrow"
       >
-        <Icon name="chevron-left" style="width: 2rem" v-show="navigation.world === null ? (navigation.worldPage > 0) : (navigation.levelPage > 0)" />
+        <div v-show="navigation.world === null ? (navigation.worldPage > 0) : (navigation.levelPage > 0)">
+          <Icon name="chevron-left" style="width: 2rem" />
+          <span class="keyLabel" style="top:-1.3em; right:-1.7em">[{{ CONTROL_KEY.LEFT.label }}]</span>
+        </div>
       </div>
       <div class="mx-8 my-8" style="grid-template-columns: repeat(3, minmax(0, 1fr)); grid-gap: 2rem; display: grid;">
         <div
@@ -194,15 +244,21 @@ const emit = defineEmits<{
               border: 1pt solid ${state.theme.value.TARGET};
               box-shadow: 6px 6px 0px 0px ${state.theme.value.TARGET};
               opacity: ${navigation.world === null || navigation.levelPage === 0 || hasPageMajority(navigation.world, navigation.levelPage - 1) ? 1 : 0.2}`"
-          /> 
+          />
+          <span class="pl-1 mb-1 bold" :style="`background: ${state.theme.value.TARGET}; color: ${state.theme.value.BACKGROUND}; position: absolute; bottom: 0; right: 0`">
+            [{{ CONTROL_KEY['THUMBNAIL_' + i].label }}]
+          </span>
         </div>
       </div>
       <div
         class="rightArrow flex center"
         :style="`min-width: 2rem; color: ${state.theme.value.TEXT}; height: 100%;`"
-        @click="() => {if (!showRightArrow) return; navigation.world === null ? navigation.worldPage += 1 : navigation.levelPage += 1}"
+        @click="clickRightArrow"
       >
-        <Icon name="chevron-right" style="width: 2rem" v-show="showRightArrow" />
+        <div v-show="showRightArrow">
+          <Icon name="chevron-right" style="width: 2rem"  />
+          <span class="keyLabel" style="top:-1.2em; right:-1.5em">[{{ CONTROL_KEY.RIGHT.label }}]</span>
+        </div>
       </div>
     </div>
     <div style="height: 100vh; margin-left: 4rem; padding-top: 8rem" v-show="showMenu">
@@ -229,21 +285,23 @@ const emit = defineEmits<{
     >
       <p style="font-size: 20vh;">Great job.</p>
         <div class="mx-4 mb-4">
-          <div v-show="!navigation.isReplay">
-            <div class="button br-0 pl-2" @click="emit('end')" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block">
-              <Icon name="chevron-left" class="mr-1" style="height: 1.25rem; top: 0.15rem" />Back <span class="ml-2" style="font-family: monospace; font-size: 1rem">[Esc]</span>
-            </div>
-            <div class="button br-0 pl-2 ml-4" @click="nextLevel" v-show="nextLevelIdx >= 0" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block">
-              <Icon name="chevron-right" class="mr-2" style="height: 1.25rem; top: 0.15rem" />Next <span class="ml-2" style="font-family: monospace; font-size: 1rem; top:0.1rem">[Ret]</span>
-            </div>
-            <div class="button br-0 ml-4 flex center" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block" @click="navigation.level!.saveReplay">
-              <Icon name="download" style="height: 1.25rem; top: 0.2rem" class="mr-3" />Save replay
-            </div>
+          <div class="button br-0 pl-2" @click="emit('end')" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block">
+            <Icon name="chevron-left" class="mr-2" style="height: 1.25rem; top: 0.15rem" />Back <span class="ml-2 keyLabel">[{{ CONTROL_KEY.BACK.label }}]</span>
           </div>
-          <div v-show="navigation.isReplay" class="button br-0 pl-2" @click="emit('end')" style="width: fit-content; font-size: 1.25rem; pointer-events: all;">
-            <Icon name="chevron-left" class="mr-2" style="height: 1.25rem" />Back <span class="ml-2" style="font-family: monospace; font-size: 1rem; top:0.1rem">[Esc]</span>
+          <div class="button br-0 pl-2 ml-4" @click="nextLevel" v-show="nextLevelIdx >= 0" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block">
+            <Icon name="chevron-right" class="mr-2" style="height: 1.25rem; top: 0.15rem" />Next <span class="ml-2 keyLabel">[{{ CONTROL_KEY.FORWARD.label }}]</span>
+          </div>
+          <div class="button br-0 ml-4 flex center" v-show="!navigation.isReplay" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block" @click="navigation.level!.saveReplay">
+            <Icon name="download" style="height: 1.25rem; top: 0.2rem" class="mr-3" />Save replay
           </div>
         </div>
     </div>
   </div>
 </template>
+
+<style lang="postcss" scoped>
+.keyLabel {
+  font-family: monospace;
+  font-size: 1rem;
+}
+</style>
