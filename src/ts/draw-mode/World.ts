@@ -17,21 +17,23 @@ import Slot from '@/ts/draw-mode/levels/begin/Slot'
 import SlotNoDraw from '@/ts/draw-mode/levels/begin/SlotNoDraw'
 import TargetBehindL from '@/ts/draw-mode/levels/begin/TargetBehindL'
 import Windmill from '@/ts/draw-mode/levels/begin/Windmill'
+import AnchorAbove from '@/ts/draw-mode/levels/bloom/AnchorAbove'
+import AnchorAboveBlocked from '@/ts/draw-mode/levels/bloom/AnchorAboveBlocked'
+import BallOnPlatform from '@/ts/draw-mode/levels/bloom/BallOnPlatform'
+import BetweenWedges from '@/ts/draw-mode/levels/bloom/BetweenWedges'
+import Cannon from '@/ts/draw-mode/levels/bloom/Cannon'
+import CannonBackwards from '@/ts/draw-mode/levels/bloom/CannonBackwards'
+import CannonHinged from '@/ts/draw-mode/levels/bloom/CannonHinged'
+import NoDrawUnderneath from '@/ts/draw-mode/levels/bloom/NoDrawUnderneath'
+import RaiseCorner from '@/ts/draw-mode/levels/bloom/RaiseCorner'
+import RaiseT from '@/ts/draw-mode/levels/bloom/RaiseT'
 import Scales from '@/ts/draw-mode/levels/bloom/Scales'
 import ScalesSwap from '@/ts/draw-mode/levels/bloom/ScalesSwap'
 import ScalesWeight from '@/ts/draw-mode/levels/bloom/ScalesWeight'
 import SlottedWedge from '@/ts/draw-mode/levels/bloom/SlottedWedge'
-import WedgeSandwich from '@/ts/draw-mode/levels/bloom/WedgeSandwich'
-import BetweenWedges from '@/ts/draw-mode/levels/bloom/BetweenWedges'
-import RaiseT from '@/ts/draw-mode/levels/bloom/RaiseT'
 import SuspendBetweenCliffs from '@/ts/draw-mode/levels/bloom/SuspendBetweenCliffs'
-import CannonHinged from '@/ts/draw-mode/levels/bloom/CannonHinged'
-import Cannon from '@/ts/draw-mode/levels/bloom/Cannon'
-import CannonBackwards from '@/ts/draw-mode/levels/bloom/CannonBackwards'
 import WedgeFork from '@/ts/draw-mode/levels/bloom/WedgeFork'
-import NoDrawUnderneath from '@/ts/draw-mode/levels/bloom/NoDrawUnderneath'
-import RaiseCorner from '@/ts/draw-mode/levels/bloom/RaiseCorner'
-import BallOnPlatform from '@/ts/draw-mode/levels/bloom/BallOnPlatform'
+import WedgeSandwich from '@/ts/draw-mode/levels/bloom/WedgeSandwich'
 
 export type WorldData = {
   name: string,
@@ -52,7 +54,7 @@ export const worlds: WorldData[] = [
     levelSpecs: [
       Scales, ScalesSwap, ScalesWeight, SlottedWedge, WedgeSandwich, BetweenWedges,
       RaiseT, RaiseCorner, SuspendBetweenCliffs, CannonHinged, Cannon, CannonBackwards,
-      NoDrawUnderneath, BallOnPlatform
+      NoDrawUnderneath, BallOnPlatform, AnchorAbove, AnchorAboveBlocked
     ]
   },
   {

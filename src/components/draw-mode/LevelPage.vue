@@ -1,6 +1,6 @@
 
 <script setup lang="ts">
-import { computed, onMounted, ref, type Ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref, type Ref } from 'vue'
 import Icon from '@/components/Icon.vue'
 import { LEVELS_PER_PAGE, PAGE_MAJORITY_REQUIRED } from '@/ts/draw-mode/Config'
 import type { LevelSpec } from '@/ts/draw-mode/Level'
@@ -20,9 +20,20 @@ const world: Ref<WorldData | null> = ref(null)
 const showMenu = ref(false)
 
 onMounted(() => {
+  document.addEventListener("keyup", onKeyUp )
   // Uncomment me during development
-  // emit('input', BallOnPlatform)
+  // emit('input', CubeAnchorHigher)
 })
+
+onUnmounted(() => {
+  document.removeEventListener("keyup", onKeyUp )
+})
+
+function onKeyUp(e: KeyboardEvent) {
+  if (e.key === 'Escape') {
+    world.value = null
+  }
+}
 
 function hasPageMajority(world: WorldData, page: number): boolean {
   if (page < 0 || state.unlockAllLevels.value) {
