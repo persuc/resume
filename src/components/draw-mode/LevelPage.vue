@@ -1,22 +1,20 @@
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, type Ref } from 'vue'
 import Icon from '@/components/Icon.vue'
 import { LEVELS_PER_PAGE, PAGE_MAJORITY_REQUIRED } from '@/ts/draw-mode/Config'
 import type { LevelSpec } from '@/ts/draw-mode/Level'
-import type { DrawModeState } from '@/ts/draw-mode/State'
-import { worlds, type WorldData } from '@/ts/draw-mode/World'
 import type { Replay, SerialisedReplay } from '@/ts/draw-mode/Replay'
+import type { DrawModeState } from '@/ts/draw-mode/State'
+import { worlds, type DrawModeNavigation, type WorldData } from '@/ts/draw-mode/World'
+import { computed, onMounted, onUnmounted, ref, type Ref } from 'vue'
 
 interface Props {
   state: DrawModeState,
+  navigation: DrawModeNavigation
 }
 
-const { state } = defineProps<Props>()
+const { state, navigation } = defineProps<Props>()
 
-const worldPage = ref(0)
-const levelPage = ref(0)
-const world: Ref<WorldData | null> = ref(null)
 const showMenu = ref(false)
 
 onMounted(() => {
@@ -30,8 +28,12 @@ onUnmounted(() => {
 })
 
 function onKeyUp(e: KeyboardEvent) {
-  if (e.key === 'Escape') {
-    world.value = null
+  if (e.key === 'Escape' && !navigation.level) {
+    navigation.world = null
+  } else if (e.key === 'Space' || e.key === 'Enter') {
+    if (navigation.showEndScreen && nextLevelIdx.value >= 0) {
+      nextLevel()
+    }
   }
 }
 
@@ -46,39 +48,79 @@ function hasPageMajority(world: WorldData, page: number): boolean {
 }
 
 function clickThumbnail(index: number) {
-  if (world.value === null) {
-    world.value = worlds[worldPage.value * LEVELS_PER_PAGE + index - 1]
-    levelPage.value = 0
+  if (navigation.world === null) {
+    navigation.worldIdx = navigation.worldPage * LEVELS_PER_PAGE + index - 1
+    navigation.world = worlds[navigation.worldIdx]
+    navigation.levelPage = 0
     return
   }
-  if (!hasPageMajority(world.value, levelPage.value - 1)) {
+  if (!hasPageMajority(navigation.world, navigation.levelPage - 1)) {
     return
   }
 
-  emit('input', world.value.levelSpecs[levelPage.value * LEVELS_PER_PAGE + index - 1])
+  navigation.levelIdx = navigation.levelPage * LEVELS_PER_PAGE + index - 1
+
+  emit('input', navigation.world.levelSpecs[navigation.levelIdx])
 }
 
 const showRightArrow = computed(() => {
-  if (world.value === null) {
-    return (LEVELS_PER_PAGE * (worldPage.value + 1) < worlds.length)
+  if (navigation.world === null) {
+    return (LEVELS_PER_PAGE * (navigation.worldPage + 1) < worlds.length)
   }
-  return (LEVELS_PER_PAGE * (levelPage.value + 1) < world.value.levelSpecs.length)
+  return (LEVELS_PER_PAGE * (navigation.levelPage + 1) < navigation.world.levelSpecs.length)
 })
 
 function clickLeftArrow() {
-  if (world.value === null && worldPage.value > 0) {
-    worldPage.value -= 1
-  } else if (levelPage.value > 0) {
-    levelPage.value -= 1
+  if (navigation.world === null && navigation.worldPage > 0) {
+    navigation.worldPage -= 1
+  } else if (navigation.levelPage > 0) {
+    navigation.levelPage -= 1
   }
 }
 
 function clickBackButton() {
-  if (world.value !== null) {
-    world.value = null
+  if (navigation.world !== null) {
+    navigation.world = null
   } else {
     showMenu.value = !showMenu.value
   }
+}
+
+const nextWorldIdx = computed(() => {
+  if (!navigation.world) {
+    return -1
+  }
+  if (navigation.world.levelSpecs.length > navigation.levelIdx + 1) {
+    return navigation.worldIdx
+  }
+  if (worlds.length > navigation.worldIdx + 1) {
+    return navigation.worldIdx + 1
+  }
+  return -1
+})
+
+const nextLevelIdx = computed(() => {
+  if (!navigation.world) {
+    return -1
+  }
+  if (navigation.world.levelSpecs.length > navigation.levelIdx + 1) {
+    return navigation.levelIdx + 1
+  }
+  if (worlds.length > navigation.worldIdx + 1) {
+    return 0
+  }
+  return -1
+})
+
+function nextLevel() {
+  if (nextWorldIdx.value < 0 || nextLevelIdx.value < 0) {
+    emit('end')
+    return
+  }
+
+  const nextSpec = worlds[nextWorldIdx.value].levelSpecs[nextLevelIdx.value]
+  emit('end')
+  emit('input', nextSpec)
 }
 
 const file = ref(null) as unknown as Ref<HTMLInputElement>
@@ -97,12 +139,13 @@ async function uploadReplay() {
 const emit = defineEmits<{
   (e: 'input', level: LevelSpec): void,
   (e: 'replay', replay: Replay): void
+  (e: 'end'): void
 }>()
 
 </script>
 
 <template>
-  <div class="level-page">
+  <div class="level-page" v-show="navigation.level === null">
     <div class="py-1" :style="`
         background: ${state.theme.value.TEXT};
         color: ${state.theme.value.BACKGROUND};
@@ -114,11 +157,11 @@ const emit = defineEmits<{
       `"
       @click="clickBackButton"
     >
-      <div v-show="world !== null" class="pr-4 pl-2 flex center">
+      <div v-show="navigation.world !== null" class="pr-4 pl-2 flex center">
         <Icon name="chevron-left" class="pr-1" style="width: 1.75rem" />
         <span >BACK TO WORLDS</span>
       </div>
-      <span v-show="world === null" class="px-4">{{ showMenu ? 'WORLDS' : 'MENU' }}</span>
+      <span v-show="navigation.world === null" class="px-4">{{ showMenu ? 'WORLDS' : 'MENU' }}</span>
     </div>
     <div v-show="!showMenu" class="flex center" style="height: 100vh">
       <div
@@ -130,34 +173,34 @@ const emit = defineEmits<{
           `"
         @click="clickLeftArrow"
       >
-        <Icon name="chevron-left" style="width: 2rem" v-show="world === null ? (worldPage > 0) : (levelPage > 0)" />
+        <Icon name="chevron-left" style="width: 2rem" v-show="navigation.world === null ? (navigation.worldPage > 0) : (navigation.levelPage > 0)" />
       </div>
       <div class="mx-8 my-8" style="grid-template-columns: repeat(3, minmax(0, 1fr)); grid-gap: 2rem; display: grid;">
         <div
-          v-for="i in Math.min(LEVELS_PER_PAGE, world === null ? worlds.length - LEVELS_PER_PAGE * worldPage : world.levelSpecs.length - LEVELS_PER_PAGE * levelPage)"
+          v-for="i in Math.min(LEVELS_PER_PAGE, navigation.world === null ? worlds.length - LEVELS_PER_PAGE * navigation.worldPage : navigation.world.levelSpecs.length - LEVELS_PER_PAGE * navigation.levelPage)"
           :key="`thumbnail-${i}`"
           @click="clickThumbnail(i)"
         >
           <span :style="`color: ${state.theme.value.TEXT}; display: block`">{{ 
-            world === null ? worlds[LEVELS_PER_PAGE * worldPage + i - 1].name : String(LEVELS_PER_PAGE * levelPage + i).padStart(3, '0')
+            navigation.world === null ? worlds[LEVELS_PER_PAGE * navigation.worldPage + i - 1].name : String(LEVELS_PER_PAGE * navigation.levelPage + i).padStart(3, '0')
            }}{{
-            world !== null && state.completed.has(world.levelSpecs[LEVELS_PER_PAGE * levelPage + i - 1].id) ? ' - [Completed]' : ''
+            navigation.world !== null && state.completed.has(navigation.world.levelSpecs[LEVELS_PER_PAGE * navigation.levelPage + i - 1].id) ? ' - [Completed]' : ''
             }}
           </span>
           <img
-            :src="world === null ? `/draw-mode/${worlds[LEVELS_PER_PAGE * worldPage + i - 1].name}/${worlds[LEVELS_PER_PAGE * worldPage + i - 1].name}.png` : `/draw-mode/${world.name}/${world.levelSpecs[LEVELS_PER_PAGE * levelPage + i - 1].id}.png`"
+            :src="navigation.world === null ? `/draw-mode/${worlds[LEVELS_PER_PAGE * navigation.worldPage + i - 1].name}/${worlds[LEVELS_PER_PAGE * navigation.worldPage + i - 1].name}.png` : `/draw-mode/${navigation.world.name}/${navigation.world.levelSpecs[LEVELS_PER_PAGE * navigation.levelPage + i - 1].id}.png`"
             :style="`
               width: 100%;
               border: 1pt solid ${state.theme.value.TARGET};
               box-shadow: 6px 6px 0px 0px ${state.theme.value.TARGET};
-              opacity: ${world === null || levelPage === 0 || hasPageMajority(world, levelPage - 1) ? 1 : 0.2}`"
+              opacity: ${navigation.world === null || navigation.levelPage === 0 || hasPageMajority(navigation.world, navigation.levelPage - 1) ? 1 : 0.2}`"
           /> 
         </div>
       </div>
       <div
         class="rightArrow flex center"
         :style="`min-width: 2rem; color: ${state.theme.value.TEXT}; height: 100%;`"
-        @click="() => {if (!showRightArrow) return; world === null ? worldPage += 1 : levelPage += 1}"
+        @click="() => {if (!showRightArrow) return; navigation.world === null ? navigation.worldPage += 1 : navigation.levelPage += 1}"
       >
         <Icon name="chevron-right" style="width: 2rem" v-show="showRightArrow" />
       </div>
@@ -167,6 +210,40 @@ const emit = defineEmits<{
         <Icon name="upload" style="width: 2rem" class="mr-2" />Upload Replay
       </label>
       <input ref="file" id="replay-upload" v-on:change="uploadReplay" type="file" style="display: none" />
+    </div>
+  </div>
+  <div
+    class="end-screen flex hcenter absolute full-width"
+    :style="`top: 5rem; z-index: 2; pointer-events: none; color: ${state.theme.value.TEXT}`"
+    v-show="navigation.level !== null "
+  >
+    <div
+      v-show="!navigation.showEndScreen"
+      v-html="navigation.level?.text"
+      class="px-2 py-1"
+      :style="`text-align: center; pointer-events: none; background: ${state.theme.value.BACKGROUND}; max-width: 80vw; font-family: monospace`" />
+    <div
+      class="px-2"
+      v-show="navigation.showEndScreen"
+      :style="`pointer-events: none; background: ${state.theme.value.BACKGROUND}`"
+    >
+      <p style="font-size: 20vh;">Great job.</p>
+        <div class="mx-4 mb-4">
+          <div v-show="!navigation.isReplay">
+            <div class="button br-0 pl-2" @click="emit('end')" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block">
+              <Icon name="chevron-left" class="mr-1" style="height: 1.25rem; top: 0.15rem" />Back <span class="ml-2" style="font-family: monospace; font-size: 1rem">[Esc]</span>
+            </div>
+            <div class="button br-0 pl-2 ml-4" @click="nextLevel" v-show="nextLevelIdx >= 0" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block">
+              <Icon name="chevron-right" class="mr-2" style="height: 1.25rem; top: 0.15rem" />Next <span class="ml-2" style="font-family: monospace; font-size: 1rem; top:0.1rem">[Ret]</span>
+            </div>
+            <div class="button br-0 ml-4 flex center" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block" @click="navigation.level!.saveReplay">
+              <Icon name="download" style="height: 1.25rem; top: 0.2rem" class="mr-3" />Save replay
+            </div>
+          </div>
+          <div v-show="navigation.isReplay" class="button br-0 pl-2" @click="emit('end')" style="width: fit-content; font-size: 1.25rem; pointer-events: all;">
+            <Icon name="chevron-left" class="mr-2" style="height: 1.25rem" />Back <span class="ml-2" style="font-family: monospace; font-size: 1rem; top:0.1rem">[Esc]</span>
+          </div>
+        </div>
     </div>
   </div>
 </template>

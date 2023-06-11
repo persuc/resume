@@ -1,4 +1,4 @@
-import type { LevelSpec } from '@/ts/draw-mode/Level'
+import type { Level, LevelSpec } from '@/ts/draw-mode/Level'
 import BalancedBetweenSticks from '@/ts/draw-mode/levels/begin/BalancedBetweenSticks'
 import BallBesideHill from '@/ts/draw-mode/levels/begin/BallBesideHill'
 import BallInCup from '@/ts/draw-mode/levels/begin/BallInCup'
@@ -62,3 +62,14 @@ export const worlds: WorldData[] = [
     levelSpecs: [ WedgeFork, ]
   },
 ]
+
+export type DrawModeNavigation = {
+  worldPage: number,
+  levelPage: number,
+  worldIdx: number
+  levelIdx: number
+  level: Level | null,
+  world: WorldData | null,
+  showEndScreen: boolean,
+  isReplay: boolean
+}

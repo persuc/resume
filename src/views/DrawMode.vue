@@ -1,21 +1,18 @@
 <script setup lang="ts">
-  import LevelPage from '@/components/draw-mode/LevelPage.vue'
-import Icon from '@/components/Icon.vue'
+import LevelPage from '@/components/draw-mode/LevelPage.vue'
 import { ASPECT_RATIO, CLEANUP_INTERVAL } from '@/ts/draw-mode/Config'
 import { cleanupEndConditions } from '@/ts/draw-mode/EndCondition'
-import { createLevel, type Level, type LevelSpec } from '@/ts/draw-mode/Level'
+import { createLevel, type LevelSpec } from '@/ts/draw-mode/Level'
 import { ReplayPlayer, type Replay } from '@/ts/draw-mode/Replay'
 import { createState } from '@/ts/draw-mode/State'
 import { themes, type Theme } from '@/ts/draw-mode/Theme'
+import type { DrawModeNavigation } from '@/ts/draw-mode/World'
 import Matter, { Common, Composite, Engine, Events, Mouse, Render, Runner } from 'matter-js'
 import decomp from 'poly-decomp'
-import { onMounted, onUnmounted, ref, type Ref } from 'vue'
+import { onMounted, onUnmounted, reactive, ref, type Ref } from 'vue'
   
-  const showEndScreen = ref(false)
   const state = createState()
   let timeOfLastCleanup = 0
-  let returnToLevelSelectTimeouts: number[] = []
-  const isReplay = ref(false)
   const replayPlayer = ReplayPlayer
 
   Common.setDecomp(decomp)
@@ -23,18 +20,24 @@ import { onMounted, onUnmounted, ref, type Ref } from 'vue'
   const engine = Engine.create()
   let render: Matter.Render // created on load
   const runner = Runner.create()
-
   const container: Ref<HTMLElement> = ref() as Ref<HTMLElement>
 
-  let level: Ref<Level | null> = ref(null)
+  const navigation: DrawModeNavigation = reactive({
+    worldPage: 0,
+    levelPage: 0,
+    worldIdx: 0,
+    levelIdx: 0,
+    world: null,
+    level: null,
+    showEndScreen: false,
+    isReplay: false
+  })
   let mouse: Mouse
 
   function onKeyUp(e: KeyboardEvent) {
-    if (e.key === 'Space' || e.key === 'Enter') {
-      e.preventDefault()
-    } else if (e.key === 'r') {
-      if (level.value && !showEndScreen.value) {
-        if (isReplay.value) {
+    if (e.key === 'r') {
+      if (navigation.level && !navigation.showEndScreen) {
+        if (navigation.isReplay) {
           replayPlayer.stop()
           const replay = replayPlayer.getReplay()
           resetEngine()
@@ -42,7 +45,7 @@ import { onMounted, onUnmounted, ref, type Ref } from 'vue'
             startReplay(replay)
           }
         } else {
-          level.value.restart()
+          navigation.level.restart()
         }
       }
     } else if (e.key === 't') {
@@ -50,36 +53,34 @@ import { onMounted, onUnmounted, ref, type Ref } from 'vue'
       const themeIdx = themesValues.findIndex(theme => state.theme.value === theme)
       applyTheme(themesValues[(themeIdx + 1) % themesValues.length])
     } else if (e.key === 'Escape') {
-      if (isReplay.value) {
-        endReplay()
-      } else {
-        returnToLevelSelect()
+      if (navigation.level) {
+        endLevel()
       }
     }
   }
   function startDrawing(e: MouseEvent) {
-    if (e.target !== render.canvas || showEndScreen.value || isReplay.value) {
+    if (e.target !== render.canvas || navigation.showEndScreen || navigation.isReplay) {
       return
     }
-    if (level.value) {
-      level.value.startLine().addPoint(render.mouse.position)
+    if (navigation.level) {
+      navigation.level.startLine().addPoint(render.mouse.position)
     }
   }
   function draw(e: MouseEvent) {
-    if (e.target === render.canvas && level.value && !isReplay.value) {
-      level.value.drawLine(render.mouse.position)
+    if (e.target === render.canvas && navigation.level && !navigation.isReplay) {
+      navigation.level.drawLine(render.mouse.position)
     }
   }
   function stopDrawing() {
-    if (level.value && !isReplay.value) {
-      level.value.endLine()
+    if (navigation.level && !navigation.isReplay) {
+      navigation.level.endLine()
     }
   }
   function applyTheme(theme: Theme) {
     state.theme.value = theme
     render.canvas.style.background = theme.BACKGROUND
-    if (level.value !== null) {
-      level.value.applyTheme(theme)
+    if (navigation.level !== null) {
+      navigation.level.applyTheme(theme)
     }
     state.save()
   }
@@ -140,44 +141,40 @@ import { onMounted, onUnmounted, ref, type Ref } from 'vue'
   })
 
   function startLevel(spec: LevelSpec) {
-    level.value = createLevel(engine, spec, state.theme.value, () => {
-      showEndScreen.value = true
-      if (level.value?.line) {
-        level.value.endLine()
+    navigation.level = createLevel(engine, spec, state.theme.value, () => {
+      navigation.showEndScreen = true
+      if (navigation.level?.line) {
+        navigation.level.endLine()
       }
       state.completed.add(spec.id)
       state.save()
-      // returnToLevelSelectTimeouts.push(setTimeout(returnToLevelSelect, 3000))
     })
   }
 
   function returnToLevelSelect() {
-    if (!level.value) {
+    if (!navigation.level) {
       return
     }
 
-    if (level.value.line) {
-      level.value.endLine()
+    if (navigation.level.line) {
+      navigation.level.endLine()
     }
 
     resetEngine()
   }
 
   function resetEngine() {
-    showEndScreen.value = false
+    navigation.showEndScreen = false
     Composite.clear(engine.world, false)
     cleanupEndConditions(engine)
-    level.value = null
-    while (returnToLevelSelectTimeouts.length) {
-      clearTimeout(returnToLevelSelectTimeouts.pop())
-    }
+    navigation.level = null
   }
 
   function cleanup() {
     const time = Date.now()
     if (time - timeOfLastCleanup >= CLEANUP_INTERVAL) {
       timeOfLastCleanup = time
-      if (!level.value) {
+      if (!navigation.level) {
         return
       }
       const bodies = Composite.allBodies(engine.world)
@@ -193,20 +190,22 @@ import { onMounted, onUnmounted, ref, type Ref } from 'vue'
   }
 
   function startReplay(replay: Replay) {
-    isReplay.value = true
+    navigation.isReplay = true
   
-    level.value = createLevel(engine, replay.spec, state.theme.value, () => {
-      showEndScreen.value = true
+    navigation.level = createLevel(engine, replay.spec, state.theme.value, () => {
+      navigation.showEndScreen = true
     })
 
-    replayPlayer.start(replay, level)
+    replayPlayer.start(replay, navigation.level)
     
     Events.on(engine, 'afterUpdate', replayPlayer.render)
   }
 
-  function endReplay() {
-    isReplay.value = false
-    Events.off(engine, 'afterUpdate', replayPlayer.render)
+  function endLevel() {
+    if (navigation.isReplay) {
+      navigation.isReplay = false
+      Events.off(engine, 'afterUpdate', replayPlayer.render)
+    }
     returnToLevelSelect()
   }
 
@@ -228,42 +227,8 @@ import { onMounted, onUnmounted, ref, type Ref } from 'vue'
 <template>
   <div class="draw-mode unselectable flex center hcenter" :style="`width: 100vw; height: 100vh; background: ${state.theme.value.BACKGROUND}`">
     <div ref="container">
-      <LevelPage :state="state" @input="startLevel" @replay="startReplay" v-show="level === null" />
-      <div
-        class="flex hcenter absolute full-width"
-        :style="`top: 5rem; z-index: 2; pointer-events: none; color: ${state.theme.value.TEXT}`"
-        v-show="level !== null"
-      >
-        <div
-          v-show="!showEndScreen"
-          v-html="level?.text"
-          class="px-2 py-1"
-          :style="`text-align: center; pointer-events: none; background: ${state.theme.value.BACKGROUND}; max-width: 80vw; font-family: monospace`" />
-        <div
-          class="px-2"
-          v-show="showEndScreen"
-          :style="`pointer-events: none; background: ${state.theme.value.BACKGROUND}`"
-        >
-          <p style="font-size: 20vh;">Great job.</p>
-            <div class="mx-4 mb-4">
-              <div v-show="!isReplay">
-                <div class="button br-0 pl-2" @click="returnToLevelSelect" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block">
-                  <Icon name="chevron-left" class="mr-1" style="height: 1.25rem; top: 0.15rem" />Back <span class="ml-2" style="font-family: monospace; font-size: 1rem">[Esc]</span>
-                </div>
-                <!-- <div class="button br-0 pl-2" @click="nextLevel" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block">
-                  <Icon name="chevron-right" class="mr-2" style="width: 1.75rem" />Next <span class="ml-2" style="font-family: monospace; font-size: 1rem; top:0.1rem">[Esc]</span>
-                </div> -->
-                <div class="button br-0 ml-4 flex center" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block" @click="level!.saveReplay">
-                  <Icon name="download" style="height: 1.25rem; top: 0.2rem" class="mr-3" />Save replay
-                </div>
-              </div>
-              <div class="button br-0 pl-2" @click="endReplay" style="width: fit-content; font-size: 1.25rem; pointer-events: all;" v-show="isReplay">
-                <Icon name="chevron-left" class="mr-2" style="height: 1.25rem" />Back <span class="ml-2" style="font-family: monospace; font-size: 1rem; top:0.1rem">[Esc]</span>
-              </div>
-            </div>
-        </div>
-      </div>
-      <div id="render" v-show="level !== null"></div>
+      <LevelPage :state="state" @input="startLevel" @replay="startReplay" :navigation="navigation" @end="endLevel" />
+      <div id="render" v-show="navigation.level !== null"></div>
     </div>
   </div>
 </template>

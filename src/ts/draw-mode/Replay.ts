@@ -1,6 +1,5 @@
 import type { Level, LevelSpec } from "@/ts/draw-mode/Level"
 import type { Vector } from "matter-js"
-import type { Ref } from "vue"
 
 export type SerialisedReplay = {
   lineHistory: Replay['lineHistory']
@@ -20,9 +19,9 @@ let lineIdx = 0
 let pointIdx = 0
 let lineHistory: Replay['lineHistory'] = []
 let spec: LevelSpec | null = null
-let level: Ref<Level | null> | null = null
+let level: Level | null = null
 
-function start(replay: Replay, levelRef: Ref<Level | null>) {
+function start(replay: Replay, levelRef: Level | null) {
   level = levelRef
   spec = replay.spec
   lineHistory = replay.lineHistory
@@ -31,7 +30,7 @@ function start(replay: Replay, levelRef: Ref<Level | null>) {
 }
 
 export const ReplayPlayer: {
-  start(replay: Replay, level: Ref<Level | null>): void
+  start(replay: Replay, level: Level | null): void
   restart(): void
   render(): void
   stop(): void
@@ -47,30 +46,32 @@ export const ReplayPlayer: {
     }
   },
   render() {
-    if (!spec || !level?.value) {
+    if (!spec || !level) {
       return
     }
     const time = performance.now()
     let pointsToAdd = []
 
-    while (lineIdx < lineHistory.length && time >= lineHistory[lineIdx][pointIdx].time + level.value.startTime) {
+    while (lineIdx < lineHistory.length && time >= lineHistory[lineIdx][pointIdx].time + level.startTime) {
       const point = lineHistory[lineIdx][pointIdx]
       if (pointIdx === 0) {
-        level.value.startLine()
+        level.startLine()
       }
       pointsToAdd.push(point)
       if (pointIdx < lineHistory[lineIdx].length - 1) {
         pointIdx++
       } else {
-        level.value.line!.addPointsWithoutChecks(pointsToAdd)
+        level.line!.addPointsWithoutChecks(pointsToAdd)
         pointsToAdd = []
-        level.value.endLine()
+        level.endLine()
         lineIdx++
         pointIdx = 0
       }
     }
-    level.value.line!.addPointsWithoutChecks(pointsToAdd)
-    pointsToAdd = []
+    if (pointsToAdd.length) {
+      level.line!.addPointsWithoutChecks(pointsToAdd)
+      pointsToAdd = []
+    }
   },
   stop() {
     lineIdx = lineHistory.length
