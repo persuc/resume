@@ -244,7 +244,7 @@ const emit = defineEmits<{
               opacity: ${navigation.world === null || navigation.levelPage === 0 || hasPageMajority(navigation.world, navigation.levelPage - 1) ? 1 : 0.2}`"
           />
           <span class="pl-1 mb-1 bold" :style="`background: ${state.theme.value.TARGET}; color: ${state.theme.value.BACKGROUND}; position: absolute; bottom: 0; right: 0`">
-            [{{ CONTROL_KEY['THUMBNAIL_' + i].label }}]
+            [{{ CONTROL_KEY[('THUMBNAIL_' + i) as 'THUMBNAIL_1'].label }}]
           </span>
         </div>
       </div>
