@@ -43,7 +43,7 @@ import Icon from '@/components/Icon.vue'
       Relevant Experience
     </h1>
 
-    <JobTitle company="Canva" role="Senior Software Engineer (Full Stack)" date-from="2022" date-to="Current" :tech="[ 'TypeScript', 'React', 'Java', 'Terraform', 'AWS', 'GraphQL', 'Protobuf', 'PostgreSQL', 'DynamoDB' ]" />
+    <JobTitle class="mt-2" company="Canva" role="Senior Software Engineer (Full Stack)" date-from="2022" date-to="Current" :tech="[ 'TypeScript', 'React', 'Java', 'Terraform', 'AWS', 'GraphQL', 'Protobuf', 'PostgreSQL', 'DynamoDB' ]" />
     <ul>
       <li><b class="only-print">Role: </b>Managed all pages on <a target="_blank" href="https://www.canva.com/">canva.com</a> and <a target="_blank" href="https://www.canva.cn/">canva.cn</a>. These 32,590 pages receive ~30 million requests per day.</li>
       <li>Led projects to enable page experimentation and fallback mechanisms in the China region.</li>
@@ -51,41 +51,45 @@ import Icon from '@/components/Icon.vue'
       <li>Implemented URL management in Canva's CMS, replacing over 10,000 hardcoded URL strings, increasing TTM and decreasing load on engineers.</li>
     </ul>
 
-    <JobTitle company="Two Bulls" role="Software Engineer (Full Stack)" date-from="2020" date-to="2022" :tech="[ 'Vue.js', 'TypeScript', 'Node.js', 'C#', 'python', 'AWS', 'MySQL', 'DynamoDB' ]" />
+    <JobTitle class="mt-2" company="Two Bulls" role="Software Engineer (Full Stack)" date-from="2020" date-to="2022" :tech="[ 'Vue.js', 'TypeScript', 'Node.js', 'C#', 'Python', 'AWS', 'MySQL', 'DynamoDB' ]" />
     <ul>
       <li><b class="only-print">Role: </b>Built numerous web applications with Vue frontend and Serverless / Typescript backend, deployed with AWS.</li>
       <li>Created a framework for bootstrapping web projects at Two Bulls, which is still used today</li>
       <li>Projects include: <a target="_blank" href="https://www.kidsdoconcall.com.au/">KidsDoc</a> telehealth, <a target="_blank" href="https://fit.theonetwo.com/">TheOneTwo</a> shopfront, <a target="_blank" href="https://www.service.vic.gov.au/services/border-permit/home">Victorian COVID border permits</a> (reached #3 on the app store!) and the <a target="_blank" href="https://release.me/">Release.Me</a> land sales platform.</li>
     </ul>
 
-    <JobTitle company="Unico" role="Software Engineer (Backend)" date-from="2019" date-to="2020" :tech="[ 'Java', 'MySQL', 'python', 'MATRIXX', 'Linux', 'Docker', 'Spring' ]" />
+    <JobTitle class="mt-2" company="Unico" role="Software Engineer (Backend)" date-from="2019" date-to="2020" :tech="[ 'Java', 'MySQL', 'Python', 'MATRIXX', 'Linux', 'Docker', 'Spring' ]" />
     <ul>
       <li><b class="only-print">Role: </b>Performed database migrations (ETL) for large telecommunications vendors.</li>
       <li>Wrote <i>Java / Spring</i> applications to move databases of up to 20 million records to the <i>MATRIXX</i> in-memory database.</li>
       <li>Gained experience in data-intensive systems and concurrency, sensitive data and reverse engineering older systems.</li>
     </ul>
 
-    <JobTitle company="Monash Uni Immersive Analytics" role="Software Engineer (Research)" date-from="2017" date-to="2019" :tech="[ 'JavaScript', 'Three.js', 'WebGL', 'python', 'R' ]" />
+    <JobTitle class="mt-2" company="Monash Uni Immersive Analytics Dept" role="Software Engineer (Research)" date-from="2017" date-to="2019" :tech="[ 'JavaScript', 'Three.js', 'WebGL', 'Python', 'R' ]" />
     <ul>
       <li><b class="only-print">Role: </b>Developed a highly performant web application for 2D and 3D visualisation of protein complexes and cross-link mass
 spectrometry data using <i>Three.js</i> and <i>WebGL</i>.</li>
     </ul>
 
-    <h3 class="mt-2 no-print">Inquire to find out more...</h3>
-    <ul class="no-print">
-      <li>UAVs</li>
-      <li>Cluster computing</li>
-      <li>Side projects</li>
-    </ul>
-    <br class="only-print" />
-    <span class="only-print">Inquire to find out about: UAVs, cluster computing, side projects.</span>
-
-    <div class="no-print flex" style="height: 4.5rem;">&nbsp;</div>
-
-    <ImageAndText class="education absolute l-4" :image="monashLogo" :size="'4rem'">
-      <p class="mb-0" >Monash University</p>
-      <p class="mb-2" style="font-style: italic;">Bachelor of Computer Science</p>
-    </ImageAndText>
+    <div class="flex space-between">
+      <div>
+        <h3 class="mt-2 no-print">Inquire to find out more...</h3>
+        <ul class="no-print">
+          <li>UAVs</li>
+          <li>Cluster computing</li>
+          <li>Side projects</li>
+        </ul>
+        <div class="only-print">
+          <br/>
+          <h3>Inquire to find out about:</h3>
+          <p>UAVs, cluster computing, side projects.</p>
+        </div>
+      </div>
+      <ImageAndText class="contact nowrap mt-4" :image="monashLogo" :size="'4rem'">
+        <p class="mb-1">Monash University</p>
+        <p style="font-style: italic;">Bachelor of Computer Science</p>
+      </ImageAndText>
+    </div>
   </div>
   <div style="height: 10rem;" class="no-print" />
 </template>
