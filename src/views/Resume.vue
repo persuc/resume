@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { EMAIL, PHONE } from '@/ts/constants'
 import faceImage from '@/assets/face.png'
-import monashLogo from '@/assets/monash.png'
 import ImageAndText from '@/components/ImageAndText.vue'
 import CopyButton from '@/components/CopyButton.vue'
 import Header from '@/components/Header.vue'
 import JobTitle from '@/components/JobTitle.vue'
 import Icon from '@/components/Icon.vue'
+import Note from '@/components/Note.vue'
 
 </script>
 
@@ -20,72 +20,79 @@ import Icon from '@/components/Icon.vue'
   </Header>
 
   <div class="resume px-8" style="max-width: 60rem; margin: 0 auto;">
-    <div class="flex space-between topRow" style="height: 2.1rem;" >
-      <h1 class="mb-0">
-        Skills
-      </h1>
+    <div class="flex topRow" style="height: 2.1rem; justify-content: end;" >
       <ImageAndText class="contact nowrap mt-4" :image="faceImage" :rounded="true">
-        <p class="mb-1" style="line-height: 1em;">Andrew Persic</p>
-        <CopyButton :value="EMAIL" style="line-height: 1.5em;">{{ EMAIL }}</CopyButton>
+        <span>Andrew Persic</span>
         <br />
-        <CopyButton :value="PHONE" style="line-height: 1.2em;">{{ PHONE }}</CopyButton>
+        <CopyButton :value="EMAIL">{{ EMAIL }}</CopyButton>
       </ImageAndText>
     </div>
-    
-    <h3 class="mt-2">Technical Leadership</h3>
-    <p>I build relationships and lead initiatives across multiple teams to target cross-cutting concerns. My leadership style is asking questions based on a solid understanding of business processes and software architecture, then facilitating communication to define goals. I enjoy mentoring, with the aim of helping more junior engineers hone their skills so they can deliver projects without relying on other teams.
-    </p>
-    
-    <h3 class="mt-2">Engineering</h3>
-    <p>Experienced with high scale, data-intensive workloads across different regions and architectures. Highly competent in web technologies such as <i>Node.js</i>, <i>Vue.js</i> &amp; <i>React</i>. Backend expertise includes <i>AWS</i>, <i>Terraform</i>, <i>Java</i> and <i>SQL</i> + <i>NoSQL</i> databases.</p>
 
-    <h1 class="mt-4 mb-0">
-      Relevant Experience
+    <!-- <h1 class="mt-8">
+      Engineering
+    </h1>
+    
+    <p>Experienced with high scale, data-intensive workloads across different regions and architectures. Highly competent in web technologies such as <i>Node.js</i>, <i>Vue.js</i> &amp; <i>React</i>. Backend expertise includes <i>AWS</i>, <i>Terraform</i>, <i>Java</i> and <i>SQL</i> + <i>NoSQL</i> databases.</p> -->
+
+    <h1 class="mt-8">Collaboration, Planning, Execution, and Maintenance</h1>
+
+    <p>Managed all pages on <a target="_blank" href="https://www.canva.com/">canva.com</a> and <a target="_blank" href="https://www.canva.cn/">canva.cn</a>. These 32,590 pages receive ~30 million requests per day. Collaboration and planning to deliver projects such as page experimentation frameworks, fallback mechanisms, and automated URL management.
+    </p>
+
+    <Note class="pr-4 pt-0" style="background-color: transparent">
+      <JobTitle company="Canva" role="Senior Software Engineer (Full Stack)" date-from="2022" date-to="Current" :tech="[ 'TypeScript', 'React', 'Java', 'Terraform', 'AWS', 'GraphQL', 'Protobuf', 'PostgreSQL', 'DynamoDB' ]" />
+      <ul>
+        <li>I identified shortfalls in our Chinese infrastructure, established communication between the Beijing and Landing Pages teams, and delivered experimentation and fallback mechanisms in the CN region.</li>
+        <li>Worked on CMS and page rendering features, syncing millions of rows of data between DynamoDB and Postgres databases and creating UIs for content managers.</li>
+        <li>Implemented URL management in Canva's CMS, replacing over 10,000 hardcoded URL strings, increasing TTM and decreasing load on engineers.</li>
+      </ul>
+    </Note>
+
+    <p>The best part of this role was mentoring junior engineers in China and seeing them grow to deliver projects on their own.</p>
+
+    <h1>Ability to drive results in a fast-paced and agile organization</h1>
+
+    <p>Working for a digital agency is as fast past as the software world gets. Some contracts were as short as two weeks, where I was expected to be the sole full-stack developer delivering a shopfront with features such as user accounts, surveys, recommendation algorithms and basic data analytics.</p>
+
+    <Note class="pr-4 pt-0" style="background-color: transparent">
+      <JobTitle company="Two Bulls" role="Software Engineer (Full Stack)" date-from="2020" date-to="2022" :tech="[ 'Vue.js', 'TypeScript', 'Node.js', 'C#', 'python', 'AWS', 'MySQL', 'DynamoDB' ]" />
+      <ul>
+        <li>Built numerous web applications with Vue frontend and Serverless / Typescript backend, deployed with AWS.</li>
+        <li>Created a framework for bootstrapping web projects lightning fast, which is still used today</li>
+        <li>Projects include: <a target="_blank" href="https://www.kidsdoconcall.com.au/">KidsDoc</a> telehealth, <a target="_blank" href="https://fit.theonetwo.com/">TheOneTwo</a> shopfront, <a target="_blank" href="https://www.service.vic.gov.au/services/border-permit/home">Victorian COVID border permits</a> (reached #3 on the app store!) and the <a target="_blank" href="https://release.me/">Release.Me</a> land sales platform.</li>
+      </ul>
+    </Note>
+
+    <h1>
+      3D Math & Linear Algebra
     </h1>
 
-    <JobTitle company="Canva" role="Senior Software Engineer (Full Stack)" date-from="2022" date-to="Current" :tech="[ 'TypeScript', 'React', 'Java', 'Terraform', 'AWS', 'GraphQL', 'Protobuf', 'PostgreSQL', 'DynamoDB' ]" />
-    <ul>
-      <li><b class="only-print">Role: </b>Managed all pages on <a target="_blank" href="https://www.canva.com/">canva.com</a> and <a target="_blank" href="https://www.canva.cn/">canva.cn</a>. These 32,590 pages receive ~30 million requests per day.</li>
-      <li>Led projects to enable page experimentation and fallback mechanisms in the China region.</li>
-      <li>Worked on CMS and page rendering features, syncing millions of rows of data between DynamoDB and Postgres databases and creating UIs for content managers.</li>
-      <li>Implemented URL management in Canva's CMS, replacing over 10,000 hardcoded URL strings, increasing TTM and decreasing load on engineers.</li>
-    </ul>
+    <h2></h2>
 
-    <JobTitle company="Two Bulls" role="Software Engineer (Full Stack)" date-from="2020" date-to="2022" :tech="[ 'Vue.js', 'TypeScript', 'Node.js', 'C#', 'python', 'AWS', 'MySQL', 'DynamoDB' ]" />
-    <ul>
-      <li><b class="only-print">Role: </b>Built numerous web applications with Vue frontend and Serverless / Typescript backend, deployed with AWS.</li>
-      <li>Created a framework for bootstrapping web projects at Two Bulls, which is still used today</li>
-      <li>Projects include: <a target="_blank" href="https://www.kidsdoconcall.com.au/">KidsDoc</a> telehealth, <a target="_blank" href="https://fit.theonetwo.com/">TheOneTwo</a> shopfront, <a target="_blank" href="https://www.service.vic.gov.au/services/border-permit/home">Victorian COVID border permits</a> (reached #3 on the app store!) and the <a target="_blank" href="https://release.me/">Release.Me</a> land sales platform.</li>
-    </ul>
+    <p>Linear algebra, vector calculus, and other mathematical concepts have played a large role in my career, having applied them in 2D and 3D protein visualisation software:</p>
 
-    <JobTitle company="Unico" role="Software Engineer (Backend)" date-from="2019" date-to="2020" :tech="[ 'Java', 'MySQL', 'python', 'MATRIXX', 'Linux', 'Docker', 'Spring' ]" />
-    <ul>
-      <li><b class="only-print">Role: </b>Performed database migrations (ETL) for large telecommunications vendors.</li>
-      <li>Wrote <i>Java / Spring</i> applications to move databases of up to 20 million records to the <i>MATRIXX</i> in-memory database.</li>
-      <li>Gained experience in data-intensive systems and concurrency, sensitive data and reverse engineering older systems.</li>
-    </ul>
+    <Note class="pr-4 pt-0" style="background-color: transparent">
+      <JobTitle company="Monash Uni Immersive Analytics" role="Software Engineer (Research)" date-from="2017" date-to="2019" :tech="[ 'JavaScript', 'Three.js', 'WebGL', 'python', 'R' ]" />
+      <ul>
+        <li>Developed a web application for 2D and 3D visualisation of protein complexes and cross-link mass
+  spectrometry data using <i>Three.js</i> and <i>WebGL</i>.</li>
+      </ul>
 
-    <JobTitle company="Monash Uni Immersive Analytics" role="Software Engineer (Research)" date-from="2017" date-to="2019" :tech="[ 'JavaScript', 'Three.js', 'WebGL', 'python', 'R' ]" />
-    <ul>
-      <li><b class="only-print">Role: </b>Developed a highly performant web application for 2D and 3D visualisation of protein complexes and cross-link mass
-spectrometry data using <i>Three.js</i> and <i>WebGL</i>.</li>
-    </ul>
+    </Note>
+
+    <p class="mt-2">I have continued to develop 2D and 3D graphics applications since then, including in this very repository! See the collision checking code in <a target="_blank" href="https://github.com/andrew-p-dev/resume/blob/master/src/ts/draw-mode/MatterLine.ts#L124">MatterLine.ts</a> or visit <a href="/draw">persic.cloud/draw</a> to see the result.</p>
 
     <h3 class="mt-2 no-print">Inquire to find out more...</h3>
     <ul class="no-print">
       <li>UAVs</li>
       <li>Cluster computing</li>
+      <li>In memory data bases and 22 million rows in 10 minutes</li>
       <li>Side projects</li>
     </ul>
     <br class="only-print" />
-    <span class="only-print">Inquire to find out about: UAVs, cluster computing, side projects.</span>
+    <span class="only-print">Inquire to find out about: UAVs, cluster computing, side projects, in memory databases.</span>
 
     <div class="no-print flex" style="height: 4.5rem;">&nbsp;</div>
-
-    <ImageAndText class="education absolute l-4" :image="monashLogo" :size="'4rem'">
-      <p class="mb-0" >Monash University</p>
-      <p class="mb-2" style="font-style: italic;">Bachelor of Computer Science</p>
-    </ImageAndText>
   </div>
   <div style="height: 10rem;" class="no-print" />
 </template>
@@ -104,6 +111,17 @@ h3 {
   bottom: -1rem;
 }
 
+ul {
+  padding-top: 1rem;
+  &>li {
+    left: -2.5rem;
+    display: inline;
+    &::marker, &::after {
+      content: ' ';
+    }
+  }
+}
+
 @media print{    
   .resume > .topRow {
     flex-direction: row !important;
@@ -111,13 +129,10 @@ h3 {
   }
 
   ul {
-    padding-left: 1.05rem;
-    & > li {
+    /* padding-top: 1.05rem; */
+    /* & > li {
       display: inline;
-      &::marker, &::after {
-        content: ' ';
-      }
-    }
+    } */
   }
 
   .education {
