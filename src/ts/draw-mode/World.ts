@@ -34,8 +34,9 @@ import ScalesSwap from '@/ts/draw-mode/levels/bloom/ScalesSwap'
 import ScalesWeight from '@/ts/draw-mode/levels/bloom/ScalesWeight'
 import SlottedWedge from '@/ts/draw-mode/levels/bloom/SlottedWedge'
 import SuspendBetweenCliffs from '@/ts/draw-mode/levels/bloom/SuspendBetweenCliffs'
-import WedgeFork from '@/ts/draw-mode/levels/bloom/WedgeFork'
 import WedgeSandwich from '@/ts/draw-mode/levels/bloom/WedgeSandwich'
+import HangCupOnHook from '@/ts/draw-mode/levels/deepen/HangCupOnHook'
+import WedgeFork from '@/ts/draw-mode/levels/deepen/WedgeFork'
 
 export type WorldData = {
   name: string,
@@ -61,7 +62,7 @@ export const worlds: WorldData[] = [
   },
   {
     name: 'deepen',
-    levelSpecs: [ WedgeFork, ]
+    levelSpecs: [ HangCupOnHook, WedgeFork, ]
   },
 ]
 

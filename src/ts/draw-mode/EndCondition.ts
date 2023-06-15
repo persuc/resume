@@ -84,6 +84,21 @@ export function onCollisionDuration(engine: Engine, bodyA: Body, bodyB: Body, mi
   })
 }
 
+export function onCollisionAndCondition(engine: Engine, bodyA: Body, bodyB: Body, condition: () => boolean, onEnd: () => any) {
+  const eventType = 'afterUpdate'
+  function callback() {
+    if (condition() && Collision.collides(bodyA, bodyB, undefined as unknown as Pairs)) {
+      onEnd()
+      Events.off(engine, eventType, callback)
+    }
+  }
+  Events.on(engine, eventType, callback)
+  eventsToRemove.push({
+    eventType,
+    callback
+  })
+}
+
 export function cleanupEndConditions(engine: Engine) {
 
   // Note: Engine.events is an array, with the properties 'afterUpdate', 'beforeUpdate' etc.

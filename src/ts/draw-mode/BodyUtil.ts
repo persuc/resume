@@ -160,7 +160,8 @@ export default {
         Bodies.rectangle(x + -halfWidth + halfThickness, y + halfHeight, thickness, height), // left
         Bodies.rectangle(x + halfWidth - halfThickness, y + halfHeight, thickness, height), // right
         Bodies.rectangle(x, y + height - halfThickness, width - 2 * thickness, thickness), // bottom
-      ].concat(options?.parts ?? [])
+        ...(options?.parts ?? []),
+      ]
     },)
   },
   vectorCup(width: number, height: number, thickness: number): Vector[] {
