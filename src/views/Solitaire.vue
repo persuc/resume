@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { reactive, ref } from 'vue'
+  import { computed, reactive, ref } from 'vue'
   const MAX_SIZE = 10
   const MIN_SIZE = 2
 
@@ -17,7 +17,7 @@
 
   function start() {
     reset()
-    state.push(...new Array(size.value * 9).fill(false))
+    state.push(...new Array(rowSize.value * rowSize.value).fill(false))
   }
 
   function reset() {
@@ -25,16 +25,25 @@
     message.value = ''
   }
 
+  function idxToRow(idx: number) {
+    return Math.floor(idx / rowSize.value) + 1
+  }
+
   function clickPlace(row: number, col: number) {
-    const idx = row * size.value * 3 + col
-    if (!(col > 3 && col < 7) && !(row > 3 && row < 7)) {
+    const idx = (row - 1) * rowSize.value + (col - 1)
+    
+    if (!(col >= size.value && col < size.value * 2) && !(row >= size.value && row < size.value * 2)) {
       return
     }
 
     switch (mode.value) {
       case MODE.PLAY:
         if (state[idx] === true) {
-          selectedStone.value = idx;
+          if (idx === selectedStone.value) {
+            selectedStone.value = -1;  
+          } else {
+            selectedStone.value = idx;
+          }
           break;
         }
 
@@ -42,15 +51,25 @@
           break;
         }
 
-        const movedStone = selectedStone.value;
         const jumpedStone = idx > selectedStone.value ? (
-            row === selectedStone.value / (size.value * 3) ? idx - 1 : idx - (size.value * 3)
+            row === idxToRow(selectedStone.value) ? idx - 1 : idx - rowSize.value
           ) : (
-            row === selectedStone.value / (size.value * 3) ? idx + 1 : idx + (size.value * 3)
+            row === idxToRow(selectedStone.value) ? idx + 1 : idx + rowSize.value
           )
+        const isValidDistance = idxToRow(selectedStone.value) === row
+          ? Math.abs(selectedStone.value - idx) === 2
+          : Math.abs(selectedStone.value - idx) === rowSize.value * 2
+
+        // console.log(selectedStone.value, jumpedStone, idx, idxToRow(jumpedStone) === row, Math.abs(jumpedStone - idx) === 2)
+        
+        if (state[jumpedStone] === false || !isValidDistance) {
+          selectedStone.value = -1
+          return
+        }
         state[idx] = true
         state[jumpedStone] = false
-        state[movedStone] = false
+        state[selectedStone.value] = false
+        selectedStone.value = -1;
         break;
       case MODE.ARRANGE:
         state[idx] = !state[idx]
@@ -58,10 +77,13 @@
     } 
   }
 
+  const isVertical = computed(() => window.innerHeight > window.innerWidth)
+  const rowSize = computed(() => size.value * 3 - 2)
+
 </script>
 
 <template>
-  <div class="solitaire px-8 pt-8" style="max-width: 60rem; margin: 0 auto;">
+  <div class="solitaire px-8 pt-8">
     <div v-show="state.length === 0 && !loading">
       <p>The game is to remove all but one stone from the board.</p>
       <p>
@@ -76,24 +98,50 @@
     <div v-show="loading">
       Loading...
     </div>
-    <div v-show="state.length > 0 && !loading" class="flex hcenter">
+    <div v-show="state.length > 0 && !loading" class="flex" :style="`flex-direction: ${isVertical ? 'column' : 'row'}`">
+      <div class="panel"></div>
       <div class="board">
-        <div v-for="row in (size * 3)" :key="`row-${row}`" class="flex">
+        <div v-for="row in (size * 3 - 2)" :key="`row-${row}`" class="flex" :style="`height: ${100 / (size * 3 - 2)}%`">
           <div
-            v-for="col in (size * 3)"
+            v-for="col in (size * 3 - 2)"
             :key="`col-${col}`"
             @click="clickPlace(row, col)"
+            :style="`width: ${100 / (size * 3 - 2)}%`"
             :class="{
-              stone: state[row * size * 3 + col] === true,
+              stone: state[(row - 1) * (size * 3 - 2) + col - 1] === true,
               place: true,
-              br: (row > 3 && row < 7) || (col > 2 && col < 7),
-              bb: (row > 2 && row < 7) || (col > 3 && col < 7),
-              bt: row === 1 && col > 3 && col < 7,
-              bl: col === 1 && row > 3 && row < 7,
+              selected: (row - 1) * (size * 3 - 2) + col - 1 === selectedStone,
+              br: (row > size - 1 && row < size * 2) || (col >= size - 1 && col < size * 2),
+              bb: (row > size - 2 && row < size * 2) || (col >= size && col < size * 2),
+              bt: row === 1 && col >= size && col < size * 2,
+              bl: col === 1 && row >= size && row < size * 2,
             }"
           >
-            
           </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div
+          class="button mb-2"
+          :style="`
+            width: 10rem;
+            background-color: var(${mode === MODE.PLAY ? '--color-anchor' : '--color-background-mute'});
+            color: var(${mode === MODE.PLAY ? '--vt-c-text-dark-1' : '--color-text'});
+          `"
+          @click="mode = MODE.PLAY"
+        >
+          Play
+        </div>
+        <div
+          class="button"
+          :style="`
+            width: 10rem;
+            background-color: var(${mode === MODE.ARRANGE ? '--color-anchor' : '--color-background-mute'});
+            color: var(${mode === MODE.ARRANGE ? '--vt-c-text-dark-1' : '--color-text'});
+          `"
+          @click="mode = MODE.ARRANGE"
+        >
+          Arrange
         </div>
       </div>
     </div>
@@ -108,15 +156,13 @@
   height: min(90vh, 90vw);
   width: min(90vh, 90vw);
   padding-top: 1%;
+}
 
-  & > .flex {
-    height: 11%;
-  }
+.panel {
+  flex-grow: 1;
 }
 
 .place {
-  width: 11.11%;
-
   &.bt {
     border-top: 1pt solid var(--color-border);
   }
@@ -133,6 +179,9 @@
 
 .stone {
   background-color: black;
+  &.selected {
+    border: 4pt solid rgb(90, 90, 255);
+  }
 }
 
 
