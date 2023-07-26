@@ -15,9 +15,29 @@
   const loading = ref(false)
   const mode = ref(MODE.ARRANGE)
 
+  function loadGame(game: bigint) {
+    let col = 0
+    let row = 0
+    let boardPosition = 0
+    let boardPositionMask = BigInt(1);
+    for (let i = 0; i < rowSize.value * rowSize.value; i++) {
+      col = idxToCol(i)
+      row = idxToRow(i)
+      if (isValidPosition(row, col)) {
+        state[i] = (game & boardPositionMask) > 0
+        boardPosition++
+        boardPositionMask *= 2n
+      } else {
+        state[i] = false
+      }
+    }
+  }
+
   function start() {
     reset()
     state.push(...new Array(rowSize.value * rowSize.value).fill(false))
+    const game1 = BigInt("0b111111111111111101111111111111111")
+    loadGame(game1)
   }
 
   function reset() {
@@ -29,10 +49,18 @@
     return Math.floor(idx / rowSize.value) + 1
   }
 
+  function idxToCol(idx: number) {
+    return idx % rowSize.value + 1
+  }
+
+  function isValidPosition(row: number, col: number) {
+    return (col >= size.value && col < size.value * 2) || (row >= size.value && row < size.value * 2)
+  }
+
   function clickPlace(row: number, col: number) {
     const idx = (row - 1) * rowSize.value + (col - 1)
     
-    if (!(col >= size.value && col < size.value * 2) && !(row >= size.value && row < size.value * 2)) {
+    if (!isValidPosition(row, col)) {
       return
     }
 
