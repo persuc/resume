@@ -72,6 +72,11 @@ const router = createRouter({
       component: () => import('./views/BlackoutPoem.vue')
     },
     {
+      path: '/solitaire',
+      name: "Solitaire",
+      component: () => import('./views/Solitaire.vue')
+    },
+    {
       path: '/draw',
       name: "Draw Mode",
       component: () => import('./views/DrawMode.vue')
