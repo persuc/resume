@@ -25,7 +25,12 @@
     message.value = ''
   }
 
-  function clickPlace(idx: number) {
+  function clickPlace(row: number, col: number) {
+    const idx = row * size.value * 3 + col
+    if (!(col > 3 && col < 7) && !(row > 3 && row < 7)) {
+      return
+    }
+
     switch (mode.value) {
       case MODE.PLAY:
         if (state[idx] === true) {
@@ -39,9 +44,9 @@
 
         const movedStone = selectedStone.value;
         const jumpedStone = idx > selectedStone.value ? (
-            idx / (size.value * 3) === selectedStone.value / (size.value * 3) ? idx - 1 : idx - (size.value * 3)
+            row === selectedStone.value / (size.value * 3) ? idx - 1 : idx - (size.value * 3)
           ) : (
-            idx / (size.value * 3) === selectedStone.value / (size.value * 3) ? idx + 1 : idx + (size.value * 3)
+            row === selectedStone.value / (size.value * 3) ? idx + 1 : idx + (size.value * 3)
           )
         state[idx] = true
         state[jumpedStone] = false
@@ -72,15 +77,19 @@
       Loading...
     </div>
     <div v-show="state.length > 0 && !loading" class="flex hcenter">
-      <div class="border br-1 px-3 mb-3 board">
+      <div class="board">
         <div v-for="row in (size * 3)" :key="`row-${row}`" class="flex">
           <div
             v-for="col in (size * 3)"
             :key="`col-${col}`"
-            @click="clickPlace(row * size * 3 + col)"
+            @click="clickPlace(row, col)"
             :class="{
               stone: state[row * size * 3 + col] === true,
               place: true,
+              br: (row > 3 && row < 7) || (col > 2 && col < 7),
+              bb: (row > 2 && row < 7) || (col > 3 && col < 7),
+              bt: row === 1 && col > 3 && col < 7,
+              bl: col === 1 && row > 3 && row < 7,
             }"
           >
             
@@ -96,23 +105,28 @@
 <style scoped lang="postcss">
 
 .board {
-  border: 1pt solid var(--color-border);
   height: min(90vh, 90vw);
   width: min(90vh, 90vw);
   padding-top: 1%;
 
   & > .flex {
     height: 11%;
-    &:not(:last-child) {
-      border-bottom: 1pt solid var(--color-border);
-    }
   }
 }
 
 .place {
   width: 11.11%;
-  
-  &:not(:last-child) {
+
+  &.bt {
+    border-top: 1pt solid var(--color-border);
+  }
+  &.bl {
+    border-left: 1pt solid var(--color-border);
+  }
+  &.bb {
+    border-bottom: 1pt solid var(--color-border);
+  }
+  &.br {
     border-right: 1pt solid var(--color-border);
   }
 }
