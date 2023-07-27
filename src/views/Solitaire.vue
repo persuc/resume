@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { computed, reactive, ref } from 'vue'
+  import { computed, onMounted, reactive, ref } from 'vue'
   const MAX_SIZE = 10
   const MIN_SIZE = 2
 
@@ -14,34 +14,49 @@
   const message = ref('')
   const loading = ref(false)
   const mode = ref(MODE.ARRANGE)
+  const memo = new Map<bigint, boolean>()
+  const idxToBoardPosition: Record<number, number> = {}
+  const boardPositionToIdx: Record<number, number> = {}
+  // for compatibility with browsers that don't support bigint literals
+  const zero = BigInt(0)
+  const one = BigInt(1)
+  const two = BigInt(2)
+  let currentGame = zero
 
   function loadGame(game: bigint) {
     let col = 0
     let row = 0
     let boardPosition = 0
-    let boardPositionMask = BigInt(1);
-    for (let i = 0; i < rowSize.value * rowSize.value; i++) {
+    let boardPositionMask = BigInt(1)
+    for (let i = 0; i < boardSize.value; i++) {
       col = idxToCol(i)
       row = idxToRow(i)
       if (isValidPosition(row, col)) {
+        idxToBoardPosition[i] = boardPosition
+        boardPositionToIdx[boardPosition] = i 
         state[i] = (game & boardPositionMask) > 0
         boardPosition++
-        boardPositionMask *= 2n
+        boardPositionMask *= two
       } else {
         state[i] = false
       }
     }
+    currentGame = game
   }
+
+  onMounted(start)
 
   function start() {
     reset()
-    state.push(...new Array(rowSize.value * rowSize.value).fill(false))
+    state.push(...new Array(boardSize.value).fill(false))
     const game1 = BigInt("0b111111111111111101111111111111111")
     loadGame(game1)
+    isSolvable(currentGame)
   }
 
   function reset() {
-    state.splice(0);
+    state.splice(0)
+    memo.clear()
     message.value = ''
   }
 
@@ -72,11 +87,11 @@
           } else {
             selectedStone.value = idx;
           }
-          break;
+          break
         }
 
         if (selectedStone.value < 0) {
-          break;
+          break
         }
 
         const jumpedStone = idx > selectedStone.value ? (
@@ -92,21 +107,88 @@
         
         if (state[jumpedStone] === false || !isValidDistance) {
           selectedStone.value = -1
-          return
+          break
         }
         state[idx] = true
         state[jumpedStone] = false
         state[selectedStone.value] = false
+        currentGame ^= one << BigInt(idxToBoardPosition[idx]) | one << BigInt(idxToBoardPosition[jumpedStone]) | one << BigInt(idxToBoardPosition[selectedStone.value])
         selectedStone.value = -1;
-        break;
+        break
       case MODE.ARRANGE:
         state[idx] = !state[idx]
-        break;
-    } 
+        currentGame ^= BigInt(1 << idxToBoardPosition[idx])
+        break
+    }
+    
+    isSolvable(currentGame)
+  }
+
+  function isSolvable(game: bigint): boolean {
+    return false
+
+    if (memo.has(currentGame)) {
+      return memo.get(currentGame)!
+    }
+
+    let idx = 0
+    for (let boardPosition = 0; boardPosition < 33; boardPosition++) {
+      idx = boardPositionToIdx[boardPosition]
+      let gameWithoutCurrent = game & (one << BigInt(boardPosition))
+      if (gameWithoutCurrent === zero) {
+        continue
+      }
+
+      const conditionsToCheck: {
+        jumpedStoneMask: bigint,
+        targetStoneMask: bigint
+      }[] = []
+      // up
+      if (idxToBoardPosition[idx - rowSize.value * 2] !== undefined) {
+        conditionsToCheck.push({
+          jumpedStoneMask: one << BigInt(idxToBoardPosition[idx - rowSize.value]),
+          targetStoneMask: one << BigInt(idxToBoardPosition[idx - rowSize.value * 2])
+        })
+      }
+      // down
+      if (idxToBoardPosition[idx + rowSize.value * 2] !== undefined) {
+        conditionsToCheck.push({
+          jumpedStoneMask: one << BigInt(idxToBoardPosition[idx + rowSize.value]),
+          targetStoneMask: one << BigInt(idxToBoardPosition[idx + rowSize.value * 2])
+        })
+      }
+      // left
+      if (idxToRow(idx) === idxToRow(idx - 2) && idxToBoardPosition[idx - 2] !== undefined) {
+        conditionsToCheck.push({
+          jumpedStoneMask: one << BigInt(idxToBoardPosition[idx - 1]),
+          targetStoneMask: one << BigInt(idxToBoardPosition[idx - 2])
+        })
+      }
+      // right
+      if (idxToRow(idx) === idxToRow(idx + 2) && idxToBoardPosition[idx + 2] !== undefined) {
+        conditionsToCheck.push({
+          jumpedStoneMask: one << BigInt(idxToBoardPosition[idx + 1]),
+          targetStoneMask: one << BigInt(idxToBoardPosition[idx + 2])
+        })
+      }
+
+      for (const c of conditionsToCheck) {
+        if ((game & c.jumpedStoneMask) > 0 && (game & c.targetStoneMask) === zero) {
+          if (!isSolvable(gameWithoutCurrent ^ (c.jumpedStoneMask | c.targetStoneMask))) {
+            memo.set(game, false)
+            return false
+          }
+        }
+      }
+    }
+
+    memo.set(game, true)
+    return true
   }
 
   const isVertical = computed(() => window.innerHeight > window.innerWidth)
   const rowSize = computed(() => size.value * 3 - 2)
+  const boardSize = computed(() => rowSize.value * rowSize.value)
 
 </script>
 
@@ -129,20 +211,17 @@
     <div v-show="state.length > 0 && !loading" class="flex" :style="`flex-direction: ${isVertical ? 'column' : 'row'}`">
       <div class="panel"></div>
       <div class="board">
-        <div v-for="row in (size * 3 - 2)" :key="`row-${row}`" class="flex" :style="`height: ${100 / (size * 3 - 2)}%`">
+        <div v-for="row in (rowSize)" :key="`row-${row}`" class="flex" :style="`height: ${100 / (rowSize)}%`">
           <div
-            v-for="col in (size * 3 - 2)"
+            v-for="col in (rowSize)"
             :key="`col-${col}`"
             @click="clickPlace(row, col)"
-            :style="`width: ${100 / (size * 3 - 2)}%`"
+            :style="`width: ${100 / (rowSize)}%`"
             :class="{
-              stone: state[(row - 1) * (size * 3 - 2) + col - 1] === true,
+              stone: state[(row - 1) * (rowSize) + col - 1] === true,
               place: true,
-              selected: (row - 1) * (size * 3 - 2) + col - 1 === selectedStone,
-              br: (row > size - 1 && row < size * 2) || (col >= size - 1 && col < size * 2),
-              bb: (row > size - 2 && row < size * 2) || (col >= size && col < size * 2),
-              bt: row === 1 && col >= size && col < size * 2,
-              bl: col === 1 && row >= size && row < size * 2,
+              selected: (row - 1) * (rowSize) + col - 1 === selectedStone,
+              border: isValidPosition(row, col)
             }"
           >
           </div>
@@ -171,6 +250,7 @@
         >
           Arrange
         </div>
+        <!-- <p>Solvable: {{ memo.get(currentGame) }}</p> -->
       </div>
     </div>
     <div v-show="message !== ''" class="br-1 py-1 px-3 mt-3 bg-cerulean-superlight" v-html="message"></div>
@@ -191,17 +271,10 @@
 }
 
 .place {
-  &.bt {
-    border-top: 1pt solid var(--color-border);
-  }
-  &.bl {
-    border-left: 1pt solid var(--color-border);
-  }
-  &.bb {
-    border-bottom: 1pt solid var(--color-border);
-  }
-  &.br {
-    border-right: 1pt solid var(--color-border);
+  border-radius: 50%;
+  &.border {
+    margin: 0.1rem;
+    border: 1pt solid rgb(207, 207, 207);
   }
 }
 
