@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { computed, onMounted, reactive, ref } from 'vue'
+  import { computed, onMounted, onUnmounted, reactive, ref } from 'vue'
   const MAX_SIZE = 10
   const MIN_SIZE = 2
 
@@ -13,10 +13,12 @@
   const selectedStone = ref(-1);
   const message = ref('')
   const loading = ref(false)
-  const mode = ref(MODE.ARRANGE)
+  const mode = ref(MODE.PLAY)
   const memo = new Map<bigint, boolean>()
   const idxToBoardPosition: Record<number, number> = {}
   const boardPositionToIdx: Record<number, number> = {}
+  const history = new Uint8Array(32) // move history. There are at most 32 moves in a game
+  const historyIdx = ref(-1)
   // for compatibility with browsers that don't support bigint literals
   const zero = BigInt(0)
   const one = BigInt(1)
@@ -44,7 +46,10 @@
     currentGame = game
   }
 
-  onMounted(start)
+  onMounted(() => {
+    window.addEventListener('resize', checkAspect)
+    start()
+  })
 
   function start() {
     reset()
@@ -99,7 +104,8 @@
           ) : (
             row === idxToRow(selectedStone.value) ? idx + 1 : idx + rowSize.value
           )
-        const isValidDistance = idxToRow(selectedStone.value) === row
+        const isHorizontal = idxToRow(selectedStone.value) === row
+        const isValidDistance = isHorizontal
           ? Math.abs(selectedStone.value - idx) === 2
           : Math.abs(selectedStone.value - idx) === rowSize.value * 2
 
@@ -112,8 +118,11 @@
         state[idx] = true
         state[jumpedStone] = false
         state[selectedStone.value] = false
+        historyIdx.value++
+        history[historyIdx.value] = (jumpedStone << 2) | (isHorizontal ? (jumpedStone > idx ? 0 : 1) : (jumpedStone > idx ? 2 : 3))
+        console.log("Jumped over", jumpedStone, 'set history', history[historyIdx.value])
         currentGame ^= one << BigInt(idxToBoardPosition[idx]) | one << BigInt(idxToBoardPosition[jumpedStone]) | one << BigInt(idxToBoardPosition[selectedStone.value])
-        selectedStone.value = -1;
+        selectedStone.value = -1
         break
       case MODE.ARRANGE:
         state[idx] = !state[idx]
@@ -122,6 +131,30 @@
     }
     
     isSolvable(currentGame)
+  }
+
+  function undo() {
+    if (historyIdx.value === -1) {
+      return
+    }
+
+    const jumpedStone = history[historyIdx.value] >> 2
+    const direction = {
+      0: 1, // right
+      1: -1, // left
+      2: rowSize.value, // down
+      3: -rowSize.value, // up
+    }[history[historyIdx.value] & 3]!
+
+    state[jumpedStone] = true
+    state[jumpedStone - direction] = false
+    state[jumpedStone + direction] = true
+
+    console.log("UNDO", jumpedStone, jumpedStone - direction, jumpedStone + direction)
+
+    currentGame ^= one << BigInt(idxToBoardPosition[jumpedStone - direction]) | one << BigInt(idxToBoardPosition[jumpedStone]) | one << BigInt(idxToBoardPosition[jumpedStone + direction])
+    selectedStone.value = jumpedStone + direction
+    historyIdx.value--
   }
 
   function isSolvable(game: bigint): boolean {
@@ -186,7 +219,15 @@
     return true
   }
 
-  const isVertical = computed(() => window.innerHeight > window.innerWidth)
+  onUnmounted(() => {
+    window.removeEventListener('resize', checkAspect)
+  })
+
+  function checkAspect() {
+    isVertical.value = window.innerHeight > window.innerWidth
+  }
+
+  const isVertical = ref(false)
   const rowSize = computed(() => size.value * 3 - 2)
   const boardSize = computed(() => rowSize.value * rowSize.value)
 
@@ -209,9 +250,9 @@
       Loading...
     </div>
     <div v-show="state.length > 0 && !loading" class="flex" :style="`flex-direction: ${isVertical ? 'column' : 'row'}`">
-      <div class="panel"></div>
+      <div class="panel" style="margin-right: 10rem"></div>
       <div class="board">
-        <div v-for="row in (rowSize)" :key="`row-${row}`" class="flex" :style="`height: ${100 / (rowSize)}%`">
+        <div v-for="row in (rowSize)" :key="`row-${row}`" :class="{ flex: true }" :style="`height: ${100 / (rowSize)}%`">
           <div
             v-for="col in (rowSize)"
             :key="`col-${col}`"
@@ -227,28 +268,49 @@
           </div>
         </div>
       </div>
-      <div class="panel">
+      <div :class="{
+        panel: true,
+        'pl-8': !isVertical
+      }">
+        <p>Mode:</p>
         <div
-          class="button mb-2"
-          :style="`
-            width: 10rem;
-            background-color: var(${mode === MODE.PLAY ? '--color-anchor' : '--color-background-mute'});
-            color: var(${mode === MODE.PLAY ? '--vt-c-text-dark-1' : '--color-text'});
-          `"
+        :class="{
+            button: true,
+            'mb-2': true,
+            disabled: mode !== MODE.PLAY
+          }"
+          style="max-width: 10rem; cursor: pointer;"
           @click="mode = MODE.PLAY"
         >
           Play
         </div>
         <div
-          class="button"
-          :style="`
-            width: 10rem;
-            background-color: var(${mode === MODE.ARRANGE ? '--color-anchor' : '--color-background-mute'});
-            color: var(${mode === MODE.ARRANGE ? '--vt-c-text-dark-1' : '--color-text'});
-          `"
+          :class="{
+            button: true,
+            disabled: mode !== MODE.ARRANGE
+          }"
+          style="max-width: 10rem; cursor: pointer;"
           @click="mode = MODE.ARRANGE"
         >
           Arrange
+        </div>
+        <p class="mt-2">Controls:</p>
+        <div
+          class="button mb-2"
+          style="max-width: 10rem;"
+          @click="start"
+        >
+          Reset
+        </div>
+        <div
+          :class="{
+            button: true,
+            disabled: historyIdx === -1
+          }"
+          style="max-width: 10rem;"
+          @click="undo"
+        >
+          Undo
         </div>
         <!-- <p>Solvable: {{ memo.get(currentGame) }}</p> -->
       </div>
@@ -261,9 +323,8 @@
 <style scoped lang="postcss">
 
 .board {
-  height: min(90vh, 90vw);
-  width: min(90vh, 90vw);
-  padding-top: 1%;
+  height: min(90vh - 24px, 90vw - 24px);
+  width: min(90vh - 24px, 90vw - 24px);
 }
 
 .panel {
