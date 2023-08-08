@@ -61,6 +61,7 @@
 
   function reset() {
     state.splice(0)
+    historyIdx.value = -1
     memo.clear()
     message.value = ''
   }
