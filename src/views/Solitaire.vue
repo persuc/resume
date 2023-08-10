@@ -19,11 +19,122 @@
   const boardPositionToIdx: Record<number, number> = {}
   const history = new Uint8Array(32) // move history. There are at most 32 moves in a game
   const historyIdx = ref(-1)
+  const historySize = ref(0)
   // for compatibility with browsers that don't support bigint literals
   const zero = BigInt(0)
   const one = BigInt(1)
   const two = BigInt(2)
   let currentGame = zero
+  const jumps = new Uint8Array([
+    0b00001000,
+    0b00001010,
+    
+    0b00001110,
+    
+    0b00010010,
+    0b00010001,
+    
+    0b00100100,
+    0b00100110,
+
+    0b00101010,
+    
+    0b00101110,
+    0b00101101,
+    
+    0b00111000,
+    0b00111010,
+
+    0b00111100,
+    0b00111110,
+
+    0b01000000,
+    0b01000001,
+    0b01000010,
+    0b01000011,
+
+    0b01000100,
+    0b01000101,
+    0b01000110,
+    0b01000111,
+
+    0b01001000,
+    0b01001001,
+    0b01001010,
+    0b01001011,
+
+    0b01001101,
+    0b01001110,
+
+    0b01010001,
+    0b01010010,
+
+    0b01010100,
+
+    0b01011000,
+
+    0b01011100,
+    0b01011101,
+    0b01011110,
+    0b01011111,
+    
+    0b01100000,
+    0b01100001,
+    0b01100010,
+    0b01100011,
+    
+    0b01100100,
+    0b01100101,
+    0b01100110,
+    0b01100111,
+
+    0b01101001,
+
+    0b01101101,
+
+    0b01110000,
+    0b01110011,
+
+    0b01110100,
+    0b01110111,
+
+    0b01111000,
+    0b01111001,
+    0b01111010,
+    0b01111011,
+    
+    0b01111100,
+    0b01111101,
+    0b01111110,
+    0b01111111,
+    
+    0b10000000,
+    0b10000001,
+    0b10000010,
+    0b10000011,
+
+    0b10000101,
+    0b10000111,
+
+    0b10001001,
+    0b10001011,
+
+    0b10010100,
+    0b10010111,
+
+    0b10011011,
+
+    0b10011101,
+    0b10011111,
+
+    0b10101000,
+    0b10101011,
+
+    0b10101111,
+
+    0b10110001,
+    0b10110011,
+  ])
 
   function loadGame(game: bigint) {
     let col = 0
@@ -48,6 +159,7 @@
 
   onMounted(() => {
     window.addEventListener('resize', checkAspect)
+    checkAspect()
     start()
   })
 
@@ -110,8 +222,6 @@
           ? Math.abs(selectedStone.value - idx) === 2
           : Math.abs(selectedStone.value - idx) === rowSize.value * 2
 
-        // console.log(selectedStone.value, jumpedStone, idx, idxToRow(jumpedStone) === row, Math.abs(jumpedStone - idx) === 2)
-        
         if (state[jumpedStone] === false || !isValidDistance) {
           selectedStone.value = -1
           break
@@ -121,7 +231,7 @@
         state[selectedStone.value] = false
         historyIdx.value++
         history[historyIdx.value] = (jumpedStone << 2) | (isHorizontal ? (jumpedStone > idx ? 0 : 1) : (jumpedStone > idx ? 2 : 3))
-        console.log("Jumped over", jumpedStone, 'set history', history[historyIdx.value])
+        historySize.value = historyIdx.value + 1
         currentGame ^= one << BigInt(idxToBoardPosition[idx]) | one << BigInt(idxToBoardPosition[jumpedStone]) | one << BigInt(idxToBoardPosition[selectedStone.value])
         selectedStone.value = -1
         break
@@ -151,14 +261,35 @@
     state[jumpedStone - direction] = false
     state[jumpedStone + direction] = true
 
-    console.log("UNDO", jumpedStone, jumpedStone - direction, jumpedStone + direction)
-
     currentGame ^= one << BigInt(idxToBoardPosition[jumpedStone - direction]) | one << BigInt(idxToBoardPosition[jumpedStone]) | one << BigInt(idxToBoardPosition[jumpedStone + direction])
     selectedStone.value = jumpedStone + direction
     historyIdx.value--
   }
 
+  function redo() {
+    if (historyIdx.value + 1 >= historySize.value ) {
+      return
+    }
+
+    const jumpedStone = history[historyIdx.value + 1] >> 2
+    const direction = {
+      0: 1, // right
+      1: -1, // left
+      2: rowSize.value, // down
+      3: -rowSize.value, // up
+    }[history[historyIdx.value + 1] & 3]!
+
+    state[jumpedStone] = false
+    state[jumpedStone - direction] = true
+    state[jumpedStone + direction] = false
+
+    currentGame ^= one << BigInt(idxToBoardPosition[jumpedStone - direction]) | one << BigInt(idxToBoardPosition[jumpedStone]) | one << BigInt(idxToBoardPosition[jumpedStone + direction])
+    selectedStone.value = jumpedStone + direction
+    historyIdx.value++
+  }
+
   function isSolvable(game: bigint): boolean {
+
     return false
 
     if (memo.has(currentGame)) {
@@ -297,7 +428,7 @@
         </div>
         <p class="mt-2">Controls:</p>
         <div
-          class="button mb-2"
+          class="button"
           style="max-width: 10rem;"
           @click="start"
         >
@@ -306,12 +437,24 @@
         <div
           :class="{
             button: true,
+            'mt-2': true,
             disabled: historyIdx === -1
           }"
           style="max-width: 10rem;"
           @click="undo"
         >
           Undo
+        </div>
+        <div
+          :class="{
+            button: true,
+            'mt-2': true,
+            disabled: historyIdx >= historySize - 1
+          }"
+          style="max-width: 10rem;"
+          @click="redo"
+        >
+          Redo
         </div>
         <!-- <p>Solvable: {{ memo.get(currentGame) }}</p> -->
       </div>
