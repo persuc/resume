@@ -65,23 +65,6 @@
   font-weight: normal;
 }
 
-body {
-  min-height: 100vh;
-  color: var(--color-text);
-  transition: color 0.5s, background-color 0.5s, opacity 0.5s;
-  line-height: 1.6;
-  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
-    Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  font-size: 15px;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  &>#app {
-    height: 100vh;
-  }
-}
-
 h1,
 h2,
 h3,
@@ -114,17 +97,6 @@ svg {
 
 b {
   font-weight: bold;
-}
-
-header {
-  @extend .bg-gray-200;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-  font-size: 1rem;
-  letter-spacing: 0.1rem;
-  border-bottom: var(--color-border);
 }
 
 .rule {

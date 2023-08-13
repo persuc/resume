@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
+import Button from '@/components/Button.vue'
 const router = useRouter()
 
 interface Props {
@@ -17,11 +18,10 @@ function goHome() {
 </script>
 
 <template>
-  <header>
-    <div @click="goHome" class="button text">
+  <header class="flex justify-between items-center p-4 text-base border-b bg-gray-100">
+    <Button text @click="goHome">
       <span>← Back</span>
-    </div>
-
+    </Button>
     <slot></slot>
   </header>
 </template>

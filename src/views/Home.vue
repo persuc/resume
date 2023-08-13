@@ -8,6 +8,7 @@ import bgImage from '@/assets/walter-de-maria-naoshima.jpg'
 import starImage from '@/assets/glowing_star.png'
 import ImageAndText from '@/components/ImageAndText.vue'
 import Icon from '@/components/Icon.vue'
+import Button from '@/components/Button.vue'
 import { EMAIL, PHONE } from '@/ts/constants'
 
 const router = useRouter()
@@ -44,9 +45,9 @@ function goBlog() {
           <div class="flex justify-between items-center">
             <h2>Resume</h2>
             <a href="/andrew_persic_resume.pdf" download @click.stop class="plain"> 
-              <div class="button text">
+              <Button text>
                 <Icon name="download" class="mr-2 opacity-80 w-5" />Download
-              </div>
+              </Button>
             </a>
           </div>
         </ImageAndText>

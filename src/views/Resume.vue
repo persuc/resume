@@ -7,15 +7,16 @@ import CopyButton from '@/components/CopyButton.vue'
 import Header from '@/components/Header.vue'
 import JobTitle from '@/components/JobTitle.vue'
 import Icon from '@/components/Icon.vue'
+import Button from '@/components/Button.vue'
 
 </script>
 
 <template>
   <Header class="no-print">
     <a href="/andrew_persic_resume.pdf" download>
-      <div class="button">
-        <Icon name="download" class="mr-2" />Download
-      </div>
+      <Button>
+        <Icon name="download" class="mr-2 w-5" />Download
+      </Button>
     </a>
   </Header>
 
