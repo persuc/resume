@@ -201,16 +201,16 @@ const emit = defineEmits<{
       `"
       @click="clickBackButton"
     >
-      <div v-show="navigation.world !== null" class="pr-4 pl-2 flex center">
+      <div v-show="navigation.world !== null" class="pr-4 pl-2 flex items-center">
         <Icon name="chevron-left" class="pr-1" style="height: 1.5rem" />
         <span>BACK TO WORLDS</span>
         <span class="ml-2 keyLabel" style="top: 0.15rem">[{{ CONTROL_KEY.BACK.label }}]</span>
       </div>
       <span v-show="navigation.world === null" class="px-4">{{ showMenu ? 'WORLDS' : 'MENU' }}<span class="ml-2 keyLabel">[{{ CONTROL_KEY.BACK.label }}]</span></span>
     </div>
-    <div v-show="!showMenu" class="flex center" style="height: 100vh">
+    <div v-show="!showMenu" class="flex items-center" style="height: 100vh">
       <div
-        class="leftArrow flex center"
+        class="leftArrow flex items-center"
         :style="`
           min-width: 2rem;
           color: ${state.theme.value.TEXT};
@@ -249,7 +249,7 @@ const emit = defineEmits<{
         </div>
       </div>
       <div
-        class="rightArrow flex center"
+        class="rightArrow flex items-center"
         :style="`min-width: 2rem; color: ${state.theme.value.TEXT}; height: 100%;`"
         @click="clickRightArrow"
       >
@@ -267,7 +267,7 @@ const emit = defineEmits<{
     </div>
   </div>
   <div
-    class="end-screen flex hcenter absolute full-width"
+    class="end-screen flex justify-center absolute w-full"
     :style="`top: 5rem; z-index: 2; pointer-events: none; color: ${state.theme.value.TEXT}`"
     v-show="navigation.level !== null "
   >
@@ -289,7 +289,7 @@ const emit = defineEmits<{
           <div class="button br-0 pl-2 ml-4" @click="nextLevel" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block">
             <Icon name="chevron-right" class="mr-2" style="height: 1.25rem; top: 0.15rem" />{{ nextWorldIdx === navigation.worldIdx ? 'Next' : 'Next World' }}<span class="ml-2 keyLabel">[{{ CONTROL_KEY.FORWARD.label }}]</span>
           </div>
-          <div class="button br-0 ml-4 flex center" v-show="!navigation.isReplay" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block" @click="navigation.level!.saveReplay">
+          <div class="button br-0 ml-4 flex items-center" v-show="!navigation.isReplay" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block" @click="navigation.level!.saveReplay">
             <Icon name="download" style="height: 1.25rem; top: 0.2rem" class="mr-3" />Save replay
           </div>
         </div>

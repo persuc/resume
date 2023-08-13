@@ -62,7 +62,6 @@ function toggle() {
 .arrow {
   display: inline-block;
   transition: transform 0.2s;
-  /* transform-origin: center; */
   transform-origin: 34% 52%;
   &.rotate {
     transform: rotate(90deg);

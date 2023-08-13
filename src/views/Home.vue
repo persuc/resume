@@ -33,7 +33,7 @@ function goBlog() {
 <template>
   <div class="home flex" :style="`background-image: url(${bgImage})`">
     <div class="content" style="flex-grow: 1">
-      <div class="pa-4 br-1 mx-5" style="background-color: var(--color-background);">
+      <div class="pa-4 br-1 mx-5 bg-white">
         <h1>Hey, I'm Andrew!</h1>
   
         <p>I am great at <b>identifying opportunities</b> for improvement and seeing through the technical implementation to <b>deliver value across teams</b>. I do this by building relationships and understanding individual needs, before establishing partnerships to tackle immediate, widespread concerns. Then I provide the drive to define goals, and provide the technical knowhow to help deliver them.</p>
@@ -41,7 +41,7 @@ function goBlog() {
         <p>Thanks for coming to hear about me! Here are some more things to check out:</p>
     
         <ImageAndText class="border br-1 mb-2" @click="goResume" style="cursor: pointer;" :image="booksImage">
-          <div class="flex space-between">
+          <div class="flex justify-between">
             <h2>Resume</h2>
             <a href="/andrew_persic_resume.pdf" download @click.stop class="plain"> 
               <div class="button text">
@@ -64,9 +64,9 @@ function goBlog() {
         </ImageAndText>
       </div>
     </div>
-    <div class="footer flex center space-between px-4 py-2 mt-8" style="background-color: var(--color-background);">
+    <div class="footer flex items-center justify-between px-4 py-2 mt-8 bg-white">
       <a href="/bored">I'm bored</a>
-      <div class="flex center contact">
+      <div class="flex items-center contact">
         <span class="mr-2">{{ EMAIL }}</span>
         <span class="ml-1 mr-2 rule"></span>
         <span class="mr-2">{{ PHONE }}</span>

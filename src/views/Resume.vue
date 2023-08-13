@@ -20,7 +20,7 @@ import Icon from '@/components/Icon.vue'
   </Header>
 
   <div class="resume px-8" style="max-width: 60rem; margin: 0 auto;">
-    <div class="flex space-between topRow" style="height: 2.1rem;" >
+    <div class="flex justify-between topRow" style="height: 2.1rem;" >
       <h1 class="mb-0">
         Skills
       </h1>
@@ -71,7 +71,7 @@ import Icon from '@/components/Icon.vue'
 spectrometry data using <i>Three.js</i> and <i>WebGL</i>.</li>
     </ul>
 
-    <div class="flex space-between">
+    <div class="flex justify-between">
       <div>
         <h3 class="mt-2 no-print">Inquire to find out more...</h3>
         <ul class="no-print">

@@ -2,16 +2,15 @@
 </script>
 
 <template>
-  <main style="height: 100vh;">
+  <main class="bg-white" style="height: 100vh;">
     <router-view/>
   </main>
 </template>
 
 <style>
-@import "./assets/base.css";
-@import "./assets/decoration.css";
-@import "./assets/layout.css";
-@import "./assets/pad.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @media (hover: hover) {
   a:not(.plain):not(.nohover):hover {

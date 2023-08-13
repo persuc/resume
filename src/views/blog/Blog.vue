@@ -24,8 +24,8 @@ const posts = [
     
     <h1 class="mb-4">Top blog posts:</h1>
 
-    <div v-for="post in posts" :key="post.title" style="border-top: 1pt solid var(--color-border);">
-      <a :href="`/blog/${post.path}`" class="flex space-between center plain" style="color: var(--color-text)">
+    <div v-for="post in posts" :key="post.title" class="border-t border-gray-400">
+      <a :href="`/blog/${post.path}`" class="flex justify-between items-center plain" style="color: var(--color-text)">
         <div class="mb-2">
           <h2 class="mt-2 mb-0">{{ post.title  }}</h2>
           <span style="color: var(--color-subheading)">{{ post.subtitle }}</span>
