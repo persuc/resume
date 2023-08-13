@@ -7,8 +7,7 @@
   </main>
 </template>
 
-<style>
-
+<style lang="postcss">
 @media (hover: hover) {
   a:not(.plain):not(.nohover):hover {
     background-color: hsla(240, 100%, 73%, 0.2);
@@ -32,6 +31,35 @@
       width: 0.1em;
       background-color: hsla(240, 100%, 73%, 0.2);
     }
+  }
+}
+
+.button {
+  @extend .text-white;
+  background-color: var(--color-anchor);
+  text-transform: uppercase;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+
+  &.text {
+    color: var(--color-heading);
+    background-color: transparent;
+    transition: background-color 0.5s;
+
+    &:hover {
+      @extend .bg-gray-300;
+    }
+  }
+
+  &.disabled {
+    cursor: default;
+    @extend .bg-gray-200;
+    color: var(--color-text);
   }
 }
 </style>

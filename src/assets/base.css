@@ -131,32 +131,3 @@ header {
   border-left: 1pt solid var(--color-border-hover);
   width: 1pt;
 }
-
-.button {
-  @extend .text-white;
-  background-color: var(--color-anchor);
-  text-transform: uppercase;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  font-weight: 500;
-  cursor: pointer;
-
-  display: flex;
-  align-items: center;
-
-  &.text {
-    color: var(--color-heading);
-    background-color: transparent;
-    transition: background-color 0.5s;
-
-    &:hover {
-      @extend .bg-gray-300;
-    }
-  }
-
-  &.disabled {
-    cursor: default;
-    @extend .bg-gray-200;
-    color: var(--color-text);
-  }
-}

@@ -41,11 +41,11 @@ function goBlog() {
         <p>Thanks for coming to hear about me! Here are some more things to check out:</p>
     
         <ImageAndText class="border br-1 mb-2" @click="goResume" style="cursor: pointer;" :image="booksImage">
-          <div class="flex justify-between">
+          <div class="flex justify-between items-center">
             <h2>Resume</h2>
             <a href="/andrew_persic_resume.pdf" download @click.stop class="plain"> 
               <div class="button text">
-                <Icon name="download" class="mr-2" style="opacity: 0.8;" />Download
+                <Icon name="download" class="mr-2 opacity-80 w-5" />Download
               </div>
             </a>
           </div>
