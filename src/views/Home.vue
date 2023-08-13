@@ -33,7 +33,7 @@ function goBlog() {
 <template>
   <div class="home flex" :style="`background-image: url(${bgImage})`">
     <div class="content" style="flex-grow: 1">
-      <div class="pa-4 br-1 mx-5 bg-white">
+      <div class="p-4 br-1 mx-5 bg-white">
         <h1>Hey, I'm Andrew!</h1>
   
         <p>I am great at <b>identifying opportunities</b> for improvement and seeing through the technical implementation to <b>deliver value across teams</b>. I do this by building relationships and understanding individual needs, before establishing partnerships to tackle immediate, widespread concerns. Then I provide the drive to define goals, and provide the technical knowhow to help deliver them.</p>

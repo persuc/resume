@@ -8,9 +8,6 @@
 </template>
 
 <style>
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 @media (hover: hover) {
   a:not(.plain):not(.nohover):hover {

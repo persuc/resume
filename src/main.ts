@@ -7,6 +7,7 @@ import cpp from 'highlight.js/lib/languages/cpp'
 import assembly from 'highlight.js/lib/languages/armasm'
 import python from 'highlight.js/lib/languages/python'
 import App from "./App.vue"
+import './index.css'
 
 const router = createRouter({
   history: createWebHistory(),
