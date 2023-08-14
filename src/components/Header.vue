@@ -18,7 +18,7 @@ function goHome() {
 </script>
 
 <template>
-  <header class="flex justify-between items-center p-4 text-base border-b bg-gray-100">
+  <header class="flex justify-between items-center p-3 text-base border-b bg-gray-100">
     <Button text @click="goHome">
       <span>← Back</span>
     </Button>

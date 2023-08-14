@@ -267,7 +267,7 @@
     <p>Keep narrowing down your guesses until you find the target word.</p>
     <p>Letters will automatically be revealed as they are confirmed by your guesses. If you are stuck, click <b>Reveal Letter</b> to reveal a letter.</p>
     <div class="flex" style="flex-wrap: wrap">
-      <div class="inputs">
+      <div class="inputs grow">
         <div class="flex items-center justify-between mb-1">
           <input type="number" v-model="lengthInput" :min="MIN_LENGTH" :max="MAX_LENGTH" style="width: 11.5rem"/>
           <button @click="pick">Generate</button>
@@ -362,10 +362,6 @@
     & .flex {
       width: 100%;
     }
-    flex-grow: 1;
-  }
-  .rule {
-    display: none;
   }
 }
 </style>

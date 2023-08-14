@@ -12,7 +12,7 @@ import Button from '@/components/Button.vue'
 </script>
 
 <template>
-  <Header class="no-print">
+  <Header class="print:hidden">
     <a href="/andrew_persic_resume.pdf" download>
       <Button>
         <Icon name="download" class="mr-2 w-5" />Download
@@ -22,9 +22,9 @@ import Button from '@/components/Button.vue'
 
   <div class="resume px-8" style="max-width: 60rem; margin: 0 auto;">
     <div class="flex justify-between topRow" style="height: 2.1rem;" >
-      <h1 class="mb-0">
+      <div class="text-2xl">
         Skills
-      </h1>
+      </div>
       <ImageAndText class="contact whitespace-nowrap mt-4" :image="faceImage" :rounded="true">
         <p class="mb-1" style="line-height: 1em;">Andrew Persic</p>
         <CopyButton :value="EMAIL" style="line-height: 1.5em;">{{ EMAIL }}</CopyButton>
@@ -33,56 +33,56 @@ import Button from '@/components/Button.vue'
       </ImageAndText>
     </div>
     
-    <h3 class="mt-2">Technical Leadership</h3>
+    <p class="mt-2 text-xl">Technical Leadership</p>
     <p>I build relationships and lead initiatives across multiple teams to target cross-cutting concerns. My leadership style is asking questions based on a solid understanding of business processes and software architecture, then facilitating communication to define goals. I enjoy mentoring, with the aim of helping more junior engineers hone their skills so they can deliver projects without relying on other teams.
     </p>
     
-    <h3 class="mt-2">Engineering</h3>
+    <p class="mt-2 text-xl">Engineering</p>
     <p>Experienced with high scale, data-intensive workloads across different regions and architectures. Highly competent in web technologies such as <i>Node.js</i>, <i>Vue.js</i> &amp; <i>React</i>. Backend expertise includes <i>AWS</i>, <i>Terraform</i>, <i>Java</i> and <i>SQL</i> + <i>NoSQL</i> databases.</p>
 
-    <h1 class="mt-4 mb-0">
+    <div class="mt-4 text-2xl">
       Relevant Experience
-    </h1>
+    </div>
 
     <JobTitle class="mt-2" company="Canva" role="Senior Software Engineer (Full Stack)" date-from="2022" date-to="Current" :tech="[ 'TypeScript', 'React', 'Java', 'Terraform', 'AWS', 'GraphQL', 'Protobuf', 'PostgreSQL', 'DynamoDB' ]" />
-    <ul>
-      <li><b class="only-print">Role: </b>Managed all pages on <a target="_blank" href="https://www.canva.com/">canva.com</a> and <a target="_blank" href="https://www.canva.cn/">canva.cn</a>. These 32,590 pages receive ~30 million requests per day.</li>
+    <ul class="list-disc ml-8">
+      <li><b class="hidden print:inline">Role: </b>Managed all pages on <a target="_blank" href="https://www.canva.com/">canva.com</a> and <a target="_blank" href="https://www.canva.cn/">canva.cn</a>. These 32,590 pages receive ~30 million requests per day.</li>
       <li>Led projects to enable page experimentation and fallback mechanisms in the China region.</li>
       <li>Worked on CMS and page rendering features, syncing millions of rows of data between DynamoDB and Postgres databases and creating UIs for content managers.</li>
       <li>Implemented URL management in Canva's CMS, replacing over 10,000 hardcoded URL strings, increasing TTM and decreasing load on engineers.</li>
     </ul>
 
     <JobTitle class="mt-2" company="Two Bulls" role="Software Engineer (Full Stack)" date-from="2020" date-to="2022" :tech="[ 'Vue.js', 'TypeScript', 'Node.js', 'C#', 'Python', 'AWS', 'MySQL', 'DynamoDB' ]" />
-    <ul>
-      <li><b class="only-print">Role: </b>Built numerous web applications with Vue frontend and Serverless / Typescript backend, deployed with AWS.</li>
+    <ul class="list-disc ml-8">
+      <li><b class="hidden print:inline">Role: </b>Built numerous web applications with Vue frontend and Serverless / Typescript backend, deployed with AWS.</li>
       <li>Created a framework for bootstrapping web projects at Two Bulls, which is still used today</li>
       <li>Projects include: <a target="_blank" href="https://www.kidsdoconcall.com.au/">KidsDoc</a> telehealth, <a target="_blank" href="https://fit.theonetwo.com/">TheOneTwo</a> shopfront, <a target="_blank" href="https://www.service.vic.gov.au/services/border-permit/home">Victorian COVID border permits</a> (reached #3 on the app store!) and the <a target="_blank" href="https://release.me/">Release.Me</a> land sales platform.</li>
     </ul>
 
     <JobTitle class="mt-2" company="Unico" role="Software Engineer (Backend)" date-from="2019" date-to="2020" :tech="[ 'Java', 'MySQL', 'Python', 'MATRIXX', 'Linux', 'Docker', 'Spring' ]" />
-    <ul>
-      <li><b class="only-print">Role: </b>Performed database migrations (ETL) for large telecommunications vendors.</li>
+    <ul class="list-disc ml-8">
+      <li><b class="hidden print:inline">Role: </b>Performed database migrations (ETL) for large telecommunications vendors.</li>
       <li>Wrote <i>Java / Spring</i> applications to move databases of up to 20 million records to the <i>MATRIXX</i> in-memory database.</li>
       <li>Gained experience in data-intensive systems and concurrency, sensitive data and reverse engineering older systems.</li>
     </ul>
 
     <JobTitle class="mt-2" company="Monash Uni Immersive Analytics Dept" role="Software Engineer (Research)" date-from="2017" date-to="2019" :tech="[ 'JavaScript', 'Three.js', 'WebGL', 'Python', 'R' ]" />
-    <ul>
-      <li><b class="only-print">Role: </b>Developed a highly performant web application for 2D and 3D visualisation of protein complexes and cross-link mass
+    <ul class="list-disc ml-8">
+      <li><b class="hidden print:inline">Role: </b>Developed a highly performant web application for 2D and 3D visualisation of protein complexes and cross-link mass
 spectrometry data using <i>Three.js</i> and <i>WebGL</i>.</li>
     </ul>
 
     <div class="flex justify-between">
       <div>
-        <h3 class="mt-2 no-print">Inquire to find out more...</h3>
-        <ul class="no-print">
+        <p class="text-lg mt-2 print:hidden">Inquire to find out more...</p>
+        <ul class="list-disc ml-8 print:hidden">
           <li>UAVs</li>
           <li>Cluster computing</li>
           <li>Side projects</li>
         </ul>
-        <div class="only-print">
+        <div class="hidden print:block">
           <br/>
-          <h3>Inquire to find out about:</h3>
+          <p class="text-lg">Inquire to find out about:</p>
           <p>UAVs, cluster computing, side projects.</p>
         </div>
       </div>
@@ -92,19 +92,10 @@ spectrometry data using <i>Three.js</i> and <i>WebGL</i>.</li>
       </ImageAndText>
     </div>
   </div>
-  <div style="height: 10rem;" class="no-print" />
+  <div style="height: 10rem;" class="print:hidden" />
 </template>
 
 <style scoped lang="postcss">
-h1 {
-  font-weight: 500;
-  font-size: 1.5rem;
-}
-
-h3 {
-  font-size: 1.2rem;
-}
-
 .education {
   bottom: -1rem;
 }

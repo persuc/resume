@@ -13,3 +13,77 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+p,
+ol,
+ul {
+  margin-bottom: 0.5rem;
+}
+
+svg {
+  fill: currentColor;
+}
+
+@layer components {
+
+  select {
+    @apply px-1 h-6 rounded border border-gray-400 cursor-pointer;
+  }
+
+  select:hover {
+    @apply bg-gray-300;
+  }
+
+  button {
+    @apply px-1 h-6 rounded border border-gray-400 bg-gray-200;
+  }
+
+  button:hover {
+    @apply bg-gray-300;
+  }
+
+  a:not(.plain) {
+    @apply text-blue-600 underline;
+    /* @extend .text-blue-600; */
+
+    &:visited {
+      @apply text-blue-600;
+      /* @extend .text-blue-600; */
+    }
+  }
+
+  @media (hover: hover) {
+    a:not(.plain):not(.nohover):hover {
+      @apply bg-blue-50;
+
+      &::before {
+        content: " ";
+        position: absolute;
+        left: -0.1em;
+        top: 0;
+        height: 100%;
+        width: 0.1em;
+        @apply bg-blue-50;
+      }
+
+      &::after {
+        content: " ";
+        position: absolute;
+        right: -0.1em;
+        top: 0;
+        height: 100%;
+        width: 0.1em;
+        @apply bg-blue-50;
+      }
+    }
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  position: relative;
+  font-weight: normal;
+}

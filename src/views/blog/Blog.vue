@@ -22,13 +22,13 @@ const posts = [
 
   <div class="blog px-8 pt-8" style="max-width: 60rem; margin: 0 auto;">
     
-    <h1 class="mb-4">Top blog posts:</h1>
+    <p class="text-3xl mb-4">Recent blog posts:</p>
 
-    <div v-for="post in posts" :key="post.title" class="border-t border-gray-400">
+    <div v-for="post in posts" :key="post.title" class="border-t border-gray-200">
       <a :href="`/blog/${post.path}`" class="flex justify-between items-center plain" style="color: var(--color-text)">
         <div class="mb-2">
-          <h2 class="mt-2 mb-0">{{ post.title  }}</h2>
-          <span style="color: var(--color-subheading)">{{ post.subtitle }}</span>
+          <div class="mt-2 text-xl">{{ post.title  }}</div>
+          <span class="text-slate-500">{{ post.subtitle }}</span>
         </div>
         <span>→</span>
       </a>
@@ -36,10 +36,3 @@ const posts = [
 
   </div>
 </template>
-
-<style scoped>
-h1 {
-  font-weight: 500;
-  font-size: 2rem;
-}
-</style>

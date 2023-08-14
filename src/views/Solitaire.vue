@@ -382,7 +382,7 @@
       Loading...
     </div>
     <div v-show="state.length > 0 && !loading" class="flex" :style="`flex-direction: ${isVertical ? 'column' : 'row'}`">
-      <div class="panel" style="margin-right: 10rem"></div>
+      <div class="panel grow" style="margin-right: 10rem"></div>
       <div class="board">
         <div v-for="row in (rowSize)" :key="`row-${row}`" :class="{ flex: true }" :style="`height: ${100 / (rowSize)}%`">
           <div
@@ -402,6 +402,7 @@
       </div>
       <div :class="{
         panel: true,
+        grow: true,
         'pl-8': !isVertical
       }">
         <p>Mode:</p>
@@ -409,9 +410,10 @@
         :class="{
             button: true,
             'mb-2': true,
+            'cursor-pointer': true,
             disabled: mode !== MODE.PLAY
           }"
-          style="max-width: 10rem; cursor: pointer;"
+          style="max-width: 10rem;"
           @click="mode = MODE.PLAY"
         >
           Play
@@ -419,9 +421,10 @@
         <div
           :class="{
             button: true,
-            disabled: mode !== MODE.ARRANGE
+            disabled: mode !== MODE.ARRANGE,
+            'cursor-pointer': true,
           }"
-          style="max-width: 10rem; cursor: pointer;"
+          style="max-width: 10rem;"
           @click="mode = MODE.ARRANGE"
         >
           Arrange
@@ -469,10 +472,6 @@
 .board {
   height: min(90vh - 24px, 90vw - 24px);
   width: min(90vh - 24px, 90vw - 24px);
-}
-
-.panel {
-  flex-grow: 1;
 }
 
 .place {

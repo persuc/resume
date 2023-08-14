@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Button from '@/components/Button.vue'
 import Codeblock from '@/components/Codeblock.vue'
 import Header from '@/components/Header.vue'
 import Note from '@/components/Note.vue'
@@ -13,14 +14,14 @@ const step = ref(1)
 
   <article class="article px-8 pt-8" style="max-width: 60rem; margin: 0 auto;">
     
-    <h1 class="mb-0">Algorithms in Three Levels of Difficulty</h1>
-    <h3 class="mb-4" style="color: var(--color-subheading)">Binary Trees</h3>
+    <span class="text-3xl">Algorithms in Three Levels of Difficulty</span>
+    <h3 class="mb-4 text-slate-500">Binary Trees</h3>
 
     <p>Let's discuss binary-tree algorithms in 3 levels of difficulty, and see how solving simpler problems can lead us to solutions for more complex problems.</p>
 
     <Note class="mt-3 mb-8">Note: These examples were taken from <a target="_blank" href="https://github.com/andrew-p-dev/FIT1045">a talk I gave</a> to first year students on basic python programming, algorithms and data structures.</Note>
 
-    <h2 class="mb-2">Problem #1: Invert Binary Tree</h2>
+    <p class="text-xl">Problem #1: Invert Binary Tree</p>
 
     <p>First, easy. Let's use <a target="_blank" href="https://leetcode.com/problems/invert-binary-tree/">LeetCode 226. Invert Binary Tree</a>. Given a binary tree, we must transform the tree so that it is vertically mirrored, or flip everything on the left with everything on the right.
     </p>
@@ -53,7 +54,7 @@ const step = ref(1)
 
     <br />
 
-    <h2 class="mb-2">Solution #1</h2>
+    <p class="text-xl">Solution #1</p>
 
     <p>Time to look at the code. First, here is the TreeNode class we will be using as our binary tree data structure for all 3 problems, it's very simple:</p>
 
@@ -77,16 +78,16 @@ const step = ref(1)
 
   <br />
 
-  <h2 class="mb-2">Problem #2: Reverse Odd Levels of Binary Tree</h2>
+  <p class="text-xl">Problem #2: Reverse Odd Levels of Binary Tree</p>
 
   <p>
     Next let's tackle a medium-difficulty question: <a target="_blank" href="https://leetcode.com/problems/reverse-odd-levels-of-binary-tree/">LeetCode 2415. Reverse Odd Levels of Binary Tree</a>. This question asks us to do the same as <i>Invert Binary Tree</i>, but this time only invert every second level. The problem also specifies that every level of the tree will always be "full". i.e. we are given a perfect binary tree. Try to think for yourself about how we might keep using the same strategy as we did for <i>Invert Binary Tree</i>, but modify it to only flip every second level of the tree.
   </p>
 
   <div class="flex justify-center mt-4">
-    <div class="button text border" v-show="step === 1" @click="step++">
+    <Button text v-show="step === 1" @click="step++" class="border border-blue-400 rounded">
       <span>I'm done thinking</span>
-    </div>
+    </Button>
   </div>
 
   <div v-show="step > 1">
@@ -109,7 +110,7 @@ def helper(self, left: Optional[TreeNode], right: Optional[TreeNode]) -> None:
 
   <br />
 
-  <h2 class="mb-2">Solution #2</h2>
+  <p class="text-xl">Solution #2</p>
 
   <p>Now all we need to modify about our solution for <i>Invert Binary Tree</i> is to provide ourselves with more information to define our recursive case - we need a boolean to tell us whether we should flip this level or not.</p>
 
@@ -134,7 +135,7 @@ def helper(self, left: Optional[TreeNode], right: Optional[TreeNode], isOdd: boo
       And that's it! Ready for a harder problem?
     </p>
  
-    <h2 class="mb-2">Problem #3: Binary Tree Cameras</h2>
+    <p class="text-xl">Problem #3: Binary Tree Cameras</p>
 
     <p>
       Finally let's look at a hard question: <a target="_blank" href="https://leetcode.com/problems/binary-tree-cameras/">LeetCode 968. Binary Tree Cameras</a>. This question is known academically as the <a target="_blank" href="https://en.wikipedia.org/wiki/Vertex_cover">minimum vertex cover problem</a>, which ask us "what is the smallest set of nodes that we could choose, so that every node in the tree is in our set, or is a direct neighbour to a node in our set?"
@@ -145,14 +146,14 @@ def helper(self, left: Optional[TreeNode], right: Optional[TreeNode], isOdd: boo
     </p>
 
     <div class="flex justify-center mt-4">
-      <div class="button text border" v-show="step === 2" @click="step++">
+      <Button text v-show="step === 2" @click="step++" class="border border-blue-400 rounded">
         <span>I'm done thinking</span>
-      </div>
+      </Button>
     </div>
 
     <div v-show="step > 2">
 
-      <h2 class="mb-2">Solution #3</h2>
+      <p class="text-xl">Solution #3</p>
 
       <p>
       The only modification we need to make to the "bottom up" version of <i>Invert Binary Tree</i> is to include whether a vertex is: 
@@ -166,9 +167,9 @@ def helper(self, left: Optional[TreeNode], right: Optional[TreeNode], isOdd: boo
       </p>
 
       <div class="flex justify-center mt-4">
-        <div class="button text border" v-show="step === 3" @click="step++">
+        <Button text v-show="step === 3" @click="step++" class="border border-blue-400 rounded">
           <span>Reveal solution #3</span>
-        </div>
+        </Button>
       </div>
 
       <div v-show="step > 3">
@@ -218,15 +219,6 @@ def helper(self, node: Optional[TreeNode]) -> int:
 </template>
 
 <style scoped>
-h1 {
-  font-weight: 500;
-  font-size: 2rem;
-}
-
-h3 {
-  font-size: 1.2rem;
-}
-
 .digit {
   font-size: 1.5rem;
   line-height: 1rem;

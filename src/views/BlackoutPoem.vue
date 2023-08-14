@@ -106,18 +106,18 @@
     <div v-show="words.length === 0">
       <p>This is a freeform game where you are given a snippet of text by a famous author, and the goal is to create your own poem by "blacking out" or removing some of the words.</p>
     </div>
-    <div class="mt-3" v-show="words.length === 0">
+    <div class="mt-3 flex items-center" v-show="words.length === 0">
       <select v-model="author" style="width: 14rem">
         <option v-for="(book, i) in books" :value="i">{{ book.author }}</option>
       </select>
-      <button @click="pick" class="ml-2 px-2" style="font-size: 16px">Play</button>
+      <button @click="pick" class="ml-2">Play</button>
     </div>
     <div v-show="loading">
       Loading...
     </div>
     <div v-show="words.length > 0 && !loading">
       <div class="border rounded py-1 px-3 mb-3">
-        <div class="flex" style="align-items: baseline;"><h3>{{ currentBook.title }}</h3>&nbsp;<i>by {{ books[author].author }}</i></div>
+        <div class="flex" style="align-items: baseline;"><p class="text-lg">{{ currentBook.title }}</p>&nbsp;<i>by {{ books[author].author }}</i></div>
         <template v-for="(word, i) in words" :key="word + i">
           <span
             v-if="word !== LINE_BREAK_SYMBOL"
@@ -139,12 +139,6 @@
 
 <style scoped lang="postcss">
 @media (max-width: 1024px) {}
-.missing-word {
-  font-size: 16px;
-  & button {
-    font-size: 16px;
-  }
-}
 
 .word {
   display:inline-block;
