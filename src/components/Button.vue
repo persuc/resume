@@ -17,7 +17,7 @@ defineProps<Props>()
     disabled ? 'cursor-default' : 'cursor-pointer',
     text ? 'text-slate-900' : (disabled ? 'text-gray-500' : 'text-white'),
     text ? 'bg-transparent' : (disabled ? 'bg-gray-200' : 'bg-indigo-500'),
-    text ? 'hover:bg-gray-200' : '',
+    text ? 'hover:bg-gray-200' : (disabled ? '' : 'hover:bg-indigo-400'),
     'flex',
     'items-center',
     text ? 'transition-colors' : '',

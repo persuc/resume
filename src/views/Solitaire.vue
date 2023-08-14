@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { computed, onMounted, onUnmounted, reactive, ref } from 'vue'
+  import Button from '@/components/Button.vue'
   const MAX_SIZE = 10
   const MIN_SIZE = 2
 
@@ -174,6 +175,8 @@
   function reset() {
     state.splice(0)
     historyIdx.value = -1
+    historySize.value = 0
+    selectedStone.value = -1
     memo.clear()
     message.value = ''
   }
@@ -376,7 +379,7 @@
     <div class="mt-3" v-show="state.length === 0 && !loading">
       <label>Size: </label>
       <input type="number" :min="MIN_SIZE" :max="MAX_SIZE" :value="size" />
-      <button @click="start" class="ml-2 px-2">Play</button>
+      <Button @click="start" class="ml-2 px-2">Play</Button>
     </div>
     <div v-show="loading">
       Loading...
@@ -406,59 +409,54 @@
         'pl-8': !isVertical
       }">
         <p>Mode:</p>
-        <div
-        :class="{
-            button: true,
+        <Button
+          :disabled="mode !== MODE.PLAY"
+          :class="{
             'mb-2': true,
             'cursor-pointer': true,
-            disabled: mode !== MODE.PLAY
           }"
           style="max-width: 10rem;"
           @click="mode = MODE.PLAY"
         >
           Play
-        </div>
-        <div
+        </Button>
+        <Button
+          :disabled="mode !== MODE.ARRANGE"
           :class="{
-            button: true,
-            disabled: mode !== MODE.ARRANGE,
             'cursor-pointer': true,
           }"
           style="max-width: 10rem;"
           @click="mode = MODE.ARRANGE"
         >
           Arrange
-        </div>
+        </Button>
         <p class="mt-2">Controls:</p>
-        <div
-          class="button"
+        <Button
           style="max-width: 10rem;"
           @click="start"
         >
           Reset
-        </div>
-        <div
+        </Button>
+        <Button
+          :disabled="historyIdx === -1"
           :class="{
-            button: true,
             'mt-2': true,
-            disabled: historyIdx === -1
           }"
           style="max-width: 10rem;"
           @click="undo"
         >
           Undo
-        </div>
-        <div
+        </Button>
+        <Button
+          :disabled="historyIdx >= historySize - 1"
           :class="{
-            button: true,
             'mt-2': true,
-            disabled: historyIdx >= historySize - 1
           }"
           style="max-width: 10rem;"
           @click="redo"
         >
           Redo
-        </div>
+        </Button>
         <!-- <p>Solvable: {{ memo.get(currentGame) }}</p> -->
       </div>
     </div>
@@ -492,18 +490,4 @@
 
 @media (max-width: 1024px) {}
 
-.solitaire {
-  font-size: 16px;
-  & button {
-    font-size: 16px;
-  }
-}
-
-@media screen and (-webkit-min-device-pixel-ratio:0) { 
-  select,
-  textarea,
-  input {
-    font-size: 16px;
-  }
-}
 </style>

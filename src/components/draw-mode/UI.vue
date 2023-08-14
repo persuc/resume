@@ -1,12 +1,12 @@
 
 <script setup lang="ts">
 import Icon from '@/components/Icon.vue'
+import Button from '@/components/Button.vue'
 import { CONTROL_KEY, LEVELS_PER_PAGE, PAGE_MAJORITY_REQUIRED, THUMBNAIL_KEYCODES } from '@/ts/draw-mode/Config'
 import type { LevelSpec } from '@/ts/draw-mode/Level'
 import type { Replay, SerialisedReplay } from '@/ts/draw-mode/Replay'
 import type { DrawModeState } from '@/ts/draw-mode/State'
 import { worlds, type DrawModeNavigation, type WorldData } from '@/ts/draw-mode/World'
-import level from '@/ts/draw-mode/levels/begin/BalancedBetweenSticks'
 import { computed, onMounted, onUnmounted, ref, type Ref } from 'vue'
 
 interface Props {
@@ -282,16 +282,16 @@ const emit = defineEmits<{
       :style="`pointer-events: none; background: ${state.theme.value.BACKGROUND}`"
     >
       <p style="font-size: 20vh;">Great job.</p>
-        <div class="mx-4 mb-4">
-          <div class="button rounded-none pl-2" @click="emit('end')" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block">
-            <Icon name="chevron-left" class="mr-2" style="height: 1.25rem; top: 0.15rem" />Back <span class="ml-2 keyLabel">[{{ CONTROL_KEY.BACK.label }}]</span>
-          </div>
-          <div class="button rounded-none pl-2 ml-4" @click="nextLevel" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block">
-            <Icon name="chevron-right" class="mr-2" style="height: 1.25rem; top: 0.15rem" />{{ nextWorldIdx === navigation.worldIdx ? 'Next' : 'Next World' }}<span class="ml-2 keyLabel">[{{ CONTROL_KEY.FORWARD.label }}]</span>
-          </div>
-          <div class="button rounded-none ml-4 flex items-center" v-show="!navigation.isReplay" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block" @click="navigation.level!.saveReplay">
-            <Icon name="download" style="height: 1.25rem; top: 0.2rem" class="mr-3" />Save replay
-          </div>
+        <div class="mx-4 mb-4 flex gap-x-4">
+          <Button @click="emit('end')" class="pl-2 pr-3 pb-2 h-12 !items-end rounded-none" style="font-size: 1.25rem; pointer-events: all;">
+            <Icon name="chevron-left" class="mr-1" style="height: 1.25rem; top: -15%" /><span class="leading-normal uppercase">Back</span><span class="ml-2 keyLabel">[{{ CONTROL_KEY.BACK.label }}]</span>
+          </Button>
+          <Button @click="nextLevel" class="pl-2 pr-3 pb-2 h-12 !items-end rounded-none" style="font-size: 1.25rem; pointer-events: all;">
+            <Icon name="chevron-right" class="mr-1" style="height: 1.25rem; top: -15%" /><span class="leading-normal uppercase">{{ nextWorldIdx === navigation.worldIdx ? 'Next' : 'Next World' }}</span><span class="ml-2 keyLabel">[{{ CONTROL_KEY.FORWARD.label }}]</span>
+          </Button>
+          <Button @click="navigation.level?.saveReplay" v-show="!navigation.isReplay" class="pl-2 pr-3 pb-2 h-12 !items-end rounded-none" style="font-size: 1.25rem; pointer-events: all;">
+            <Icon name="download" class="mr-2 ml-1" style="height: 1.25rem; top: -15%" /><span class="leading-normal uppercase">Save replay</span>
+          </Button>
         </div>
     </div>
   </div>
