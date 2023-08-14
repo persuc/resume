@@ -14,7 +14,7 @@ const expanded: Ref<boolean> = ref(false)
 
   <article class="article px-8 pt-8" style="max-width: 60rem; margin: 0 auto;">
     
-    <h1 class="mb-2">Don't worry, the compiler will optimise it.</h1>
+    <p class="text-3xl">Don't worry, the compiler will optimise it.</p>
 
     <p>I've recently been diving into some performance optimisation resources such as <a target="_blank" href="https://en.algorithmica.org/">Algorithmica</a> and <a target="_blank" href="https://github.com/dendibakh/perf-ninja">Perf. Ninja</a>.
       The opinion of those who work in high performance computing seems to be that while a modern compiler will usually do a good job of optimising away unnecessary instructions, you can't always rely on this behaviour.
@@ -41,7 +41,7 @@ int max2(int x, int y) {
 <br />
 
 <Expand class="my-2" label="find_max.s" @expand="expanded = true">
-  <pre v-highlightjs><code class="assembly br-1">.section	__TEXT,__text,regular,pure_instructions
+  <pre v-highlightjs><code class="assembly rounded">.section	__TEXT,__text,regular,pure_instructions
     .build_version macos, 13, 0	sdk_version 13, 3
     .globl	__Z3maxii                       ; -- Begin function _Z3maxii
     .p2align	2
@@ -80,7 +80,7 @@ int max2(int x, int y) {
 
 <div v-show="expanded">
 
-  <h2 class="mb-2">What if it actually did though?</h2>
+  <p class="text-xl">What if it actually did though?</p>
 
   <p>That's a lot of assembly for such a small amount of source, let's focus on the implementations of <code>max</code> and <code>max2</code>.</p>
 
@@ -92,7 +92,7 @@ ret`" class="mb-8" />
 
   <p>You may notice that the implementations are exactly the same! In this case, the compiler decided that both functions could be implemented by a <code>cmp</code> followed by a <code>csel</code>. This makes sense, because <code>cmp</code> compares two values, and sets the Carry, Parity, Zero and Sign flags based on the two values, similar to how a subtraction works except that <code>cmp</code> doesn't modify the source registers. Then the role of the <code>lt</code> argument in <code>csel</code> is to check the Sign and Overflow flags, and if they differ, set the destination register (w0 in our case) to the first source register (also w0) or else the second (w1).</p>
 
-  <h2 class="mb-2 mt-8">So what is the point understanding all this?</h2>
+  <p class="text-xl mt-8">So what is the point understanding all this?</p>
 
   <p>All of that is to say that we asked the computer to return the smaller value in both cases, and the assembly reflects that these operations are fundamentally the same despite differences in the source code. This doesn't mean that the compiler will always perform this way. In the above example, I used C++ Standard 20 with the flags: <code>-O3 -ffast-math -mcpu=apple-m1</code>.</p>
   
@@ -105,15 +105,3 @@ ret`" class="mb-8" />
 
   </article>
 </template>
-
-<style scoped>
-h1 {
-  font-weight: 500;
-  font-size: 2rem;
-}
-
-h3 {
-  font-size: 1.2rem;
-}
-
-</style>

@@ -149,26 +149,26 @@
         You can guess whatever you like, it doesn't have to be a real word. Remember that some authors might prefer British over American spelling, or vice versa.
       </p>
     </div>
-    <div class="mt-3" v-show="currentWord === ''">
+    <div class="mt-3 flex items-center" v-show="currentWord === ''">
       <select v-model="author" style="width: 14rem">
         <option v-for="(book, i) in books" :value="i">{{ book.author }}</option>
       </select>
-      <button @click="pick" class="ml-2 px-2">Play</button>
+      <button @click="pick" class="ml-2">Play</button>
     </div>
     <div v-show="loading">
       Loading...
     </div>
     <div v-show="currentWord !== '' && !loading">
-      <div class="border br-1 py-1 px-3 mb-3">
-        <h3>{{ currentBook.title }} by {{ books[author].author }}</h3>
+      <div class="border rounded py-1 px-3 mb-3">
+        <p class="text-lg">{{ currentBook.title }} by {{ books[author].author }}</p>
         <p class="italic">{{ before }}{{ revealed }}{{ after }}</p>
         <p class="mt-2">Missing word: {{ revealed }} ({{ length }} letters)</p>
       </div>
       <div v-show="currentWord !== revealed">
-        <input type="text" v-model="guess" style="width: 11.5rem" placeholder="Guess a whole word" />
+        <input type="text" v-model="guess" style="width: 11.5rem" placeholder="Guess a whole word" class="border-b border-gray-500" />
         <button @click="check" class="ml-2">Guess</button>
         <br />
-        <input type="text" v-model="guessSingle" class="mt-2" style="width: 11.5rem" maxlength="1" minlength="0" placeholder="Reveal one letter" />
+        <input type="text" v-model="guessSingle" class="mt-2 border-b border-gray-500" style="width: 11.5rem" maxlength="1" minlength="0" placeholder="Reveal one letter" />
         <button @click="checkLetter" class="ml-2">Guess letter</button>
         <br />
         <button @click="concede" class="ml-2 mt-2" style="margin-left: 12rem">Give up</button>
@@ -177,7 +177,7 @@
         <button @click="reset">Play again</button>
       </div>
     </div>
-    <div v-show="message !== ''" class="br-1 py-1 px-3 mt-3 bg-cerulean-superlight" v-html="message"></div>
+    <div v-show="message !== ''" class="rounded py-1 px-3 mt-3 bg-sky-100" v-html="message"></div>
     <a href="/bored" class="nohover" style="display: block; width: fit-content; position: relative; left: -32px;"><div class="pt-2 pb-4 px-8 mb-4" style="margin-top: 20vh">&lt; Back</div></a>
   </div>
 </template>

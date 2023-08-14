@@ -1,5 +1,5 @@
 <template>
-  <p class="pa-2" style="border-left: 2pt solid var(--color-border); background-color: var(--color-background-hover);">
+  <p class="p-2 bg-sky-50 border-l border-blue-400">
     <slot></slot>
   </p>
 </template>

@@ -8,7 +8,7 @@ import Header from '@/components/Header.vue'
   <Header />
 
   <div class="talents px-8 pt-8" style="max-width: 60rem; margin: 0 auto;">
-    <h2>Here are some games to pass the time</h2>
+    <p class="text-xl">Here are some games to pass the time</p>
 
     <a href="/missing-word">Missing word</a>
     <br />
@@ -27,15 +27,3 @@ import Header from '@/components/Header.vue'
 
   </div>
 </template>
-
-<style scoped>
-h1 {
-  font-weight: 500;
-  font-size: 2rem;
-}
-
-h3 {
-  font-size: 1.2rem;
-}
-
-</style>

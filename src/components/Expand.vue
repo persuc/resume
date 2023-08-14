@@ -46,7 +46,7 @@ function toggle() {
 
 <template>
   <div class="expand border" style="cursor: pointer;">
-    <div class="pa-2" @click="toggle">
+    <div class="p-2" @click="toggle">
       <div :class="{ arrow: true, rotate: expanded}">▶&nbsp;</div>
       <div class="label" :style="expandedLabel && expanded ? 'display: none;' : ''">{{ label }}</div>
       <div class="label" :style="expandedLabel && expanded ? '' : 'display: none;'">{{ expandedLabel }}</div>
@@ -62,7 +62,6 @@ function toggle() {
 .arrow {
   display: inline-block;
   transition: transform 0.2s;
-  /* transform-origin: center; */
   transform-origin: 34% 52%;
   &.rotate {
     transform: rotate(90deg);

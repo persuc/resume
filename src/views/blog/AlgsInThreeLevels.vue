@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Button from '@/components/Button.vue'
 import Codeblock from '@/components/Codeblock.vue'
 import Header from '@/components/Header.vue'
 import Note from '@/components/Note.vue'
@@ -13,21 +14,21 @@ const step = ref(1)
 
   <article class="article px-8 pt-8" style="max-width: 60rem; margin: 0 auto;">
     
-    <h1 class="mb-0">Algorithms in Three Levels of Difficulty</h1>
-    <h3 class="mb-4" style="color: var(--color-subheading)">Binary Trees</h3>
+    <span class="text-3xl">Algorithms in Three Levels of Difficulty</span>
+    <h3 class="mb-4 text-slate-500">Binary Trees</h3>
 
     <p>Let's discuss binary-tree algorithms in 3 levels of difficulty, and see how solving simpler problems can lead us to solutions for more complex problems.</p>
 
     <Note class="mt-3 mb-8">Note: These examples were taken from <a target="_blank" href="https://github.com/andrew-p-dev/FIT1045">a talk I gave</a> to first year students on basic python programming, algorithms and data structures.</Note>
 
-    <h2 class="mb-2">Problem #1: Invert Binary Tree</h2>
+    <p class="text-xl">Problem #1: Invert Binary Tree</p>
 
     <p>First, easy. Let's use <a target="_blank" href="https://leetcode.com/problems/invert-binary-tree/">LeetCode 226. Invert Binary Tree</a>. Given a binary tree, we must transform the tree so that it is vertically mirrored, or flip everything on the left with everything on the right.
     </p>
 
     <p>There are a number of strategies to solve this question, however the method I chose is "depth first" or "bottom up" - solving the problem for the smallest subtree at the leaf nodes, and then solving the larger subtrees using those partial solutions. For example, consider what would happen if we just swapped the children of the root node: everything that was on the left of the tree would now be on the right, and visa versa.</p>
 
-    <div class="flex space-between center">
+    <div class="flex justify-between items-center">
       <svg height="280px" width="420px" class="border">
         <g transform="translate(230, 40) scale(0.7)"><path style="opacity:1;" class="linkBase" d="M0,0L-210,140" ></path><path style="opacity:1;" class="linkBase" d="M0,0L210,140" ></path><path style="opacity:1;" class="linkBase" d="M-210,140L-280,280" ></path><path style="opacity:1;" class="linkBase" ></path><path style="opacity:1;" class="linkBase" d="M210,140L140,280" ></path><path style="opacity:1;" class="linkBase" ></path><g  style="opacity:1;" class="nodeBase" transform="translate(0,0)" ><circle r="30" fill="#FFFFFF" ></circle><g ><text class="nodeNameBase" text-anchor="middle" x="0" y="0" dy=".35em" >0</text><text class="nodeAttributesBase" y="10" text-anchor="middle" ></text></g></g><g  style="opacity:1;" class="nodeBase" transform="translate(-210,140)" ><circle r="30" fill="#FFFFFF" ></circle><g ><text class="nodeNameBase" text-anchor="middle" x="0" y="0" dy=".35em" >1</text><text class="nodeAttributesBase" y="10" text-anchor="middle" ></text></g></g><g  style="opacity:1;" class="leafNodeBase" transform="translate(-280,280)" ><circle r="30" fill="#FFFFFF" ></circle><g ><text class="nodeNameBase" text-anchor="middle" x="0" y="0" dy=".35em" >3</text><text class="nodeAttributesBase" y="10" text-anchor="middle" ></text></g></g><g  style="opacity:1;" class="leafNodeBase" transform="translate(-140,280)" ><circle r="20" stroke-width="1" fill="#FFFFFF" visibility="hidden" ></circle><g ><text class="nodeNameBase" text-anchor="middle" x="0" y="0" dy=".35em" ></text><text class="nodeAttributesBase" y="10" text-anchor="middle" ></text></g></g><g  style="opacity:1;" class="nodeBase" transform="translate(210,140)" ><circle r="30" fill="#FFFFFF" ></circle><g ><text class="nodeNameBase" text-anchor="middle" x="0" y="0" dy=".35em" >2</text><text class="nodeAttributesBase" y="10" text-anchor="middle" ></text></g></g><g  style="opacity:1;" class="leafNodeBase" transform="translate(140,280)" ><circle r="30" fill="#FFFFFF" ></circle><g ><text class="nodeNameBase" text-anchor="middle" x="0" y="0" dy=".35em" >4</text><text class="nodeAttributesBase" y="10" text-anchor="middle" ></text></g></g><g  style="opacity:1;" class="leafNodeBase" transform="translate(280,280)" ><circle r="20" stroke-width="1" fill="#FFFFFF" visibility="hidden" ></circle><g ><text class="nodeNameBase" text-anchor="middle" x="0" y="0" dy=".35em" ></text><text class="nodeAttributesBase" y="10" text-anchor="middle" ></text></g></g></g>
       </svg>
@@ -45,7 +46,7 @@ const step = ref(1)
 
     <br />
 
-    <div class="flex hcenter">
+    <div class="flex justify-center">
       <svg height="280px" width="420px" class="border">
         <g transform="translate(185, 40) scale(0.7)"><path style="opacity: 1;" class="linkBase" d="M0,0L-210,140"  ></path><path style="opacity: 1;" class="linkBase" d="M0,0L210,140"  ></path><path style="opacity: 1;" class="linkBase"  ></path><path style="opacity: 1;" class="linkBase" d="M-210,140L-140,280"  ></path><path style="opacity: 1;" class="linkBase"  ></path><path style="opacity: 1;" class="linkBase" d="M210,140L280,280"  ></path><g  style="opacity: 1;" class="nodeBase" transform="translate(0,0)"><circle r="30" fill="#FFFFFF"></circle><g><text class="nodeNameBase" text-anchor="middle" x="0" y="0" dy=".35em">0</text><text class="nodeAttributesBase" y="10" text-anchor="middle"></text></g></g><g  style="opacity: 1;" class="nodeBase" transform="translate(-210,140)"><circle r="30" fill="#FFFFFF"></circle><g><text class="nodeNameBase" text-anchor="middle" x="0" y="0" dy=".35em">2</text><text class="nodeAttributesBase" y="10" text-anchor="middle"></text></g></g><g  style="opacity: 1;" class="leafNodeBase" transform="translate(-280,280)"><circle r="20" stroke-width="1" fill="#FFFFFF" visibility="hidden"></circle><g><text class="nodeNameBase" text-anchor="middle" x="0" y="0" dy=".35em"></text><text class="nodeAttributesBase" y="10" text-anchor="middle"></text></g></g><g  style="opacity: 1;" class="leafNodeBase" transform="translate(-140,280)"><circle r="30" fill="#FFFFFF"></circle><g><text class="nodeNameBase" text-anchor="middle" x="0" y="0" dy=".35em">4</text><text class="nodeAttributesBase" y="10" text-anchor="middle"></text></g></g><g  style="opacity: 1;" class="nodeBase" transform="translate(210,140)"><circle r="30" fill="#FFFFFF"></circle><g><text class="nodeNameBase" text-anchor="middle" x="0" y="0" dy=".35em">1</text><text class="nodeAttributesBase" y="10" text-anchor="middle"></text></g></g><g  style="opacity: 1;" class="leafNodeBase" transform="translate(140,280)"><circle r="20" stroke-width="1" fill="#FFFFFF" visibility="hidden"></circle><g><text class="nodeNameBase" text-anchor="middle" x="0" y="0" dy=".35em"></text><text class="nodeAttributesBase" y="10" text-anchor="middle"></text></g></g><g  style="opacity: 1;" class="leafNodeBase" transform="translate(280,280)"><circle r="30" fill="#FFFFFF"></circle><g><text class="nodeNameBase" text-anchor="middle" x="0" y="0" dy=".35em">3</text><text class="nodeAttributesBase" y="10" text-anchor="middle"></text></g></g></g>
       </svg>
@@ -53,7 +54,7 @@ const step = ref(1)
 
     <br />
 
-    <h2 class="mb-2">Solution #1</h2>
+    <p class="text-xl">Solution #1</p>
 
     <p>Time to look at the code. First, here is the TreeNode class we will be using as our binary tree data structure for all 3 problems, it's very simple:</p>
 
@@ -77,16 +78,16 @@ const step = ref(1)
 
   <br />
 
-  <h2 class="mb-2">Problem #2: Reverse Odd Levels of Binary Tree</h2>
+  <p class="text-xl">Problem #2: Reverse Odd Levels of Binary Tree</p>
 
   <p>
     Next let's tackle a medium-difficulty question: <a target="_blank" href="https://leetcode.com/problems/reverse-odd-levels-of-binary-tree/">LeetCode 2415. Reverse Odd Levels of Binary Tree</a>. This question asks us to do the same as <i>Invert Binary Tree</i>, but this time only invert every second level. The problem also specifies that every level of the tree will always be "full". i.e. we are given a perfect binary tree. Try to think for yourself about how we might keep using the same strategy as we did for <i>Invert Binary Tree</i>, but modify it to only flip every second level of the tree.
   </p>
 
-  <div class="flex hcenter mt-4">
-    <div class="button text border" v-show="step === 1" @click="step++">
+  <div class="flex justify-center mt-4">
+    <Button text v-show="step === 1" @click="step++" class="border border-blue-400 rounded">
       <span>I'm done thinking</span>
-    </div>
+    </Button>
   </div>
 
   <div v-show="step > 1">
@@ -109,7 +110,7 @@ def helper(self, left: Optional[TreeNode], right: Optional[TreeNode]) -> None:
 
   <br />
 
-  <h2 class="mb-2">Solution #2</h2>
+  <p class="text-xl">Solution #2</p>
 
   <p>Now all we need to modify about our solution for <i>Invert Binary Tree</i> is to provide ourselves with more information to define our recursive case - we need a boolean to tell us whether we should flip this level or not.</p>
 
@@ -134,7 +135,7 @@ def helper(self, left: Optional[TreeNode], right: Optional[TreeNode], isOdd: boo
       And that's it! Ready for a harder problem?
     </p>
  
-    <h2 class="mb-2">Problem #3: Binary Tree Cameras</h2>
+    <p class="text-xl">Problem #3: Binary Tree Cameras</p>
 
     <p>
       Finally let's look at a hard question: <a target="_blank" href="https://leetcode.com/problems/binary-tree-cameras/">LeetCode 968. Binary Tree Cameras</a>. This question is known academically as the <a target="_blank" href="https://en.wikipedia.org/wiki/Vertex_cover">minimum vertex cover problem</a>, which ask us "what is the smallest set of nodes that we could choose, so that every node in the tree is in our set, or is a direct neighbour to a node in our set?"
@@ -144,15 +145,15 @@ def helper(self, left: Optional[TreeNode], right: Optional[TreeNode], isOdd: boo
       The solution to this problem is just a small extension to the "bottom up" version of <i>Invert Binary Tree</i> we already came up with, yet it can be hard to grasp. For this problem, it is helpful for the recursive function to provide some more information to help us solve the larger problems. That is, if we are looking at a node, and deciding whether we should mark it, what information do we need about the left and right child to decide whether we should mark the node or not?
     </p>
 
-    <div class="flex hcenter mt-4">
-      <div class="button text border" v-show="step === 2" @click="step++">
+    <div class="flex justify-center mt-4">
+      <Button text v-show="step === 2" @click="step++" class="border border-blue-400 rounded">
         <span>I'm done thinking</span>
-      </div>
+      </Button>
     </div>
 
     <div v-show="step > 2">
 
-      <h2 class="mb-2">Solution #3</h2>
+      <p class="text-xl">Solution #3</p>
 
       <p>
       The only modification we need to make to the "bottom up" version of <i>Invert Binary Tree</i> is to include whether a vertex is: 
@@ -165,10 +166,10 @@ def helper(self, left: Optional[TreeNode], right: Optional[TreeNode], isOdd: boo
       To understand why this information is helpful, it helps to think about a simple case. <b>Question:</b> Is there ever a situation in which it is necessary to mark a leaf node? Have a think about this, and then reveal the solution.
       </p>
 
-      <div class="flex hcenter mt-4">
-        <div class="button text border" v-show="step === 3" @click="step++">
+      <div class="flex justify-center mt-4">
+        <Button text v-show="step === 3" @click="step++" class="border border-blue-400 rounded">
           <span>Reveal solution #3</span>
-        </div>
+        </Button>
       </div>
 
       <div v-show="step > 3">
@@ -218,15 +219,6 @@ def helper(self, node: Optional[TreeNode]) -> int:
 </template>
 
 <style scoped>
-h1 {
-  font-weight: 500;
-  font-size: 2rem;
-}
-
-h3 {
-  font-size: 1.2rem;
-}
-
 .digit {
   font-size: 1.5rem;
   line-height: 1rem;

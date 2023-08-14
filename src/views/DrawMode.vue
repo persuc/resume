@@ -221,7 +221,7 @@ import { onMounted, onUnmounted, reactive, ref, type Ref } from 'vue'
 </script>
 
 <template>
-  <div class="draw-mode unselectable flex center hcenter" :style="`width: 100vw; height: 100vh; background: ${state.theme.value.BACKGROUND}`">
+  <div class="draw-mode select-none flex items-center justify-center" :style="`width: 100vw; height: 100vh; background: ${state.theme.value.BACKGROUND}`">
     <div ref="container">
       <UI :state="state" @input="startLevel" @replay="startReplay" :navigation="navigation" @end="endLevel" />
       <div id="render" v-show="navigation.level !== null"></div>
@@ -239,13 +239,6 @@ import { onMounted, onUnmounted, reactive, ref, type Ref } from 'vue'
   select,
   textarea,
   input {
-    font-size: 16px;
-  }
-}
-
-#draw-mode {
-  font-size: 16px;
-  & button {
     font-size: 16px;
   }
 }

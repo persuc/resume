@@ -1,12 +1,12 @@
 
 <script setup lang="ts">
 import Icon from '@/components/Icon.vue'
+import Button from '@/components/Button.vue'
 import { CONTROL_KEY, LEVELS_PER_PAGE, PAGE_MAJORITY_REQUIRED, THUMBNAIL_KEYCODES } from '@/ts/draw-mode/Config'
 import type { LevelSpec } from '@/ts/draw-mode/Level'
 import type { Replay, SerialisedReplay } from '@/ts/draw-mode/Replay'
 import type { DrawModeState } from '@/ts/draw-mode/State'
 import { worlds, type DrawModeNavigation, type WorldData } from '@/ts/draw-mode/World'
-import level from '@/ts/draw-mode/levels/begin/BalancedBetweenSticks'
 import { computed, onMounted, onUnmounted, ref, type Ref } from 'vue'
 
 interface Props {
@@ -201,16 +201,16 @@ const emit = defineEmits<{
       `"
       @click="clickBackButton"
     >
-      <div v-show="navigation.world !== null" class="pr-4 pl-2 flex center">
+      <div v-show="navigation.world !== null" class="pr-4 pl-2 flex items-center">
         <Icon name="chevron-left" class="pr-1" style="height: 1.5rem" />
         <span>BACK TO WORLDS</span>
         <span class="ml-2 keyLabel" style="top: 0.15rem">[{{ CONTROL_KEY.BACK.label }}]</span>
       </div>
       <span v-show="navigation.world === null" class="px-4">{{ showMenu ? 'WORLDS' : 'MENU' }}<span class="ml-2 keyLabel">[{{ CONTROL_KEY.BACK.label }}]</span></span>
     </div>
-    <div v-show="!showMenu" class="flex center" style="height: 100vh">
+    <div v-show="!showMenu" class="flex items-center" style="height: 100vh">
       <div
-        class="leftArrow flex center"
+        class="leftArrow flex items-center"
         :style="`
           min-width: 2rem;
           color: ${state.theme.value.TEXT};
@@ -243,13 +243,13 @@ const emit = defineEmits<{
               box-shadow: 6px 6px 0px 0px ${state.theme.value.TARGET};
               opacity: ${navigation.world === null || navigation.levelPage === 0 || hasPageMajority(navigation.world, navigation.levelPage - 1) ? 1 : 0.2}`"
           />
-          <span class="pl-1 mb-1 bold" :style="`background: ${state.theme.value.TARGET}; color: ${state.theme.value.BACKGROUND}; position: absolute; bottom: 0; right: 0`">
+          <span class="pl-1 mb-1 font-bold" :style="`background: ${state.theme.value.TARGET}; color: ${state.theme.value.BACKGROUND}; position: absolute; bottom: 0; right: 0`">
             [{{ CONTROL_KEY[('THUMBNAIL_' + i) as 'THUMBNAIL_1'].label }}]
           </span>
         </div>
       </div>
       <div
-        class="rightArrow flex center"
+        class="rightArrow flex items-center"
         :style="`min-width: 2rem; color: ${state.theme.value.TEXT}; height: 100%;`"
         @click="clickRightArrow"
       >
@@ -260,14 +260,14 @@ const emit = defineEmits<{
       </div>
     </div>
     <div style="height: 100vh; margin-left: 4rem; padding-top: 8rem" v-show="showMenu">
-      <label for="replay-upload" class="button br-0" style="width: fit-content; font-size: 1.25rem;">
-        <Icon name="upload" style="width: 2rem" class="mr-2" />Upload Replay
+      <label for="replay-upload" class="p-2 pr-3 bg-indigo-500 hover:bg-indigo-400 text-white flex items-center cursor-pointer" style="width: fit-content; font-size: 1.25rem;">
+        <Icon name="upload" style="width: 1.5rem" class="mr-2" /><span class="uppercase">Upload Replay</span>
       </label>
       <input ref="file" id="replay-upload" v-on:change="uploadReplay" type="file" style="display: none" />
     </div>
   </div>
   <div
-    class="end-screen flex hcenter absolute full-width"
+    class="end-screen flex justify-center absolute w-full"
     :style="`top: 5rem; z-index: 2; pointer-events: none; color: ${state.theme.value.TEXT}`"
     v-show="navigation.level !== null "
   >
@@ -282,16 +282,16 @@ const emit = defineEmits<{
       :style="`pointer-events: none; background: ${state.theme.value.BACKGROUND}`"
     >
       <p style="font-size: 20vh;">Great job.</p>
-        <div class="mx-4 mb-4">
-          <div class="button br-0 pl-2" @click="emit('end')" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block">
-            <Icon name="chevron-left" class="mr-2" style="height: 1.25rem; top: 0.15rem" />Back <span class="ml-2 keyLabel">[{{ CONTROL_KEY.BACK.label }}]</span>
-          </div>
-          <div class="button br-0 pl-2 ml-4" @click="nextLevel" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block">
-            <Icon name="chevron-right" class="mr-2" style="height: 1.25rem; top: 0.15rem" />{{ nextWorldIdx === navigation.worldIdx ? 'Next' : 'Next World' }}<span class="ml-2 keyLabel">[{{ CONTROL_KEY.FORWARD.label }}]</span>
-          </div>
-          <div class="button br-0 ml-4 flex center" v-show="!navigation.isReplay" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block" @click="navigation.level!.saveReplay">
-            <Icon name="download" style="height: 1.25rem; top: 0.2rem" class="mr-3" />Save replay
-          </div>
+        <div class="mx-4 mb-4 flex gap-x-4">
+          <Button @click="emit('end')" class="pl-2 pr-3 pb-2 h-12 !items-end rounded-none" style="font-size: 1.25rem; pointer-events: all;">
+            <Icon name="chevron-left" class="mr-1" style="height: 1.25rem; top: -15%" /><span class="leading-normal uppercase">Back</span><span class="ml-2 keyLabel">[{{ CONTROL_KEY.BACK.label }}]</span>
+          </Button>
+          <Button @click="nextLevel" class="pl-2 pr-3 pb-2 h-12 !items-end rounded-none" style="font-size: 1.25rem; pointer-events: all;">
+            <Icon name="chevron-right" class="mr-1" style="height: 1.25rem; top: -15%" /><span class="leading-normal uppercase">{{ nextWorldIdx === navigation.worldIdx ? 'Next' : 'Next World' }}</span><span class="ml-2 keyLabel">[{{ CONTROL_KEY.FORWARD.label }}]</span>
+          </Button>
+          <Button @click="navigation.level?.saveReplay" v-show="!navigation.isReplay" class="pl-2 pr-3 pb-2 h-12 !items-end rounded-none" style="font-size: 1.25rem; pointer-events: all;">
+            <Icon name="download" class="mr-2 ml-1" style="height: 1.25rem; top: -15%" /><span class="leading-normal uppercase">Save replay</span>
+          </Button>
         </div>
     </div>
   </div>

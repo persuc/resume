@@ -31,9 +31,9 @@ async function copy(text: string) {
 <template>
   <div class="copy" @click="copy(value)" style="cursor: pointer;">
     <slot></slot>
-    <Icon class="no-print" style="position: relative;" name="copy"></Icon>
+    <Icon class="print:hidden" style="position: relative;" name="copy"></Icon>
 
-    <span :style="`transition: opacity 0.2s; opacity: ${showCopied[value] ? '1' : '0'}`" class="green copy-confirmation">Copied!</span>
+    <span :style="`transition: opacity 0.2s; opacity: ${showCopied[value] ? '1' : '0'}`" class="text-green-500 copy-confirmation">Copied!</span>
   </div>
 </template>
 

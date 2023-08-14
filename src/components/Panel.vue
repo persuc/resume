@@ -1,6 +1,6 @@
 <template>
   <div class="panel border">
-    <div class="pa-2 label-slot">
+    <div class="p-2 label-slot">
       <slot name="label"></slot>
     </div>
 

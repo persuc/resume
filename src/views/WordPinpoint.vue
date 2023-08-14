@@ -256,7 +256,7 @@
 </script>
 
 <template>
-  <div v-show="!loading" class="word-pinpoint px-8 pt-8" style="max-width: 60rem; margin: 0 auto;">
+  <div v-show="!loading" class="word-pinpoint px-8 pt-8 mx-auto" style="max-width: 60rem;">
     <p>The game is to guess the word. Set the length below and click <b>Generate</b> to set the target word.</p>
     <p>
       You can guess whatever words you like, but the target will always be a dictionary word.
@@ -267,20 +267,20 @@
     <p>Keep narrowing down your guesses until you find the target word.</p>
     <p>Letters will automatically be revealed as they are confirmed by your guesses. If you are stuck, click <b>Reveal Letter</b> to reveal a letter.</p>
     <div class="flex" style="flex-wrap: wrap">
-      <div class="inputs">
-        <div class="flex center space-between mb-1">
+      <div class="inputs grow">
+        <div class="flex items-center justify-between mb-1">
           <input type="number" v-model="lengthInput" :min="MIN_LENGTH" :max="MAX_LENGTH" style="width: 11.5rem"/>
           <button @click="pick">Generate</button>
         </div>
-        <div class="flex center space-between mb-1">
+        <div class="flex items-center justify-between mb-1">
           <input type="text" v-model="guess" style="width: 11.5rem"/>
           <button @click="check">Check</button>
         </div>
-        <div class="flex center end mb-1">
+        <div class="flex items-center justify-end mb-1">
           <button style="float: right" @click="reveal">Reveal letter</button>
         </div>
       </div>
-      <div id="guessTracker" class="flex border br-1 px-2">
+      <div id="guessTracker" class="flex border rounded px-2">
         <div>
           <div></div>
           <div class="mr-1">Target:</div>
@@ -304,7 +304,7 @@
         </div>
       </div>
     </div>
-    <div v-show="message !== ''" class="br-1 py-1 px-3 mt-3 bg-cerulean-superlight" v-html="message"></div>
+    <div v-show="message !== ''" class="rounded py-1 px-3 mt-3 bg-sky-100" v-html="message"></div>
     <!-- <button @click="saveWordlist">Save word list</button> -->
     <a href="/bored" class="nohover" style="display: block; width: fit-content; position: relative; left: -32px;"><div class="pt-2 pb-4 px-8 mb-4" style="margin-top: 20vh">&lt; Back</div></a>
   </div>
@@ -362,10 +362,6 @@
     & .flex {
       width: 100%;
     }
-    flex-grow: 1;
-  }
-  .rule {
-    display: none;
   }
 }
 </style>
