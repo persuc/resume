@@ -13,7 +13,7 @@ import Button from '@/components/Button.vue'
 
 <template>
   <Header class="print:hidden">
-    <a href="/andrew_persic_resume.pdf" download>
+    <a href="/andrew_persic_resume.pdf" download class="plain">
       <Button>
         <Icon name="download" class="mr-2 w-5" />Download
       </Button>
