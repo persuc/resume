@@ -34,14 +34,14 @@ function goBlog() {
 <template>
   <div class="home flex" :style="`background-image: url(${bgImage})`">
     <div class="content" style="flex-grow: 1">
-      <div class="p-4 br-1 mx-5 bg-white">
+      <div class="p-4 rounded mx-5 bg-white">
         <h1>Hey, I'm Andrew!</h1>
   
         <p>I am great at <b>identifying opportunities</b> for improvement and seeing through the technical implementation to <b>deliver value across teams</b>. I do this by building relationships and understanding individual needs, before establishing partnerships to tackle immediate, widespread concerns. Then I provide the drive to define goals, and provide the technical knowhow to help deliver them.</p>
   
         <p>Thanks for coming to hear about me! Here are some more things to check out:</p>
     
-        <ImageAndText class="border br-1 mb-2" @click="goResume" style="cursor: pointer;" :image="booksImage">
+        <ImageAndText class="border rounded mb-2" @click="goResume" style="cursor: pointer;" :image="booksImage">
           <div class="flex justify-between items-center">
             <h2>Resume</h2>
             <a href="/andrew_persic_resume.pdf" download @click.stop class="plain"> 
@@ -52,15 +52,15 @@ function goBlog() {
           </div>
         </ImageAndText>
   
-        <ImageAndText class="border br-1 mb-2" @click="goTalents" style="cursor: pointer;" :image="starImage">
+        <ImageAndText class="border rounded mb-2" @click="goTalents" style="cursor: pointer;" :image="starImage">
           <h2>What I'm good at</h2>
         </ImageAndText>
   
-        <ImageAndText class="border br-1 mb-2" @click="goAccomplishments" style="cursor: pointer;" :image="hornImage">
+        <ImageAndText class="border rounded mb-2" @click="goAccomplishments" style="cursor: pointer;" :image="hornImage">
           <h2>What I've done</h2>
         </ImageAndText>
 
-        <ImageAndText class="border br-1 mb-2" @click="goBlog" style="cursor: pointer;" :image="conicalFlaskImage">
+        <ImageAndText class="border rounded mb-2" @click="goBlog" style="cursor: pointer;" :image="conicalFlaskImage">
           <h2>Blog</h2><span>This is a work in progress don't expect anything, ok?</span>
         </ImageAndText>
       </div>

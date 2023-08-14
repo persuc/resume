@@ -159,7 +159,7 @@
       Loading...
     </div>
     <div v-show="currentWord !== '' && !loading">
-      <div class="border br-1 py-1 px-3 mb-3">
+      <div class="border rounded py-1 px-3 mb-3">
         <h3>{{ currentBook.title }} by {{ books[author].author }}</h3>
         <p class="italic">{{ before }}{{ revealed }}{{ after }}</p>
         <p class="mt-2">Missing word: {{ revealed }} ({{ length }} letters)</p>
@@ -177,7 +177,7 @@
         <button @click="reset">Play again</button>
       </div>
     </div>
-    <div v-show="message !== ''" class="br-1 py-1 px-3 mt-3 bg-cerulean-superlight" v-html="message"></div>
+    <div v-show="message !== ''" class="rounded py-1 px-3 mt-3 bg-sky-100" v-html="message"></div>
     <a href="/bored" class="nohover" style="display: block; width: fit-content; position: relative; left: -32px;"><div class="pt-2 pb-4 px-8 mb-4" style="margin-top: 20vh">&lt; Back</div></a>
   </div>
 </template>

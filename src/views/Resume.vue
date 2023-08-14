@@ -25,7 +25,7 @@ import Button from '@/components/Button.vue'
       <h1 class="mb-0">
         Skills
       </h1>
-      <ImageAndText class="contact nowrap mt-4" :image="faceImage" :rounded="true">
+      <ImageAndText class="contact whitespace-nowrap mt-4" :image="faceImage" :rounded="true">
         <p class="mb-1" style="line-height: 1em;">Andrew Persic</p>
         <CopyButton :value="EMAIL" style="line-height: 1.5em;">{{ EMAIL }}</CopyButton>
         <br />
@@ -86,7 +86,7 @@ spectrometry data using <i>Three.js</i> and <i>WebGL</i>.</li>
           <p>UAVs, cluster computing, side projects.</p>
         </div>
       </div>
-      <ImageAndText class="contact nowrap mt-4" :image="monashLogo" :size="'4rem'">
+      <ImageAndText class="contact whitespace-nowrap mt-4" :image="monashLogo" :size="'4rem'">
         <p class="mb-1">Monash University</p>
         <p style="font-style: italic;">Bachelor of Computer Science</p>
       </ImageAndText>

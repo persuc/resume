@@ -116,7 +116,7 @@
       Loading...
     </div>
     <div v-show="words.length > 0 && !loading">
-      <div class="border br-1 py-1 px-3 mb-3">
+      <div class="border rounded py-1 px-3 mb-3">
         <div class="flex" style="align-items: baseline;"><h3>{{ currentBook.title }}</h3>&nbsp;<i>by {{ books[author].author }}</i></div>
         <template v-for="(word, i) in words" :key="word + i">
           <span

@@ -243,7 +243,7 @@ const emit = defineEmits<{
               box-shadow: 6px 6px 0px 0px ${state.theme.value.TARGET};
               opacity: ${navigation.world === null || navigation.levelPage === 0 || hasPageMajority(navigation.world, navigation.levelPage - 1) ? 1 : 0.2}`"
           />
-          <span class="pl-1 mb-1 bold" :style="`background: ${state.theme.value.TARGET}; color: ${state.theme.value.BACKGROUND}; position: absolute; bottom: 0; right: 0`">
+          <span class="pl-1 mb-1 font-bold" :style="`background: ${state.theme.value.TARGET}; color: ${state.theme.value.BACKGROUND}; position: absolute; bottom: 0; right: 0`">
             [{{ CONTROL_KEY[('THUMBNAIL_' + i) as 'THUMBNAIL_1'].label }}]
           </span>
         </div>
@@ -260,7 +260,7 @@ const emit = defineEmits<{
       </div>
     </div>
     <div style="height: 100vh; margin-left: 4rem; padding-top: 8rem" v-show="showMenu">
-      <label for="replay-upload" class="button br-0" style="width: fit-content; font-size: 1.25rem;">
+      <label for="replay-upload" class="button rounded-none" style="width: fit-content; font-size: 1.25rem;">
         <Icon name="upload" style="width: 2rem" class="mr-2" />Upload Replay
       </label>
       <input ref="file" id="replay-upload" v-on:change="uploadReplay" type="file" style="display: none" />
@@ -283,13 +283,13 @@ const emit = defineEmits<{
     >
       <p style="font-size: 20vh;">Great job.</p>
         <div class="mx-4 mb-4">
-          <div class="button br-0 pl-2" @click="emit('end')" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block">
+          <div class="button rounded-none pl-2" @click="emit('end')" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block">
             <Icon name="chevron-left" class="mr-2" style="height: 1.25rem; top: 0.15rem" />Back <span class="ml-2 keyLabel">[{{ CONTROL_KEY.BACK.label }}]</span>
           </div>
-          <div class="button br-0 pl-2 ml-4" @click="nextLevel" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block">
+          <div class="button rounded-none pl-2 ml-4" @click="nextLevel" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block">
             <Icon name="chevron-right" class="mr-2" style="height: 1.25rem; top: 0.15rem" />{{ nextWorldIdx === navigation.worldIdx ? 'Next' : 'Next World' }}<span class="ml-2 keyLabel">[{{ CONTROL_KEY.FORWARD.label }}]</span>
           </div>
-          <div class="button br-0 ml-4 flex items-center" v-show="!navigation.isReplay" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block" @click="navigation.level!.saveReplay">
+          <div class="button rounded-none ml-4 flex items-center" v-show="!navigation.isReplay" style="width: fit-content; font-size: 1.25rem; pointer-events: all; display: inline-block" @click="navigation.level!.saveReplay">
             <Icon name="download" style="height: 1.25rem; top: 0.2rem" class="mr-3" />Save replay
           </div>
         </div>

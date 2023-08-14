@@ -280,7 +280,7 @@
           <button style="float: right" @click="reveal">Reveal letter</button>
         </div>
       </div>
-      <div id="guessTracker" class="flex border br-1 px-2">
+      <div id="guessTracker" class="flex border rounded px-2">
         <div>
           <div></div>
           <div class="mr-1">Target:</div>
@@ -304,7 +304,7 @@
         </div>
       </div>
     </div>
-    <div v-show="message !== ''" class="br-1 py-1 px-3 mt-3 bg-cerulean-superlight" v-html="message"></div>
+    <div v-show="message !== ''" class="rounded py-1 px-3 mt-3 bg-sky-100" v-html="message"></div>
     <!-- <button @click="saveWordlist">Save word list</button> -->
     <a href="/bored" class="nohover" style="display: block; width: fit-content; position: relative; left: -32px;"><div class="pt-2 pb-4 px-8 mb-4" style="margin-top: 20vh">&lt; Back</div></a>
   </div>

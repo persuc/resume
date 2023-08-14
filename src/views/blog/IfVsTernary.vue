@@ -41,7 +41,7 @@ int max2(int x, int y) {
 <br />
 
 <Expand class="my-2" label="find_max.s" @expand="expanded = true">
-  <pre v-highlightjs><code class="assembly br-1">.section	__TEXT,__text,regular,pure_instructions
+  <pre v-highlightjs><code class="assembly rounded">.section	__TEXT,__text,regular,pure_instructions
     .build_version macos, 13, 0	sdk_version 13, 3
     .globl	__Z3maxii                       ; -- Begin function _Z3maxii
     .p2align	2
