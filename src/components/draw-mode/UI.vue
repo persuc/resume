@@ -260,8 +260,8 @@ const emit = defineEmits<{
       </div>
     </div>
     <div style="height: 100vh; margin-left: 4rem; padding-top: 8rem" v-show="showMenu">
-      <label for="replay-upload" class="button rounded-none" style="width: fit-content; font-size: 1.25rem;">
-        <Icon name="upload" style="width: 2rem" class="mr-2" />Upload Replay
+      <label for="replay-upload" class="p-2 pr-3 bg-indigo-500 hover:bg-indigo-400 text-white flex items-center cursor-pointer" style="width: fit-content; font-size: 1.25rem;">
+        <Icon name="upload" style="width: 1.5rem" class="mr-2" /><span class="uppercase">Upload Replay</span>
       </label>
       <input ref="file" id="replay-upload" v-on:change="uploadReplay" type="file" style="display: none" />
     </div>

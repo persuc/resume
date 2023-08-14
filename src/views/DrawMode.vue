@@ -242,11 +242,4 @@ import { onMounted, onUnmounted, reactive, ref, type Ref } from 'vue'
     font-size: 16px;
   }
 }
-
-#draw-mode {
-  font-size: 16px;
-  & button {
-    font-size: 16px;
-  }
-}
 </style>
