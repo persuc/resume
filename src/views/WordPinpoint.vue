@@ -281,7 +281,7 @@
           <button @click="pick">Generate</button>
         </div>
         <div class="flex items-center justify-between mb-1">
-          <input type="text" v-model="guess" style="width: 11.5rem" class="border-b border-gray-500" :placeholder="`E.g. ${exampleWord}`"/>
+          <input type="text" v-model="guess" style="width: 11.5rem" class="border-b border-gray-500" :placeholder="'E.g.' + exampleWord"/>
           <button @click="check">Check</button>
         </div>
         <div class="flex items-center justify-end mb-1">
