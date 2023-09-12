@@ -34,7 +34,7 @@ import Button from '@/components/Button.vue'
     </div>
     
     <p class="mt-2 text-xl">Technical Leadership</p>
-    <p>I build relationships and lead initiatives across multiple teams to target cross-cutting concerns. My leadership style is asking questions based on a solid understanding of business processes and software architecture, then facilitating communication to define goals. I enjoy mentoring, with the aim of helping more junior engineers hone their skills so they can deliver projects without relying on other teams.
+    <p>I build relationships and pursue initiatives targeting cross-cutting concerns. My leadership style is asking questions based on a solid understanding of business processes and software architecture, then facilitating communication to define goals. I enjoy mentoring, with the aim of helping more junior engineers hone their skills so they can deliver projects on their own.
     </p>
     
     <p class="mt-2 text-xl">Engineering</p>
@@ -47,22 +47,21 @@ import Button from '@/components/Button.vue'
     <JobTitle class="mt-2" company="Canva" role="Senior Software Engineer (Full Stack)" date-from="2022" date-to="Current" :tech="[ 'TypeScript', 'React', 'Java', 'Terraform', 'AWS', 'GraphQL', 'Protobuf', 'PostgreSQL', 'DynamoDB' ]" />
     <ul class="list-disc ml-8">
       <li><b class="hidden print:inline">Role: </b>Managed all pages on <a target="_blank" href="https://www.canva.com/">canva.com</a> and <a target="_blank" href="https://www.canva.cn/">canva.cn</a>. These 32,590 pages receive ~30 million requests per day.</li>
-      <li>Led projects to enable page experimentation and fallback mechanisms in the China region.</li>
+      <li>Identified shortfalls in our Chinese infrastructure, established communication between the Beijing and Landing Pages teams, and delivered experimentation and fallback mechanisms in the CN region.</li>
       <li>Worked on CMS and page rendering features, syncing millions of rows of data between DynamoDB and Postgres databases and creating UIs for content managers.</li>
       <li>Implemented URL management in Canva's CMS, replacing over 10,000 hardcoded URL strings, increasing TTM and decreasing load on engineers.</li>
     </ul>
 
     <JobTitle class="mt-2" company="Two Bulls" role="Software Engineer (Full Stack)" date-from="2020" date-to="2022" :tech="[ 'Vue.js', 'TypeScript', 'Node.js', 'C#', 'Python', 'AWS', 'MySQL', 'DynamoDB' ]" />
     <ul class="list-disc ml-8">
-      <li><b class="hidden print:inline">Role: </b>Built numerous web applications with Vue frontend and Serverless / Typescript backend, deployed with AWS.</li>
-      <li>Created a framework for bootstrapping web projects at Two Bulls, which is still used today</li>
-      <li>Projects include: <a target="_blank" href="https://www.kidsdoconcall.com.au/">KidsDoc</a> telehealth, <a target="_blank" href="https://fit.theonetwo.com/">TheOneTwo</a> shopfront, <a target="_blank" href="https://www.service.vic.gov.au/services/border-permit/home">Victorian COVID border permits</a> (reached #3 on the app store!) and the <a target="_blank" href="https://release.me/">Release.Me</a> land sales platform.</li>
+      <li><b class="hidden print:inline">Role: </b>Delivered bespoke web applications including <a target="_blank" href="https://www.kidsdoconcall.com.au/">KidsDoc</a> telehealth, <a target="_blank" href="https://fit.theonetwo.com/">TheOneTwo</a> shopfront, <a target="_blank" href="https://www.service.vic.gov.au/services/border-permit/home">Victorian COVID border permits</a> (reached #3 on the app store!) and the <a target="_blank" href="https://release.me/">Release.Me</a> land sales platform.</li>
+      <li>Worked with clients ranging from startups in the inception phase, to state governments to find unique solutions.</li>
     </ul>
 
     <JobTitle class="mt-2" company="Unico" role="Software Engineer (Backend)" date-from="2019" date-to="2020" :tech="[ 'Java', 'MySQL', 'Python', 'MATRIXX', 'Linux', 'Docker', 'Spring' ]" />
     <ul class="list-disc ml-8">
-      <li><b class="hidden print:inline">Role: </b>Performed database migrations (ETL) for large telecommunications vendors.</li>
-      <li>Wrote <i>Java / Spring</i> applications to move databases of up to 20 million records to the <i>MATRIXX</i> in-memory database.</li>
+      <li><b class="hidden print:inline">Role: </b>Performed large scale database migrations (ETL) for prominent telecommunications vendors.</li>
+      <li>Successfully migrated over 20 million records to the <i>MATRIXX</i> in-memory database in a single day.</li>
       <li>Gained experience in data-intensive systems and concurrency, sensitive data and reverse engineering older systems.</li>
     </ul>
 
