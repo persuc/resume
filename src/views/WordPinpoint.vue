@@ -4,7 +4,7 @@
   import propset from '@/assets/proper_nouns'
   import lemmas from '@/assets/lemmas'
   import wordlist from '@/assets/wordlist'
-  import { type Ref, ref, onMounted, onUnmounted } from 'vue'
+  import { type Ref, ref, onMounted, onUnmounted, computed } from 'vue'
   const MAX_LENGTH = 20;
   const MIN_LENGTH = 3;
   const FREQUENCY_CUTOFF = 150;
@@ -51,6 +51,14 @@
   let message = ref('')
   let guess = ref('')
   let revealed = ref('');
+
+  const exampleWord = computed(() => {
+    let word = currentWord.value
+    while (word === currentWord.value) {
+      word = targets[length.value - MIN_LENGTH][Math.floor(Math.random() * targets[length.value - MIN_LENGTH].length)]
+    }
+    return word
+  })
 
   function pick() {
     revealed.value = ''
@@ -269,11 +277,11 @@
     <div class="flex" style="flex-wrap: wrap">
       <div class="inputs grow">
         <div class="flex items-center justify-between mb-1">
-          <input type="number" v-model="lengthInput" :min="MIN_LENGTH" :max="MAX_LENGTH" style="width: 11.5rem"/>
+          <input type="number" v-model="lengthInput" :min="MIN_LENGTH" :max="MAX_LENGTH" style="width: 11.5rem" class="border-b border-gray-500"/>
           <button @click="pick">Generate</button>
         </div>
         <div class="flex items-center justify-between mb-1">
-          <input type="text" v-model="guess" style="width: 11.5rem"/>
+          <input type="text" v-model="guess" style="width: 11.5rem" class="border-b border-gray-500" :placeholder="`E.g. ${exampleWord}`"/>
           <button @click="check">Check</button>
         </div>
         <div class="flex items-center justify-end mb-1">

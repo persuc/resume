@@ -90,13 +90,13 @@ const router = createRouter({
   ]
 })
 
-const app = createApp(App)
-app.use(router)
-app.use(VueHighlightJS, {
-	languages: {
-    assembly,
-		cpp,
-    python,
-	}
-});
-app.mount('#app')
+createApp(App)
+  .use(router)
+  .use(VueHighlightJS, {
+    languages: {
+      assembly,
+      cpp,
+      python,
+    }
+  })
+  .mount('#app')
