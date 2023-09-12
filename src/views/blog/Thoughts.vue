@@ -11,9 +11,7 @@ import Header from '@/components/Header.vue'
     
     <p class="mb-8">
       <code>self.destroy()</code> is an abstract method.
-      Every instance has its own implementation,
-      but it is up to them if they choose to call it before the end of their lifetimes,
-      just as it is up to them to reconstruct themselves afterwards.
+      Every instance has its own implementation, but only some choose to call it early.
     </p>
     <p class="mb-8">
       Some statistics only increase over an object's lifetime.
