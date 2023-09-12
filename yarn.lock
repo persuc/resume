@@ -159,12 +159,12 @@
 
 "@types/file-saver@^2.0.5":
   version "2.0.5"
-  resolved "https://registry.npmjs.org/@types/file-saver/-/file-saver-2.0.5.tgz"
+  resolved "https://registry.yarnpkg.com/@types/file-saver/-/file-saver-2.0.5.tgz#9ee342a5d1314bb0928375424a2f162f97c310c7"
   integrity sha512-zv9kNf3keYegP5oThGLaPk8E081DFDuwfqjtiTzm6PoxChdJ1raSuADf2YGCVIyrSynLrgc8JWv296s7Q7pQSQ==
 
 "@types/highlightjs@^9.12.2":
   version "9.12.2"
-  resolved "https://registry.npmjs.org/@types/highlightjs/-/highlightjs-9.12.2.tgz"
+  resolved "https://registry.yarnpkg.com/@types/highlightjs/-/highlightjs-9.12.2.tgz#6b6d460968a975f4ce3ab3907c03cde46a72a02f"
   integrity sha512-oW2pEKwshxwBW1nVUizWQg/tnhboRtKrUKnF2hd6l4BZ0shr5ZjQ4ra/82+NEH6uWeM8JjrMGCux5enQXOQbTA==
 
 "@types/json-schema@^7.0.9":
