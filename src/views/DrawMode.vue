@@ -13,7 +13,6 @@ import { onMounted, onUnmounted, reactive, ref, type Ref } from 'vue'
   
   const state = createState()
   let timeOfLastCleanup = 0
-  const replayPlayer = ReplayPlayer
 
   Common.setDecomp(decomp)
 
@@ -38,8 +37,8 @@ import { onMounted, onUnmounted, reactive, ref, type Ref } from 'vue'
     if (e.key === 'r') {
       if (navigation.level && !navigation.showEndScreen) {
         if (navigation.isReplay) {
-          replayPlayer.stop()
-          const replay = replayPlayer.getReplay()
+          ReplayPlayer.stop()
+          const replay = ReplayPlayer.getReplay()
           resetEngine()
           if (replay) {
             startReplay(replay)
@@ -192,15 +191,15 @@ import { onMounted, onUnmounted, reactive, ref, type Ref } from 'vue'
       navigation.showEndScreen = true
     })
 
-    replayPlayer.start(replay, navigation.level)
+    ReplayPlayer.start(replay, navigation.level)
     
-    Events.on(engine, 'afterUpdate', replayPlayer.render)
+    Events.on(engine, 'afterUpdate', ReplayPlayer.render)
   }
 
   function endLevel() {
     if (navigation.isReplay) {
       navigation.isReplay = false
-      Events.off(engine, 'afterUpdate', replayPlayer.render)
+      Events.off(engine, 'afterUpdate', ReplayPlayer.render)
     }
     returnToLevelSelect()
   }

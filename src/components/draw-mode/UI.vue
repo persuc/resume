@@ -39,6 +39,7 @@ function onKeyUp(e: KeyboardEvent) {
   if (navigation.level) {
     if (e.key === CONTROL_KEY.BACK.code) {
       emit('end')
+      return
     }
 
     if (!navigation.showEndScreen) {
@@ -47,7 +48,11 @@ function onKeyUp(e: KeyboardEvent) {
 
     if (e.key === CONTROL_KEY.FORWARD.code) {
       nextLevel()
+    } else if (e.key === CONTROL_KEY.SAVE.code && !navigation.isReplay) {
+      navigation.level.saveReplay()
     }
+
+    return
   } 
   
   const thumbnailIndex = THUMBNAIL_KEYCODES.indexOf(e.key)
@@ -63,6 +68,8 @@ function onKeyUp(e: KeyboardEvent) {
     clickLeftArrow()
   } else if (thumbnailIndex >= 0) {
     clickThumbnail(thumbnailIndex + 1)
+  } else if (showMenu.value && e.key === CONTROL_KEY.UPLOAD.code) {
+    file.value.click()
   }
 }
 
@@ -204,7 +211,7 @@ const emit = defineEmits<{
       <div v-show="navigation.world !== null" class="pr-4 pl-2 flex items-center">
         <Icon name="chevron-left" class="pr-1" style="height: 1.5rem" />
         <span>BACK TO WORLDS</span>
-        <span class="ml-2 keyLabel" style="top: 0.15rem">[{{ CONTROL_KEY.BACK.label }}]</span>
+        <span class="keyLabel ml-2" style="top: 0.15rem">[{{ CONTROL_KEY.BACK.label }}]</span>
       </div>
       <span v-show="navigation.world === null" class="px-4">{{ showMenu ? 'WORLDS' : 'MENU' }}<span class="ml-2 keyLabel">[{{ CONTROL_KEY.BACK.label }}]</span></span>
     </div>
@@ -243,7 +250,7 @@ const emit = defineEmits<{
               box-shadow: 6px 6px 0px 0px ${state.theme.value.TARGET};
               opacity: ${navigation.world === null || navigation.levelPage === 0 || hasPageMajority(navigation.world, navigation.levelPage - 1) ? 1 : 0.2}`"
           />
-          <span class="pl-1 mb-1 font-bold" :style="`background: ${state.theme.value.TARGET}; color: ${state.theme.value.BACKGROUND}; position: absolute; bottom: 0; right: 0`">
+          <span class="keyLabel pl-1 absolute bottom-0 right-0" :style="`background: ${state.theme.value.TARGET}; color: ${state.theme.value.BACKGROUND};`">
             [{{ CONTROL_KEY[('THUMBNAIL_' + i) as 'THUMBNAIL_1'].label }}]
           </span>
         </div>
@@ -260,8 +267,23 @@ const emit = defineEmits<{
       </div>
     </div>
     <div style="height: 100vh; margin-left: 4rem; padding-top: 8rem" v-show="showMenu">
+      <p class="uppercase font-mono" :style="`color: ${state.theme.value.TEXT};`">Controls:</p>
+      <div class="mb-4 p-4 border border-current" :style="`color: ${state.theme.value.TEXT};`">
+        <div class="font-mono grid grid-cols-2 gap-2">
+          <div>Exit level</div><div class="keyLabel ml-2">{{ CONTROL_KEY.BACK.label }}</div>
+          <div>Restart level</div><div class="keyLabel ml-2">{{ CONTROL_KEY.RESTART.label }}</div>
+          <div>Change theme</div><div class="keyLabel ml-2">{{ CONTROL_KEY.THEME.label }}</div>
+        </div>
+      </div>
+
+      <a target="_blank" href="https://github.com/persuck/resume/issues/new" class="plain block w-max">
+        <Button class="pl-2 pr-3 pb-2 h-12 mb-4 !items-end rounded-none">
+          <Icon name="comments" style="width: 1.5rem" class="mr-2" /><span class="leading-normal text-xl uppercase">Submit feedback</span>
+        </Button>
+      </a>
+
       <label for="replay-upload" class="p-2 pr-3 bg-indigo-500 hover:bg-indigo-400 text-white flex items-center cursor-pointer" style="width: fit-content; font-size: 1.25rem;">
-        <Icon name="upload" style="width: 1.5rem" class="mr-2" /><span class="uppercase">Upload Replay</span>
+        <Icon name="upload" style="width: 1.5rem" class="mr-2" /><span class="uppercase">Upload Replay<span class="keyLabel ml-2">[{{ CONTROL_KEY.UPLOAD.label }}]</span></span>
       </label>
       <input ref="file" id="replay-upload" v-on:change="uploadReplay" type="file" style="display: none" />
     </div>
@@ -290,16 +312,17 @@ const emit = defineEmits<{
             <Icon name="chevron-right" class="mr-1" style="height: 1.25rem; top: -15%" /><span class="leading-normal uppercase">{{ nextWorldIdx === navigation.worldIdx ? 'Next' : 'Next World' }}</span><span class="ml-2 keyLabel">[{{ CONTROL_KEY.FORWARD.label }}]</span>
           </Button>
           <Button @click="navigation.level?.saveReplay" v-show="!navigation.isReplay" class="pl-2 pr-3 pb-2 h-12 !items-end rounded-none" style="font-size: 1.25rem; pointer-events: all;">
-            <Icon name="download" class="mr-2 ml-1" style="height: 1.25rem; top: -15%" /><span class="leading-normal uppercase">Save replay</span>
+            <Icon name="download" class="mr-2 ml-1" style="height: 1.25rem; top: -15%" /><span class="leading-normal uppercase">Save replay<span class="ml-2 keyLabel">[{{ CONTROL_KEY.SAVE.label }}]</span></span>
           </Button>
         </div>
     </div>
   </div>
 </template>
 
-<style lang="postcss" scoped>
+<style lang="postcss">
 .keyLabel {
   font-family: monospace;
   font-size: 1rem;
+  font-weight: 700;
 }
 </style>

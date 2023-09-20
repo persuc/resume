@@ -46,6 +46,14 @@ export const CONTROL_KEY = {
     code: 't',
     label: 'T'
   },
+  SAVE: {
+    code: 's',
+    label: 'S'
+  },
+  UPLOAD: {
+    code: 'u',
+    label: 'U'
+  },
   THUMBNAIL_1: {
     code: 'q',
     label: 'Q',

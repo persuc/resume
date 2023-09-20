@@ -196,7 +196,7 @@ export default class Line {
         x: from.x,
         y: from.y,
       } : null,
-      time: performance.now()
+      time: this.engine.timing.timestamp
     })
 
     this.parts.push(circle)

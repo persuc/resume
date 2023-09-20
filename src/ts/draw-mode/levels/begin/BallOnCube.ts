@@ -18,7 +18,7 @@ const level: LevelSpec = {
     ]
   },
   id: 'BallOnCube',
-  text: `<span>Knock the ball off</span><br /><span>[${CONTROL_KEY.RESTART.label}] to restart, [${CONTROL_KEY.BACK.label}] to go back, [${CONTROL_KEY.THEME.label}] to change the theme</span>`
+  text: `<span>Knock the ball off</span><br /><span class="keyLabel">[${CONTROL_KEY.RESTART.label}]</span> to restart, <span class="keyLabel">[${CONTROL_KEY.BACK.label}]</span> to go back, <span class="keyLabel">[${CONTROL_KEY.THEME.label}]</span> to change the theme`
 }
 
 export default level

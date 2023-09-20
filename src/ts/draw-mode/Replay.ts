@@ -49,7 +49,7 @@ export const ReplayPlayer: {
     if (!spec || !level) {
       return
     }
-    const time = performance.now()
+    const time = level.engine.timing.timestamp
     let pointsToAdd = []
 
     while (lineIdx < lineHistory.length && time >= lineHistory[lineIdx][pointIdx].time + level.startTime) {

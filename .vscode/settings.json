@@ -1,0 +1,10 @@
+{
+  "search.exclude": {
+    "/LICENSE": true,
+    "/public/*.txt": true,
+    "/src/assets/corncob_caps.ts": true,
+    "/src/assets/lemmas.ts": true,
+    "/src/assets/proper_nouns.ts": true,
+    "/src/assets/wordlist.ts": true
+  }
+}

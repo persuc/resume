@@ -84,13 +84,16 @@ export function createLevel(engine: Engine, spec: LevelSpec, theme: Theme, onEnd
       applyTheme(level, theme)
     },
     saveReplay() {
-      const replay = {
-        lineHistory: level.lineHistory,
-        specId: level.spec.id,
-      }
-    
-      var blob = new Blob([JSON.stringify(replay)], {type: "text/plain;charset=utf-8"});
-      saveAs(blob, `${level.spec.id}.replay`)
+      saveAs(
+        new Blob([
+          JSON.stringify({
+            lineHistory: level.lineHistory,
+            specId: level.spec.id,
+          })],
+          {type: "text/plain;charset=utf-8"}
+        ),
+        `${level.spec.id}.replay`
+      )
   },
   }
   
