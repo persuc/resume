@@ -1,5 +1,46 @@
 <script setup lang="ts">
 import Header from '@/components/Header.vue'
+import TrafficLight from '@/components/TrafficLight.vue'
+import friendSongTimelineImage from '@/assets/FriendSongTimeline.png'
+
+type Difficulty = 'easy' | 'medium' | 'hard'
+
+const leetcodes: {
+  link: string,
+  title: string,
+  difficulty: Difficulty
+}[] = [
+  { link: "https://leetcode.com/problems/number-of-recent-calls/", title: "Number of recent calls", difficulty: "easy" },
+  { link: "https://leetcode.com/problems/design-hashmap/", title: "Design hashmap", difficulty: "easy" },
+  { link: "https://leetcode.com/problems/ransom-note/", title: "Ransom note", difficulty: "easy" },
+  { link: "https://leetcode.com/problems/total-distance-traveled/", title: "Total distance traveled", difficulty: "easy" },
+  { link: "https://leetcode.com/problems/binary-search-tree-iterator/", title: "Binary search tree iterator", difficulty: "medium" },
+  { link: "https://leetcode.com/problems/linked-list-cycle/", title: "Linked list cycle", difficulty: "medium" },
+  { link: "https://leetcode.com/problems/design-a-stack-with-increment-operation/", title: "Design a stack with increment operation", difficulty: "medium" },
+  { link: "https://leetcode.com/problems/flatten-nested-list-iterator/", title: "Flatten nested list iterator", difficulty: "medium" },
+  { link: "https://leetcode.com/problems/product-of-the-last-k-numbers/", title: "Product of the last k numbers", difficulty: "medium" },
+  { link: "https://leetcode.com/problems/min-stack/", title: "Min stack", difficulty: "medium" },
+  { link: "https://leetcode.com/problems/peeking-iterator/", title: "Peeking iterator", difficulty: "medium" },
+  { link: "https://leetcode.com/problems/insert-delete-getrandom-o1/", title: "Insert, delete, getRandom O(1)", difficulty: "medium" },
+  { link: "https://leetcode.com/problems/implement-magic-dictionary/", title: "Implement magic dictionary", difficulty: "medium" },
+  { link: "https://leetcode.com/problems/design-front-middle-back-queue/", title: "Design front middle back queue", difficulty: "medium" },
+  { link: "https://leetcode.com/problems/online-stock-span/", title: "Online stock span", difficulty: "medium" },
+  { link: "https://leetcode.com/problems/asteroid-collision/", title: "Asteroid collision", difficulty: "medium" },
+  { link: "https://leetcode.com/problems/lru-cache/", title: "LRU cache", difficulty: "medium" },
+  { link: "https://leetcode.com/problems/max-chunks-to-make-sorted-ii/", title: "Max chunks to make sorted II", difficulty: "hard" },
+  { link: "https://leetcode.com/problems/reconstruct-itinerary/", title: "Reconstruct itinerary", difficulty: "hard" },
+  { link: "https://leetcode.com/problems/candy/", title: "Candy", difficulty: "hard" },
+  { link: "https://leetcode.com/problems/count-all-valid-pickup-and-delivery-options/", title: "Count all valid pickup and delivery options", difficulty: "hard" },
+  { link: "https://leetcode.com/problems/painting-the-walls/", title: "Painting the walls", difficulty: "hard" },
+  { link: "https://leetcode.com/problems/number-of-ways-to-earn-points/", title: "Number of ways to earn points", difficulty: "hard" },
+  { link: "https://leetcode.com/problems/robot-collisions/", title: "Robot collisions", difficulty: "hard" },
+]
+
+const difficultyColor: Record<Difficulty, string> = {
+  'easy': 'text-teal-500',
+  'medium': 'text-amber-400',
+  'hard': 'text-red-500',
+}
 
 </script>
 
@@ -47,7 +88,7 @@ import Header from '@/components/Header.vue'
       <div></div>
 
       <div>
-        <a target="_blank" href="https://drive.google.com/file/d/1C_3Wbdi2T_PbJxckv90IDEjIBJDdgiBs/view?usp=sharing">Algorithms &amp; Data Structures notes</a>
+        <a target="_blank" href="https://drive.google.com/file/d/1C_3Wbdi2T_PbJxckv90IDEjIBJDdgiBs/view?usp=sharing">Algorithms &amp; Data Structures Notes</a>
         <p>Algorithms &amp; data structures are useful in the daily life of any programmer, and also for passing interviews. Usually FAANG companies focus on these, and knowing them helps understand how to write performant code, and how computers work internally</p>
       </div>
       <div>Notes</div>
@@ -56,12 +97,22 @@ import Header from '@/components/Header.vue'
         <p>A site dedicated to practice questions for algorithms &amp; data structures. Many big companies use these questions.</p>
       </div>
       <div>Practical Exercises</div>
+      <div>
+        <a target="_blank" href="https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-75-LeetCode-Questions-to-Save-Your-Time-OaM1orEU">Blind75</a>
+        <p>A curated list of commonly asked LeetCode questions.</p>
+      </div>
+      <div>LeetCode compendium</div>
+      <div>
+        <a target="_blank" href="https://www.techinterviewhandbook.org/grind75">Grind75</a>
+        <p>A curated list of commonly asked LeetCode questions.</p>
+      </div>
+      <div>LeetCode compendium</div>
 
       <div><p class="text-xl mt-8 font-sans">System Design and Computer Architecture</p></div>
       <div></div>
 
       <div>
-        <a target="_blank" href="https://drive.google.com/file/d/1rTt0WPdLmhctQIDHVG4mlWHbdLM4fGPd/view?usp=sharing">Designing Data Intensice Applications by Marting Kleppman</a>
+        <a target="_blank" href="https://drive.google.com/file/d/1rTt0WPdLmhctQIDHVG4mlWHbdLM4fGPd/view?usp=sharing">Designing Data Intensive Applications by Marting Kleppman</a>
         <p>Amazing resource to understand databases. Advanced text, so I can walk you through it if you like</p>
       </div>
       <div>Databases</div>
@@ -85,6 +136,51 @@ import Header from '@/components/Header.vue'
         <p>A series of take-home exercises for learning performance programming in <code>C++</code></p>
       </div>
       <div>Compilers &amp; Performance</div>
+
+      <div>
+        <p class="text-xl mt-8 font-sans">My Practice Questions</p>
+        <p>Questions I have encountered myself, or come up with to test the concepts covered above</p>
+      </div>
+      <div></div>
+
+      <div>
+        <a target="_blank" href="https://app.coderpad.io/PQQXDRQX">Custom: Implement Reactivity</a>
+        <p>Learn how modern web frameworks like React.js and Vue.js work by implementing reactivity yourself!</p>
+        <pre v-highlightjs><code class="javascript rounded">function reactive()
+function watch()
+function ref()
+function computed()
+function render()</code></pre>
+      </div>
+      <div>Frontend - 60 mins</div>
+
+      <div>
+        <a target="_blank" href="https://app.coderpad.io/PQQXDRQX">Spotify: Traffic Light Component</a>
+        <p>Design a toy component as below to display a traffic light (in plain JavaScript)</p>
+        <TrafficLight />
+      </div>
+      <div>Frontend - 60 mins</div>
+
+      <div>
+        <a target="_blank" href="https://app.coderpad.io/PQQXDRQX">Spotify: Design Friends Timeline</a>
+        <p>Systems design question for a feed of your friends' most recently listened songs</p>
+        <img :src="friendSongTimelineImage" class="h-80" />
+      </div>
+      <div>System Design - 90 mins</div>
+
+      <div>
+        <a target="_blank" href="https://app.coderpad.io/PQQXDRQX">Microsoft: E-Tag Middleware</a>
+        <p>Design node.js middleware to cache resources using <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag">E-Tags</a></p>
+      </div>
+      <div>Web Backend - 60 mins</div>
+    </div>
+
+    <p class="text-xl mt-8 font-sans">My LeetCode Questions</p>
+    <p>I have run these questions with other people in the past and they seem suited for an interview environment.</p>
+
+    <div v-for="l in leetcodes" >
+      <a target="_blank" :href="l.link">{{ l.title }}</a>
+      <span :class="`capitalize ml-2 rounded-full px-2 py-0.5 bg-gray-100 ${difficultyColor[l.difficulty]}`">{{ l.difficulty }}</span>
     </div>
 
     <div class="my-16 py-16"></div>

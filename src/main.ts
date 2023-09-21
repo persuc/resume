@@ -1,10 +1,11 @@
 import { createApp } from "vue";
 import { createRouter, createWebHistory } from 'vue-router'
 import VueHighlightJS from 'vue3-highlightjs'
-import 'highlight.js/styles/shades-of-purple.css'
+import 'highlight.js/styles/atom-one-light.css'
 import highlightCore from 'highlight.js/lib/core' // this line tells the following grammars where the types are
-import cpp from 'highlight.js/lib/languages/cpp'
 import assembly from 'highlight.js/lib/languages/armasm'
+import cpp from 'highlight.js/lib/languages/cpp'
+import javascript from 'highlight.js/lib/languages/javascript'
 import python from 'highlight.js/lib/languages/python'
 import App from "./App.vue"
 import './index.css'
@@ -101,6 +102,7 @@ createApp(App)
     languages: {
       assembly,
       cpp,
+      javascript,
       python,
     }
   })
