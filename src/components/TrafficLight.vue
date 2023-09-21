@@ -76,10 +76,10 @@ function cycle() {
       .getElementsByClassName(colour.id)[0]
       .setAttribute('style', `background-color: ${colour.dim}`)
   
-    // this could be the same one
     const oldIlluminated = light.illuminated
-    while (oldIlluminated === light.illuminated) {
-      light.illuminated = Math.floor(Math.random() * lightColours.length)
+    light.illuminated = Math.floor(Math.random() * (lightColours.length - 1))
+    if (light.illuminated >= oldIlluminated) {
+      light.illuminated++
     }
     colour = lightColours[light.illuminated]
   
@@ -92,9 +92,7 @@ function cycle() {
 function toggle() {
   if (discoInterval === null) {
     discoInterval = setInterval(() => {
-      for (const light of lights) {
-        cycle(light)
-      }
+      cycle()
     }, 250)
   } else {
     clearInterval(discoInterval)
