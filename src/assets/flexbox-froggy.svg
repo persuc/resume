@@ -1,0 +1,25 @@
+<svg viewBox="0 0 210 210">
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(0, 26)">
+        <g transform="translate(-13.000000, 0.000000)">
+            <circle fill="#69DA6B" cx="73" cy="24" r="24" />
+            <circle fill="#69DA6B" cx="163" cy="24" r="24" />
+            <g transform="translate(0.000000, 54.000000)" fill="#4CC24F">
+                <ellipse
+                    transform="translate(46.538193, 57.026578) rotate(-27.000000) translate(-46.538193, -57.026578) "
+                    cx="46.5381931" cy="57.0265777" rx="26.5" ry="50.5" />
+                <rect x="13" y="89" width="56" height="15" rx="9" />
+            </g>
+            <g transform="translate(189.000000, 111.500000) scale(-1, 1) translate(-189.000000, -111.500000) translate(142.000000, 54.000000)"
+                fill="#4CC24F">
+                <ellipse
+                    transform="translate(46.538193, 57.026578) rotate(-27.000000) translate(-46.538193, -57.026578) "
+                    cx="46.5381931" cy="57.0265777" rx="26.5" ry="50.5" />
+                <rect x="13" y="89" width="56" height="15" rx="9" />
+            </g>
+            <rect fill="#69DA6B" x="49" y="20" width="138" height="138" rx="9" />
+            <circle stroke="#FFFFFF" stroke-width="5" fill="#000000" cx="73" cy="24" r="12" />
+            <circle stroke="#FFFFFF" stroke-width="5" fill="#000000" cx="163" cy="24" r="12" />
+            <rect fill="#77F87A" x="62" y="72" width="110" height="70" rx="9" />
+        </g>
+    </g>
+</svg>

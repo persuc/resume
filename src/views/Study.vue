@@ -2,6 +2,13 @@
 import Header from '@/components/Header.vue'
 import TrafficLight from '@/components/TrafficLight.vue'
 import friendSongTimelineImage from '@/assets/FriendSongTimeline.png'
+import connect4Image from '@/assets/connect4.png'
+import w3schools from '@/assets/W3Schools.png'
+import dananderson from '@/assets/dananderson.jpg'
+import blind from '@/assets/blind.png'
+import ddia from '@/assets/wild-boar-by-george-shaw.jpg'
+import youtube from '@/assets/youtube.png'
+import perfNinja from '@/assets/perf-ninja.jpg'
 import StudyItem from '@/components/StudyItem.vue'
 
 type Difficulty = 'easy' | 'medium' | 'hard'
@@ -9,7 +16,10 @@ type Difficulty = 'easy' | 'medium' | 'hard'
 type Resource = {
   link: string
   title: string
+  postTitle?: string
   description: string
+  image?: string,
+  svg?: string,
   category: string
 }
 
@@ -18,24 +28,28 @@ const resources: Record<string, Resource[]> = {
     {
       link: "https://flexboxfroggy.com/",
       title: "Flexbox Froggy",
+      svg: "flexbox-froggy",
       description: "Game for learning how to make website layouts with CSS flexbox",
       category: "UI / webpage layout",
     },
     {
       link: "https://www.w3schools.com/js/default.asp",
       title: "W3 Schools JS tutorial",
+      image: w3schools,
       description: "Beginner resource for JavaScript (web) programming",
       category: "Web programming",
     },
     {
       link: "https://www.11ty.dev/docs/getting-started/",
       title: "11ty.js",
+      svg: "11ty",
       description: "A framework for building static websites. It might be fun to follow their getting started tutorial and make your own blog!",
       category: "Frameworks / Personal Site",
     },
     {
       link: "https://legacy.reactjs.org/tutorial/tutorial.html",
       title: "React.js",
+      svg: "react",
       description: "A more advanced framework for building static websites. It might be fun to follow their getting started tutorial and make your own blog!",
       category: "Frameworks / Personal Site",
     },
@@ -44,6 +58,7 @@ const resources: Record<string, Resource[]> = {
       title: "Cloudflare Pages",
       description: "Once you have your first website, you can use this to make it available on the public internet",
       category: "Frameworks / Personal Site",
+      svg: "cloudflare"
     },
   ],
   "Algorithms & Data Structures": [
@@ -52,18 +67,21 @@ const resources: Record<string, Resource[]> = {
       title: "Algorithms & Data Structures Notes",
       description: "Algorithms & data structures are useful in the daily life of any programmer, and also for passing interviews. Usually FAANG companies focus on these, and knowing them helps understand how to write performant code, and how computers work internally",
       category: "Notes",
+      image: dananderson
     },
     {
       link: "https://leetcode.com/explore/featured/card/the-leetcode-beginners-guide/",
       title: "Leetcode.com",
       description: "A site dedicated to practice questions for algorithms & data structures. Many big companies use these questions.",
       category: "Practical Exercises",
+      svg: "leetcode"
     },
     {
       link: "https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-75-LeetCode-Questions-to-Save-Your-Time-OaM1orEU",
       title: "Blind75",
       description: "A curated list of commonly asked LeetCode questions.",
       category: "LeetCode compendium",
+      image: blind,
     },
     {
       link: "https://www.techinterviewhandbook.org/grind75",
@@ -74,10 +92,19 @@ const resources: Record<string, Resource[]> = {
   ],
   "System Design and Computer Architecture": [
     {
+      link: "https://fly.io/dist-sys/",
+      title: "Gossip Glomers",
+      description: "A series of practical distributed-system challenges made by fly.io",
+      category: "Infrastructure",
+      svg: "fly",
+    },
+    {
       link: "https://drive.google.com/file/d/1rTt0WPdLmhctQIDHVG4mlWHbdLM4fGPd/view?usp=sharing",
-      title: "Designing Data Intensive Applications by Marting Kleppman",
+      title: "Designing Data Intensive Applications",
+      postTitle: " by <a target=\"_blank\" href=\"https://martin.kleppmann.com/\">Martin Kleppmann</a>",
       description: "Amazing resource to understand databases. Advanced text, so I can walk you through it if you like",
       category: "Databases",
+      image: ddia,
     },
     {
       link: "https://en.algorithmica.org/",
@@ -90,20 +117,23 @@ const resources: Record<string, Resource[]> = {
       title: "Jordan has no life",
       description: "Great YouTube channel for system design and databases content",
       category: "System Design",
+      image: youtube,
     },
     {
       link: "https://www.youtube.com/@SystemDesignInterview",
       title: "System Design Interview",
       description: "Great YouTube channel for system design content",
       category: "System Design",
+      image: youtube,
     },
     {
       link: "https://github.com/dendibakh/perf-ninja",
       title: "Perf Ninja",
       description: "A series of take-home exercises for learning performance programming in <code>C++</code>",
       category: "Compilers & Performance",
+      image: perfNinja,
     },
-  ]
+  ],
 }
 
 const leetcodes: {
@@ -157,7 +187,7 @@ const difficultyColor: Record<Difficulty, string> = {
 
     <template v-for="resourceCategory in Object.entries(resources)">
       <p class="text-xl mt-8 font-sans">{{ resourceCategory[0] }}</p>
-      <StudyItem v-for="resource in resourceCategory[1]" :link="resource.link" :description="resource.description" :category="resource.category" :title="resource.title" />
+      <StudyItem v-for="resource in resourceCategory[1]" :link="resource.link" :description="resource.description" :category="resource.category" :title="resource.title" :post-title="resource.postTitle" :image="resource.image" :svg="resource.svg" />
     </template>
       
     <p class="text-xl mt-8 font-sans">My Practice Questions</p>
@@ -182,6 +212,10 @@ function render()</code></pre>
     </StudyItem>
     <StudyItem link="https://app.coderpad.io/PQQXDRQX" category="Web Backend - 60 mins" title="E-Tag Middleware">
       <p>Design node.js middleware to cache resources using <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag">E-Tags</a></p>
+    </StudyItem>
+    <StudyItem link="https://github.com/persuck/FIT1045/" category="Algorithms & Data Structures" title="Connect-4">
+      <p>Learn to create a command-line version of Connect-4 in python. This resource includes slides explaining the process and ideas behind making the game, as well as some other useful resources on debugging and interviewing.</p>
+      <img :src="connect4Image" class="h-64" />
     </StudyItem>
 
     <p class="text-xl mt-8 font-sans">My LeetCode Questions</p>
