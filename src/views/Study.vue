@@ -176,7 +176,7 @@ function render()</code></pre>
     </div>
 
     <p class="text-xl mt-8 font-sans">My LeetCode Questions</p>
-    <p>I have run these questions with other people in the past and they seem suited for an interview environment.</p>
+    <p>I have run these questions with other people in the past. LeetCode questions are more suited for backend interviews, and these were selected particularly because they suit the format of a backend interview.</p>
 
     <div v-for="l in leetcodes" >
       <a target="_blank" :href="l.link">{{ l.title }}</a>
