@@ -53,39 +53,44 @@ const router = createRouter({
       component: () => import('./views/blog/Thoughts.vue')
     },
     {
+      path: '/study',
+      name: "Study",
+      component: () => import('./views/Study.vue')
+    },
+    {
       path: '/bored',
       name: "Bored",
-      component: () => import('./views/Bored.vue')
+      component: () => import('./views/games/Bored.vue')
     },
     {
       path: '/binary',
       name: "Word Pinpoint",
-      component: () => import('./views/WordPinpoint.vue')
+      component: () => import('./views/games/WordPinpoint.vue')
     },
     {
       path: '/word-pinpoint',
       name: "Word Pinpoint",
-      component: () => import('./views/WordPinpoint.vue')
+      component: () => import('./views/games/WordPinpoint.vue')
     },
     {
       path: '/missing-word',
       name: "Missing Word",
-      component: () => import('./views/MissingWord.vue')
+      component: () => import('./views/games/MissingWord.vue')
     },
     {
       path: '/blackout',
       name: "Blackout Poem",
-      component: () => import('./views/BlackoutPoem.vue')
+      component: () => import('./views/games/BlackoutPoem.vue')
     },
     {
       path: '/solitaire',
       name: "Solitaire",
-      component: () => import('./views/Solitaire.vue')
+      component: () => import('./views/games/Solitaire.vue')
     },
     {
       path: '/draw',
       name: "Draw Mode",
-      component: () => import('./views/DrawMode.vue')
+      component: () => import('./views/games/DrawMode.vue')
     },
   ]
 })
