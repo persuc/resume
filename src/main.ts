@@ -93,6 +93,12 @@ const router = createRouter({
       name: "Draw Mode",
       component: () => import('./views/games/DrawMode.vue')
     },
+    {
+      path: '/components',
+      name: "Components",
+      component: () => import('./views/Components.vue')
+    },
+    
   ]
 })
 

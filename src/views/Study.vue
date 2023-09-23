@@ -193,7 +193,7 @@ const difficultyColor: Record<Difficulty, string> = {
     <p class="text-xl mt-8 font-sans">My Practice Questions</p>
     <p>Questions I have encountered myself, or come up with to test the concepts covered above</p>
 
-    <StudyItem link="https://app.coderpad.io/PQQXDRQX" category="Frontend - 60 mins" title="Implement Reactivity">
+    <StudyItem link="https://app.coderpad.io/PQQXDRQX" category="Frontend - 30 mins" title="Implement Reactivity">
       <p>Learn how modern web frameworks like React.js and Vue.js work by implementing reactivity yourself!</p>
       <pre v-highlightjs><code class="javascript rounded">function reactive()
 function watch()
@@ -210,10 +210,10 @@ function render()</code></pre>
       <p>Systems design question for a feed of your friends' most recently listened songs</p>
       <img :src="friendSongTimelineImage" class="h-80" />
     </StudyItem>
-    <StudyItem link="https://app.coderpad.io/PQQXDRQX" category="Web Backend - 60 mins" title="E-Tag Middleware">
+    <StudyItem link="https://app.coderpad.io/PQQXDRQX" category="Web Backend - 30 mins" title="E-Tag Middleware">
       <p>Design node.js middleware to cache resources using <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag">E-Tags</a></p>
     </StudyItem>
-    <StudyItem link="https://github.com/persuck/FIT1045/" category="Algorithms & Data Structures" title="Connect-4">
+    <StudyItem link="https://github.com/persuck/FIT1045/" category="Algorithms - 60 mins" title="Connect-4">
       <p>Learn to create a command-line version of Connect-4 in python. This resource includes slides explaining the process and ideas behind making the game, as well as some other useful resources on debugging and interviewing.</p>
       <img :src="connect4Image" class="h-64" />
     </StudyItem>
