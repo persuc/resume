@@ -7,3 +7,7 @@
 
 ## Achievements page
 - Add perf ninja
+
+## Stories
+- Handle array props
+- Actually show all slots

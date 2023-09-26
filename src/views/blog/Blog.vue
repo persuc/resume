@@ -3,15 +3,20 @@ import Header from '@/components/Header.vue'
 
 const posts = [
   {
-  path: 'if-vs-ternary',
-  title: 'Does identical logic produce the same instructions?',
-  subtitle: 'Assembly, C++'
+    path: 'diy-stories',
+    title: 'Do It Yourself: Stories',
+    subtitle: 'Implement component stories from scratch'
   },
   {
-  path: 'algs-in-three-levels',
-  title: 'Algorithms in Three Levels',
-  subtitle: 'Python, Algorithms & Data Structures'
-}
+    path: 'algs-in-three-levels',
+    title: 'Algorithms in Three Levels',
+    subtitle: 'Python, Algorithms & Data Structures'
+  },
+  {
+    path: 'if-vs-ternary',
+    title: 'Does identical logic produce the same instructions?',
+    subtitle: 'Assembly, C++'
+  },
 ]
 
 </script>

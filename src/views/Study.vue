@@ -133,6 +133,14 @@ const resources: Record<string, Resource[]> = {
       category: "Compilers & Performance",
       image: perfNinja,
     },
+    {
+      link: "https://martinfowler.com/articles/patterns-of-distributed-systems/",
+      title: "Patterns of Distributed Systems",
+      postTitle: " by Unmesh Joshi",
+      description: "A blog post listing some common patterns for distributed systems.",
+      category: "System Design",
+      image: "https://martinfowler.com/articles/patterns-of-distributed-systems/card.png",
+    },
   ],
 }
 

@@ -46,7 +46,7 @@ Note,
 Panel,
 [Quote, {
   quotation: 'He does not need wings to fly',
-  author: 'DJ Bennie'
+  author: 'VJ Emmie'
 }],
 TrafficLight,
 [StudyItem,     {
@@ -57,8 +57,6 @@ TrafficLight,
   category: "UI / webpage layout",
 },],
 ]
-
-console.log(Note)
 
 </script>
 
