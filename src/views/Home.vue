@@ -69,7 +69,7 @@ const randomPages = [
 
     <div class="flex flex-col lg:flex-row lg:items-end gap-4 flex-wrap">
       <p class="w-32">Blogs</p>
-      <a v-for="post in blogPosts.slice(0, 2)" :href="post.path"><div class="p-4 border rounded">{{ post.title }}</div></a>
+      <a v-for="post in blogPosts.slice(0, 2)" :href="'/blog/' + post.path"><div class="p-4 border rounded">{{ post.title }}</div></a>
       <a href="/blog"><div class="p-4 border rounded">More...</div></a>
     </div>
 
