@@ -11,3 +11,8 @@
 ## Stories
 - Handle array props
 - Actually show all slots
+
+
+# Inspiration
+
+https://www.ekzhang.com/

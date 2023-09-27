@@ -6,7 +6,7 @@ interface Props {
   postTitle?: string,
   link: string,
   description?: string,
-  category: string,
+  category?: string,
   image?: string,
   svg?: string
 }
@@ -28,7 +28,7 @@ const svgImage = props.svg ? defineAsyncComponent(() =>
         <a class="font-mono" target="_blank" :href="link">{{ title }}</a>
         <span class="font-mono" v-html="postTitle" />
         
-        <div class="font-mono sm:hidden my-1">
+        <div v-if="category" class="font-mono sm:hidden my-1">
           
           <span class="rounded-full bg-gray-100 px-2 py-0.5">
             {{ category }}
@@ -38,7 +38,7 @@ const svgImage = props.svg ? defineAsyncComponent(() =>
         <slot></slot>
       </div>
     </div>
-    <div class="w-64 font-mono hidden sm:inline">
+    <div v-if="category" class="w-64 font-mono hidden sm:inline">
       <span class="rounded-full bg-gray-100 px-2 py-0.5">
         {{ category }}
       </span>

@@ -208,7 +208,7 @@ def helper(self, node: Optional[TreeNode]) -> int:
     </div>
   </div>
 
-  <div class="my-16 py-16"></div>
+  <div class="py-16"></div>
 
   <p>Note: I used <a target="_blank" href="https://tree-visualizer.netlify.app/">this tree visualizer</a> to make the images for this post. They only required a little cleanup using this regex
       

@@ -2,6 +2,7 @@
 interface Props {
   text?: boolean,
   disabled?: boolean,
+  slim?: boolean
 }
 
 defineProps<Props>()
@@ -9,7 +10,7 @@ defineProps<Props>()
 
 <template>
   <div :class="[
-    'py-3',
+    slim ? '' : 'py-3',
     'px-5',
     'uppercase',
     'font-medium',

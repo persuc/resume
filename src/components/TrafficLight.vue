@@ -53,8 +53,6 @@ function init(container: HTMLElement) {
 
     container.appendChild(element)
   }
-
-  console.log(lights)
 }
 
 function reset() {

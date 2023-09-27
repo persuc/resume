@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import type { FunctionalComponent, Renderer } from 'vue'
-import { reactive, type ComponentInternalInstance } from 'vue'
+import type { VueComponent } from '@/@types'
+import { getComponentName } from '@/ts/utils'
+import { reactive } from 'vue'
 
 interface Props {
-  component: ComponentInternalInstance & FunctionalComponent & Renderer,
+  component: VueComponent,
   defaults: Record<string, string | boolean | number>
   classes?: string
 }
@@ -39,7 +40,7 @@ const boundProps = reactive(
     }), {} as Record<string, PropType>)
   )
 
-const name = props.component.__file?.match(/.*\/([A-z]+)\.vue/)?.[1]
+const name = getComponentName(props.component)
 
 const slots = Array.from(
   props.component.render.toString().matchAll(/_renderSlot\(.*, "(.*)"/g)
@@ -48,7 +49,7 @@ const slots = Array.from(
 </script>
 
 <template>
-  <div class="border border-gray-200 rounded p-4">
+  <div class="border border-gray-200 rounded p-4" :id="name">
     <p class="text-lg">{{ name }}</p>
     <div v-for="prop in componentProps" class="inline-block mr-2 bg-slate-200 p-2 rounded whitespace-nowrap my-1">
       {{ prop[0] }}

@@ -9,6 +9,7 @@ import javascript from 'highlight.js/lib/languages/javascript'
 import python from 'highlight.js/lib/languages/python'
 import App from "./App.vue"
 import './index.css'
+import { blogPosts } from "@/ts/blog"
 
 const router = createRouter({
   history: createWebHistory(),
@@ -38,21 +39,11 @@ const router = createRouter({
       name: "Blog",
       component: () => import('./views/blog/Blog.vue')
     },
-    {
-      path: '/blog/if-vs-ternary',
-      name: "Simple Compiler Analysis",
-      component: () => import('./views/blog/IfVsTernary.vue')
-    },
-    {
-      path: '/blog/algs-in-three-levels',
-      name: "Algorithms in Three Levels",
-      component: () => import('./views/blog/AlgsInThreeLevels.vue')
-    },
-    {
-      path: '/blog/diy-stories',
-      name: "DIY: Stories",
-      component: () => import('./views/blog/DIYStories.vue')
-    },
+    ...blogPosts.map(p => ({
+      path: `/blog/${p.path}`,
+      name: p.title,
+      component: () => import(`./views/blog/${p.component}.vue`)
+    })),
     {
       path: '/blog/thoughts',
       name: "Thoughts",

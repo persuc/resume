@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Component from '@/components/Component.vue'
+import Component from '@/components/Story.vue'
 import Codeblock from '@/components/Codeblock.vue'
 import Header from '@/components/Header.vue'
 import Button from '@/components/Button.vue'
@@ -100,7 +100,7 @@ const slotTemplate = `<component :is="component" v-bind="boundProps">
 
     <p>Here is an example of what we will be building:</p>
 
-    <Component
+    <Story
       :component="Button"
       :defaults="{}"
       class="mb-4"
@@ -137,7 +137,7 @@ const slotTemplate = `<component :is="component" v-bind="boundProps">
 
     <br />
 
-    <p>This will populate each component with a label in each of its slots. See the <a target="_blank" href="https://github.com/persuck/resume/blob/master/src/components/Component.vue">complete implementation</a> on GitHub which includes some things that were omitted here for simplicity. See the <a href="/components">stories for this website</a> to see more examples of what you can achieve with less that 100 lines of code.
+    <p>This will populate each component with a label in each of its slots. See the <a target="_blank" href="https://github.com/persuck/resume/blob/master/src/components/Story.vue">complete implementation</a> on GitHub which includes some things that were omitted here for simplicity. See the <a href="/components">stories for this website</a> to see more examples of what you can achieve with less that 100 lines of code.
     </p>
 
     <p class="text-xl mt-8">Random learnings along the way</p>
@@ -149,7 +149,7 @@ const slotTemplate = `<component :is="component" v-bind="boundProps">
 
     <p>Eventually what allowed me to crack the code was <a target="_blank" href="">this blog post</a> entitled "Diving into the Virtual DOM" by <a target="_blank" href="https://vuejs-course.com/">vuejs-course.com</a>, which talked in depth about component rendering and eventually led me to look into the <a target="_blank" href="https://github.com/vuejs/devtools/">Vue devtools repo</a> which finally provided the answer in their <a target="_blank" href="https://github.com/vuejs/devtools/blob/main/packages/app-backend-vue2/src/index.ts"><code>getComponentRenderCode()</code> API</a>.</p>
 
-  <div class="my-16 py-16"></div>
+  <div class="py-16"></div>
 
   </article>
 </template>

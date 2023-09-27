@@ -101,7 +101,7 @@ ret`" class="mb-8" />
   <p>If you'd like to understand more about ARM flags, I recommend <a target="_blank" href="https://www.dmulholl.com/notes/arm-condition-flags.html">this post</a> by Darren Mulholland, and <a target="_blank" href="https://en.m.wikipedia.org/wiki/FLAGS_register">this reference table</a> on Wikipedia.</p>
 </div>
 
-  <div class="my-16 py-16"></div>
+  <div class="py-16"></div>
 
   </article>
 </template>

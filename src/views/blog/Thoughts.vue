@@ -5,7 +5,7 @@ import Header from '@/components/Header.vue'
 
 <template>
 
-  <Header back-route="/blog" />
+  <Header back-route="/" />
 
   <article class="article px-8 pt-8" style="max-width: 60rem; margin: 0 auto;">
     
@@ -25,7 +25,7 @@ import Header from '@/components/Header.vue'
       <i>— Idi Amin</i>
       <span style="display:none;">He does not need wings to fly.</span>
     </p>
-    <div class="my-16 py-16"></div>
+    <div class="py-16"></div>
 
   </article>
 </template>

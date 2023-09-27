@@ -9,5 +9,8 @@
   },
   "files.exclude": {
     ".yarn/": true
-  }
+  },
+  "cSpell.words": [
+    "Persic"
+  ]
 }

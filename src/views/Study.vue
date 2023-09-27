@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Header from '@/components/Header.vue'
+import Article from '@/components/Article.vue'
 import TrafficLight from '@/components/TrafficLight.vue'
 import friendSongTimelineImage from '@/assets/FriendSongTimeline.png'
 import connect4Image from '@/assets/connect4.png'
@@ -11,6 +11,7 @@ import systemsDesignInterview from '@/assets/SystemsDesignInterview.png'
 import youtube from '@/assets/youtube.png'
 import perfNinja from '@/assets/perf-ninja.jpg'
 import StudyItem from '@/components/StudyItem.vue'
+import type { NavItems } from '@/@types'
 
 type Difficulty = 'easy' | 'medium' | 'hard'
 
@@ -18,10 +19,10 @@ type Resource = {
   link: string
   title: string
   postTitle?: string
-  description: string
+  description?: string
   image?: string,
   svg?: string,
-  category: string
+  category?: string
 }
 
 const resources: Record<string, Resource[]> = {
@@ -150,7 +151,46 @@ const resources: Record<string, Resource[]> = {
       category: "System Design",
       image: "https://martinfowler.com/articles/patterns-of-distributed-systems/card.png",
     },
+    {
+      link: "https://notes.shichao.io/",
+      title: "Shichao's Notes",
+      description: "Personal blog with in-depth explanations of various linux kernel concepts.",
+      category: "Linux Kernel",
+      image: "https://avatars.githubusercontent.com/u/5781687",
+    },
   ],
+  "Entertainment-Study Videos": [
+    {
+      link: "https://youtu.be/DMQ_HcNSOAI",
+      title: "The PERFECT hash table",
+      postTitle: " (Strager)",
+    },
+    {
+      link: "https://youtu.be/t_rzYnXEQlE",
+      title: "FIXING the ENTIRE SM64 Source Code",
+      postTitle: " (Kaze Emanuar)",
+    },
+    {
+      link: "https://youtu.be/JcJSW7Rprio",
+      title: "Harder Drive: Hard drives we didn't want or need ",
+      postTitle: " (suckerpinch)",
+    },
+    {
+      link: "https://youtu.be/Nwjypk1933U",
+      title: "Can I fix a CORRUPT PlayStation 2 save file?",
+      postTitle: " (MattKC)",
+    },
+    {
+      link: "https://youtu.be/NRmkr50mkEE",
+      title: "Ray Tracing: How NVIDIA Solved the Impossible!",
+      postTitle: " (Two Minute Papers)",
+    },
+    {
+      link: "https://youtu.be/sRWE5tnaxlI",
+      title: "JavaScript Is Weird (EXTREME EDITION)",
+      postTitle: " (Low Byte Productions)",
+    },
+  ]
 }
 
 const leetcodes: {
@@ -190,24 +230,38 @@ const difficultyColor: Record<Difficulty, string> = {
   'hard': 'text-red-500',
 }
 
+const navItems: NavItems[] = [
+  { href: "/", label: "Back", classes: "lg:mb-3" },
+  { href: "#top", label: "Top", },
+  ...(Object.keys(resources).map(r => ({
+    href: '#' + r,
+    label: r,
+  }))),
+  {
+    href: '#my-custom-questions',
+    label: 'My Custom Questions',
+  },
+  {
+    href: '#my-leet-code-questions',
+    label: 'My LeetCode Questions',
+  },
+]
+
 </script>
 
 <template>
 
-  <Header back-route="/" />
-
-  <article class="article px-8 pt-8" style="max-width: 60rem; margin: 0 auto;">
-
+  <Article :items="navItems" id="top">
     <p class="text-xl">Study resources for enterprising individuals with big brains</p>
 
     <p>Don't feel overwhelmed, these are just some resources to read through to get a feel for the different topics you can go deeper into. If you find something you like, let me know and I can tailor a study plan for you and explain what the field is about a little. Don't try to master everything at once, hehe. Also the best way to learn is by practical example, so if you want to do some particular project (chrome extension, discord bot, blog website are all good first-project choices) I can walk you through and help you where you get stuck. That way it's not all just boring theory.</p>
 
     <template v-for="resourceCategory in Object.entries(resources)">
-      <p class="text-xl mt-8 font-sans">{{ resourceCategory[0] }}</p>
+      <p class="text-xl mt-8 font-sans" :id="resourceCategory[0]">{{ resourceCategory[0] }}</p>
       <StudyItem v-for="resource in resourceCategory[1]" :link="resource.link" :description="resource.description" :category="resource.category" :title="resource.title" :post-title="resource.postTitle" :image="resource.image" :svg="resource.svg" />
     </template>
       
-    <p class="text-xl mt-8 font-sans">My Practice Questions</p>
+    <p class="text-xl mt-8 font-sans" id="my-custom-questions">My Custom Questions</p>
     <p>Questions I have encountered myself, or come up with to test the concepts covered above</p>
 
     <StudyItem link="https://app.coderpad.io/PQQXDRQX" category="Frontend - 30 mins" title="Implement Reactivity">
@@ -235,7 +289,7 @@ function render()</code></pre>
       <img :src="connect4Image" class="h-64" />
     </StudyItem>
 
-    <p class="text-xl mt-8 font-sans">My LeetCode Questions</p>
+    <p class="text-xl mt-8 font-sans" id="my-leet-code-questions">My LeetCode Questions</p>
     <p>I have run these questions with other people in the past. LeetCode questions are more suited for backend interviews, and these were selected particularly because they suit the format of a backend interview.</p>
 
     <div v-for="l in leetcodes" >
@@ -243,7 +297,5 @@ function render()</code></pre>
       <span :class="`capitalize ml-2 rounded-full px-2 py-0.5 bg-gray-100 ${difficultyColor[l.difficulty]}`">{{ l.difficulty }}</span>
     </div>
 
-    <div class="my-16 py-16"></div>
-    
-  </article>
+  </Article>
 </template>

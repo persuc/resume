@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <main class="bg-white text-slate-900" style="height: 100vh;">
+  <main class="text-slate-900" style="min-height: 100vh;">
     <router-view/>
   </main>
 </template>

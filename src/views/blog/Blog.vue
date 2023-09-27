@@ -1,23 +1,6 @@
 <script setup lang="ts">
 import Header from '@/components/Header.vue'
-
-const posts = [
-  {
-    path: 'diy-stories',
-    title: 'Do It Yourself: Stories',
-    subtitle: 'Implement component stories from scratch'
-  },
-  {
-    path: 'algs-in-three-levels',
-    title: 'Algorithms in Three Levels',
-    subtitle: 'Python, Algorithms & Data Structures'
-  },
-  {
-    path: 'if-vs-ternary',
-    title: 'Does identical logic produce the same instructions?',
-    subtitle: 'Assembly, C++'
-  },
-]
+import { blogPosts } from '@/ts/blog'
 
 </script>
 
@@ -29,7 +12,7 @@ const posts = [
     
     <p class="text-3xl mb-4">Recent blog posts:</p>
 
-    <div v-for="post in posts" :key="post.title" class="border-t border-gray-200">
+    <div v-for="post in blogPosts" :key="post.title" class="border-t border-gray-200">
       <a :href="`/blog/${post.path}`" class="flex justify-between items-center plain" style="color: var(--color-text)">
         <div class="mb-2">
           <div class="mt-2 text-xl">{{ post.title  }}</div>

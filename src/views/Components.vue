@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import tailwindConfig from 'tailwind.config'
+import resolveConfig from 'tailwindcss/resolveConfig'
+import type { ThemeConfig } from 'tailwindcss/types/config'
 
-import Component from '@/components/Component.vue'
+import Article from '@/components/Article.vue'
 import Button from '@/components/Button.vue'
 import Codeblock from '@/components/Codeblock.vue'
 import CopyButton from '@/components/CopyButton.vue'
@@ -12,12 +15,16 @@ import JobTitle from '@/components/JobTitle.vue'
 import Note from '@/components/Note.vue'
 import Panel from '@/components/Panel.vue'
 import Quote from '@/components/Quote.vue'
-import TrafficLight from '@/components/TrafficLight.vue'
+import Story from '@/components/Story.vue'
 import StudyItem from '@/components/StudyItem.vue'
+import TrafficLight from '@/components/TrafficLight.vue'
 
+import type { NavItems, VueComponent } from '@/@types'
 import faceImage from '@/assets/face.png'
+import { getComponentName } from '@/ts/utils'
 
-const components = [
+type DefaultsType = Record<string, string | boolean | number>
+const components: (VueComponent | [VueComponent, DefaultsType] | [VueComponent, DefaultsType, string])[] = [
 Button,
 [Codeblock, {
   label: 'hello.js',
@@ -35,13 +42,13 @@ Header,
   image: faceImage,
   rounded: true,
 }, ''],
-[JobTitle, {
-  company: "Canva",
-  role: "Senior Software Engineer (Full Stack)",
-  dateFrom: "2022",
-  dateTo: "Current",
-  tech: [ 'TypeScript', 'React', 'Java', 'Terraform', 'AWS', 'GraphQL', 'Protobuf', 'PostgreSQL', 'DynamoDB' ],
-}, ''],
+// [JobTitle, {
+//   company: "Canva",
+//   role: "Senior Software Engineer (Full Stack)",
+//   dateFrom: "2022",
+//   dateTo: "Current",
+//   tech: [ 'TypeScript', 'React', 'Java', 'Terraform', 'AWS', 'GraphQL', 'Protobuf', 'PostgreSQL', 'DynamoDB' ],
+// }, ''],
 Note,
 Panel,
 [Quote, {
@@ -58,25 +65,65 @@ TrafficLight,
 },],
 ]
 
+const fullConfig = resolveConfig(tailwindConfig)
+const theme: ThemeConfig = fullConfig.theme! as ThemeConfig
+
+const colors = Object.entries(theme.colors).filter(e => !['inherit', 'current', 'transparent', 'black', 'white'].includes(e[0]))
+
+const navItems: NavItems[] = [
+  { href: "/", label: "Back", classes: "mb-3" },
+  {
+    href: "#components",
+    label: "Components Library",
+    classes: 'mb-3',
+    items: components.map(c => getComponentName(Array.isArray(c) ? c[0] : c)).map(c => ({
+      label: c,
+      href: '#' + c,
+    }))
+  },
+  { href: "#colors", label: "Colours", items: colors.map(c => ({
+    label: c[0],
+    href: '#' + c[0]
+  })) },
+]
+
+
 </script>
 
 <template>
+  <Article :items="navItems">
+    <p class="text-xl" id="components">Components Library</p>
 
-  <Header back-route="/" />
+      <Story
+        v-for="component in components"
+        :component="Array.isArray(component) ? component[0] : component"
+        :defaults="Array.isArray(component) ? component[1] : {}"
+        class="mb-4"
+        :classes="Array.isArray(component) ? component[2] : ''"
+      ></Story>
 
-  <article class="article px-8 pt-8" style="max-width: 60rem; margin: 0 auto;">
+      <p class="text-xl" id="colors">Colours</p>
 
-    <p class="text-xl">Components Library</p>
-
-    <Component
-      v-for="component in components"
-      :component="Array.isArray(component) ? component[0] : component"
-      :defaults="Array.isArray(component) ? component[1] : {}"
-      class="mb-4"
-      :classes="Array.isArray(component) ? component[2] : ''"
-    >Slot</Component>
-
-    <div class="my-16 py-16"></div>
-    
-  </article>
+      <div class="grid grid-cols-[repeat(auto-fit, minmax(8rem,1fr))] gap-x-2 gap-y-8 sm:grid-cols-1 p-4">
+        <div class="2xl:contents" v-for="[key, color] in colors">
+          <div :id="key" class="text-sm font-semibold text-slate-900 col-end-1 mt-5">
+            {{ key }}
+          </div>
+          <div class="grid mt-3 grid-cols-1 sm:grid-cols-11 gap-y-3 gap-x-2">
+            <div v-for="[step, hex] in Object.entries(color)">
+              <div class="h-12 w-12 rounded sm:w-full" :style="`background-color: ${hex}`">
+              </div>
+              <div class="px-0.5">
+                <div class="w-6 font-medium text-xs text-slate-900 2xl:w-full dark:text-white">
+                  {{ step }}
+                </div>
+                <div class="text-slate-500 text-xs font-mono lowercase dark:text-slate-400 sm:text-[0.625rem] md:text-xs lg:text-[0.625rem] 2xl:text-xs">
+                  {{ hex }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </Article>
 </template>
