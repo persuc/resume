@@ -6,5 +6,8 @@
     "/src/assets/lemmas.ts": true,
     "/src/assets/proper_nouns.ts": true,
     "/src/assets/wordlist.ts": true
+  },
+  "files.exclude": {
+    ".yarn/": true
   }
 }
