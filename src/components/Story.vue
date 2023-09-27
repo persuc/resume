@@ -43,7 +43,7 @@ const boundProps = reactive(
 const name = getComponentName(props.component)
 
 const slots = Array.from(
-  props.component.render.toString().matchAll(/_renderSlot\(.*, "(.*)"/g)
+  (props.component.render ?? '').toString().matchAll(/_renderSlot\(.*, "(.*)"/g)
 ).map(match => match[1])
 
 </script>
