@@ -76,10 +76,9 @@ const controlsCode = `<script>
   />
 </template>`
 
-const slotCode = `const slots: string[] = []
-for (const s of props.component.render.toString().matchAll(/_renderSlot\(.*, "(.*)"/g)) {
-  slots.push(s[1])
-}`
+const slotCode = `const slots = Array.from(
+  props.component.render.toString().matchAll(/_renderSlot\(.*, "(.*)"/g)
+).map(match => match[1])`
 
 const slotTemplate = `<component :is="component" v-bind="boundProps">
   <template v-for="slot in slots" v-slot:[slot]>
@@ -128,7 +127,7 @@ const slotTemplate = `<component :is="component" v-bind="boundProps">
 
     <p class="text-xl">Get a list of Vue component slots at runtime</p>
 
-    <p>But what about slots? A couple of people <a target="_blank" href="https://stackoverflow.com/questions/55613651/get-list-of-slot-names-from-vue-template">[1]</a> <a target="_blank" href="https://stackoverflow.com/questions/50545561/how-to-list-all-available-slots-in-vue-component">[2]</a> have asked how to access slots of a component at runtime, and unfortunately there is no good answer at the time of posting. In order to obtain which slots a component is capable of rendering, the best solution I have found is to parse the component's render function using regex to extract the slot names.</p>
+    <p>But what about slots? A couple of people <sup><a target="_blank" href="https://stackoverflow.com/questions/55613651/get-list-of-slot-names-from-vue-template">[1]</a> <a target="_blank" href="https://stackoverflow.com/questions/50545561/how-to-list-all-available-slots-in-vue-component">[2]</a></sup> have asked how to access slots of a component at runtime, and unfortunately there is no good answer at the time of posting. In order to obtain which slots a component is capable of rendering, the best solution I have found is to parse the component's render function using regex to extract the slot names.</p>
 
     <Codeblock label="Extract slot names" language="javascript" :code="slotCode" />
 
