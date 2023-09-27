@@ -7,6 +7,7 @@ import w3schools from '@/assets/W3Schools.png'
 import dananderson from '@/assets/dananderson.jpg'
 import blind from '@/assets/blind.png'
 import ddia from '@/assets/wild-boar-by-george-shaw.jpg'
+import systemsDesignInterview from '@/assets/SystemsDesignInterview.png'
 import youtube from '@/assets/youtube.png'
 import perfNinja from '@/assets/perf-ninja.jpg'
 import StudyItem from '@/components/StudyItem.vue'
@@ -77,6 +78,13 @@ const resources: Record<string, Resource[]> = {
       svg: "leetcode"
     },
     {
+      link: "https://neetcode.io",
+      title: "Neetcode.io",
+      description: "Leetcode questions compiled into courses, sorted by topic, with guidance on how to study.",
+      category: "LeetCode compendium",
+      image: "https://neetcode.io/assets/neetcode-io-logo.png",
+    },
+    {
       link: "https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-75-LeetCode-Questions-to-Save-Your-Time-OaM1orEU",
       title: "Blind75",
       description: "A curated list of commonly asked LeetCode questions.",
@@ -88,6 +96,7 @@ const resources: Record<string, Resource[]> = {
       title: "Grind75",
       description: "A curated list of commonly asked LeetCode questions.",
       category: "LeetCode compendium",
+      image: blind,
     },
   ],
   "System Design and Computer Architecture": [
@@ -124,7 +133,7 @@ const resources: Record<string, Resource[]> = {
       title: "System Design Interview",
       description: "Great YouTube channel for system design content",
       category: "System Design",
-      image: youtube,
+      image: systemsDesignInterview,
     },
     {
       link: "https://github.com/dendibakh/perf-ninja",

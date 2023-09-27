@@ -157,7 +157,7 @@ def helper(self, left: Optional[TreeNode], right: Optional[TreeNode], isOdd: boo
 
       <p>
       The only modification we need to make to the "bottom up" version of <i>Invert Binary Tree</i> is to include whether a vertex is: 
-      <ol>
+      <ol class="list-disc ml-8">
         <li>Not covered by any marked nodes</li>
         <li>Covered by, or neighbouring a marked node</li>
         <li>Is a marked node itself</li>

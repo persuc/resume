@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref, type ComponentInternalInstance } from 'vue'
+import { reactive, ref, type ComponentInternalInstance, getCurrentInstance } from 'vue'
 
 interface Props {
   // component: ComponentInternalInstance,
@@ -24,7 +24,7 @@ const boundProps = reactive(Object.entries((props.component.props ?? {})).reduce
   [val[0]]: props.defaults[val[0]] !== undefined ? props.defaults[val[0]] : typeToDefaultValue[val[1].type.name]
 }), {}))
 
-const name = props.component.__name ?? props.component.__file.match(/.*\/([A-z]+)\.vue/)[1]
+const name = props.component.__file.match(/.*\/([A-z]+)\.vue/)[1]
 
 const slots: string[] = []
 for (const s of props.component.render.toString().matchAll(/_renderSlot\(.*, "(.*)"/g)) {

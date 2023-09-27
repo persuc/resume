@@ -138,17 +138,17 @@ const slotTemplate = `<component :is="component" v-bind="boundProps">
 
     <br />
 
-    <p>This will populate each component with a label in each of its slots. See the complete implementation for more features such as: controls for slots, controls for array props, and some omissions that were not included here for simplicity.</p>
+    <p>This will populate each component with a label in each of its slots. See the <a target="_blank" href="https://github.com/persuck/resume/blob/master/src/components/Component.vue">complete implementation</a> on GitHub which includes some things that were omitted here for simplicity. See the <a href="/components">stories for this website</a> to see more examples of what you can achieve with less that 100 lines of code.
+    </p>
 
-    <!-- I first looked into Storybook to see how they introspect slots, but actually they don't bother -->
-    <!-- https://github.com/storybookjs/storybook/blob/a3cdabb025524822807318bc137f69be006596c2/code/renderers/vue3/src/render.ts -->
-    <!-- https://github.com/search?q=repo%3Astorybookjs%2Fstorybook%20getSlots&type=code -->
-    <!-- https://github.com/ComponentDriven/csf/blob/4c735fea4f0c9605b93497238303cb4ab9304727/src/story.ts -->
+    <p class="text-xl mt-8">Random learnings along the way</p>
+    <p>The most difficult part of this project was obtaining a list of a component's slots. You may remember the <a target="_blank" href="https://vuejs.org/api/component-instance.html#slots"><code>$slots</code> property on the component instance</a>. However, this only tells you the slots that have actually been populated by the parent component, not the total list of slots that the component can support rendering.</p>
 
-    <!-- https://vuejs.org/guide/extras/render-function.html#rendering-slots -->
+    <p>I also looked into Storybook to see how they introspect slots, but actually <a target="_blank" href="https://github.com/storybookjs/storybook/blob/next/code/renderers/vue3/src/render.ts">they don't bother</a> - they let users pass which slots they want to render in their stories. Not a bad solution, but I would rather have my library give me some default examples. (In case you're wondering what that Args argument looks like, and whether it contains a description of the slots, <a target="_blank" href="https://github.com/ComponentDriven/csf/blob/master/src/story.ts">it doesn't</a>.)</p>
 
-    <!-- https://vuejs-course.com/blog/diving-into-the-virtual-dom -->
-    <!-- https://github.com/vuejs/devtools/blob/122207de2ed79d839c572438b095ce3f5ea1fed9/packages/app-backend-vue2/src/index.ts#L70 -->
+    <p>Vue has some <a target="_blank" href="https://vuejs.org/guide/extras/render-function.html#rendering-slots">documentation</a> about how slots are rendered, but still no information about where they are recorded.</p>
+
+    <p>Eventually what allowed me to crack the code was <a target="_blank" href="">this blog post</a> entitled "Diving into the Virtual DOM" by <a target="_blank" href="https://vuejs-course.com/">vuejs-course.com</a>, which talked in depth about component rendering and eventually led me to look into the <a target="_blank" href="https://github.com/vuejs/devtools/">Vue devtools repo</a> which finally provided the answer in their <a target="_blank" href="https://github.com/vuejs/devtools/blob/main/packages/app-backend-vue2/src/index.ts"><code>getComponentRenderCode()</code> API</a>.</p>
 
   <div class="my-16 py-16"></div>
 
