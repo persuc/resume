@@ -3,60 +3,45 @@ import tailwindConfig from 'tailwind.config'
 import resolveConfig from 'tailwindcss/resolveConfig'
 import type { ThemeConfig } from 'tailwindcss/types/config'
 
-import Article from '@/components/Article.vue'
-import Button from '@/components/Button.vue'
-import Codeblock from '@/components/Codeblock.vue'
-import CopyButton from '@/components/CopyButton.vue'
-import Expand from '@/components/Expand.vue'
-import Header from '@/components/Header.vue'
-import Icon from '@/components/Icon.vue'
-import ImageAndText from '@/components/ImageAndText.vue'
-import JobTitle from '@/components/JobTitle.vue'
-import Note from '@/components/Note.vue'
-import Panel from '@/components/Panel.vue'
-import Quote from '@/components/Quote.vue'
-import Story from '@/components/Story.vue'
-import StudyItem from '@/components/StudyItem.vue'
-import TrafficLight from '@/components/TrafficLight.vue'
-
-import type { NavItems, VueComponent } from '@/@types'
+import type { NavItems } from '@/@types'
 import faceImage from '@/assets/face.png'
-import { getComponentName } from '@/ts/utils'
+import Article from '@/components/Article.vue'
+import Story from '@/components/Story.vue'
 
 type DefaultsType = Record<string, string | boolean | number>
-const components: (VueComponent | [VueComponent, DefaultsType] | [VueComponent, DefaultsType, string])[] = [
-Button,
-[Codeblock, {
+const components: (string | [string, DefaultsType] | [string, DefaultsType, string])[] = [
+'Button',
+['Codeblock', {
   label: 'hello.js',
   language: 'javascript',
   code: 'function hello() {}'
 }, ''],
-[CopyButton, { value: 'the string to copy' }],
-[Expand, {
+['CopyButton', { value: 'the string to copy' }],
+['Expand', {
   label: 'collapsed',
   expandedLabel: 'expanded',
 }],
-Header,
-[Icon, { name: 'download' }, 'h-12'],
-[ImageAndText, {
+'Header',
+['Icon', { name: 'download' }, 'h-12'],
+['ImageAndText', {
   image: faceImage,
   rounded: true,
 }, ''],
-// [JobTitle, {
+// ['JobTitle', {
 //   company: "Canva",
 //   role: "Senior Software Engineer (Full Stack)",
 //   dateFrom: "2022",
 //   dateTo: "Current",
 //   tech: [ 'TypeScript', 'React', 'Java', 'Terraform', 'AWS', 'GraphQL', 'Protobuf', 'PostgreSQL', 'DynamoDB' ],
 // }, ''],
-Note,
-Panel,
-[Quote, {
+'Note',
+'Panel',
+['Quote', {
   quotation: 'He does not need wings to fly',
   author: 'VJ Emmie'
 }],
-TrafficLight,
-[StudyItem,     {
+'TrafficLight',
+['StudyItem',     {
   link: "https://flexboxfroggy.com/",
   title: "Flexbox Froggy",
   svg: "flexbox-froggy",
@@ -71,12 +56,12 @@ const theme: ThemeConfig = fullConfig.theme! as ThemeConfig
 const colors = Object.entries(theme.colors).filter(e => !['inherit', 'current', 'transparent', 'black', 'white'].includes(e[0]))
 
 const navItems: NavItems[] = [
-  { href: "/", label: "Back", classes: "mb-3" },
+  { href: "/", label: "Back", classes: "lg:mb-3" },
   {
     href: "#components",
     label: "Components Library",
     classes: 'mb-3',
-    items: components.map(c => getComponentName(Array.isArray(c) ? c[0] : c)).map(c => ({
+    items: components.map(c => Array.isArray(c) ? c[0] : c).map(c => ({
       label: c,
       href: '#' + c,
     }))
@@ -96,11 +81,11 @@ const navItems: NavItems[] = [
 
       <Story
         v-for="component in components"
-        :component="Array.isArray(component) ? component[0] : component"
+        :path="Array.isArray(component) ? component[0] : component"
         :defaults="Array.isArray(component) ? component[1] : {}"
         class="mb-4"
         :classes="Array.isArray(component) ? component[2] : ''"
-      ></Story>
+      />
 
       <p class="text-xl" id="colors">Colours</p>
 

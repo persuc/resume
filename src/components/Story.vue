@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import type { VueComponent } from '@/@types'
-import { getComponentName } from '@/ts/utils'
-import { reactive } from 'vue'
+import { defineAsyncComponent, reactive } from 'vue'
 
 interface Props {
-  component: VueComponent,
+  path: string, // path relative to @/components/ not including .vue extension
   defaults: Record<string, string | boolean | number>
   classes?: string
 }
@@ -16,9 +14,36 @@ type BasicType = string | boolean | number
 type PropType = BasicType | BasicType[]
 
 const props = defineProps<Props>()
-const componentProps = Object.entries(
-  props.component.props ?? {}
-) as [string, { type: TypeFunction, required: boolean }][]
+const boundProps: Record<string, PropType> = reactive({})
+const componentProps: [string, { type: TypeName, required: boolean }][] = reactive([])
+const name = props.path.match(/(.*\/)?([A-z0-9\-\_]+)/)?.[2]
+const slots: string[] = reactive([])
+
+const StoryComponent = defineAsyncComponent(() => {
+  const asyncImport = import(/* @vite-ignore */ `./${props.path}.vue`)
+  asyncImport.then(result => {
+    const component = result.default
+    for (const match of (component.render ?? '').toString().matchAll(/_renderSlot\(.*, "(.*)"/g)) {
+      slots.push(match[1])
+    }
+
+    for (const entry of Object.entries(
+      (component.props ?? {}) as Record<string, {type: TypeFunction, required: boolean}>
+    )) {
+      componentProps.push([entry[0], {
+        required: entry[1].required,
+        type: entry[1].type.name,
+      }])
+
+      if (props.defaults[entry[0]] !== undefined) {
+        boundProps[entry[0]] = props.defaults[entry[0]]
+      } else {
+        boundProps[entry[0]] = typeToDefaultValue[entry[1].type.name]
+      }
+    }
+  })
+  return asyncImport
+})
 
 const typeToDefaultValue: Record<TypeName, PropType> = {
   'Boolean': false,
@@ -33,19 +58,6 @@ const typeNameToInputType: Record<string, string> = {
   Number: 'number',
 }
 
-const boundProps = reactive(
-  componentProps.reduce((acc, val) => ({
-      ...acc,
-      [val[0]]: props.defaults[val[0]] !== undefined ? props.defaults[val[0]] : typeToDefaultValue[val[1].type.name]
-    }), {} as Record<string, PropType>)
-  )
-
-const name = getComponentName(props.component)
-
-const slots = Array.from(
-  (props.component.render ?? '').toString().matchAll(/_renderSlot\(.*, "(.*)"/g)
-).map(match => match[1])
-
 </script>
 
 <template>
@@ -54,15 +66,15 @@ const slots = Array.from(
     <div v-for="prop in componentProps" class="inline-block mr-2 bg-slate-200 p-2 rounded whitespace-nowrap my-1">
       {{ prop[0] }}
       <input
-        :type="typeNameToInputType[prop[1].type.name as string]" v-model="boundProps[prop[0]]"
-        :class="`${prop[1].type.name === 'String' ? 'border-b' : ''} pl-1`"
+        :type="typeNameToInputType[prop[1].type]" v-model="boundProps[prop[0]]"
+        :class="`${prop[1].type === 'String' ? 'border-b' : ''} pl-1`"
        />
     </div>
     
-    <component :is="component" v-bind="boundProps" :class="'mt-2 ' + classes">
+    <StoryComponent v-bind="boundProps" :class="'mt-2 ' + classes">
       <template v-for="slot in slots" v-slot:[slot]>
         slot: {{ slot }}
       </template>
-    </component>
+    </StoryComponent>
   </div>
 </template>
