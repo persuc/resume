@@ -36,6 +36,7 @@ const components: (string | [string, DefaultsType] | [string, DefaultsType, stri
 // }, ''],
 'Note',
 'Panel',
+'ProgressLinear',
 ['Quote', {
   quotation: 'He does not need wings to fly',
   author: 'VJ Emmie'
