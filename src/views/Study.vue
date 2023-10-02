@@ -68,8 +68,15 @@ const resources: Record<string, Resource[]> = {
       link: "https://drive.google.com/file/d/1C_3Wbdi2T_PbJxckv90IDEjIBJDdgiBs/view?usp=sharing",
       title: "Algorithms & Data Structures Notes",
       description: "Algorithms & data structures are useful in the daily life of any programmer, and also for passing interviews. Usually FAANG companies focus on these, and knowing them helps understand how to write performant code, and how computers work internally",
-      category: "Notes",
+      category: "Algorithms Notes",
       image: dananderson
+    },
+    {
+      link: "https://www.algotree.org/",
+      title: "Algotree",
+      description: "A chart of common algorithms, grouped by what they are useful for.",
+      category: "Algorithms Notes",
+      svg: 'algotree',
     },
     {
       link: "https://leetcode.com/explore/featured/card/the-leetcode-beginners-guide/",
@@ -198,31 +205,31 @@ const leetcodes: {
   title: string,
   difficulty: Difficulty
 }[] = [
-  { link: "https://leetcode.com/problems/number-of-recent-calls/", title: "Number of recent calls", difficulty: "easy" },
-  { link: "https://leetcode.com/problems/design-hashmap/", title: "Design hashmap", difficulty: "easy" },
-  { link: "https://leetcode.com/problems/ransom-note/", title: "Ransom note", difficulty: "easy" },
-  { link: "https://leetcode.com/problems/total-distance-traveled/", title: "Total distance travelled", difficulty: "easy" },
-  { link: "https://leetcode.com/problems/binary-search-tree-iterator/", title: "Binary search tree iterator", difficulty: "medium" },
-  { link: "https://leetcode.com/problems/linked-list-cycle/", title: "Linked list cycle", difficulty: "medium" },
-  { link: "https://leetcode.com/problems/design-a-stack-with-increment-operation/", title: "Design a stack with increment operation", difficulty: "medium" },
-  { link: "https://leetcode.com/problems/flatten-nested-list-iterator/", title: "Flatten nested list iterator", difficulty: "medium" },
-  { link: "https://leetcode.com/problems/product-of-the-last-k-numbers/", title: "Product of the last k numbers", difficulty: "medium" },
-  { link: "https://leetcode.com/problems/min-stack/", title: "Min stack", difficulty: "medium" },
-  { link: "https://leetcode.com/problems/peeking-iterator/", title: "Peeking iterator", difficulty: "medium" },
-  { link: "https://leetcode.com/problems/insert-delete-getrandom-o1/", title: "Insert, delete, getRandom O(1)", difficulty: "medium" },
-  { link: "https://leetcode.com/problems/implement-magic-dictionary/", title: "Implement magic dictionary", difficulty: "medium" },
-  { link: "https://leetcode.com/problems/design-front-middle-back-queue/", title: "Design front middle back queue", difficulty: "medium" },
-  { link: "https://leetcode.com/problems/online-stock-span/", title: "Online stock span", difficulty: "medium" },
-  { link: "https://leetcode.com/problems/asteroid-collision/", title: "Asteroid collision", difficulty: "medium" },
-  { link: "https://leetcode.com/problems/lru-cache/", title: "LRU cache", difficulty: "medium" },
-  { link: "https://leetcode.com/problems/max-chunks-to-make-sorted-ii/", title: "Max chunks to make sorted II", difficulty: "hard" },
-  { link: "https://leetcode.com/problems/reconstruct-itinerary/", title: "Reconstruct itinerary", difficulty: "hard" },
-  { link: "https://leetcode.com/problems/candy/", title: "Candy", difficulty: "hard" },
-  { link: "https://leetcode.com/problems/count-all-valid-pickup-and-delivery-options/", title: "Count all valid pickup and delivery options", difficulty: "hard" },
-  { link: "https://leetcode.com/problems/painting-the-walls/", title: "Painting the walls", difficulty: "hard" },
-  { link: "https://leetcode.com/problems/number-of-ways-to-earn-points/", title: "Number of ways to earn points", difficulty: "hard" },
-  { link: "https://leetcode.com/problems/robot-collisions/", title: "Robot collisions", difficulty: "hard" },
-]
+    { link: "https://leetcode.com/problems/number-of-recent-calls/", title: "Number of recent calls", difficulty: "easy" },
+    { link: "https://leetcode.com/problems/design-hashmap/", title: "Design hashmap", difficulty: "easy" },
+    { link: "https://leetcode.com/problems/ransom-note/", title: "Ransom note", difficulty: "easy" },
+    { link: "https://leetcode.com/problems/total-distance-traveled/", title: "Total distance travelled", difficulty: "easy" },
+    { link: "https://leetcode.com/problems/binary-search-tree-iterator/", title: "Binary search tree iterator", difficulty: "medium" },
+    { link: "https://leetcode.com/problems/linked-list-cycle/", title: "Linked list cycle", difficulty: "medium" },
+    { link: "https://leetcode.com/problems/design-a-stack-with-increment-operation/", title: "Design a stack with increment operation", difficulty: "medium" },
+    { link: "https://leetcode.com/problems/flatten-nested-list-iterator/", title: "Flatten nested list iterator", difficulty: "medium" },
+    { link: "https://leetcode.com/problems/product-of-the-last-k-numbers/", title: "Product of the last k numbers", difficulty: "medium" },
+    { link: "https://leetcode.com/problems/min-stack/", title: "Min stack", difficulty: "medium" },
+    { link: "https://leetcode.com/problems/peeking-iterator/", title: "Peeking iterator", difficulty: "medium" },
+    { link: "https://leetcode.com/problems/insert-delete-getrandom-o1/", title: "Insert, delete, getRandom O(1)", difficulty: "medium" },
+    { link: "https://leetcode.com/problems/implement-magic-dictionary/", title: "Implement magic dictionary", difficulty: "medium" },
+    { link: "https://leetcode.com/problems/design-front-middle-back-queue/", title: "Design front middle back queue", difficulty: "medium" },
+    { link: "https://leetcode.com/problems/online-stock-span/", title: "Online stock span", difficulty: "medium" },
+    { link: "https://leetcode.com/problems/asteroid-collision/", title: "Asteroid collision", difficulty: "medium" },
+    { link: "https://leetcode.com/problems/lru-cache/", title: "LRU cache", difficulty: "medium" },
+    { link: "https://leetcode.com/problems/max-chunks-to-make-sorted-ii/", title: "Max chunks to make sorted II", difficulty: "hard" },
+    { link: "https://leetcode.com/problems/reconstruct-itinerary/", title: "Reconstruct itinerary", difficulty: "hard" },
+    { link: "https://leetcode.com/problems/candy/", title: "Candy", difficulty: "hard" },
+    { link: "https://leetcode.com/problems/count-all-valid-pickup-and-delivery-options/", title: "Count all valid pickup and delivery options", difficulty: "hard" },
+    { link: "https://leetcode.com/problems/painting-the-walls/", title: "Painting the walls", difficulty: "hard" },
+    { link: "https://leetcode.com/problems/number-of-ways-to-earn-points/", title: "Number of ways to earn points", difficulty: "hard" },
+    { link: "https://leetcode.com/problems/robot-collisions/", title: "Robot collisions", difficulty: "hard" },
+  ]
 
 const difficultyColor: Record<Difficulty, string> = {
   'easy': 'text-teal-500',
@@ -250,17 +257,23 @@ const navItems: NavItems[] = [
 </script>
 
 <template>
-
   <Article :items="navItems" id="top">
     <p class="text-xl">Study resources for enterprising individuals with big brains</p>
 
-    <p>Don't feel overwhelmed, these are just some resources to read through to get a feel for the different topics you can go deeper into. If you find something you like, let me know and I can tailor a study plan for you and explain what the field is about a little. Don't try to master everything at once, hehe. Also the best way to learn is by practical example, so if you want to do some particular project (chrome extension, discord bot, blog website are all good first-project choices) I can walk you through and help you where you get stuck. That way it's not all just boring theory.</p>
+    <p>Don't feel overwhelmed, these are just some resources to read through to get a feel for the different topics you
+      can go deeper into. If you find something you like, let me know and I can tailor a study plan for you and explain
+      what the field is about a little. Don't try to master everything at once, hehe. Also the best way to learn is by
+      practical example, so if you want to do some particular project (chrome extension, discord bot, blog website are all
+      good first-project choices) I can walk you through and help you where you get stuck. That way it's not all just
+      boring theory.</p>
 
     <template v-for="resourceCategory in Object.entries(resources)">
       <p class="text-xl mt-8 font-sans" :id="resourceCategory[0]">{{ resourceCategory[0] }}</p>
-      <StudyItem v-for="resource in resourceCategory[1]" :link="resource.link" :description="resource.description" :category="resource.category" :title="resource.title" :post-title="resource.postTitle" :image="resource.image" :svg="resource.svg" />
+      <StudyItem v-for="resource in resourceCategory[1]" :link="resource.link" :description="resource.description"
+        :category="resource.category" :title="resource.title" :post-title="resource.postTitle" :image="resource.image"
+        :svg="resource.svg" />
     </template>
-      
+
     <p class="text-xl mt-8 font-sans" id="my-custom-questions">My Custom Questions</p>
     <p>Questions I have encountered myself, or come up with to test the concepts covered above</p>
 
@@ -282,19 +295,24 @@ function render()</code></pre>
       <img :src="friendSongTimelineImage" class="h-80" />
     </StudyItem>
     <StudyItem link="https://app.coderpad.io/PQQXDRQX" category="Web Backend - 30 mins" title="E-Tag Middleware">
-      <p>Design node.js middleware to cache resources using <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag">E-Tags</a></p>
+      <p>Design node.js middleware to cache resources using <a target="_blank"
+          href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/ETag">E-Tags</a></p>
     </StudyItem>
     <StudyItem link="https://github.com/persuck/FIT1045/" category="Algorithms - 60 mins" title="Connect-4">
-      <p>Learn to create a command-line version of Connect-4 in python. This resource includes slides explaining the process and ideas behind making the game, as well as some other useful resources on debugging and interviewing.</p>
+      <p>Learn to create a command-line version of Connect-4 in python. This resource includes slides explaining the
+        process and ideas behind making the game, as well as some other useful resources on debugging and interviewing.
+      </p>
       <img :src="connect4Image" class="h-64" />
     </StudyItem>
 
     <p class="text-xl mt-8 font-sans" id="my-leet-code-questions">My LeetCode Questions</p>
-    <p>I have run these questions with other people in the past. LeetCode questions are more suited for backend interviews, and these were selected particularly because they suit the format of a backend interview.</p>
+    <p>I have run these questions with other people in the past. LeetCode questions are more suited for backend
+      interviews, and these were selected particularly because they suit the format of a backend interview.</p>
 
-    <div v-for="l in leetcodes" >
+    <div v-for="l in leetcodes">
       <a target="_blank" :href="l.link">{{ l.title }}</a>
-      <span :class="`capitalize ml-2 rounded-full px-2 py-0.5 bg-gray-100 ${difficultyColor[l.difficulty]}`">{{ l.difficulty }}</span>
+      <span :class="`capitalize ml-2 rounded-full px-2 py-0.5 bg-gray-100 ${difficultyColor[l.difficulty]}`">{{
+        l.difficulty }}</span>
     </div>
 
   </Article>

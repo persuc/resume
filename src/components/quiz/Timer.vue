@@ -5,18 +5,22 @@ import { onMounted, onUnmounted, ref, type Ref } from 'vue'
 const props = withDefaults(defineProps<{
   modelValue?: number,
   duration: number,
+  isRunning: boolean,
 }>(), {
-  modelValue: 0
+  modelValue: 0,
+  isRunning: true,
 })
-const emit = defineEmits(['on-end', 'update:modelValue'])
+const emit = defineEmits(['end', 'update:modelValue'])
 const timerInterval: Ref<number | undefined> = ref(undefined)
 
 onMounted(() => {
   timerInterval.value = setInterval(() => {
+    if (!props.isRunning) return
+
     emit('update:modelValue', props.modelValue + 1)
     if (props.modelValue === props.duration) {
       clearInterval(timerInterval.value)
-      emit('on-end')
+      emit('end')
     }
   }, 1000)
 })
