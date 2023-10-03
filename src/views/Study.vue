@@ -107,7 +107,7 @@ const resources: Record<string, Resource[]> = {
       image: blind,
     },
   ],
-  "System Design and Computer Architecture": [
+  "Infrastructure": [
     {
       link: "https://fly.io/dist-sys/",
       title: "Gossip Glomers",
@@ -115,6 +115,15 @@ const resources: Record<string, Resource[]> = {
       category: "Infrastructure",
       svg: "fly",
     },
+    {
+      link: "https://play.picoctf.org/practice",
+      title: "Pico CTF",
+      description: "A series of security / pentestint challenges",
+      category: "Infrastructure",
+      image: "https://picoctf.org/img/logos/pico-mark.svg",
+    },
+  ],
+  "System Design & Computer Architecture": [
     {
       link: "https://drive.google.com/file/d/1rTt0WPdLmhctQIDHVG4mlWHbdLM4fGPd/view?usp=sharing",
       title: "Designing Data Intensive Applications",
