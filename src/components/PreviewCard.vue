@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { withDefaults } from 'vue'
 import type { PreviewCard } from '@/@types'
 
 interface Props {
