@@ -44,10 +44,6 @@ const StoryComponent = defineAsyncComponent(() => {
         boundProps[entry[0]] = typeToDefaultValue[entry[1].type.name]
       }
     }
-
-    if (props.path === 'ProgressLinear') {
-      console.log(component, componentProps, slots)
-    }
   })
   return asyncImport
 })

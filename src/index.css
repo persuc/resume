@@ -1,6 +1,9 @@
+@import '@fontsource-variable/montserrat';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 
 body {
   min-height: 100vh;

@@ -4,6 +4,12 @@ import plugin from 'tailwindcss/plugin'
 export default {
   content: ['./index.html', './src/**/*.vue'],
   theme: {
+    fontFamily: {
+      sans: ['ui-sans-serif', 'system-ui'],
+      serif: ['ui-serif', 'Georgia'],
+      mono: ['ui-monospace', 'SFMono-Regular'],
+      display: ['Montserrat Variable', 'ui-sans-serif'],
+    },
     extend: {
       colors: {
         brown: {

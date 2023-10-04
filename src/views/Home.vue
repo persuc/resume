@@ -10,6 +10,9 @@ import Button from '@/components/Button.vue'
 import { EMAIL } from '@/ts/constants'
 import { blogPosts } from '@/ts/blog'
 import { games } from '@/ts/games'
+import type { PreviewCard as TPreviewCard } from '@/@types'
+import PreviewCard from '@/components/PreviewCard.vue'
+import HomeGrid from '@/components/home/HomeGrid.vue'
 
 const router = useRouter()
 
@@ -25,7 +28,7 @@ function goAccomplishments() {
   router.push('/accomplishments')
 }
 
-const randomPages = [
+const randomPages: TPreviewCard[] = [
   { path: 'components', title: 'Stories' },
   { path: 'study', title: 'Study' },
   { path: 'blog/thoughts', title: 'Thoughts' },
@@ -34,7 +37,7 @@ const randomPages = [
 </script>
 
 <template>
-  <div class="h-screen flex flex-col gap-y-8 mx-8 max-w-6xl mx-auto px-8 pb-16">
+  <div class="flex flex-col gap-y-8 mx-8 max-w-6xl mx-auto items-center px-8 pb-16">
     <div class="flex flex-col mt-48 items-center justify-end">
       <p class="text-3xl">Andrew Persic</p>
       <div class="rounded bg-white">
@@ -46,51 +49,42 @@ const randomPages = [
       </div>
     </div>
 
-    <div class="flex flex-col lg:flex-row lg:items-end gap-4 flex-wrap">
-      <div class="w-32">For recruiters</div>
-      <ImageAndText class="border rounded cursor-pointer" slim @click="goResume" :image="booksImage" size="2rem">
-        <div class="flex justify-between items-center h-12">
-          <span class="text-xl">Resume</span>
-          <a href="/andrew_persic_resume.pdf" download @click.stop class="plain">
-            <Button text slim class="ml-2 py-2 text-sm">
-              <Icon name="download" class="mr-2 opacity-80 w-5" />Download
-            </Button>
-          </a>
-        </div>
-      </ImageAndText>
+    <div class="grid lg:grid-cols-[auto_minmax(0px,_1fr)] gap-4 w-fit">
+      <HomeGrid title="For Recruiters">
+        <ImageAndText class="w-64 border rounded cursor-pointer" slim @click="goResume" :image="booksImage" size="2rem">
+          <div class="flex justify-between items-center h-12">
+            <span class="text-xl pl-1">Resume</span>
+            <a href="/andrew_persic_resume.pdf" download @click.stop class="plain">
+              <Button text slim class="ml-2 py-2 text-sm">
+                <Icon name="download" class="mr-2 opacity-80 w-5" />Save
+              </Button>
+            </a>
+          </div>
+        </ImageAndText>
 
-      <ImageAndText class="border rounded" @click="goTalents" style="cursor: pointer;" :image="starImage" size="2rem">
-        <span class="text-xl mr-1">What I'm good at</span>
-      </ImageAndText>
+        <ImageAndText class="w-64 border rounded" @click="goTalents" style="cursor: pointer;" :image="starImage"
+          size="2rem">
+          <div class="w-full text-xl pl-1 pr-2">What I'm Good At</div>
+        </ImageAndText>
 
-      <ImageAndText class="border rounded" @click="goAccomplishments" style="cursor: pointer;" :image="hornImage"
-        size="2rem">
-        <span class="text-xl">What I've done</span>
-      </ImageAndText>
-    </div>
+        <ImageAndText class="w-64 border rounded" @click="goAccomplishments" style="cursor: pointer;" :image="hornImage"
+          size="2rem">
+          <div class="w-full text-xl pl-1 pr-2">What I've Done</div>
+        </ImageAndText>
+      </HomeGrid>
 
-    <div class="flex flex-col lg:flex-row lg:items-end gap-4 flex-wrap">
-      <p class="w-32">Blogs</p>
-      <a v-for="post in blogPosts.slice(0, 2)" :href="'/blog/' + post.path">
-        <div class="p-4 border rounded">{{ post.title }}</div>
-      </a>
-      <a href="/blog">
-        <div class="p-4 border rounded">More...</div>
-      </a>
-    </div>
+      <HomeGrid title="Blogs">
+        <PreviewCard v-for="post in blogPosts.slice(0, 2)" :card="post" />
+        <PreviewCard :card="{ title: 'More...', path: '/blog' }" />
+      </HomeGrid>
 
-    <div class="flex flex-col lg:flex-row lg:items-end gap-4 flex-wrap">
-      <p class="w-32">Games</p>
-      <a v-for="game in games" :href="game.path">
-        <div class="p-4 border rounded">{{ game.title }}</div>
-      </a>
-    </div>
+      <HomeGrid title="Games">
+        <PreviewCard v-for="game in games" :card="game" />
+      </HomeGrid>
 
-    <div class="flex flex-col lg:flex-row lg:items-end gap-4 flex-wrap">
-      <p class="w-32">Random</p>
-      <a v-for="page in randomPages" :href="page.path">
-        <div class="p-4 border rounded">{{ page.title }}</div>
-      </a>
+      <HomeGrid title="Random">
+        <PreviewCard v-for="page in randomPages" :card="page" :bound-height="false" />
+      </HomeGrid>
     </div>
 
     <div class="py-16"></div>
