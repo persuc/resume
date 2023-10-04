@@ -112,7 +112,7 @@ import Button from '@/components/Button.vue'
 </template>`
 
 const navItems = [
-  { href: "/", label: "Back", classes: "mb-3" },
+  { href: "/blog", label: "Back", classes: "mb-3" },
   {
     href: '#top',
     label: 'Top',

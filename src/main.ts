@@ -40,7 +40,7 @@ const router = createRouter({
       component: () => import('./views/blog/Blog.vue')
     },
     ...blogPosts.map(p => ({
-      path: `/blog/${p.path}`,
+      path: p.path,
       name: p.title,
       component: () => import(`./views/blog/${p.component}.vue`)
     })),
