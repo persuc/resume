@@ -91,13 +91,13 @@ const navItems: NavItems[] = [
 
 <template>
   <Article :items="navItems">
-    <p class="text-xl" id="components">Components Library</p>
+    <p class="text-2xl mt-12" id="components">Components Library</p>
 
     <Story v-for="component in components" :path="Array.isArray(component) ? component[0] : component"
       :defaults="Array.isArray(component) ? component[1] : {}" class="mb-4"
       :classes="Array.isArray(component) ? component[2] : ''" />
 
-    <p class="text-xl" id="colors">Colours</p>
+    <p class="text-2xl mt-12" id="colors">Colours</p>
 
     <div class="grid grid-cols-[repeat(auto-fit, minmax(8rem,1fr))] gap-x-2 gap-y-8 sm:grid-cols-1 p-4">
       <div class="2xl:contents" v-for="[key, color] in colors">
@@ -122,9 +122,18 @@ const navItems: NavItems[] = [
       </div>
     </div>
 
-    <p class="text-xl" id="fonts">Fonts</p>
-    <div v-for="font in fonts" :id="font.title">
-      <span :style="`font-size: 4rem; font-family: ${font.families}`">Sphinx of black quartz, judge my vow.</span>
+    <p class="text-2xl mt-12 mb-4" id="fonts">Fonts</p>
+    <div class="grid grid-cols-[1fr_minmax(0,_40rem)] gap-4 items-center">
+      <template v-for="font in fonts" :id="font.title" class="mb-4 mx-4 p-2 rounded-lg border border-gray-200 max-w-xl">
+        <div>
+          <span class="capitalize text-md font-bold mr-2">{{ font.title }}</span>
+          <br />
+          <span class="text-md">( {{ font.families[0] }} )</span>
+        </div>
+        <div class="text-lg" :style="`font-family: ${font.families}`">Sphinx of black
+          quartz,
+          judge my vow.</div>
+      </template>
     </div>
   </Article>
 </template>
