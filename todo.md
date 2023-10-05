@@ -1,9 +1,12 @@
 # TODO list
 
 ## Implement live statuses on home page
-- latest leetcode
-- leetcode totals
+- latest LeetCode
+- LeetCode totals
 
+## UI
+
+- Link element and link previews
 
 ## Achievements page
 - Add perf ninja

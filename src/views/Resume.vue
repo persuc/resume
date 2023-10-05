@@ -42,7 +42,8 @@ import Button from '@/components/Button.vue'
 
     <p class="mt-2 text-xl">Engineering</p>
     <p>Experienced with high scale, data-intensive workloads across different regions and architectures. Highly competent
-      in web technologies such as <i>Node.js</i>, <i>Vue.js</i> &amp; <i>React</i>. Backend expertise includes <i>AWS</i>,
+      in web technologies such as <i>Node.js</i>, <i>Vue.js</i> &amp; <i>React</i>, as well as backend technologies
+      including <i>AWS</i>,
       <i>Terraform</i>, <i>Java</i> and <i>SQL</i> + <i>NoSQL</i> databases.
     </p>
 
@@ -53,8 +54,8 @@ import Button from '@/components/Button.vue'
     <JobTitle class="mt-2" company="Canva" role="Senior Software Engineer (Full Stack)" date-from="2022" date-to="Current"
       :tech="['TypeScript', 'React', 'Java', 'Terraform', 'AWS', 'GraphQL', 'Protobuf', 'PostgreSQL', 'DynamoDB']" />
     <ul class="list-disc ml-8">
-      <li><b class="hidden print:inline">Role: </b>Managed all pages on <a target="_blank"
-          href="https://www.canva.com/">canva.com</a> and <a target="_blank" href="https://www.canva.cn/">canva.cn</a>.
+      <li><b class="hidden">Role: </b>Managed all pages on <a target="_blank" href="https://www.canva.com/">canva.com</a>
+        and <a target="_blank" href="https://www.canva.cn/">canva.cn</a>.
         These 32,590 pages receive ~30 million requests per day.</li>
       <li>Identified shortfalls in our Chinese infrastructure, established communication between the Beijing and Landing
         Pages teams, and delivered experimentation and fallback mechanisms in the CN region.</li>
@@ -67,7 +68,7 @@ import Button from '@/components/Button.vue'
     <JobTitle class="mt-2" company="Two Bulls" role="Software Engineer (Full Stack)" date-from="2020" date-to="2022"
       :tech="['Vue.js', 'TypeScript', 'Node.js', 'C#', 'Python', 'AWS', 'MySQL', 'DynamoDB']" />
     <ul class="list-disc ml-8">
-      <li><b class="hidden print:inline">Role: </b>Delivered bespoke web applications including <a target="_blank"
+      <li><b class="hidden">Role: </b>Delivered bespoke web applications including <a target="_blank"
           href="https://www.kidsdoconcall.com.au/">KidsDoc</a> telehealth, <a target="_blank"
           href="https://fit.theonetwo.com/">TheOneTwo</a> shopfront, <a target="_blank"
           href="https://www.service.vic.gov.au/services/border-permit/home">Victorian COVID border permits</a> (reached #3
@@ -79,7 +80,7 @@ import Button from '@/components/Button.vue'
     <JobTitle class="mt-2" company="Unico" role="Software Engineer (Backend)" date-from="2019" date-to="2020"
       :tech="['Java', 'MySQL', 'Python', 'MATRIXX', 'Linux', 'Docker', 'Spring']" />
     <ul class="list-disc ml-8">
-      <li><b class="hidden print:inline">Role: </b>Performed large scale database migrations (ETL) for prominent
+      <li><b class="hidden">Role: </b>Performed large scale database migrations (ETL) for prominent
         telecommunications vendors.</li>
       <li>Successfully migrated over 20 million records to the <i>MATRIXX</i> in-memory database in a single day.</li>
       <li>Gained experience in data-intensive systems and concurrency, sensitive data and reverse engineering older
@@ -89,7 +90,7 @@ import Button from '@/components/Button.vue'
     <JobTitle class="mt-2" company="Monash Uni Immersive Analytics Dept" role="Software Engineer (Research)"
       date-from="2017" date-to="2019" :tech="['JavaScript', 'Three.js', 'WebGL', 'Python', 'R']" />
     <ul class="list-disc ml-8">
-      <li><b class="hidden print:inline">Role: </b>Developed a highly performant web application for 2D and 3D
+      <li><b class="hidden">Role: </b>Developed a highly performant web application for 2D and 3D
         visualisation of protein complexes and cross-link mass
         spectrometry data using <i>Three.js</i> and <i>WebGL</i>.</li>
     </ul>
@@ -128,6 +129,7 @@ import Button from '@/components/Button.vue'
     margin-top: 1rem !important;
   }
 
+  /*
   ul {
     padding-left: 1.05rem;
 
@@ -140,6 +142,7 @@ import Button from '@/components/Button.vue'
       }
     }
   }
+  */
 
   .education {
     bottom: -6.5rem;

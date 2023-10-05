@@ -4,7 +4,7 @@ import TrafficLight from '@/components/TrafficLight.vue'
 import friendSongTimelineImage from '@/assets/FriendSongTimeline.png'
 import connect4Image from '@/assets/connect4.png'
 import w3schools from '@/assets/W3Schools.png'
-import dananderson from '@/assets/dananderson.jpg'
+import danAnderson from '@/assets/dananderson.jpg'
 import blind from '@/assets/blind.png'
 import ddia from '@/assets/wild-boar-by-george-shaw.jpg'
 import systemsDesignInterview from '@/assets/SystemsDesignInterview.png'
@@ -69,7 +69,7 @@ const resources: Record<string, Resource[]> = {
       title: "Algorithms & Data Structures Notes",
       description: "Algorithms & data structures are useful in the daily life of any programmer, and also for passing interviews. Usually FAANG companies focus on these, and knowing them helps understand how to write performant code, and how computers work internally",
       category: "Algorithms Notes",
-      image: dananderson
+      image: danAnderson
     },
     {
       link: "https://www.algotree.org/",
@@ -80,10 +80,10 @@ const resources: Record<string, Resource[]> = {
     },
     {
       link: "https://leetcode.com/explore/featured/card/the-leetcode-beginners-guide/",
-      title: "Leetcode.com",
+      title: "LeetCode.com",
       description: "A site dedicated to practice questions for algorithms & data structures. Many big companies use these questions.",
       category: "Practical Exercises",
-      svg: "leetcode"
+      svg: "leetCode"
     },
     {
       link: "https://neetcode.io",
@@ -118,7 +118,7 @@ const resources: Record<string, Resource[]> = {
     {
       link: "https://play.picoctf.org/practice",
       title: "Pico CTF",
-      description: "A series of security / pentestint challenges",
+      description: "A series of security / pentesting challenges",
       category: "Infrastructure",
       image: "https://picoctf.org/img/logos/pico-mark.svg",
     },
