@@ -88,7 +88,7 @@ const resources: Record<string, Resource[]> = {
     {
       link: "https://neetcode.io",
       title: "Neetcode.io",
-      description: "Leetcode questions compiled into courses, sorted by topic, with guidance on how to study.",
+      description: "LeetCode questions compiled into courses, sorted by topic, with guidance on how to study.",
       category: "LeetCode compendium",
       image: "https://neetcode.io/assets/neetcode-io-logo.png",
     },
@@ -209,7 +209,7 @@ const resources: Record<string, Resource[]> = {
   ]
 }
 
-const leetcodes: {
+const leetCodes: {
   link: string,
   title: string,
   difficulty: Difficulty
@@ -238,6 +238,7 @@ const leetcodes: {
     { link: "https://leetcode.com/problems/painting-the-walls/", title: "Painting the walls", difficulty: "hard" },
     { link: "https://leetcode.com/problems/number-of-ways-to-earn-points/", title: "Number of ways to earn points", difficulty: "hard" },
     { link: "https://leetcode.com/problems/robot-collisions/", title: "Robot collisions", difficulty: "hard" },
+    { link: "https://leetcode.com/problems/design-excel-sum-formula/", title: "Design Excel Sum Formula", difficulty: "hard" },
   ]
 
 const difficultyColor: Record<Difficulty, string> = {
@@ -318,7 +319,7 @@ function render()</code></pre>
     <p>I have run these questions with other people in the past. LeetCode questions are more suited for backend
       interviews, and these were selected particularly because they suit the format of a backend interview.</p>
 
-    <div v-for="l in leetcodes">
+    <div v-for="l in leetCodes">
       <a target="_blank" :href="l.link">{{ l.title }}</a>
       <span :class="`capitalize ml-2 rounded-full px-2 py-0.5 bg-gray-100 ${difficultyColor[l.difficulty]}`">{{
         l.difficulty }}</span>
