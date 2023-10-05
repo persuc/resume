@@ -32,34 +32,34 @@ const resources: Record<string, Resource[]> = {
       title: "Flexbox Froggy",
       svg: "flexbox-froggy",
       description: "Game for learning how to make website layouts with CSS flexbox",
-      category: "UI / webpage layout",
+      category: "Web Development",
     },
     {
       link: "https://www.w3schools.com/js/default.asp",
       title: "W3 Schools JS tutorial",
       image: w3schools,
       description: "Beginner resource for JavaScript (web) programming",
-      category: "Web programming",
+      category: "Web Development",
     },
     {
       link: "https://www.11ty.dev/docs/getting-started/",
       title: "11ty.js",
       svg: "11ty",
       description: "A framework for building static websites. It might be fun to follow their getting started tutorial and make your own blog!",
-      category: "Frameworks / Personal Site",
+      category: "Web Frameworks",
     },
     {
       link: "https://legacy.reactjs.org/tutorial/tutorial.html",
       title: "React.js",
       svg: "react",
       description: "A more advanced framework for building static websites. It might be fun to follow their getting started tutorial and make your own blog!",
-      category: "Frameworks / Personal Site",
+      category: "Web Frameworks",
     },
     {
       link: "https://developers.cloudflare.com/pages/framework-guides/deploy-anything/",
       title: "Cloudflare Pages",
       description: "Once you have your first website, you can use this to make it available on the public internet",
-      category: "Frameworks / Personal Site",
+      category: "Web Frameworks",
       svg: "cloudflare"
     },
   ],
@@ -68,14 +68,14 @@ const resources: Record<string, Resource[]> = {
       link: "https://drive.google.com/file/d/1C_3Wbdi2T_PbJxckv90IDEjIBJDdgiBs/view?usp=sharing",
       title: "Algorithms & Data Structures Notes",
       description: "Algorithms & data structures are useful in the daily life of any programmer, and also for passing interviews. Usually FAANG companies focus on these, and knowing them helps understand how to write performant code, and how computers work internally",
-      category: "Algorithms Notes",
+      category: "Study Resource",
       image: danAnderson
     },
     {
       link: "https://www.algotree.org/",
       title: "Algotree",
       description: "A chart of common algorithms, grouped by what they are useful for.",
-      category: "Algorithms Notes",
+      category: "Study Resource",
       svg: 'algotree',
     },
     {
@@ -89,22 +89,29 @@ const resources: Record<string, Resource[]> = {
       link: "https://neetcode.io",
       title: "Neetcode.io",
       description: "LeetCode questions compiled into courses, sorted by topic, with guidance on how to study.",
-      category: "LeetCode compendium",
+      category: "LeetCode Compendium",
       image: "https://neetcode.io/assets/neetcode-io-logo.png",
     },
     {
       link: "https://www.teamblind.com/post/New-Year-Gift---Curated-List-of-Top-75-LeetCode-Questions-to-Save-Your-Time-OaM1orEU",
       title: "Blind75",
       description: "A curated list of commonly asked LeetCode questions.",
-      category: "LeetCode compendium",
+      category: "LeetCode Compendium",
       image: blind,
     },
     {
       link: "https://www.techinterviewhandbook.org/grind75",
       title: "Grind75",
       description: "A curated list of commonly asked LeetCode questions.",
-      category: "LeetCode compendium",
+      category: "LeetCode Compendium",
       image: blind,
+    },
+    {
+      link: "https://zerotrac.github.io/leetcode_problem_rating/#/",
+      title: "LeetCode Difficult Ratings",
+      description: "An ELO rating of how difficult every LeetCode question is.",
+      category: "LeetCode Compendium",
+      image: "https://avatars.githubusercontent.com/u/15974765",
     },
   ],
   "Infrastructure": [
@@ -139,6 +146,13 @@ const resources: Record<string, Resource[]> = {
       category: "Compilers & Performance",
     },
     {
+      link: "https://github.com/dendibakh/perf-ninja",
+      title: "Perf Ninja",
+      description: "A series of take-home exercises for learning performance programming in <code>C++</code>",
+      category: "Compilers & Performance",
+      image: perfNinja,
+    },
+    {
       link: "https://www.youtube.com/channel/UCbvDQKzAJ5GwCjTrv4FWkxg",
       title: "Jordan has no life",
       description: "Great YouTube channel for system design and databases content",
@@ -151,13 +165,6 @@ const resources: Record<string, Resource[]> = {
       description: "Great YouTube channel for system design content",
       category: "System Design",
       image: systemsDesignInterview,
-    },
-    {
-      link: "https://github.com/dendibakh/perf-ninja",
-      title: "Perf Ninja",
-      description: "A series of take-home exercises for learning performance programming in <code>C++</code>",
-      category: "Compilers & Performance",
-      image: perfNinja,
     },
     {
       link: "https://martinfowler.com/articles/patterns-of-distributed-systems/",
@@ -212,7 +219,8 @@ const resources: Record<string, Resource[]> = {
 const leetCodes: {
   link: string,
   title: string,
-  difficulty: Difficulty
+  difficulty: Difficulty,
+  premium?: boolean,
 }[] = [
     { link: "https://leetcode.com/problems/number-of-recent-calls/", title: "Number of recent calls", difficulty: "easy" },
     { link: "https://leetcode.com/problems/design-hashmap/", title: "Design hashmap", difficulty: "easy" },
@@ -238,7 +246,7 @@ const leetCodes: {
     { link: "https://leetcode.com/problems/painting-the-walls/", title: "Painting the walls", difficulty: "hard" },
     { link: "https://leetcode.com/problems/number-of-ways-to-earn-points/", title: "Number of ways to earn points", difficulty: "hard" },
     { link: "https://leetcode.com/problems/robot-collisions/", title: "Robot collisions", difficulty: "hard" },
-    { link: "https://leetcode.com/problems/design-excel-sum-formula/", title: "Design Excel Sum Formula", difficulty: "hard" },
+    { link: "https://leetcode.com/problems/design-excel-sum-formula/", title: "Design Excel Sum Formula", difficulty: "hard", premium: true, },
   ]
 
 const difficultyColor: Record<Difficulty, string> = {
@@ -321,6 +329,7 @@ function render()</code></pre>
 
     <div v-for="l in leetCodes">
       <a target="_blank" :href="l.link">{{ l.title }}</a>
+      <span v-if="l.premium"> ⭐️ Premium</span>
       <span :class="`capitalize ml-2 rounded-full px-2 py-0.5 bg-gray-100 ${difficultyColor[l.difficulty]}`">{{
         l.difficulty }}</span>
     </div>
