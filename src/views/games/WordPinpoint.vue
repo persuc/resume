@@ -27,8 +27,8 @@ for (let i = MIN_LENGTH; i <= MAX_LENGTH; i++) {
 }
 
 for (const cob of corncob) {
-  if (cob.length >= MIN_LENGTH && cob.length <= MAX_LENGTH) {
-    validWords[cob.length - MIN_LENGTH].push(cob.toUpperCase())
+  if (cob.length >= MIN_LENGTH && cob.length <= MAX_LENGTH && cob !== 'PRINCE') {
+    validWords[cob.length - MIN_LENGTH].push(cob)
   }
 }
 
@@ -181,8 +181,26 @@ function onKeyUp(e: KeyboardEvent) {
   }
 }
 
+function onTouchEnd(e: TouchEvent) {
+  if (e.target === document.getElementById('guessButton')) {
+    e.preventDefault()
+    check()
+    return
+  }
+  const guessInput = document.getElementById('guessInput')
+  if (guessInput && e.target === guessInput) {
+    setTimeout(() => {
+      // document.getElementById('guessGrid')?.scrollIntoView()
+      window.scrollTo(0, 80)
+    }, 100)
+    return
+  }
+
+}
+
 onMounted(() => {
   document.addEventListener("keyup", onKeyUp)
+  document.addEventListener('touchend', onTouchEnd)
   loadState()
   // test code
   // lengthInput = 10
@@ -194,7 +212,10 @@ onMounted(() => {
   // check()
 })
 
-onUnmounted(() => document.removeEventListener("keyup", onKeyUp))
+onUnmounted(() => {
+  document.removeEventListener("keyup", onKeyUp)
+  document.removeEventListener("touchend", onTouchEnd)
+})
 
 const defaultState = {
   length: 5,
@@ -323,7 +344,7 @@ function saveWordlist() {
     </div>
     <div v-show="view === VIEW.PLAY" class="flex items-center justify-center h-screen">
       <div class="flex flex-col items-center justify-center relative">
-        <div class="grid grid-cols-[6rem_14rem] mb-12 font-mono text-xl">
+        <div class="grid grid-cols-[6rem_14rem] mb-12 font-mono text-xl" id="guessGrid">
           <div>{{ closestBelow >= 0 ? `${getPercentage(closestBelow)}%` : '&nbsp;' }}</div>
           <div class="mr-1 text-end">
             {{ closestBelow >= 0 ? validWords[length - MIN_LENGTH][closestBelow] : '&nbsp;' }}
@@ -338,10 +359,10 @@ function saveWordlist() {
           </div>
         </div>
         <div class="flex justify-between w-80" v-show="revealed !== currentWord">
-          <input type="text" v-model="guess" style="width: 11.5rem"
+          <input id="guessInput" type="text" v-model="guess" style="width: 11.5rem"
             class="border-b border-gray-500 uppercase text-xl font-mono outline-none"
             :placeholder="'E.g.' + exampleWord" />
-          <Button @click="check" class="text-lg">Guess</Button>
+          <Button @click="check" class="text-lg" id="guessButton">Guess</Button>
         </div>
         <Button text @click="reveal" v-show="revealed !== currentWord"
           class="text-lg w-80 mt-8 border border-gray-300 hover:bg-gray-200">Reveal
@@ -350,7 +371,7 @@ function saveWordlist() {
         <div class="flex justify-between w-80" v-show="revealed === currentWord">
           <Button @click="view = VIEW.SETUP" class="text-lg w-80">Next Game</Button>
         </div>
-        <div v-show="message !== ''" class="absolute max-w-lg -bottom-32 rounded py-1 px-3 mt-8 bg-sky-100 text-lg"
+        <div v-show="message !== ''" class="absolute max-w-lg -bottom-24 rounded py-1 px-3 mt-8 bg-sky-100 text-lg"
           v-html="message">
         </div>
       </div>
