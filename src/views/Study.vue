@@ -123,6 +123,14 @@ const resources: Record<string, Resource[]> = {
       svg: "fly",
     },
     {
+      link: "https://unixgame.io/",
+      title: "UNIX Game",
+      description: "A series of practical command-line challenges",
+      category: "Infrastructure",
+      image: "https://help.apple.com/assets/63FFD63D71728623E706DB4F/63FFD63E71728623E706DB56/en_GB/20f5edbfdfa0bd8ad4c4c6452e5b6761.png",
+    },
+
+    {
       link: "https://play.picoctf.org/practice",
       title: "Pico CTF",
       description: "A series of security / pentesting challenges",
@@ -247,6 +255,7 @@ const leetCodes: {
     { link: "https://leetcode.com/problems/number-of-ways-to-earn-points/", title: "Number of ways to earn points", difficulty: "hard" },
     { link: "https://leetcode.com/problems/robot-collisions/", title: "Robot collisions", difficulty: "hard" },
     { link: "https://leetcode.com/problems/design-excel-sum-formula/", title: "Design Excel Sum Formula", difficulty: "hard", premium: true, },
+    { link: "https://leetcode.com/problems/constrained-subsequence-sum/", title: "Constrained Subsequence Sum", difficulty: "hard" },
   ]
 
 const difficultyColor: Record<Difficulty, string> = {

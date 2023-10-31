@@ -3,6 +3,7 @@ interface Props {
   text?: boolean,
   disabled?: boolean,
   slim?: boolean
+  noHover?: boolean
 }
 
 defineProps<Props>()
@@ -17,8 +18,24 @@ defineProps<Props>()
     'rounded-lg',
     disabled ? 'cursor-default' : 'cursor-pointer',
     text ? 'text-slate-900' : (disabled ? 'text-gray-500' : 'text-white'),
-    text ? 'bg-transparent' : (disabled ? 'bg-gray-200' : 'bg-indigo-500'),
-    text ? 'hover:bg-gray-200' : (disabled ? '' : 'hover:bg-indigo-400'),
+    (() => { // background styles
+      if (text) {
+        return 'bg-transparent'
+      }
+      if (disabled) {
+        return 'bg-gray-200'
+      }
+      return 'bg-indigo-500'
+    })(),
+    (() => { // hover styles
+      if (noHover || disabled) {
+        return ''
+      }
+      if (text) {
+        return 'hover:bg-gray-200'
+      }
+      return 'hover:bg-indigo-400'
+    })(),
     'flex',
     'items-center',
     text ? 'transition-colors' : '',

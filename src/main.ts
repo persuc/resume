@@ -10,6 +10,7 @@ import python from 'highlight.js/lib/languages/python'
 import App from "./App.vue"
 import './index.css'
 import { blogPosts } from "@/ts/blog"
+import { games } from "@/ts/games"
 
 const router = createRouter({
   history: createWebHistory(),
@@ -59,45 +60,15 @@ const router = createRouter({
       name: "Bored",
       component: () => import('./views/games/Bored.vue')
     },
-    {
-      path: '/binary',
-      name: "Word Pinpoint",
-      component: () => import('./views/games/WordPinpoint.vue')
-    },
-    {
-      path: '/word-pinpoint',
-      name: "Word Pinpoint",
-      component: () => import('./views/games/WordPinpoint.vue')
-    },
-    {
-      path: '/missing-word',
-      name: "Missing Word",
-      component: () => import('./views/games/MissingWord.vue')
-    },
-    {
-      path: '/blackout',
-      name: "Blackout Poem",
-      component: () => import('./views/games/BlackoutPoem.vue')
-    },
-    {
-      path: '/solitaire',
-      name: "Solitaire",
-      component: () => import('./views/games/Solitaire.vue')
-    },
-    {
-      path: '/draw',
-      name: "Draw Mode",
-      component: () => import('./views/games/DrawMode.vue')
-    },
+    ...games.map(g => ({
+      path: g.path,
+      name: g.title,
+      component: () => import(`./views/games/${g.component}.vue`)
+    })),
     {
       path: '/components',
       name: "Components",
       component: () => import('./views/Components.vue')
-    },
-    {
-      path: '/quiz',
-      name: 'Quiz',
-      component: () => import('./views/Quiz.vue')
     },
   ]
 })

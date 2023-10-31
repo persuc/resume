@@ -51,7 +51,8 @@ import Button from '@/components/Button.vue'
       Relevant Experience
     </div>
 
-    <JobTitle class="mt-2" company="Canva" role="Senior Software Engineer (Full Stack)" date-from="2022" date-to="Current"
+    <JobTitle class="mt-2" company="Canva" role="Senior Software Engineer (Backend + Frontend)" date-from="2022"
+      date-to="Current"
       :tech="['TypeScript', 'React', 'Java', 'Terraform', 'AWS', 'GraphQL', 'Protobuf', 'PostgreSQL', 'DynamoDB']" />
     <ul class="list-disc ml-8">
       <li><b class="hidden">Role: </b>Managed all pages on <a target="_blank" href="https://www.canva.com/">canva.com</a>
@@ -65,8 +66,8 @@ import Button from '@/components/Button.vue'
         decreasing load on engineers.</li>
     </ul>
 
-    <JobTitle class="mt-2" company="Two Bulls" role="Software Engineer (Full Stack)" date-from="2020" date-to="2022"
-      :tech="['Vue.js', 'TypeScript', 'Node.js', 'C#', 'Python', 'AWS', 'MySQL', 'DynamoDB']" />
+    <JobTitle class="mt-2" company="Two Bulls" role="Software Engineer (Backend + Frontend)" date-from="2020"
+      date-to="2022" :tech="['Vue.js', 'TypeScript', 'Node.js', 'C#', 'Python', 'AWS', 'MySQL', 'DynamoDB']" />
     <ul class="list-disc ml-8">
       <li><b class="hidden">Role: </b>Delivered bespoke web applications including <a target="_blank"
           href="https://www.kidsdoconcall.com.au/">KidsDoc</a> telehealth, <a target="_blank"

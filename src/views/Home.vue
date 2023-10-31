@@ -49,6 +49,11 @@ const randomPages: TPreviewCard[] = [
       </div>
     </div>
 
+    <!-- https://docs.google.com/document/d/1u5JzHT5a9x57gD80HSfMfd-QpcKk9FMyavCyFo0glc4/edit?usp=sharing -->
+    <iframe class="w-full h-96"
+      src="https://docs.google.com/document/d/1u5JzHT5a9x57gD80HSfMfd-QpcKk9FMyavCyFo0glc4/edit?usp=sharing"></iframe>
+    <!-- <iframe src="https://docs.google.com/document/d/e/2PACX-1vQ5SBzAfxslwIHreQtZFt3mfezBBGA-T8CBBa9f8EGr9lOV1f5TgofO-JDF4hJX1rHQmzen6wRcyu79/pub?embedded=true"></iframe> -->
+
     <div class="grid lg:grid-cols-[auto_minmax(0px,_1fr)] gap-4 w-fit">
       <HomeGrid title="For Recruiters">
         <ImageAndText class="w-64 border rounded cursor-pointer" slim @click="goResume" :image="booksImage" size="2rem">

@@ -91,3 +91,7 @@ svg {
   position: relative;
   font-weight: normal;
 }
+
+.break-words {
+  word-break: break-word;
+}

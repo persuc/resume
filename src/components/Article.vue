@@ -11,12 +11,16 @@ defineProps<Props>();
 </script>
 
 <template>
-  <div class="flex lg:flex-row flex-col" style="column-gap: calc(50% - 36.5rem);">
-    <Nav class="lg:h-screen" v-if="items" :items="items" />
+  <div v-if="items" class="flex lg:flex-row flex-col" style="column-gap: calc(50% - 36.5rem);">
+    <Nav class="lg:h-screen" :items="items" />
 
     <article class="lg:px-8 lg:pt-8 pt-20 min-w-0" style="margin-right: max(calc(50% - 36rem), 0px);">
       <slot></slot>
       <div class="py-32"></div>
     </article>
   </div>
+  <article v-else class="lg:px-8 pt-8 mx-auto max-w-5xl">
+    <slot></slot>
+    <div class="py-32"></div>
+  </article>
 </template>

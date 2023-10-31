@@ -3,10 +3,11 @@ import drawThumb from '@/assets/DrawThumb.png'
 import quizThumb from '@/assets/QuizThumb.png'
 import type { PreviewCard } from '@/@types'
 
-export const games: PreviewCard[] = [
+export const games: (PreviewCard & { component: string })[] = [
   {
     path: '/missing-word',
     title: 'Missing Word',
+    component: 'MissingWord',
     previewComponent: () => (
       <div>The ________ of the wolf is the pack</div>
     ),
@@ -14,6 +15,7 @@ export const games: PreviewCard[] = [
   {
     path: '/word-pinpoint',
     title: 'Word Pinpoint',
+    component: 'WordPinpoint',
     previewComponent: () => (
       <div>
         <div class="mx-auto flex flex-col">
@@ -27,6 +29,7 @@ export const games: PreviewCard[] = [
   {
     path: '/blackout',
     title: 'Blackout Poem',
+    component: 'BlackoutPoem',
     previewComponent: () => (
       <div>
         <div>
@@ -40,16 +43,25 @@ export const games: PreviewCard[] = [
   {
     path: '/solitaire',
     title: 'Stone Solitaire',
+    component: 'Solitaire',
     thumb: solitaireThumb,
   },
   {
     path: '/draw',
     title: 'Super Sicko Draw Mode',
+    component: 'DrawMode',
     thumb: drawThumb,
   },
   {
     path: '/quiz',
     title: 'Quizzes',
+    component: 'Quiz',
     thumb: quizThumb,
   },
+  // TODO: enable me once it's built
+  // {
+  //   path: '/pazaak',
+  //   title: 'Pazaak',
+  //   component: 'Pazaak',
+  // },
 ]
