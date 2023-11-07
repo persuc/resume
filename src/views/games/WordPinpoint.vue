@@ -2,7 +2,6 @@
 import { saveAs } from 'file-saver'
 import corncob from '@/assets/corncob_caps'
 import propset from '@/assets/proper_nouns'
-import lemmas from '@/assets/lemmas'
 import wordlist from '@/assets/wordlist'
 import Article from '@/components/Article.vue'
 import Button from '@/components/Button.vue'
@@ -10,10 +9,16 @@ import Icon from '@/components/Icon.vue'
 import { type Ref, ref, onMounted, onUnmounted, computed } from 'vue'
 const MAX_LENGTH = 20
 const MIN_LENGTH = 3
-const FREQUENCY_CUTOFF = 150
+const EASY_FREQUENCY_CUTOFF = 950
+const MEDIUM_FREQUENCY_CUTOFF = 150
+const HARD_FREQUENCY_CUTOFF = 1
 
-const targets: string[][] = []
-const validWords: string[][] = []
+enum DIFFICULTY {
+  EASY,
+  MEDIUM,
+  HARD,
+  RANDOM,
+}
 
 enum VIEW {
   LOADING,
@@ -21,9 +26,18 @@ enum VIEW {
   PLAY
 }
 
-for (let i = MIN_LENGTH; i <= MAX_LENGTH; i++) {
-  targets.push([])
-  validWords.push([])
+const targets: Record<string, string[][]> = {
+  [DIFFICULTY.EASY]: [],
+  [DIFFICULTY.MEDIUM]: [],
+  [DIFFICULTY.HARD]: [],
+}
+
+const validWords: string[][] = []
+
+for (let i = 0; i <= MAX_LENGTH - MIN_LENGTH; i++) {
+  for (const a of Object.values(targets).concat([validWords])) {
+    a.push([])
+  }
 }
 
 for (const cob of corncob) {
@@ -32,11 +46,22 @@ for (const cob of corncob) {
   }
 }
 
+console.log('vw', validWords)
+
 for (const word of wordlist) {
   if (word[0].length >= MIN_LENGTH && word[0].length <= MAX_LENGTH) {
     validWords[word[0].length - MIN_LENGTH].push(word[0].toUpperCase())
-    if (word[1] >= FREQUENCY_CUTOFF) {
-      targets[word[0].length - MIN_LENGTH].push(word[0].toUpperCase())
+    let targetList = (() => {
+      if (word[1] >= EASY_FREQUENCY_CUTOFF) {
+        return targets[DIFFICULTY.EASY]
+      } else if (word[1] >= MEDIUM_FREQUENCY_CUTOFF) {
+        return targets[DIFFICULTY.MEDIUM]
+      } else if (word[1] >= HARD_FREQUENCY_CUTOFF) {
+        return targets[DIFFICULTY.HARD]
+      }
+    })()
+    if (targetList) {
+      targetList[word[0].length - MIN_LENGTH].push(word[0].toUpperCase())
     }
   }
 }
@@ -45,11 +70,14 @@ for (let i = MIN_LENGTH; i <= MAX_LENGTH; i++) {
   validWords[i - MIN_LENGTH].sort()
 }
 
+console.log('targets is', targets)
+
 function getPercentage(index: number) {
   return Math.round(index / validWords[length.value - MIN_LENGTH].length * 100000) / 1000
 }
 
 const view: Ref<VIEW> = ref(VIEW.LOADING)
+const difficulty: Ref<DIFFICULTY> = ref(DIFFICULTY.MEDIUM)
 const showHelp = ref(false)
 let lengthInput = 5
 const length = ref(5)
@@ -65,20 +93,44 @@ const revealed = ref('')
 const exampleWord = computed(() => {
   let word = currentWord.value
   while (word === currentWord.value) {
-    word = targets[length.value - MIN_LENGTH][Math.floor(Math.random() * targets[length.value - MIN_LENGTH].length)]
+    word = targets[DIFFICULTY.EASY][length.value - MIN_LENGTH][Math.floor(Math.random() * targets[DIFFICULTY.EASY][length.value - MIN_LENGTH].length)]
   }
   return word
 })
 
 function pick() {
+
+  const parsedLength = parseInt(lengthInput as unknown as string)
+
+  if (Number.isNaN(parsedLength) || parsedLength < MIN_LENGTH || parsedLength > MAX_LENGTH) {
+    message.value = `⚠️ Please choose a length between ${MIN_LENGTH} and ${MAX_LENGTH} letters`
+    return
+  }
+
   view.value = VIEW.PLAY
   revealed.value = ''
   closestBelow.value = -1
   closestAbove.value = -1
   message.value = ''
   guess.value = ''
-  length.value = lengthInput
-  const target = targets[length.value - MIN_LENGTH][Math.floor(Math.random() * targets[length.value - MIN_LENGTH].length)]
+  length.value = parsedLength
+  const target = (() => {
+    if (difficulty.value === DIFFICULTY.RANDOM) {
+      let idx = Math.floor(Math.random() * Object.values(targets).map(t => t[length.value - MIN_LENGTH]).reduce((a, v) => a + v.length, 0))
+      let difficulty = DIFFICULTY.EASY
+      if (idx >= targets[difficulty][length.value - MIN_LENGTH].length) {
+        idx -= targets[difficulty][length.value - MIN_LENGTH].length
+        difficulty = DIFFICULTY.MEDIUM
+      }
+      if (idx >= targets[difficulty][length.value - MIN_LENGTH].length) {
+        idx -= targets[difficulty][length.value - MIN_LENGTH].length
+        difficulty = DIFFICULTY.HARD
+      }
+      return targets[difficulty][length.value - MIN_LENGTH][idx]
+    } else {
+      return targets[difficulty.value][length.value - MIN_LENGTH][Math.floor(Math.random() * targets[difficulty.value][length.value - MIN_LENGTH].length)]
+    }
+  })()
   index = validWords[length.value - MIN_LENGTH].indexOf(target)
   currentWord.value = validWords[length.value - MIN_LENGTH][index]
   currentPercentage.value = getPercentage(index)
@@ -152,13 +204,16 @@ function check() {
 
 function autoReveal() {
   let prefixMatch = 0
+  console.log('revealing vw', validWords[length.value - MIN_LENGTH], 'prefixMatch', prefixMatch, 'closestAbove', closestAbove.value, 'closestBelow', closestBelow.value, prefixMatch)
   for (
     prefixMatch = 0;
     Math.min(closestBelow.value, closestAbove.value) >= 0 &&
     prefixMatch < length.value - 1 &&
     validWords[length.value - MIN_LENGTH][closestBelow.value].charAt(prefixMatch) === validWords[length.value - MIN_LENGTH][closestAbove.value].charAt(prefixMatch);
     prefixMatch++
-  );
+  ) {
+    console.log('revealing prefixMatch', prefixMatch, 'closestAbove', closestAbove.value, 'closestBelow', closestBelow.value, prefixMatch)
+  }
   if (prefixMatch > revealed.value.length) {
     revealed.value = currentWord.value.substring(0, prefixMatch)
   }
@@ -274,7 +329,7 @@ function saveWordlist() {
   const printList: string[] = ['export default <[string, number][]>[\n']
   const negative: string[] = ['export default <[string, number][]>[\n']
   const cornset = new Set(corncob)
-  for (const word of lemmas) {
+  for (const word of wordlist) {
     if (cornset.has(word[0].toUpperCase()) && !propset.has(word[0].toUpperCase())) {
       printList.push(`['${word[0]}',${word[1]}],\n`)
     } else {
@@ -309,7 +364,7 @@ function saveWordlist() {
 
   <Button v-show="view !== VIEW.LOADING && !showHelp" class="absolute right-4 top-4 border border-gray-300 z-10" text
     no-hover @click="() => showHelp = true">
-    <span v-show="!showHelp" class="bold">?</span>
+    <span v-show="!showHelp" class="font-semibold text-xl">?</span>
   </Button>
   <Article class="pt-0">
     <div v-show="view === VIEW.LOADING">Loading...</div>
@@ -331,13 +386,29 @@ function saveWordlist() {
       </p>
     </div>
     <div v-show="view === VIEW.SETUP" class="h-screen flex items-center justify-center mx-8">
-      <div class="flex flex-col gap-4 items-center">
+      <div class="flex flex-col gap-1 items-center">
         <div class="font-display text-xl font-bold text-center">
           How long should the mystery word be?
         </div>
-        <div class="text-2xl">
+        <div class="text-2xl mb-8">
           <input type="number" v-model="lengthInput" :min="MIN_LENGTH" :max="MAX_LENGTH"
             class="border-b border-gray-500 max-w-[3rem] after:content-['*']" /> letters
+        </div>
+        <div class="font-display text-xl font-bold text-center">
+          Difficulty?
+        </div>
+        <div class="flex justify-center gap-4 mb-8">
+          <Button text @click="difficulty = DIFFICULTY.EASY" color="lime"
+            class="w-fit text-lg font-bold border !text-lime-500"
+            :class="{ 'border-2 border-lime-500': difficulty === DIFFICULTY.EASY }">Easy</Button>
+          <Button text @click="difficulty = DIFFICULTY.MEDIUM" color="yellow"
+            class="w-fit text-lg font-bold border !text-yellow-500"
+            :class="{ 'border-2 border-yellow-500': difficulty === DIFFICULTY.MEDIUM }">Medium</Button>
+          <Button text @click="difficulty = DIFFICULTY.HARD" color="red"
+            class="w-fit text-lg font-bold border !text-red-500"
+            :class="{ 'border-2 border-red-500': difficulty === DIFFICULTY.HARD }">Hard</Button>
+          <Button text @click="difficulty = DIFFICULTY.RANDOM" class="w-fit text-lg font-bold border"
+            :class="{ 'border-2 border-gray-500': difficulty === DIFFICULTY.RANDOM }">RANDOM</Button>
         </div>
         <Button @click="pick" class="w-fit text-lg font-bold">Play</Button>
       </div>
@@ -369,12 +440,12 @@ function saveWordlist() {
           letter
         </Button>
         <div class="flex justify-between w-80" v-show="revealed === currentWord">
-          <Button @click="view = VIEW.SETUP" class="text-lg w-80">Next Game</Button>
-        </div>
-        <div v-show="message !== ''" class="absolute max-w-lg -bottom-24 rounded py-1 px-3 mt-8 bg-sky-100 text-lg"
-          v-html="message">
+          <Button @click="message = ''; view = VIEW.SETUP" class="text-lg w-80">Next Game</Button>
         </div>
       </div>
+    </div>
+    <div v-show="message !== ''" class="absolute w-full h-fit bottom-72 left-0 flex justify-center">
+      <div class="max-w-lg rounded py-1 px-3 bg-sky-100 text-lg" v-html="message"></div>
     </div>
     <!-- <button @click="saveWordlist">Save word list</button> -->
   </Article>

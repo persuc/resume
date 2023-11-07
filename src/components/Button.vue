@@ -1,9 +1,27 @@
 <script setup lang="ts">
+
+type SupportedColor = 'indigo' | 'lime' | 'red' | 'yellow'
+
 interface Props {
   text?: boolean,
   disabled?: boolean,
   slim?: boolean
   noHover?: boolean
+  color?: SupportedColor
+}
+
+const background: Record<SupportedColor, string> = {
+  indigo: 'bg-indigo-500',
+  lime: 'bg-lime-500',
+  yellow: 'bg-yellow-500',
+  red: 'bg-red-500',
+}
+
+const hover: Record<SupportedColor, string> = {
+  indigo: 'hover:bg-indigo-400',
+  lime: 'hover:bg-lime-400',
+  yellow: 'hover:bg-yellow-400',
+  red: 'hover:bg-red-400',
 }
 
 defineProps<Props>()
@@ -25,7 +43,7 @@ defineProps<Props>()
       if (disabled) {
         return 'bg-gray-200'
       }
-      return 'bg-indigo-500'
+      return background[color ?? 'indigo']
     })(),
     (() => { // hover styles
       if (noHover || disabled) {
@@ -34,7 +52,7 @@ defineProps<Props>()
       if (text) {
         return 'hover:bg-gray-200'
       }
-      return 'hover:bg-indigo-400'
+      return hover[color ?? 'indigo']
     })(),
     'flex',
     'items-center',

@@ -19,8 +19,8 @@ defineProps<Props>();
       <div class="py-32"></div>
     </article>
   </div>
-  <article v-else class="lg:px-8 pt-8 mx-auto max-w-5xl">
-    <slot></slot>
+  <article v-else class="lg:px-8 mx-auto max-w-5xl">
+    <slot class="pt-8"></slot>
     <div class="py-32"></div>
   </article>
 </template>
