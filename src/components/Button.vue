@@ -43,7 +43,7 @@ defineProps<Props>()
       if (disabled) {
         return 'bg-gray-200'
       }
-      return background[color ?? 'indigo']
+      return background[color ?? 'indigo'] ?? background.indigo
     })(),
     (() => { // hover styles
       if (noHover || disabled) {
@@ -52,7 +52,7 @@ defineProps<Props>()
       if (text) {
         return 'hover:bg-gray-200'
       }
-      return hover[color ?? 'indigo']
+      return hover[color ?? 'indigo'] ?? hover.indigo
     })(),
     'flex',
     'items-center',
