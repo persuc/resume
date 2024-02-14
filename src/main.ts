@@ -1,4 +1,4 @@
-import { createApp } from "vue";
+import { createApp } from "vue"
 import { createRouter, createWebHistory } from 'vue-router'
 import VueHighlightJS from 'vue3-highlightjs'
 import 'highlight.js/styles/atom-one-light.css'
@@ -74,6 +74,11 @@ const router = createRouter({
       path: '/components',
       name: "Components",
       component: () => import('./views/Components.vue')
+    },
+    {
+      path: '/playlists',
+      name: "Playlists",
+      component: () => import('./views/Playlists.vue')
     },
   ]
 })
