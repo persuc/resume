@@ -9,6 +9,7 @@ const playlists = [
   "https://open.spotify.com/embed/playlist/1sPnMnW623zxnCFriYimmN", // Jerome: leaving home
   "https://open.spotify.com/embed/playlist/1swJ9zGgLpwAJZ5Ui92VUY", // Jerome: songs to play tekken to (epic battle songs)
   "https://open.spotify.com/embed/playlist/0GrSrfQOUDDyl7PXtFi84K", // Grace: yoshimitsu sex
+  "https://open.spotify.com/embed/playlist/4Npl3rCfsNhL8n66ACf8RN", // Grace: commie songs only
   "https://open.spotify.com/embed/playlist/3mhvZ0Q2vZsa7ONEJsdZFk", // Andrew: Ska
   "https://open.spotify.com/embed/playlist/2jIe7dou2Atj9DEb6Q9Nv4", // Andrew: Prog Rock
   "https://open.spotify.com/embed/playlist/39eTkPahqikwSrcDDWfVli", // Andrew: Min, Maj7, Maj6
