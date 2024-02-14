@@ -64,7 +64,7 @@ const typeNameToInputType: Record<string, string> = {
 </script>
 
 <template>
-  <div class="border border-gray-200 rounded p-4" :id="name">
+  <div class="p-4" :id="name">
     <p class="text-lg">{{ name }}</p>
     <div v-for="prop in componentProps" class="inline-block mr-2 bg-slate-200 p-2 rounded whitespace-nowrap my-1">
       {{ prop[0] }}

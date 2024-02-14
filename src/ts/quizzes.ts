@@ -44,7 +44,7 @@ export default [
         body: 'Which of these is not a real NPM package?',
         answers: [
           { answer: 'is-ten-thousand (returns whether a number is ten thousand)' },
-          { answer: 'none (does nothing)'},
+          { answer: 'none (does nothing)' },
           { answer: 'if (executes a handler if a condition is true)' },
           { answer: 'is-april (returns true if the system month is April) ', correct: true },
         ]
@@ -67,6 +67,36 @@ export default [
           { answer: 'Open-Interval Filter', correct: true },
         ]
       },
+      {
+        body: 'What are Cyclic Barrier, Phaser, and Exchanger all a examples of?',
+        answers: [
+          { answer: 'Objects in the <i>Star Trek</i> universe' },
+          { answer: 'Components of laser interferometers' },
+          { answer: 'Machines for fabricating CPUs, alongside the Aligner and Dicing Machine' },
+          { answer: 'Classes in the <i>java.util.concurrent</i> package', correct: true },
+        ],
+      },
+      {
+        body: 'What is the Dining Philosophers problem?',
+        answers: [
+          { answer: 'A thought experiment regarding concurrent synchronisation issues', correct: true },
+          { answer: 'A metaphor for undecidability in computability theory' },
+          { answer: 'A thought experiment regarding utilitarian morality' },
+          { answer: 'Another name for Gödel\'s incompleteness theorems' },
+
+        ]
+      },
+      {
+        body: 'Which of these is not a real computer science concept?',
+        answers: [
+          { answer: 'Child stealing' },
+          { answer: '', correct: true },
+          { answer: 'Master/slave control' },
+          { answer: 'Voluntary ' },
+
+        ]
+      },
+      // https://en.wikipedia.org/wiki/Semiconductor_device_fabrication
     ],
   },
   // {

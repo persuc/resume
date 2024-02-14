@@ -4,6 +4,7 @@ import Nav from '@/components/Nav.vue'
 
 interface Props {
   items?: NavItems[]
+  footer?: boolean
 }
 
 defineProps<Props>();
@@ -16,11 +17,11 @@ defineProps<Props>();
 
     <article class="lg:px-8 lg:pt-8 pt-20 min-w-0" style="margin-right: max(calc(50% - 36rem), 0px);">
       <slot></slot>
-      <div class="py-32"></div>
+      <div v-show="footer ?? true" class="py-32"></div>
     </article>
   </div>
   <article v-else class="lg:px-8 mx-auto max-w-5xl">
     <slot class="pt-8"></slot>
-    <div class="py-32"></div>
+    <div v-show="footer ?? true" class="py-32"></div>
   </article>
 </template>

@@ -221,6 +221,50 @@ const resources: Record<string, Resource[]> = {
       title: "JavaScript Is Weird (EXTREME EDITION)",
       postTitle: " (Low Byte Productions)",
     },
+    {
+      link: "https://www.youtube.com/watch?v=KV5gbOmHbjU",
+      title: "A Walkthrough of A Mathematical Framework for Transformer Circuits",
+      postTitle: " (Neel Nanda)",
+    },
+    {
+      link: "https://www.youtube.com/watch?v=LE3NfEULV6k",
+      title: "Transfer learning and Transformer models (BERT)",
+      postTitle: " (Iulia Turc, Google Researcher)",
+    }
+  ],
+  "Machine Learning": [
+    {
+      link: "https://docs.google.com/document/d/1plbCBES0CbVPuQiQhBASEYtLW6sWj_D0dKtfmZsxvnA/edit",
+      title: "Arena Prerequisite Material",
+    },
+    {
+      link: "https://harrisonpim.com/blog/privileged-vs-non-privileged-bases-in-machine-learning",
+      title: "Privileged vs non-privileged bases in machine learning",
+    },
+    {
+      link: "https://ocw.mit.edu/courses/18-05-introduction-to-probability-and-statistics-spring-2014/pages/readings/",
+      title: "MIT Probability & Statistics Course",
+    },
+    {
+      link: "https://www.youtube.com/@umarjamilai",
+      title: "ML paper deep dives (paper overview, math and code)",
+    },
+    {
+      link: "https://www.youtube.com/@gabrielmongaras",
+      title: "ML paper deep dive 2 (paper overview + math)",
+    },
+    {
+      link: "https://www.youtube.com/@SamuelAlbanie1",
+      title: "Videos by professor Samuel Albanie (ML + AI Safety paper overviews)",
+    },
+    {
+      link: "https://github.com/DLR-RM/stable-baselines3",
+      title: "DLR-RM/stable-baselines3",
+    },
+    {
+      link: "https://github.com/TianhongDai/reinforcement-learning-algorithms",
+      title: "TianhongDai/reinforcement-learning-algorithms",
+    },
   ]
 }
 
@@ -320,6 +364,16 @@ function render()</code></pre>
     <StudyItem link="https://app.coderpad.io/PQQXDRQX" category="System Design - 90 mins" title="Design Friends Timeline">
       <p>Systems design question for a feed of your friends' most recently listened songs</p>
       <img :src="friendSongTimelineImage" class="h-80" />
+    </StudyItem>
+    <StudyItem link="https://app.coderpad.io/PQQXDRQX" category="Backend - 45 mins" title="can_transform">
+      <p>
+        You are given two strings of characters, start_state and end_state. Each character can either be an "R", "L", or
+        "-". can_transform should return true if it is possible to transform the start_state into the end_state by:
+      <ol class="list-decimal ml-8">
+        <li>swapping R with a - to its right</li>
+        <li>swapping L with a - to its left</li>
+      </ol> any number of times. Otherwise it should return false.
+      </p>
     </StudyItem>
     <StudyItem link="https://app.coderpad.io/PQQXDRQX" category="Web Backend - 30 mins" title="E-Tag Middleware">
       <p>Design node.js middleware to cache resources using <a target="_blank"

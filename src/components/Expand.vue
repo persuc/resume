@@ -12,13 +12,13 @@ const emit = defineEmits(['expand', 'collapse'])
 
 let expanded = ref(false)
 
-const COLLAPSED_HEIGHT = '0px';
-let height = COLLAPSED_HEIGHT;
+const COLLAPSED_HEIGHT = '0px'
+let height = COLLAPSED_HEIGHT
 
 const expandSlot: Ref<HTMLElement> = ref(null) as unknown as Ref<HTMLElement>
 
 onMounted(() => {
-  expandSlot.value.style.height = COLLAPSED_HEIGHT;
+  expandSlot.value.style.height = COLLAPSED_HEIGHT
   window.addEventListener('resize', onResize)
   onResize()
 })
@@ -28,18 +28,18 @@ onUnmounted(() => {
 })
 
 function onResize() {
-  height = (expandSlot.value.scrollHeight + 4) + 'px';
+  height = (expandSlot.value.scrollHeight + 4) + 'px'
 }
 
 function toggle() {
   if (expanded.value) {
-    expandSlot.value.style.height = COLLAPSED_HEIGHT;
+    expandSlot.value.style.height = COLLAPSED_HEIGHT
     emit('collapse')
   } else {
-    expandSlot.value.style.height = height;
+    expandSlot.value.style.height = height
     emit('expand')
   }
-  expanded.value = !expanded.value;
+  expanded.value = !expanded.value
 }
 
 </script>
@@ -47,7 +47,7 @@ function toggle() {
 <template>
   <div class="expand border" style="cursor: pointer;">
     <div class="p-2" @click="toggle">
-      <div :class="{ arrow: true, rotate: expanded}">▶&nbsp;</div>
+      <div :class="{ arrow: true, rotate: expanded }">☞&nbsp;</div>
       <div class="label" :style="expandedLabel && expanded ? 'display: none;' : ''">{{ label }}</div>
       <div class="label" :style="expandedLabel && expanded ? '' : 'display: none;'">{{ expandedLabel }}</div>
     </div>
@@ -60,11 +60,13 @@ function toggle() {
 
 <style scoped lang="postcss">
 .arrow {
+  font-size: 1.5rem;
   display: inline-block;
   transition: transform 0.2s;
-  transform-origin: 34% 52%;
+  transform-origin: 34% 64%;
+
   &.rotate {
-    transform: rotate(90deg);
+    transform: rotate(90deg) translate(-1pt, -2pt);
   }
 }
 

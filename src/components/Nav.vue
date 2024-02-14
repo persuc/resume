@@ -20,7 +20,7 @@ defineProps<Props>();
 </script>
 
 <template>
-  <div id="nav" :class="`flex w-full lg:w-64 w-full shrink-0 ${$attrs.class} ${isVisible ? '' : 'hidden lg:flex'}`">
+  <div id="nav" :class="`flex w-full lg:w-64 shrink-0 ${$attrs.class} ${isVisible ? '' : 'hidden lg:flex'}`">
     <NavItems :items="items"
       :class="`!flex-col gap-4 fixed lg:w-64 w-full h-screen p-8 lg:p-4 !pb-32 mt-8 lg:mt-0 lg:border-r border-gray-200 text-xl lg:text-base z-20 bg-white overflow-y-scroll`" />
   </div>

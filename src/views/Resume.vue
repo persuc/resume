@@ -55,7 +55,7 @@ import Button from '@/components/Button.vue'
       date-to="Current"
       :tech="['TypeScript', 'React', 'Java', 'Terraform', 'AWS', 'GraphQL', 'Protobuf', 'PostgreSQL', 'DynamoDB']" />
     <ul class="list-disc ml-8">
-      <li><b class="hidden">Role: </b>Managed all pages on <a target="_blank" href="https://www.canva.com/">canva.com</a>
+      <li>Managed all pages on <a target="_blank" href="https://www.canva.com/">canva.com</a>
         and <a target="_blank" href="https://www.canva.cn/">canva.cn</a>.
         These 32,590 pages receive ~30 million requests per day.</li>
       <li>Identified shortfalls in our Chinese infrastructure, established communication between the Beijing and Landing
@@ -69,7 +69,7 @@ import Button from '@/components/Button.vue'
     <JobTitle class="mt-2" company="Two Bulls" role="Software Engineer (Backend + Frontend)" date-from="2020"
       date-to="2022" :tech="['Vue.js', 'TypeScript', 'Node.js', 'C#', 'Python', 'AWS', 'MySQL', 'DynamoDB']" />
     <ul class="list-disc ml-8">
-      <li><b class="hidden">Role: </b>Delivered bespoke web applications including <a target="_blank"
+      <li>Delivered bespoke web applications including <a target="_blank"
           href="https://www.kidsdoconcall.com.au/">KidsDoc</a> telehealth, <a target="_blank"
           href="https://fit.theonetwo.com/">TheOneTwo</a> shopfront, <a target="_blank"
           href="https://www.service.vic.gov.au/services/border-permit/home">Victorian COVID border permits</a> (reached #3
@@ -81,7 +81,7 @@ import Button from '@/components/Button.vue'
     <JobTitle class="mt-2" company="Unico" role="Software Engineer (Backend)" date-from="2019" date-to="2020"
       :tech="['Java', 'MySQL', 'Python', 'MATRIXX', 'Linux', 'Docker', 'Spring']" />
     <ul class="list-disc ml-8">
-      <li><b class="hidden">Role: </b>Performed large scale database migrations (ETL) for prominent
+      <li>Performed large scale database migrations (ETL) for prominent
         telecommunications vendors.</li>
       <li>Successfully migrated over 20 million records to the <i>MATRIXX</i> in-memory database in a single day.</li>
       <li>Gained experience in data-intensive systems and concurrency, sensitive data and reverse engineering older
@@ -91,7 +91,7 @@ import Button from '@/components/Button.vue'
     <JobTitle class="mt-2" company="Monash Uni Immersive Analytics Dept" role="Software Engineer (Research)"
       date-from="2017" date-to="2019" :tech="['JavaScript', 'Three.js', 'WebGL', 'Python', 'R']" />
     <ul class="list-disc ml-8">
-      <li><b class="hidden">Role: </b>Developed a highly performant web application for 2D and 3D
+      <li>Developed a highly performant web application for 2D and 3D
         visualisation of protein complexes and cross-link mass
         spectrometry data using <i>Three.js</i> and <i>WebGL</i>.</li>
     </ul>
@@ -107,7 +107,7 @@ import Button from '@/components/Button.vue'
         <div class="hidden print:block">
           <br />
           <p class="text-lg">Inquire to find out about:</p>
-          <p>UAVs, cluster computing, side projects.</p>
+          <p>Deepfake detection, speech synthesis using style diffusion, mechanistic interpretability</p>
         </div>
       </div>
       <ImageAndText class="contact whitespace-nowrap mt-4" :image="monashLogo" :size="'4rem'">

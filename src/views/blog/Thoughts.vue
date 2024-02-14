@@ -41,6 +41,32 @@ import deltap from '@/assets/deltap.jpg'
       </div>
     </a>
 
+    <p class="mb-8">
+      "It is difficult to estimate the misery inflicted upon thousands of persons, and the absolute pecuniary penalty
+      imposed upon multitudes of intellectual workers by the loss of their time, destroyed by organ-grinders and other
+      similar nuisances."
+      <br />
+      <i>- Charles Babbage, 1864</i>
+    </p>
+
+    <p class="mb-8">
+      ANTONY Sir, it's shaped like itself and is as wide as it has width. It is only as high as it is and moves with its
+      own legs. It lives on what nourishes it, and when the four elements leave it, its soul moves into another body.
+
+      LEPIDUS What color is it?
+
+      ANTONY Of its own color too.
+
+      ANTONY Its own color.
+
+      LEPIDUS It's a strange snake.
+
+      ANTONY 'Tis so. And the tears of it are wet.
+
+      <br />
+      <i>- William Shakespeare, "Antony and Cleopatra"</i>
+    </p>
+
     <!-- <a target="_blank" href="https://youtu.be/AEtbFm_CjE0">
       <div class="border-gray-200 border rounded p-4 w-fit">
         <p class="mb-4">

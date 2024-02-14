@@ -204,16 +204,13 @@ function check() {
 
 function autoReveal() {
   let prefixMatch = 0
-  console.log('revealing vw', validWords[length.value - MIN_LENGTH], 'prefixMatch', prefixMatch, 'closestAbove', closestAbove.value, 'closestBelow', closestBelow.value, prefixMatch)
   for (
     prefixMatch = 0;
     Math.min(closestBelow.value, closestAbove.value) >= 0 &&
     prefixMatch < length.value - 1 &&
     validWords[length.value - MIN_LENGTH][closestBelow.value].charAt(prefixMatch) === validWords[length.value - MIN_LENGTH][closestAbove.value].charAt(prefixMatch);
     prefixMatch++
-  ) {
-    console.log('revealing prefixMatch', prefixMatch, 'closestAbove', closestAbove.value, 'closestBelow', closestBelow.value, prefixMatch)
-  }
+  );
   if (prefixMatch > revealed.value.length) {
     revealed.value = currentWord.value.substring(0, prefixMatch)
   }
@@ -311,7 +308,11 @@ function loadState() {
     loadSerialized(defaultSerialized)
   }
   autoReveal()
-  view.value = VIEW.SETUP
+  if (revealed.value) {
+    view.value = VIEW.PLAY
+  } else {
+    view.value = VIEW.SETUP
+  }
 }
 
 function saveState() {
@@ -351,14 +352,8 @@ function saveWordlist() {
 </script>
 
 <template>
-  <a v-if="view !== VIEW.PLAY && !showHelp" href="/" class="plain absolute left-0 top-1 z-10">
-    <Button text no-hover>
-      <span>← Back</span>
-    </Button>
-  </a>
-
-  <Button v-show="view === VIEW.PLAY && !showHelp" text no-hover class="absolute left-0 top-1 z-10"
-    @click="view = VIEW.SETUP">
+  <Button v-show="!showHelp" text no-hover class="absolute left-4 top-4 z-10"
+    @click="view === VIEW.SETUP ? $router.replace('/') : view = VIEW.SETUP">
     <span>← {{ revealed === currentWord ? 'Done' : 'Give Up' }}</span>
   </Button>
 
@@ -366,7 +361,7 @@ function saveWordlist() {
     no-hover @click="() => showHelp = true">
     <span v-show="!showHelp" class="font-semibold text-xl">?</span>
   </Button>
-  <Article class="pt-0">
+  <Article class="pt-0" :footer="false">
     <div v-show="view === VIEW.LOADING">Loading...</div>
     <div v-show="view !== VIEW.LOADING && showHelp" class="bg-white border border-gray-300 p-8 absolute z-10 mx-8">
       <Icon v-show="showHelp" name="close" class="w-10 absolute right-2 top-2 cursor-pointer p-2"
@@ -374,7 +369,9 @@ function saveWordlist() {
       <p>The game is to guess the word. Choose what length the mytery word will be (shorter words are easier) and click
         <b>Play</b>.
       </p>
-      <p>Now start guessing! Type in your guess and click <b>Guess</b> to get a hint about how close you were.</p>
+      <p>Now start guessing! The only you information you have about the word you are trying to guess is how far it is
+        through the dictionary (given as a percentage of how far through all the N-letter words it is, if they were sorted
+        alphabetically) Type in your guess and click <b>Guess</b> to get a hint about how close you were.</p>
       <p>Keep narrowing down your guesses until you find the mystery word!</p>
       <p>Letters will automatically be revealed as they are confirmed by your guesses. If you are stuck, click <b>Reveal
           Letter</b> to reveal a letter.
@@ -386,7 +383,7 @@ function saveWordlist() {
       </p>
     </div>
     <div v-show="view === VIEW.SETUP" class="h-screen flex items-center justify-center mx-8">
-      <div class="flex flex-col gap-1 items-center">
+      <div class="flex flex-col gap-1 items-center flex-wrap">
         <div class="font-display text-xl font-bold text-center">
           How long should the mystery word be?
         </div>
@@ -397,18 +394,26 @@ function saveWordlist() {
         <div class="font-display text-xl font-bold text-center">
           Difficulty?
         </div>
-        <div class="flex justify-center gap-4 mb-8">
+        <div class="flex justify-center gap-4 mb-8 flex-wrap">
           <Button text @click="difficulty = DIFFICULTY.EASY" color="lime"
             class="w-fit text-lg font-bold border !text-lime-500"
-            :class="{ 'border-2 border-lime-500': difficulty === DIFFICULTY.EASY }">Easy</Button>
+            :class="{ 'border-2 border-lime-500': difficulty === DIFFICULTY.EASY }">
+            Easy
+          </Button>
           <Button text @click="difficulty = DIFFICULTY.MEDIUM" color="yellow"
             class="w-fit text-lg font-bold border !text-yellow-500"
-            :class="{ 'border-2 border-yellow-500': difficulty === DIFFICULTY.MEDIUM }">Medium</Button>
+            :class="{ 'border-2 border-yellow-500': difficulty === DIFFICULTY.MEDIUM }">
+            Medium
+          </Button>
           <Button text @click="difficulty = DIFFICULTY.HARD" color="red"
             class="w-fit text-lg font-bold border !text-red-500"
-            :class="{ 'border-2 border-red-500': difficulty === DIFFICULTY.HARD }">Hard</Button>
+            :class="{ 'border-2 border-red-500': difficulty === DIFFICULTY.HARD }">
+            Hard
+          </Button>
           <Button text @click="difficulty = DIFFICULTY.RANDOM" class="w-fit text-lg font-bold border"
-            :class="{ 'border-2 border-gray-500': difficulty === DIFFICULTY.RANDOM }">RANDOM</Button>
+            :class="{ 'border-2 border-gray-500': difficulty === DIFFICULTY.RANDOM }">
+            RANDOM
+          </Button>
         </div>
         <Button @click="pick" class="w-fit text-lg font-bold">Play</Button>
       </div>
@@ -436,16 +441,15 @@ function saveWordlist() {
           <Button @click="check" class="text-lg" id="guessButton">Guess</Button>
         </div>
         <Button text @click="reveal" v-show="revealed !== currentWord"
-          class="text-lg w-80 mt-8 border border-gray-300 hover:bg-gray-200">Reveal
+          class="text-lg w-80 my-8 border border-gray-300 hover:bg-gray-200">Reveal
           letter
         </Button>
-        <div class="flex justify-between w-80" v-show="revealed === currentWord">
+        <div class="w-80 rounded py-1 px-3 mx-8 bg-sky-100 text-lg" v-show="message !== ''" v-html="message">
+        </div>
+        <div class="flex justify-between w-80 mt-8" v-show="revealed === currentWord">
           <Button @click="message = ''; view = VIEW.SETUP" class="text-lg w-80">Next Game</Button>
         </div>
       </div>
-    </div>
-    <div v-show="message !== ''" class="absolute w-full h-fit bottom-72 left-0 flex justify-center">
-      <div class="max-w-lg rounded py-1 px-3 bg-sky-100 text-lg" v-html="message"></div>
     </div>
     <!-- <button @click="saveWordlist">Save word list</button> -->
   </Article>
