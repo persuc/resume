@@ -38,6 +38,7 @@
     "eslint": "^8.14.0",
     "eslint-plugin-vue": "^9.17.0",
     "magic-string": "^0.30.0",
+    "mathlive": "^0.98.6",
     "postcss": "^8.4.27",
     "postcss-nesting": "^12.0.1",
     "prettier": "^3.0.3",

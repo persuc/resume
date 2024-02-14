@@ -392,6 +392,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@cortex-js/compute-engine@npm:0.22.0":
+  version: 0.22.0
+  resolution: "@cortex-js/compute-engine@npm:0.22.0"
+  dependencies:
+    complex.js: ^2.1.1
+    decimal.js: ^10.4.3
+  checksum: 1ccc95b86b03697394f1fb3427d5e6a9d8b8706749a1c930956d8c0a89c4913e80c39d2731c2625c457ccfdb00e1c898b4d2e860112c1b01f283f39722e28ea6
+  languageName: node
+  linkType: hard
+
 "@csstools/selector-specificity@npm:^3.0.0":
   version: 3.0.0
   resolution: "@csstools/selector-specificity@npm:3.0.0"
@@ -1652,6 +1662,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"complex.js@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "complex.js@npm:2.1.1"
+  checksum: a0802cc3f0eb7703088edfc3fe209ae7be5ce93c0e710a0f288be2e29ee31b3530a8c0d3330d7c2a668410dfe4293a4038554d66c7f1f1165997941bdc1092aa
+  languageName: node
+  linkType: hard
+
 "concat-map@npm:0.0.1":
   version: 0.0.1
   resolution: "concat-map@npm:0.0.1"
@@ -1765,6 +1782,13 @@ __metadata:
     supports-color:
       optional: true
   checksum: 3dbad3f94ea64f34431a9cbf0bafb61853eda57bff2880036153438f50fb5a84f27683ba0d8e5426bf41a8c6ff03879488120cf5b3a761e77953169c0600a708
+  languageName: node
+  linkType: hard
+
+"decimal.js@npm:^10.4.3":
+  version: 10.4.3
+  resolution: "decimal.js@npm:10.4.3"
+  checksum: 796404dcfa9d1dbfdc48870229d57f788b48c21c603c3f6554a1c17c10195fc1024de338b0cf9e1efe0c7c167eeb18f04548979bcc5fdfabebb7cc0ae3287bae
   languageName: node
   linkType: hard
 
@@ -3080,6 +3104,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mathlive@npm:^0.98.6":
+  version: 0.98.6
+  resolution: "mathlive@npm:0.98.6"
+  dependencies:
+    "@cortex-js/compute-engine": 0.22.0
+  checksum: 8950d1c2ec02cfca513f63eb61c8768b82de60076160182e135b2c0576345151937f0a8b20645d745a3cea51ddedc6abe82cdc237811da416d44f5bf7b3706bf
+  languageName: node
+  linkType: hard
+
 "matter-js@npm:^0.19.0":
   version: 0.19.0
   resolution: "matter-js@npm:0.19.0"
@@ -3820,6 +3853,7 @@ __metadata:
     file-saver: ^2.0.5
     highlight.js: ^11.8.0
     magic-string: ^0.30.0
+    mathlive: ^0.98.6
     matter-js: ^0.19.0
     poly-decomp: ^0.3.0
     postcss: ^8.4.27
