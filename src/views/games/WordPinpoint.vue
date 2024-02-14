@@ -204,16 +204,13 @@ function check() {
 
 function autoReveal() {
   let prefixMatch = 0
-  console.log('revealing vw', validWords[length.value - MIN_LENGTH], 'prefixMatch', prefixMatch, 'closestAbove', closestAbove.value, 'closestBelow', closestBelow.value, prefixMatch)
   for (
     prefixMatch = 0;
     Math.min(closestBelow.value, closestAbove.value) >= 0 &&
     prefixMatch < length.value - 1 &&
     validWords[length.value - MIN_LENGTH][closestBelow.value].charAt(prefixMatch) === validWords[length.value - MIN_LENGTH][closestAbove.value].charAt(prefixMatch);
     prefixMatch++
-  ) {
-    console.log('revealing prefixMatch', prefixMatch, 'closestAbove', closestAbove.value, 'closestBelow', closestBelow.value, prefixMatch)
-  }
+  );
   if (prefixMatch > revealed.value.length) {
     revealed.value = currentWord.value.substring(0, prefixMatch)
   }
@@ -311,7 +308,11 @@ function loadState() {
     loadSerialized(defaultSerialized)
   }
   autoReveal()
-  view.value = VIEW.SETUP
+  if (revealed.value) {
+    view.value = VIEW.PLAY
+  } else {
+    view.value = VIEW.SETUP
+  }
 }
 
 function saveState() {
@@ -351,22 +352,16 @@ function saveWordlist() {
 </script>
 
 <template>
-  <a v-if="view !== VIEW.PLAY && !showHelp" href="/" class="plain absolute left-0 top-1 z-10">
-    <Button text no-hover>
-      <span>← Back</span>
-    </Button>
-  </a>
-
-  <Button v-show="view === VIEW.PLAY && !showHelp" text no-hover class="absolute left-0 top-1 z-10"
-    @click="view = VIEW.SETUP">
-    <span>← {{ revealed === currentWord ? 'Done' : 'Give Up' }}</span>
+  <Button v-show="!showHelp" text class="absolute left-4 top-4 z-10 border"
+    @click="view === VIEW.SETUP ? $router.replace('/') : view = VIEW.SETUP" icon="☜">
+    <span>{{ revealed === currentWord ? 'Done' : 'Give Up' }}</span>
   </Button>
 
-  <Button v-show="view !== VIEW.LOADING && !showHelp" class="absolute right-4 top-4 border border-gray-300 z-10" text
-    no-hover @click="() => showHelp = true">
+  <Button v-show="view !== VIEW.LOADING && !showHelp" text class="absolute right-4 top-4 border border-gray-300 z-10"
+    @click="() => showHelp = true">
     <span v-show="!showHelp" class="font-semibold text-xl">?</span>
   </Button>
-  <Article class="pt-0">
+  <Article class="pt-0" :footer="false">
     <div v-show="view === VIEW.LOADING">Loading...</div>
     <div v-show="view !== VIEW.LOADING && showHelp" class="bg-white border border-gray-300 p-8 absolute z-10 mx-8">
       <Icon v-show="showHelp" name="close" class="w-10 absolute right-2 top-2 cursor-pointer p-2"
@@ -398,19 +393,31 @@ function saveWordlist() {
           Difficulty?
         </div>
         <div class="flex justify-center gap-4 mb-8">
-          <Button text @click="difficulty = DIFFICULTY.EASY" color="lime"
-            class="w-fit text-lg font-bold border !text-lime-500"
-            :class="{ 'border-2 border-lime-500': difficulty === DIFFICULTY.EASY }">Easy</Button>
+          <div class="text-5xl font-thin">
+            {
+          </div>
+          <Button text @click="difficulty = DIFFICULTY.EASY" color="lime" class="w-fit text-lg font-bold !text-lime-500"
+            :class="{ 'border-b border-lime-500': difficulty === DIFFICULTY.EASY }">
+            Easy
+          </Button>
           <Button text @click="difficulty = DIFFICULTY.MEDIUM" color="yellow"
-            class="w-fit text-lg font-bold border !text-yellow-500"
-            :class="{ 'border-2 border-yellow-500': difficulty === DIFFICULTY.MEDIUM }">Medium</Button>
-          <Button text @click="difficulty = DIFFICULTY.HARD" color="red"
-            class="w-fit text-lg font-bold border !text-red-500"
-            :class="{ 'border-2 border-red-500': difficulty === DIFFICULTY.HARD }">Hard</Button>
-          <Button text @click="difficulty = DIFFICULTY.RANDOM" class="w-fit text-lg font-bold border"
-            :class="{ 'border-2 border-gray-500': difficulty === DIFFICULTY.RANDOM }">RANDOM</Button>
+            class="w-fit text-lg font-bold !text-yellow-500"
+            :class="{ 'border-b border-yellow-500': difficulty === DIFFICULTY.MEDIUM }">
+            Medium
+          </Button>
+          <Button text @click="difficulty = DIFFICULTY.HARD" color="red" class="w-fit text-lg font-bold !text-red-500"
+            :class="{ 'border-b border-red-500': difficulty === DIFFICULTY.HARD }">
+            Hard
+          </Button>
+          <Button text @click="difficulty = DIFFICULTY.RANDOM" class="w-fit text-lg font-bold"
+            :class="{ 'border-b border-gray-500': difficulty === DIFFICULTY.RANDOM }">
+            RANDOM
+          </Button>
+          <div class="text-5xl font-thin">
+            }
+          </div>
         </div>
-        <Button @click="pick" class="w-fit text-lg font-bold">Play</Button>
+        <Button @click="pick" text class="w-fit text-lg font-bold border">Play</Button>
       </div>
     </div>
     <div v-show="view === VIEW.PLAY" class="flex items-center justify-center h-screen">
@@ -433,7 +440,7 @@ function saveWordlist() {
           <input id="guessInput" type="text" v-model="guess" style="width: 11.5rem"
             class="border-b border-gray-500 uppercase text-xl font-mono outline-none"
             :placeholder="'E.g.' + exampleWord" />
-          <Button @click="check" class="text-lg" id="guessButton">Guess</Button>
+          <Button @click="check" class="text-lg" text id="guessButton">Guess</Button>
         </div>
         <Button text @click="reveal" v-show="revealed !== currentWord"
           class="text-lg w-80 mt-8 border border-gray-300 hover:bg-gray-200">Reveal
