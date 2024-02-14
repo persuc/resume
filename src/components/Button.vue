@@ -7,21 +7,22 @@ interface Props {
   disabled?: boolean,
   slim?: boolean
   noHover?: boolean
+  icon?: string
   color?: SupportedColor
 }
 
 const background: Record<SupportedColor, string> = {
-  indigo: 'bg-indigo-500',
-  lime: 'bg-lime-500',
-  yellow: 'bg-yellow-500',
-  red: 'bg-red-500',
+  indigo: '!border-indigo-500',
+  lime: '!border-lime-500',
+  yellow: '!border-yellow-500',
+  red: '!border-red-500',
 }
 
 const hover: Record<SupportedColor, string> = {
-  indigo: 'hover:bg-indigo-400',
-  lime: 'hover:bg-lime-400',
-  yellow: 'hover:bg-yellow-400',
-  red: 'hover:bg-red-400',
+  indigo: 'hover:border-indigo-400',
+  lime: 'hover:border-lime-400',
+  yellow: 'hover:border-yellow-400',
+  red: 'hover:border-red-400',
 }
 
 defineProps<Props>()
@@ -33,24 +34,20 @@ defineProps<Props>()
     'px-5',
     'uppercase',
     'font-medium',
-    'rounded-lg',
     disabled ? 'cursor-default' : 'cursor-pointer',
-    text ? 'text-slate-900' : (disabled ? 'text-gray-500' : 'text-white'),
+    text ? 'text-slate-900' : (disabled ? 'text-gray-500' : 'text-slate-900'),
     (() => { // background styles
       if (text) {
-        return 'bg-transparent'
+        return ''
       }
-      if (disabled) {
-        return 'bg-gray-200'
-      }
-      return background[color ?? 'indigo'] ?? background.indigo
+      return 'border-l-2 ' + (background[color ?? 'indigo'] ?? background.indigo)
     })(),
     (() => { // hover styles
       if (noHover || disabled) {
         return ''
       }
       if (text) {
-        return 'hover:bg-gray-200'
+        return 'hover:font-serif'
       }
       return hover[color ?? 'indigo'] ?? hover.indigo
     })(),
@@ -59,6 +56,11 @@ defineProps<Props>()
     text ? 'transition-colors' : '',
     'duration-75'
   ]">
-    <slot />
+    <div class="flex gap-x-2 items-center">
+      <div v-html="icon ?? '☞'" class="mr-2" style="transform: scale(1.75) translate(0, -10%)" />
+      <div class="flex gap-x-2 items-center">
+        <slot />
+      </div>
+    </div>
   </div>
 </template>

@@ -47,20 +47,15 @@ svg {
   }
 
   a:not(.plain) {
-    @apply text-blue-600 underline;
-    /* @extend .text-blue-600; */
+    @apply underline decoration-dotted;
 
-    &:visited {
-      @apply text-blue-600;
-      /* @extend .text-blue-600; */
-    }
   }
 
   @media (hover: hover) {
     a:not(.plain):not(.nohover):hover {
-      @apply bg-blue-50;
+      @apply italic font-serif;
 
-      &::before {
+      /* &::before {
         content: " ";
         position: absolute;
         left: -0.1em;
@@ -78,7 +73,7 @@ svg {
         height: 100%;
         width: 0.1em;
         @apply bg-blue-50;
-      }
+      } */
     }
   }
 }
@@ -94,4 +89,113 @@ svg {
 
 .break-words {
   word-break: break-word;
+}
+
+.border {
+  border-left-color: transparent;
+  border-bottom-color: transparent;
+  border-top-color: transparent;
+  border-right-color: transparent;
+
+  /* @property --ll {
+    syntax: '<length>';
+    initial-value: 0.8rem;
+    inherits: false;
+  }
+
+  @keyframes fadeIn {
+    50% {
+      --ll: 1.6rem
+    }
+  } */
+
+  --thickness: 1pt;
+  --bl: 0rem;
+  --bb: 0.8rem;
+  --br: 1.1rem;
+  --ll: 0.8rem;
+  --lt: 1rem;
+  --lb: 0.5rem;
+
+  --tl: 1.5rem;
+  --tt: 0.8rem;
+  --tr: 0.25rem;
+  --rr: 1rem;
+  --rt: 0.5rem;
+  --rb: 1rem;
+
+  &:hover::before,
+  &:hover::after {
+    width: calc(100% + 1.25rem);
+    height: calc(100% + 1.25rem);
+    left: -0.625rem;
+    right: -0.625rem;
+    top: -0.625rem;
+  }
+
+  &::before,
+  &::after {
+    content: " ";
+    width: calc(100% + 2rem);
+    height: calc(100% + 2rem);
+    background-color: black;
+    position: absolute;
+    left: -1rem;
+    top: -1rem;
+    transition: all 0.25s;
+  }
+
+  &::before {
+    clip-path: polygon(var(--bl) calc(100% - var(--bb) - var(--thickness)),
+        var(--ll) calc(100% - var(--bb) - var(--thickness)),
+        var(--ll) var(--lt),
+        calc(var(--ll) + var(--thickness)) var(--lt),
+        calc(var(--ll) + var(--thickness)) calc(100% - var(--bb) - var(--thickness)),
+        calc(100% - var(--br)) calc(100% - var(--bb) - var(--thickness)),
+        calc(100% - var(--br)) calc(100% - var(--bb)),
+        calc(var(--ll) + var(--thickness)) calc(100% - var(--bb)),
+        calc(var(--ll) + var(--thickness)) calc(100% - var(--lb)),
+        var(--ll) calc(100% - var(--lb)),
+        var(--ll) calc(100% - var(--bb)),
+        var(--bl) calc(100% - var(--bb)));
+
+  }
+
+  &::after {
+    clip-path: polygon(var(--tl) var(--tt),
+        calc(100% - var(--rr) - var(--thickness)) var(--tt),
+        calc(100% - var(--rr) - var(--thickness)) var(--rt),
+        calc(100% - var(--rr)) var(--rt),
+        calc(100% - var(--rr)) var(--tt),
+        calc(100% - var(--tr)) var(--tt),
+        calc(100% - var(--tr)) calc(var(--tt) + var(--thickness)),
+        calc(100% - var(--rr)) calc(var(--tt) + var(--thickness)),
+        calc(100% - var(--rr)) calc(100% - var(--rt) - var(--rb)),
+        calc(100% - var(--rr) - var(--thickness)) calc(100% - var(--rt) - var(--rb)),
+        calc(100% - var(--rr) - var(--thickness)) calc(var(--tt) + var(--thickness)),
+        var(--tl) calc(var(--tt) + var(--thickness)));
+  }
+
+  /* &::after {
+    content: " ";
+    border-right-style: solid;
+    border-right-color: black;
+    position: absolute;
+    right: 0;
+    top: -0.5rem;
+    height: calc(100% + 0.5rem);
+    border-right-width: inherit;
+  } */
+
+  /* &::before {
+    content: " ";
+    border-top-style: solid;
+    border-top-color: black;
+    position: absolute;
+    right: -0.5rem;
+    top: 0;
+    width: calc(100% + 0.5rem);
+    border-top-width: inherit;
+  } */
+
 }

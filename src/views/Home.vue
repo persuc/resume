@@ -56,7 +56,7 @@ const randomPages: TPreviewCard[] = [
           <div class="flex justify-between items-center h-12">
             <span class="text-xl pl-1">Resume</span>
             <a href="/andrew_persic_resume.pdf" download @click.stop class="plain">
-              <Button text slim class="ml-2 py-2 text-sm">
+              <Button text slim class="ml-2 py-2 text-sm" icon="">
                 <Icon name="download" class="mr-2 opacity-80 w-5" />Save
               </Button>
             </a>
