@@ -23,7 +23,7 @@ const playlists = [
     </Button>
   </a>
 
-  <div class="blog px-8 pt-8" style="max-width: 60rem; margin: 0 auto;">
+  <div class="blog px-8 pt-16" style="max-width: 60rem; margin: 0 auto;">
 
     <p class="text-3xl mb-4">Playlists by me and my friends</p>
 
