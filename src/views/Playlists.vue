@@ -28,7 +28,7 @@ const playlists = [
     <p class="text-3xl mb-4">Playlists by me and my friends</p>
 
     <iframe v-for="url in playlists" :key="url" style="border-radius:12px" :src="url" width="100%" height="352"
-      frameBorder="0" allowfullscreen=""
+      frameBorder="0" :allowfullscreen="false"
       allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"
       class="my-4"></iframe>
 
