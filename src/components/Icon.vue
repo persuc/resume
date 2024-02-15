@@ -17,7 +17,7 @@ for (const pre of props.preload ?? []) {
 function loadSvg(name: string) {
   if (!componentsCache[name]) {
     componentsCache[name] = defineAsyncComponent(() =>
-      import(`../assets/icons/${name}.svg`)
+      import((name.includes('/') || name.endsWith('.svg')) ? name : `../assets/icons/${name}.svg`)
     )
   }
   return componentsCache[name]

@@ -3,6 +3,7 @@ import Codeblock from '@/components/Codeblock.vue'
 import Article from '@/components/Article.vue'
 import External from '@/components/External.vue'
 import Formula from '@/components/Formula.vue'
+import SvgBehindImage from '@/components/SvgBehindImage.vue'
 
 const navItems = [
   { href: "/blog", label: "Back", classes: "mb-3" },
@@ -19,6 +20,17 @@ const navItems = [
     label: 'PPO Dash',
   },
 ]
+
+const charts = ['value-loss', 'ep-return', 'ep-len'] as const
+
+function getChart(run: string) {
+  return charts.map(c => ({
+    svg: `ppo-ram/${run}/${c}-axes`,
+    image: `ppo-ram/memory-1/${c}.png`,
+  }))
+}
+
+const memory1 = getChart('memory-1')
 
 </script>
 
@@ -68,13 +80,31 @@ const navItems = [
         Policy Optimization Algorithms</External> provides a good overview.
     </p>
 
-    <p class="text-xl mt-8" id="first-attempt">First Attempt?</p>
+    <p class="text-xl mt-8" id="first-attempt">First Attempt</p>
+
+    <p>My first attempt at training on RAM ended in the model falling into a trap early in training that it was never able
+      to recover from. Here is the </p>
+
+
+    <SvgBehindImage v-for="chart in memory1" :key="chart.image" :image="chart.image" :svg="chart.svg" />
+
+    <!-- <iframe
+      src="https://wandb.ai/persic/PPOMemory/reports/Training-PPO-Agent-on-Breakout-RAM-Attempt-1--Vmlldzo2ODMzNzkw"
+      style="border:none;height:1024px;width:100%"></iframe> -->
+
+    <p>Compare this to a training run where the actor and critic used a shared convolutional archiecture instead, and
+      were
+      given observations in the form of pixel data.</p>
+
+    <!-- <iframe src="https://wandb.ai/persic/PPOPixels/reports/Training-PPO-Agent-on-Breakout-Pixels--Vmlldzo2ODMzODMz"
+      style="border:none;height:1024px;width:100%"></iframe> -->
 
     <p class="text-xl mt-8" id="ppo-dash">PPO Dash</p>
 
     <p>
 
-      <External href="https://arxiv.org/abs/1907.06704">PPO Dash: Improving Generalization in Deep Reinforcement Learning
+      <External href="https://arxiv.org/abs/1907.06704">PPO Dash: Improving Generalization in Deep Reinforcement
+        Learning
       </External>
     </p>
 
@@ -85,6 +115,12 @@ const navItems = [
       also so that the policy can "lock on" to the sparse reward (see
       <External href="https://arxiv.org/abs/1808.04355">Large-Scale Study of Curiosity-Driven Learning</External>)
     </p>
+
+    <External href="https://iclr-blog-track.github.io/2022/03/25/ppo-implementation-details/">The 37 Implementation
+      Details of Proximal Policy Optimization</External>
+
+    <External href="https://openreview.net/pdf?id=nIAxjsniDzg">What Matters For On Policy Deep Actor
+      Critic Methods? A Large Scale Study</External>
 
     <Codeblock label="PPOArgs" language="python" :code="'PPOArgs()'" />
 
