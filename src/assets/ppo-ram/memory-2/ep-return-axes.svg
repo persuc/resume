@@ -1,0 +1,174 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" class="rv-xy-plot__inner"
+  viewBox="0 0 728 409">
+  <g transform="translate(27,8)" class="rv-xy-plot__grid-lines">
+    <line y1="374" y2="374" x1="0" x2="695" class="rv-xy-plot__grid-lines__line" stroke="#E6E6E9" fill="none"
+      stroke-width="0.5px"></line>
+    <line y1="320.5714285714286" y2="320.5714285714286" x1="0" x2="695" class="rv-xy-plot__grid-lines__line"
+      stroke="#E6E6E9" fill="none" stroke-width="0.5px"></line>
+    <line y1="267.14285714285717" y2="267.14285714285717" x1="0" x2="695" class="rv-xy-plot__grid-lines__line"
+      stroke="#E6E6E9" fill="none" stroke-width="0.5px"></line>
+    <line y1="213.7142857142857" y2="213.7142857142857" x1="0" x2="695" class="rv-xy-plot__grid-lines__line"
+      stroke="#E6E6E9" fill="none" stroke-width="0.5px"></line>
+    <line y1="160.2857142857143" y2="160.2857142857143" x1="0" x2="695" class="rv-xy-plot__grid-lines__line"
+      stroke="#E6E6E9" fill="none" stroke-width="0.5px"></line>
+    <line y1="106.85714285714285" y2="106.85714285714285" x1="0" x2="695" class="rv-xy-plot__grid-lines__line"
+      stroke="#E6E6E9" fill="none" stroke-width="0.5px"></line>
+    <line y1="53.428571428571445" y2="53.428571428571445" x1="0" x2="695" class="rv-xy-plot__grid-lines__line"
+      stroke="#E6E6E9" fill="none" stroke-width="0.5px"></line>
+    <line y1="0" y2="0" x1="0" x2="695" class="rv-xy-plot__grid-lines__line" stroke="#E6E6E9" fill="none"
+      stroke-width="0.5px"></line>
+  </g>
+  <g class="rv-xy-plot__series rv-xy-plot__series--mark" transform="translate(27,8)">
+    <circle r="2" cx="695" cy="240.42857142857142"
+      style="opacity: 1; stroke: rgb(51, 141, 216); fill: rgb(51, 141, 216); stroke-width: 1px;"></circle>
+  </g>
+  <defs class="rv-gradient-defs">
+    <linearGradient id="leftFadeGradient" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0%" stop-color="white" stop-opacity="1"></stop>
+      <stop offset="60%" stop-color="white" stop-opacity="1"></stop>
+      <stop offset="100%" stop-color="white" stop-opacity="0"></stop>
+    </linearGradient>
+    <linearGradient id="rightFadeGradient" x1="1" x2="0" y1="0" y2="0">
+      <stop offset="0%" stop-color="white" stop-opacity="1"></stop>
+      <stop offset="100%" stop-color="white" stop-opacity="0"></stop>
+    </linearGradient>
+    <linearGradient id="bottomFadeGradient" x1="0" x2="0" y1="1" y2="0">
+      <stop offset="0%" stop-color="white" stop-opacity="1"></stop>
+      <stop offset="40%" stop-color="white" stop-opacity="1"></stop>
+      <stop offset="100%" stop-color="white" stop-opacity="0"></stop>
+    </linearGradient>
+    <linearGradient id="topFadeGradient" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="white" stop-opacity="1"></stop>
+      <stop offset="100%" stop-color="white" stop-opacity="0"></stop>
+    </linearGradient>
+  </defs>
+  <g class="rv-xy-plot__borders plot-border">
+    <rect class="rv-xy-plot__borders-bottom plot-border-bottom"
+      style="fill: url(&quot;#bottomFadeGradient&quot;); opacity: 1;" x="0" y="382" width="728" height="27"></rect>
+    <rect class="rv-xy-plot__borders-left plot-border-left"
+      style="fill: url(&quot;#leftFadeGradient&quot;); opacity: 1;" x="0" y="0" width="27" height="409"></rect>
+    <rect class="rv-xy-plot__borders-right plot-border-right"
+      style="fill: url(&quot;#rightFadeGradient&quot;); opacity: 1;" x="722" y="0" width="6" height="409"></rect>
+    <rect class="rv-xy-plot__borders-top plot-border-top" style="fill: url(&quot;#topFadeGradient&quot;); opacity: 1;"
+      x="0" y="0" width="728" height="8"></rect>
+  </g>
+  <g transform="translate(27,382)" class="rv-xy-plot__axis rv-xy-plot__axis--horizontal">
+    <line x1="0" x2="695" y1="0" y2="0" class="rv-xy-plot__axis__line" stroke="#E6E6E9" fill="none" stroke-width="2px">
+    </line>
+    <g transform="translate(0, 0)" class="rv-xy-plot__axis__ticks"></g>
+  </g>
+  <g transform="translate(27,382)" class="rv-xy-plot__axis rv-xy-plot__axis--horizontal"
+    style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;">
+    <line x1="0" x2="695" y1="0" y2="0" class="rv-xy-plot__axis__line"
+      style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;"></line>
+    <g transform="translate(0, 0)" class="rv-xy-plot__axis__ticks">
+      <g transform="translate(174.38192031035317, 0)" class="rv-xy-plot__axis__tick"
+        style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;">
+        <line x1="0" x2="0" y1="-6" y2="6" class="rv-xy-plot__axis__tick__line"
+          style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;"></line><text
+          text-anchor="middle" dy="0.72em" transform="translate(0, 14)" class="rv-xy-plot__axis__tick__text"
+          style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;">50k</text>
+      </g>
+      <g transform="translate(349.9153398529055, 0)" class="rv-xy-plot__axis__tick"
+        style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;">
+        <line x1="0" x2="0" y1="-6" y2="6" class="rv-xy-plot__axis__tick__line"
+          style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;"></line><text
+          text-anchor="middle" dy="0.72em" transform="translate(0, 14)" class="rv-xy-plot__axis__tick__text"
+          style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;">100k</text>
+      </g>
+      <g transform="translate(525.4487593954578, 0)" class="rv-xy-plot__axis__tick"
+        style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;">
+        <line x1="0" x2="0" y1="-6" y2="6" class="rv-xy-plot__axis__tick__line"
+          style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;"></line><text
+          text-anchor="middle" dy="0.72em" transform="translate(0, 14)" class="rv-xy-plot__axis__tick__text"
+          style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;">150k</text>
+      </g>
+    </g>
+    <g transform="translate(0, 0)" class="rv-xy-plot__axis__title">
+      <g style="text-anchor: end; font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;"
+        transform="translate(689, -6) rotate(0)"><text
+          style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;">Step</text></g>
+    </g>
+  </g>
+  <g transform="translate(27,382)" class="rv-xy-plot__axis rv-xy-plot__axis--horizontal">
+    <line x1="0" x2="0" y1="0" y2="0" class="rv-xy-plot__axis__line"></line>
+    <g transform="translate(0, 0)" class="rv-xy-plot__axis__ticks">
+      <g transform="translate(174.38192031035317, 0)" class="rv-xy-plot__axis__tick">
+        <line x1="0" x2="0" y1="-6" y2="6" class="rv-xy-plot__axis__tick__line"></line><text text-anchor="middle"
+          dy="0.72em" transform="translate(0, 14)" class="rv-xy-plot__axis__tick__text"></text>
+      </g>
+      <g transform="translate(349.9153398529055, 0)" class="rv-xy-plot__axis__tick">
+        <line x1="0" x2="0" y1="-6" y2="6" class="rv-xy-plot__axis__tick__line"></line><text text-anchor="middle"
+          dy="0.72em" transform="translate(0, 14)" class="rv-xy-plot__axis__tick__text"></text>
+      </g>
+      <g transform="translate(525.4487593954578, 0)" class="rv-xy-plot__axis__tick">
+        <line x1="0" x2="0" y1="-6" y2="6" class="rv-xy-plot__axis__tick__line"></line><text text-anchor="middle"
+          dy="0.72em" transform="translate(0, 14)" class="rv-xy-plot__axis__tick__text"></text>
+      </g>
+    </g>
+  </g>
+  <g transform="translate(0,8)" class="rv-xy-plot__axis rv-xy-plot__axis--vertical"
+    style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;">
+    <line x1="27" x2="27" y1="0" y2="374" class="rv-xy-plot__axis__line"
+      style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;" stroke="#E6E6E9" fill="none"
+      stroke-width="2px"></line>
+    <g transform="translate(27, 0)" class="rv-xy-plot__axis__ticks">
+      <g transform="translate(0, 374)" class="rv-xy-plot__axis__tick"
+        style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;">
+        <line y1="0" y2="0" x1="6" x2="-6" class="rv-xy-plot__axis__tick__line"
+          style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;"></line><text
+          text-anchor="end" dy="0.32em" transform="translate(-14, 0)" class="rv-xy-plot__axis__tick__text"
+          style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;">0</text>
+      </g>
+      <g transform="translate(0, 320.5714285714286)" class="rv-xy-plot__axis__tick"
+        style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;">
+        <line y1="0" y2="0" x1="6" x2="-6" class="rv-xy-plot__axis__tick__line"
+          style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;"></line><text
+          text-anchor="end" dy="0.32em" transform="translate(-14, 0)" class="rv-xy-plot__axis__tick__text"
+          style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;">2</text>
+      </g>
+      <g transform="translate(0, 267.14285714285717)" class="rv-xy-plot__axis__tick"
+        style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;">
+        <line y1="0" y2="0" x1="6" x2="-6" class="rv-xy-plot__axis__tick__line"
+          style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;"></line><text
+          text-anchor="end" dy="0.32em" transform="translate(-14, 0)" class="rv-xy-plot__axis__tick__text"
+          style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;">4</text>
+      </g>
+      <g transform="translate(0, 213.7142857142857)" class="rv-xy-plot__axis__tick"
+        style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;">
+        <line y1="0" y2="0" x1="6" x2="-6" class="rv-xy-plot__axis__tick__line"
+          style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;"></line><text
+          text-anchor="end" dy="0.32em" transform="translate(-14, 0)" class="rv-xy-plot__axis__tick__text"
+          style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;">6</text>
+      </g>
+      <g transform="translate(0, 160.2857142857143)" class="rv-xy-plot__axis__tick"
+        style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;">
+        <line y1="0" y2="0" x1="6" x2="-6" class="rv-xy-plot__axis__tick__line"
+          style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;"></line><text
+          text-anchor="end" dy="0.32em" transform="translate(-14, 0)" class="rv-xy-plot__axis__tick__text"
+          style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;">8</text>
+      </g>
+      <g transform="translate(0, 106.85714285714285)" class="rv-xy-plot__axis__tick"
+        style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;">
+        <line y1="0" y2="0" x1="6" x2="-6" class="rv-xy-plot__axis__tick__line"
+          style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;"></line><text
+          text-anchor="end" dy="0.32em" transform="translate(-14, 0)" class="rv-xy-plot__axis__tick__text"
+          style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;">10</text>
+      </g>
+      <g transform="translate(0, 53.428571428571445)" class="rv-xy-plot__axis__tick"
+        style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;">
+        <line y1="0" y2="0" x1="6" x2="-6" class="rv-xy-plot__axis__tick__line"
+          style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;"></line><text
+          text-anchor="end" dy="0.32em" transform="translate(-14, 0)" class="rv-xy-plot__axis__tick__text"
+          style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;">12</text>
+      </g>
+      <g transform="translate(0, 0)" class="rv-xy-plot__axis__tick"
+        style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;">
+        <line y1="0" y2="0" x1="6" x2="-6" class="rv-xy-plot__axis__tick__line"
+          style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;"></line><text
+          text-anchor="end" dy="0.32em" transform="translate(-14, 0)" class="rv-xy-plot__axis__tick__text"
+          style="font-family: Source Sans Pro; fill: rgb(107, 107, 118); font-size: 14px;">14</text>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -47,7 +47,7 @@ function toggle() {
 <template>
   <div class="expand border" style="cursor: pointer;">
     <div class="p-2" @click="toggle">
-      <div :class="{ arrow: true, rotate: expanded }">☞&nbsp;</div>
+      <div :class="{ arrow: true, rotate: expanded }">▶&nbsp;</div>
       <div class="label" :style="expandedLabel && expanded ? 'display: none;' : ''">{{ label }}</div>
       <div class="label" :style="expandedLabel && expanded ? '' : 'display: none;'">{{ expandedLabel }}</div>
     </div>
@@ -60,13 +60,12 @@ function toggle() {
 
 <style scoped lang="postcss">
 .arrow {
-  font-size: 1.5rem;
   display: inline-block;
   transition: transform 0.2s;
-  transform-origin: 34% 64%;
+  transform-origin: 34% 52%;
 
   &.rotate {
-    transform: rotate(90deg) translate(-1pt, -2pt);
+    transform: rotate(90deg);
   }
 }
 

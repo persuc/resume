@@ -1,5 +1,5 @@
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" class="rv-xy-plot__inner" width="728"
-  height="395">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" class="rv-xy-plot__inner"
+  viewBox="0 0 728 395">
   <g transform="translate(38,8)" class="rv-xy-plot__grid-lines" fill="none">
     <line y1="360" y2="360" x1="0" x2="684" class="rv-xy-plot__grid-lines__line" style="" stroke="#E6E6E9" fill="none"
       stroke-width="0.5px"></line>
