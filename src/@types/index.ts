@@ -39,12 +39,12 @@ export type PreviewCard = {
   previewComponent?: () => unknown
 }>
 
-export interface NavItems {
+export type NavItems = {
   href: string
   label: string
   classes?: string
   items?: NavItems[]
-}
+} | "back"
 
 export type VueComponent = DefineComponent<
   any, // stores the component props

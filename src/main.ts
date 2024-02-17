@@ -4,9 +4,11 @@ import VueHighlightJS from 'vue3-highlightjs'
 import 'highlight.js/styles/atom-one-light.css'
 import highlightCore from 'highlight.js/lib/core' // this line tells the following grammars where the types are
 import assembly from 'highlight.js/lib/languages/armasm'
+import bash from 'highlight.js/lib/languages/bash'
 import cpp from 'highlight.js/lib/languages/cpp'
 import javascript from 'highlight.js/lib/languages/javascript'
 import python from 'highlight.js/lib/languages/python'
+import ruby from 'highlight.js/lib/languages/ruby'
 import App from "./App.vue"
 import './index.css'
 import { blogPosts } from "@/ts/blog"
@@ -88,9 +90,11 @@ createApp(App)
   .use(VueHighlightJS, {
     languages: {
       assembly,
+      bash,
       cpp,
       javascript,
       python,
+      ruby,
     }
   })
   .mount('#app')

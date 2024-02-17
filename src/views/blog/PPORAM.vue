@@ -13,7 +13,6 @@ import localMinimum from '@/assets/ppo-ram/memory-1/local_minimum.mp4'
 import pixelVideo from '@/assets/ppo-ram/pixel/example.mp4'
 import Expand from '@/components/Expand.vue'
 
-
 const navItems = [
   { href: "/blog", label: "Back", classes: "mb-3" },
   {
@@ -211,7 +210,7 @@ function saveWandBCanvas(name) {
 
     <p>The reason for my pessimism is that the Atari only uses 128 bytes of RAM to store the state of Breakout,
       (represented to the model
-      as 128 <code class="bg-gray-100 py-0.5 px-1 rounded-md">uint8</code> values) so my simple archiecture with 64
+      as 128 <code class="inline-code">uint8</code> values) so my simple archiecture with 64
       neurons in its hidden dimension should be more than capable of
       pulling out the useful values.
     </p>
@@ -332,7 +331,7 @@ function saveWandBCanvas(name) {
 
     <p>How can we remedy this blatant rule bending? Actually it's quite simple, we don't even need to modify the
       environment. Now that we know which RAM addresses indicate whether the ball is alive, we can just hardcode a
-      behaviour in our <code class="bg-gray-100 py-0.5 px-1 rounded-md">play_step</code> function fires the ball instantly
+      behaviour in our <code class="inline-code">play_step</code> function fires the ball instantly
       whenever it goes off the screen. However, as we see with the agent above, this doesn't seem necessary for
       the agent to perform well. To be clear, even with this trick, the agent is not just learning a sequence of moves by
       wrote.
