@@ -1,18 +1,26 @@
 <script setup lang="ts">
+import Article from '@/components/Article.vue'
 import BackButton from '@/components/BackButton.vue'
 import Codeblock from '@/components/Codeblock.vue'
+
+const navItems = [
+  "back" as const,
+  {
+    href: '#top',
+    label: 'What is StyleTTS?',
+  },
+]
 
 </script>
 
 <template>
-  <BackButton />
-  <Article>
+  <Article :items="navItems" id="top">
 
     <p class="text-3xl">What is StyleTTS?</p>
 
-    <p>This post explores what proximal policy optimisation is, and my learning process when implementing it to train an
-      agent to play the Atari game Breakout using an <External
-        href="https://www.gymlibrary.dev/environments/atari/breakout/">emulated environment</External>.</p>
+    <p>
+      <External href="https://www.gymlibrary.dev/environments/atari/breakout/">2019 paper</External>.
+    </p>
 
 
     <Codeblock label="PPOArgs" language="python" :code="'PPOArgs()'" />

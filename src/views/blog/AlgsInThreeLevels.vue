@@ -24,7 +24,7 @@ const problems = [
 ]
 
 const navItems: NavItems[] = [
-  { href: "/blog", label: "Back", classes: "lg:mb-3" },
+  "back",
   {
     href: '#title',
     label: 'Top',

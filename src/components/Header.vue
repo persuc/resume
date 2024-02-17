@@ -7,7 +7,7 @@ interface Props {
   backRoute?: string,
 }
 
-const props = withDefaults( defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   backRoute: '/'
 })
 
@@ -26,5 +26,4 @@ function goHome() {
   </header>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

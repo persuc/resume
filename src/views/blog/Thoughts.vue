@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import Header from '@/components/Header.vue'
+import BackButton from '@/components/BackButton.vue'
 import bodeVocoder from '@/assets/bode_vocoder.png'
 import deltap from '@/assets/deltap.jpg'
+import disaster from '@/assets/disaster-etymology.png'
 
 </script>
 
 <template>
-  <Header back-route="/" />
+  <BackButton />
 
-  <article class="article px-8 pt-8" style="max-width: 60rem; margin: 0 auto;">
+  <article class="px-8 pt-8" style="max-width: 60rem; margin: 0 auto;">
 
     <p class="mb-8">
       <code>self.destroy()</code> is an abstract method.
@@ -75,6 +76,10 @@ import deltap from '@/assets/deltap.jpg'
         <img :src="deltap" class="max-w-2xl" />
       </div>
     </a> -->
+
+    <img :src="disaster" class="mx-auto" />
+    <p>
+    </p>
 
     <div class="py-16"></div>
 

@@ -14,7 +14,7 @@ import pixelVideo from '@/assets/ppo-ram/pixel/example.mp4'
 import Expand from '@/components/Expand.vue'
 
 const navItems = [
-  { href: "/blog", label: "Back", classes: "mb-3" },
+  "back",
   {
     href: '#what-is-ppo',
     label: 'What is PPO?',
