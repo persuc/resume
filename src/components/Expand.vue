@@ -28,7 +28,7 @@ onUnmounted(() => {
 })
 
 function onResize() {
-  height = (expandSlot.value.scrollHeight + 4) + 'px'
+  height = (expandSlot.value.scrollHeight + 8) + 'px'
 }
 
 function toggle() {
@@ -52,7 +52,7 @@ function toggle() {
       <div class="label" :style="expandedLabel && expanded ? '' : 'display: none;'">{{ expandedLabel }}</div>
     </div>
 
-    <div class="expand-slot px-2" ref="expandSlot" style="cursor: initial; margin-bottom: 4px">
+    <div :class="`expand-slot px-2`" ref="expandSlot" style="cursor: initial;">
       <slot></slot>
     </div>
   </div>

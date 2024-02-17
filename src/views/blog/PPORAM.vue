@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Codeblock from '@/components/Codeblock.vue'
+import Note from '@/components/Note.vue'
 import Article from '@/components/Article.vue'
 import External from '@/components/External.vue'
 import Formula from '@/components/Formula.vue'
@@ -7,7 +8,9 @@ import SvgBehindImage from '@/components/SvgBehindImage.vue'
 import VideoBlock from '@/components/VideoBlock.vue'
 
 import example from '@/assets/ppo-ram/example_game.mp4'
+import disappearingBall from '@/assets/ppo-ram/disappearing_ball.mp4'
 import localMinimum from '@/assets/ppo-ram/memory-1/local_minimum.mp4'
+import pixelVideo from '@/assets/ppo-ram/pixel/example.mp4'
 import Expand from '@/components/Expand.vue'
 
 
@@ -22,8 +25,20 @@ const navItems = [
     label: 'First Attempt',
   },
   {
-    href: '#troubleshooting',
-    label: 'Troubleshooting',
+    href: '#obs',
+    label: 'Troubleshooting: Observation Space',
+  },
+  {
+    href: '#tuning',
+    label: 'Troubleshooting: Tuning Hyperparameters',
+  },
+  {
+    href: '#manipulation',
+    label: 'Troubleshooting: Memory Manipulation',
+  },
+  {
+    href: '#seed',
+    label: 'Troubleshooting: Randomness',
   },
   {
     href: '#ppo-dash',
@@ -37,6 +52,11 @@ function getChart(run: string) {
   return charts.map(c => ({
     svg: `ppo-ram/${run}/${c}-axes`,
     image: `ppo-ram/${run}/${c}.png`,
+    title: {
+      'value-loss': 'Value Loss',
+      'ep-return': 'Score',
+      'ep-len': 'Game Length',
+    }[c]
   }))
 }
 
@@ -47,6 +67,8 @@ const memory1 = getChart('memory-1')
 const memory2 = getChart('memory-2')
 
 const pixel = getChart('pixel')
+
+const ppodash = getChart('ppo-dash')
 
 const ramValues = {
   blocks: "6..30",
@@ -87,7 +109,8 @@ function saveWandBCanvas(name) {
     <p class="text-3xl">Training PPO agents on RAM observations</p>
 
     <p>This post explores what proximal policy optimisation is, and my learning process when implementing it to train an
-      agent to play the Atari game Breakout.</p>
+      agent to play the Atari game Breakout using an <External
+        href="https://www.gymlibrary.dev/environments/atari/breakout/">emulated environment</External>.</p>
 
     <p class="text-xl mt-8" id="what-is-ppo">What is PPO?</p>
 
@@ -132,16 +155,22 @@ function saveWandBCanvas(name) {
     <p>My first attempt at training on RAM ended in the model falling into a trap early in training that it was never able
       to recover from. Here are the charts:</p>
 
-    <SvgBehindImage class="w-full" v-for="chart in memory1" :key="chart.image" :image="chart.image" :svg="chart.svg" />
-
-    <!-- <iframe
-      src="https://wandb.ai/persic/PPOMemory/reports/Training-PPO-Agent-on-Breakout-RAM-Attempt-1--Vmlldzo2ODMzNzkw"
-      style="border:none;height:1024px;width:100%"></iframe> -->
+    <div class="flex flex-col w-fit mx-auto">
+      <SvgBehindImage class="w-full" v-for="chart in memory1" :key="chart.image" :image="chart.image" :svg="chart.svg">
+        :svg="chart.svg">
+        <span class="font-medium pl-2">{{ chart.title }}</span>
+      </SvgBehindImage>
+    </div>
 
     <p>Compare this to a training run where the actor and critic used a shared convolutional archiecture instead, and
       were given observations in the form of pixel data:</p>
 
-    <SvgBehindImage class="w-full" v-for="chart in pixel" :key="chart.image" :image="chart.image" :svg="chart.svg" />
+    <div class="flex flex-col w-fit mx-auto">
+      <SvgBehindImage class="w-full" v-for="chart in pixel" :key="chart.image" :image="chart.image" :svg="chart.svg">
+        :svg="chart.svg">
+        <span class="font-medium pl-2">{{ chart.title }}</span>
+      </SvgBehindImage>
+    </div>
 
     <p>Notice that the RAM agent's charts are very flat, a sure indicator that the model is struggling. The RAM agent and
       the pixel agent actually performed quite similarly until around 50,000 steps through training,at which point the
@@ -170,7 +199,7 @@ function saveWandBCanvas(name) {
       when it dose work it produces a ver high reward (not just one point, but 3-4 points) giving it a very large effect
       on the weights, and trapping the model in this suboptimal pattern.</p>
 
-    <p class="text-xl mt-8" id="troubleshooting">Troubleshooting</p>
+    <p class="text-xl mt-8" id="obs">Troubleshooting: Reducing Observation Space</p>
 
     <p>The first thing I tried was narrowing the observation space to just the
       relevant variables. The idea is that if the model is more easily able to identify the really key information (the
@@ -214,31 +243,100 @@ function saveWandBCanvas(name) {
     <p>Let's see if this helps the model avoid suboptimal strategies and get straight to the rosetta stone: <code
         class="bg-gray-100 py-0.5 px-1 rounded-md">paddle.x = ball.x</code></p>
 
-    <SvgBehindImage class="w-full" v-for="chart in memory2" :key="chart.image" :image="chart.image" :svg="chart.svg" />
+    <div class="flex flex-col w-fit mx-auto">
+      <SvgBehindImage class="w-full md:w-[32rem]" v-for="chart in memory2" :key="chart.image" :image="chart.image"
+        :svg="chart.svg">
+        <span class="font-medium pl-2">{{ chart.title }}</span>
+      </SvgBehindImage>
+    </div>
 
     <p>Unfortunately, even after this modification as well as many more training runs tweaking hyperparameters, the model
       is still stuck playing in the corner. Time to dive into some papers and see if I could find some secret sauce!</p>
 
-    <p class="text-xl mt-8" id="ppo-dash">PPO Dash</p>
+    <p class="text-xl mt-8" id="tuning">PPO Dash</p>
+
     <p>
       <External href="https://arxiv.org/abs/1907.06704">PPO Dash: Improving Generalization in Deep Reinforcement
         Learning
-      </External>
+      </External> is a paper that outlines various strategies for optimising the training of PPO agents on much more
+      complex environments than Breakout (albeit on pixel data, not RAM). I found a few useful insights from the authors.
     </p>
 
-    <p>There are two key parameter tweaks outlined in this paper which help solve the problem with my previous methods.
-      Firstly, the number of steps per batch should be higher, and secondly, the learning rate should be lower.</p>
+    <p>There are two key parameter tweaks outlined in this paper which help solve the problem of falling into a local
+      minimum due to suboptimal valleys of high reward. Firstly, the number of steps per batch should be higher, and
+      secondly, the learning rate should be lower.</p>
     <p>
-      The idea here is to both prevent the policy from falling into a local minimum caused by rare outsized returns, and
-      also so that the policy can "lock on" to the sparse reward (see
-      <External href="https://arxiv.org/abs/1808.04355">Large-Scale Study of Curiosity-Driven Learning</External>)
+      The idea here is to both prevent the policy from falling into a local minimum caused by rare outsized returns by
+      making these anomalies count for a smaller part of the data in each batch, and also to learn slower so that batches
+      with outsized returns cause less dramatic changes in the gradients.
     </p>
 
-    <External href="https://iclr-blog-track.github.io/2022/03/25/ppo-implementation-details/">The 37 Implementation
-      Details of Proximal Policy Optimization</External>
+    <Note>
+      Note: there is also some evidence that these changes help the policy "lock on" to sparse rewards (see
+      <External href="https://arxiv.org/abs/1808.04355">Large-Scale Study of Curiosity-Driven Learning</External>)
+    </Note>
 
-    <External href="https://openreview.net/pdf?id=nIAxjsniDzg">What Matters For On Policy Deep Actor
-      Critic Methods? A Large Scale Study</External>
+    <p>
+      Other resources I found that were useful in tuning hyperparameters include: <External
+        href="https://iclr-blog-track.github.io/2022/03/25/ppo-implementation-details/">The 37 Implementation
+        Details of Proximal Policy Optimization</External> and <External href="https://openreview.net/pdf?id=nIAxjsniDzg">
+        What Matters For On Policy Deep Actor
+        Critic Methods? A Large Scale Study</External>
+    </p>
+
+    <p>So, how does the new model perform?</p>
+
+    <div class="flex flex-col w-fit mx-auto">
+      <SvgBehindImage class="w-full" v-for="chart in ppodash" :key="chart.image" :image="chart.image" :svg="chart.svg">
+        :svg="chart.svg">
+        <span class="font-medium pl-2">{{ chart.title }}</span>
+      </SvgBehindImage>
+    </div>
+
+    <p class="text-xl mt-8" id="manipulation">Troubleshooting: RAM Manipulation</p>
+
+    <p>It was at this point I noticed that something strange was happening. Does this look like peak performance to you?
+    </p>
+
+    <VideoBlock :src="disappearingBall" />
+
+    <p>The full video is 20 minutes long. After the ball disappears, training continues until the agent reaches a
+      specified maximum number of steps and the episode is forcefully terminated. I can only speculate that by being able
+      to observe the RAM directly, the agent was able to manipulate the game to trigger a bug that de-spawned the ball.
+    </p>
+
+    <p>This in itself is not a problem. Since the agent gets no reward for episode duration, only for breaking blocks,
+      this strategy is not incentivised. However, perhaps this implies that the agent is able to influence the game in
+      ways that are harmful for training?</p>
+
+    <p class="text-xl mt-8" id="seed">Troubleshooting: PRNGs</p>
+
+    <p>After reviewing some video of successful Breakout agents, I noticed another suspicious behaviour. Remembering what
+      I just said about the episode length limit, see if you can spot something unexpected.</p>
+
+    <VideoBlock :src="pixelVideo" />
+
+    <Expand label="Hint">
+      It happens right at the start of the video
+    </Expand>
+
+    <p class="my-4">Did you spot it? If the agent only has limited time to act and accumulate score, then why delay at the
+      start of the
+      episode?</p>
+
+    <p>This is only a guess, but given that we have seen the agent manipulate the game in unexpected ways by making the
+      ball disappear, would it be so difficult to imagine that it is waiting a specific number of frames to influence
+      where the first ball will spawn? It has no direct access to the system clock (I found a number of frame counters in
+      the RAM, but no total running time) but the duration between the first frame and when the agent chooses to fire the
+      ball might be enough to influence the random generation of the ball's start posiiton.</p>
+
+    <p>How can we remedy this blatant rule bending? Actually it's quite simple, we don't even need to modify the
+      environment. Now that we know which RAM addresses indicate whether the ball is alive, we can just hardcode a
+      behaviour in our <code class="bg-gray-100 py-0.5 px-1 rounded-md">play_step</code> function fires the ball instantly
+      whenever it goes off the screen. However, as we see with the agent above, this doesn't seem necessary for
+      the agent to perform well. To be clear, even with this trick, the agent is not just learning a sequence of moves by
+      wrote.
+    </p>
 
     <Codeblock label="PPOArgs" language="python" :code="'PPOArgs()'" />
 

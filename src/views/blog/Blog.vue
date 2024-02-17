@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import Header from '@/components/Header.vue'
+import Button from '@/components/Button.vue'
 import { blogPosts } from '@/ts/blog'
 
 </script>
 
 <template>
-  <Header />
+  <a href="/" class="plain absolute left-4 top-4 z-10">
+    <Button text no-hover>
+      <span class="text-nowrap">← Back</span>
+    </Button>
+  </a>
 
   <div class="blog px-8 pt-8" style="max-width: 60rem; margin: 0 auto;">
 

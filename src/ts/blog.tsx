@@ -1,5 +1,7 @@
 import diyStoriesThumb from "@/assets/DiyStoriesThumb.png"
 import breakoutThumb from "@/assets/breakoutThumb.png"
+import styletts2Thumb from "@/assets/StyleTTS2Thumb.png"
+import brewThumb from "@/assets/BrewThumb.png"
 import algsThumb from "@/assets/AlgsThumb.png"
 import type { PreviewCard } from "@/@types"
 
@@ -10,6 +12,20 @@ export const blogPosts: (PreviewCard & { component: string })[] = [
     subtitle: 'Capstone project for ARENA 3.0',
     thumb: breakoutThumb,
     component: 'PPORAM',
+  },
+  {
+    path: 'brew',
+    title: 'How to write a homebrew formula',
+    subtitle: 'Quick read: dependencies, compilation',
+    thumb: brewThumb,
+    component: 'Brew',
+  },
+  {
+    path: 'styletts2',
+    title: 'One shot speech synthesis - StyleTTS2',
+    subtitle: 'Exploration of the techniques used and my usability patches',
+    thumb: styletts2Thumb,
+    component: 'StyelTTS2',
   },
   {
     path: 'diy-stories',
@@ -27,7 +43,7 @@ export const blogPosts: (PreviewCard & { component: string })[] = [
   },
   {
     path: 'if-vs-ternary',
-    title: 'Does identical logic produce the same instructions?',
+    title: 'Same code, same instructions?',
     subtitle: 'Assembly, C++',
     component: 'IfVsTernary',
   },

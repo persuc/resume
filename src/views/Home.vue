@@ -33,6 +33,7 @@ const randomPages: TPreviewCard[] = [
   { path: 'study', title: 'Study' },
   { path: 'blog/thoughts', title: 'Thoughts' },
   { path: 'wall', title: 'Google Doc?' },
+  { path: 'playlists', title: 'Playlists' },
 ]
 
 </script>
@@ -75,7 +76,7 @@ const randomPages: TPreviewCard[] = [
       </HomeGrid>
 
       <HomeGrid title="Blogs">
-        <PreviewCard v-for="post in blogPosts.slice(0, 2)" :card="post" />
+        <PreviewCard v-for="post in blogPosts.slice(0, 5)" :card="post" />
         <PreviewCard :card="{ title: 'More...', path: '/blog' }" />
       </HomeGrid>
 
