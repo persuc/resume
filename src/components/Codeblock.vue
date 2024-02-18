@@ -12,7 +12,7 @@ defineProps<Props>()
 </script>
 
 <template>
-  <Panel>
+  <Panel class="my-4">
     <template v-slot:label>{{ label }}</template>
     <template v-slot:content>
       <pre v-highlightjs><code :class="[language, 'rounded']">{{ code }}</code></pre>

@@ -21,11 +21,11 @@ export const blogPosts: (PreviewCard & { component: string })[] = [
     component: 'Brew',
   },
   {
-    path: 'styletts2',
-    title: 'One shot speech synthesis - StyleTTS2',
-    subtitle: 'Exploration of the techniques used and my usability patches',
+    path: 'speech-synthesis',
+    title: 'History of speech synthesis',
+    subtitle: 'Exploration of the techniques used and tooling I made for speech synthesis',
     thumb: styletts2Thumb,
-    component: 'StyelTTS2',
+    component: 'SpeechSynthesis',
   },
   {
     path: 'diy-stories',

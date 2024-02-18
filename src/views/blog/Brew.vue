@@ -129,11 +129,12 @@ end`
 
     <p class="text-xl mt-8" id="getting-started">Getting started</p>
 
-    <p>To start, we need to run <code class="inline-code">brew create</code>. I am trying to build a C++
-      application from a git repository, so I ran the command:</p>
+    <p>Obviously you will need to <External href="https://docs.brew.sh/Installation">install homebrew</External>. Then, to
+      generate a formula file, run <code class="inline-code">brew create</code>. For example, to build a C++
+      application from a git repository run:</p>
 
-    <Codeblock class="mb-4" label="Initialize a formula" language="bash"
-      code="brew create --cmake https://github.com/user/repo --set-version 1.0.0" />
+    <pre class="my-4"
+      v-highlightjs><code class="bash rounded">brew create --cmake https://github.com/user/repo --set-version 1.0.0</code></pre>
 
     <p>You can find a full list of available build systems <External
         href="https://docs.brew.sh/Manpage#create-options-url">here</External>. As far as I can tell, homebrew requires
@@ -144,12 +145,12 @@ end`
 
     <p>With that in mind, here is what your empty formula should look like:</p>
 
-    <Codeblock label="formula.rb" language="ruby" :code="brewCreateCode" />
+    <Codeblock label="my-formula.rb" language="ruby" :code="brewCreateCode" />
 
     <p>Unfortunately this doesn't work! You may have to include a lot of additional information, so fill in the template
       as below:</p>
 
-    <Codeblock label="formula.rb" language="ruby" :code="taggedCode" />
+    <Codeblock label="my-formula.rb" language="ruby" :code="taggedCode" />
 
     <p class="text-xl mt-8" id="testing">How to test your formula</p>
 
@@ -168,7 +169,7 @@ end`
     <p>You may need other homebrew packages as dependencies. To declare them, add a <code
         class="inline-code">depends_on</code> line before the <code class="inline-code">install block</code></p>
 
-    <Codeblock label="formula.rb" language="ruby" :code="brewDepsCode" />
+    <Codeblock label="my-formula.rb" language="ruby" :code="brewDepsCode" />
 
     <p class="text-xl mt-8" id="other-deps">Other dependencies</p>
 
@@ -180,7 +181,7 @@ end`
 
     <p>In the example below, I am downloading, extracting and unpackaging the FBX SDK.</p>
 
-    <Codeblock label="formula.rb" language="ruby" :code="otherDepsCode" />
+    <Codeblock label="my-formula.rb" language="ruby" :code="otherDepsCode" />
 
     <p class="text-xl mt-8" id="system">Executing shell commands</p>
 
