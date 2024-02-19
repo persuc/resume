@@ -53,7 +53,7 @@ const components = {
   Encoder: "Transforms phonemes from the prompt into vectors in d<sub>model</sub> space (the hidden state)",
   'Text Aligner': "Generates an alignment between mel-spectrograms and phonemes",
   'Style Encoder': "Tranforms a mel-spectrogram into a style vector",
-  Decoder: "",
+  Decoder: "Reconstructs a mel-spectrogram from encoded text, style, alignment and pitch",
 }
 
 </script>
@@ -93,7 +93,7 @@ const components = {
 
     <p>Here are the main components and their functions:</p>
 
-    <div class="grid grid-cols-2 gap-x-12 gap-y-2 mx-auto">
+    <div class="grid grid-cols-[1fr,auto] gap-x-12 gap-y-2 mx-auto my-4 max-w-lg">
       <template v-for="k, v in components" :key="`ramvalue-${k}`">
         <div class="font-medium">{{ v }}</div>
         <div class="font-mono">{{ k }}</div>
