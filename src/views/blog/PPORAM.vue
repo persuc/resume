@@ -80,6 +80,30 @@ const ramValues = {
   ball_x_speed: "105",
 }
 
+const spawnCode = `def play_step():
+  # ...
+
+  # Track whether the model fired the ball this step
+  was_fired = np.full(self.envs.num_envs, False)
+
+  # Step environment based on the sampled action
+  for i, env in enumerate(self.envs.envs):
+    ale = env.unwrapped.ale
+    ram = ale.getRAM()
+    # 1 is the action for "fire the ball".
+    # RAM address 101 is only 0 if the ball is not on the screen (ready to fire)
+    if actions[i] == 1 and ram[101] == 0:
+      was_fired[i] = True
+
+  next_obs, rewards, next_dones, infos = self.envs.step(actions.cpu().numpy())
+
+  for i, env in enumerate(self.envs.envs):
+    ale = env.unwrapped.ale
+    ram = ale.getRAM()
+    if was_fired[i] and ram[101] != 0:
+      # Randomise the x position of the ball that was just fired this step
+      ale.setRAM(99, self.rng.integers(64, 201))`
+
 function saveWandBCanvas(name) {
   const canvas = document.querySelector(".fullscreen-mode.content canvas")
   var newWindow = window.open()
@@ -337,7 +361,9 @@ function saveWandBCanvas(name) {
       wrote.
     </p>
 
-    <Codeblock label="PPOArgs" language="python" :code="'PPOArgs()'" />
+    <p>Out of curiosity, I tried randomising the ball position after the ball is fired. Here is the code:</p>
+
+    <Codeblock label="PPOAgent play_step() method:" language="python" :code="spawnCode" />
 
     <br />
 
