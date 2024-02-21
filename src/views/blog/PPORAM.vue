@@ -80,29 +80,45 @@ const ramValues = {
   ball_x_speed: "105",
 }
 
-const spawnCode = `def play_step():
-  # ...
+const spawnCode = `class BreakoutRandomEnv(gym.Wrapper):
+    def __init__(self, env, seed: int):
+        """Randomise the ball start position, and set x velocity to 0 after being fired
+        """
+        gym.Wrapper.__init__(self, env)
+        self.rng = np.random.default_rng(seed + 1)
+        self.ale = env.unwrapped.ale
+        self.awaiting_launch = False
+        self.new_x = 0
 
-  # Track whether the model fired the ball this step
-  was_fired = np.full(self.envs.num_envs, False)
+    def step(self, ac):
+        """
+          params:
+            ac: the action selected by the agent. 1 == fire ball
+        """
+        ram = self.ale.getRAM()
+        # RAM address 101 is ball y position
+        # If it is 0, there is no ball (ready to fire)
+        # Or if it is >= 208 the ball is off the bottom of the screen, and a new one can also be fired
+        if ac == 1 and (ram[101] == 0 or ram[101] >= 208):
+            self.awaiting_launch = True
+            self.new_x = self.rng.integers(64, 201)
 
-  # Step environment based on the sampled action
-  for i, env in enumerate(self.envs.envs):
-    ale = env.unwrapped.ale
-    ram = ale.getRAM()
-    # 1 is the action for "fire the ball".
-    # RAM address 101 is only 0 if the ball is not on the screen (ready to fire)
-    if actions[i] == 1 and ram[101] == 0:
-      was_fired[i] = True
+        # Step environment based on the sampled action (after this, the ball is launched)
+        obs, rewards, dones, infos = self.env.step(ac)
+        
+        if self.awaiting_launch:
+            self.awaiting_launch = False
 
-  next_obs, rewards, next_dones, infos = self.envs.step(actions.cpu().numpy())
+            self.ale.setRAM(99, self.new_x) # set the x position to a random value
+            self.ale.setRAM(101, 112) # set y position to near the top of the screen
+            self.ale.setRAM(105, 0) # set x speed to 0
 
-  for i, env in enumerate(self.envs.envs):
-    ale = env.unwrapped.ale
-    ram = ale.getRAM()
-    if was_fired[i] and ram[101] != 0:
-      # Randomise the x position of the ball that was just fired this step
-      ale.setRAM(99, self.rng.integers(64, 201))`
+            # update the observation to reflect our changes to the RAM
+            obs[99] = self.new_x
+            obs[101] = 112
+            obs[105] = 0
+
+        return obs, rewards, dones, infos`
 
 function saveWandBCanvas(name) {
   const canvas = document.querySelector(".fullscreen-mode.content canvas")
@@ -334,34 +350,39 @@ function saveWandBCanvas(name) {
 
     <p class="text-xl mt-8" id="seed">Troubleshooting: PRNGs</p>
 
-    <p>After reviewing some video of successful Breakout agents, I noticed another suspicious behaviour. Remembering what
-      I just said about the episode length limit, see if you can spot something unexpected.</p>
+    <!-- TODO: this is just noopresetwrapper lmao -->
+
+    <p>After reviewing some video of successful Breakout agents, I noticed another suspicious behaviour. Take note of when
+      the agent seems to do well, and when it makes mistakes.</p>
 
     <VideoBlock :src="pixelVideo" />
 
     <Expand label="Hint">
-      It happens right at the start of the video
+      Is the ball any more likely to be in certain places?
     </Expand>
 
-    <p class="my-4">Did you spot it? If the agent only has limited time to act and accumulate score, then why delay at the
-      start of the
-      episode?</p>
+    <p class="my-4">Did you spot it? The agent is utilising a statistical quirk of the Atari implementatin of breakout.
+      After analysing thousands of games of breakout, I discovered that the ball is much more likely to end up twoards the
+      edge of the screen rather than the center.</p>
 
-    <p>This is only a guess, but given that we have seen the agent manipulate the game in unexpected ways by making the
-      ball disappear, would it be so difficult to imagine that it is waiting a specific number of frames to influence
-      where the first ball will spawn? It has no direct access to the system clock (I found a number of frame counters in
-      the RAM, but no total running time) but the duration between the first frame and when the agent chooses to fire the
-      ball might be enough to influence the random generation of the ball's start posiiton.</p>
+    <p>I'm not exactly sure wh this is the case. One reason is probably that the ball bounces off the side walls, meaning
+      it naturally has to spend more time at the edge of the screen than travelling across the center. But given that we
+      have seen the agent manipulate the game in unexpected ways by making the ball disappear, it could also be the case
+      that the has found a way to influence
+      where the ball will spawn, choosing an advantageous starting position.</p>
 
-    <p>How can we remedy this blatant rule bending? Actually it's quite simple, we don't even need to modify the
-      environment. Now that we know which RAM addresses indicate whether the ball is alive, we can just hardcode a
-      behaviour in our <code class="inline-code">play_step</code> function fires the ball instantly
-      whenever it goes off the screen. However, as we see with the agent above, this doesn't seem necessary for
-      the agent to perform well. To be clear, even with this trick, the agent is not just learning a sequence of moves by
-      wrote.
+    <p>Whatever the reason, the agent is able to accumulate 3-4 points just by staying in one of the corners a lot of the
+      time. How can we remedy this brazen rule bending? Actually it's quite simple, we don't even need to modify the
+      environment. Now that we know which RAM addresses indicate whether the ball is alive, we can just add a
+      wrapper to the environment that moves the ball instantly to a random location on spawn (as per the normal breakout
+      rules, but with a random number generator completely hidden to the model).</p>
+
+    <p>Also, to address the fact that Brekout inherently has some bias for the ball to move to the edge of the screen, I
+      set the ball's initial x velocity to 0, so that it falls in a straight line, meaning that after first being fired, a
+      ball has a uniform probability of passing over each x coordinate at the bottom of the screen.
     </p>
 
-    <p>Out of curiosity, I tried randomising the ball position after the ball is fired. Here is the code:</p>
+    <p>Here is the code:</p>
 
     <Codeblock label="PPOAgent play_step() method:" language="python" :code="spawnCode" />
 
