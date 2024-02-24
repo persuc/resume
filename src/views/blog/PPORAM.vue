@@ -127,29 +127,29 @@ const spawnCode = `class BreakoutRandomEnv(gym.Wrapper):
         return obs, rewards, dones, infos`
 
 // Used during development only to download assets from Weights and Biases
-function saveWandBCanvas(name) {
-  const canvas = document.querySelector(".fullscreen-mode.content canvas")
-  const newWindow = window.open()
-  newWindow.document.write(`<img src="${canvas.toDataURL('image/png')}" />`)
+// function saveWandBCanvas(name) {
+//   const canvas = document.querySelector(".fullscreen-mode.content canvas")
+//   const newWindow = window.open()
+//   newWindow.document.write(`<img src="${canvas.toDataURL('image/png')}" />`)
 
-  let svg = document.querySelector(".fullscreen-mode.content svg").outerHTML
-  svg = svg.replace(/width="([0-9]+)" height="([0-9]+)"/, "viewBox=\"0 0 $1 $2\"")
-  svg = svg.replaceAll(/\&quot;/g, '&quotcolon')
-  svg = svg.replaceAll(/stroke:\s*([^;"]+);?(.*?)"/g, '$2" stroke="$1"')
-  svg = svg.replaceAll(/stroke-width:\s*([^;"]+);?(.*?)"/g, '$2" stroke-width="$1"')
-  svg = svg.replaceAll(/fill:\s*([^;"]+);?(.*?)"/g, '$2" fill="$1"')
-  svg = svg.replaceAll(/style="\s*"/g, '')
-  svg = svg.replaceAll(/class="(rv-xy-plot__axis__line|rv-xy-plot__axis__tick__line|rv-xy-plot__grid-lines__line)"/g, 'stroke="#E6E6E9" stroke-width="2px"')
-  svg = svg.replaceAll(/\&quotcolon/g, '&quot;')
-  const svgBlob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" })
-  const svgUrl = URL.createObjectURL(svgBlob)
-  const downloadLink = document.createElement("a")
-  downloadLink.href = svgUrl
-  downloadLink.download = `${name}-axes.svg`
-  document.body.appendChild(downloadLink)
-  downloadLink.click()
-  document.body.removeChild(downloadLink)
-}
+//   let svg = document.querySelector(".fullscreen-mode.content svg").outerHTML
+//   svg = svg.replace(/width="([0-9]+)" height="([0-9]+)"/, "viewBox=\"0 0 $1 $2\"")
+//   svg = svg.replaceAll(/\&quot;/g, '&quotcolon')
+//   svg = svg.replaceAll(/stroke:\s*([^;"]+);?(.*?)"/g, '$2" stroke="$1"')
+//   svg = svg.replaceAll(/stroke-width:\s*([^;"]+);?(.*?)"/g, '$2" stroke-width="$1"')
+//   svg = svg.replaceAll(/fill:\s*([^;"]+);?(.*?)"/g, '$2" fill="$1"')
+//   svg = svg.replaceAll(/style="\s*"/g, '')
+//   svg = svg.replaceAll(/class="(rv-xy-plot__axis__line|rv-xy-plot__axis__tick__line|rv-xy-plot__grid-lines__line)"/g, 'stroke="#E6E6E9" stroke-width="2px"')
+//   svg = svg.replaceAll(/\&quotcolon/g, '&quot;')
+//   const svgBlob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" })
+//   const svgUrl = URL.createObjectURL(svgBlob)
+//   const downloadLink = document.createElement("a")
+//   downloadLink.href = svgUrl
+//   downloadLink.download = `${name}-axes.svg`
+//   document.body.appendChild(downloadLink)
+//   downloadLink.click()
+//   document.body.removeChild(downloadLink)
+// }
 
 </script>
 
