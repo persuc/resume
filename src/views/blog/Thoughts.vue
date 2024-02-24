@@ -50,23 +50,21 @@ import disaster from '@/assets/disaster-etymology.png'
       <i>- Charles Babbage, 1864</i>
     </p>
 
-    <p class="mb-8">
-      ANTONY Sir, it's shaped like itself and is as wide as it has width. It is only as high as it is and moves with its
-      own legs. It lives on what nourishes it, and when the four elements leave it, its soul moves into another body.
+    <div class="mb-8">
+      <p>ANTONY It is shaped, sir, like itself, and it is as broad as it hath breadth. It is just so high as it is, and
+        moves with its own organs. It lives by that which nourisheth it, and, the elements once out of it, it expires.
+      </p>
 
-      LEPIDUS What color is it?
+      <p>LEPIDUS What color is it?</p>
 
-      ANTONY Of its own color too.
+      <p>ANTONY Of its own color too.</p>
 
-      ANTONY Its own color.
+      <p>LEPIDUS It's a strange snake.</p>
 
-      LEPIDUS It's a strange snake.
+      <p>ANTONY 'Tis so. And the tears of it are wet.</p>
 
-      ANTONY 'Tis so. And the tears of it are wet.
-
-      <br />
       <i>- William Shakespeare, "Antony and Cleopatra"</i>
-    </p>
+    </div>
 
     <!-- <a target="_blank" href="https://youtu.be/AEtbFm_CjE0">
       <div class="border-gray-200 border rounded p-4 w-fit">
@@ -77,9 +75,14 @@ import disaster from '@/assets/disaster-etymology.png'
       </div>
     </a> -->
 
-    <img :src="disaster" class="mx-auto" />
-    <p>
-    </p>
+    <div class="border-gray-200 border rounded p-4 w-fit mb-8">
+      <img :src="disaster" class="mx-auto" />
+    </div>
+
+    <!-- <p class="mb-8">
+      
+
+    </p> -->
 
     <div class="py-16"></div>
 

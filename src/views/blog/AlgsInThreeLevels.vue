@@ -24,7 +24,9 @@ const problems = [
 ]
 
 const navItems: NavItems[] = [
-  "back",
+  {
+    back: '/blog',
+  },
   {
     href: '#title',
     label: 'Top',

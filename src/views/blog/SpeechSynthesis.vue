@@ -10,7 +10,9 @@ import denoising from '@/assets/denoising.jpg'
 import usage from '@/assets/style-tts-usage.gif'
 
 const navItems = [
-  "back" as const,
+  {
+    back: '/blog',
+  },
   {
     href: '#top',
     label: 'Speech Syntheseis',

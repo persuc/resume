@@ -309,7 +309,9 @@ const difficultyColor: Record<Difficulty, string> = {
 }
 
 const navItems: NavItems[] = [
-  "back",
+  {
+    back: '/',
+  },
   { href: "#top", label: "Top", },
   ...(Object.keys(resources).map(r => ({
     href: '#' + r,

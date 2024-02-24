@@ -6,7 +6,9 @@ import External from '@/components/External.vue'
 import brewError from '@/assets/brew-error.png'
 
 const navItems = [
-  "back" as const,
+  {
+    back: '/blog',
+  },
   {
     href: '#top',
     label: 'How to write a homebrew formula',

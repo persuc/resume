@@ -13,7 +13,7 @@ const imageUrl = new URL(`/src/assets/${props.image}`, import.meta.url)
 </script>
 
 <template>
-  <div class="relative w-fit">
+  <div class="relative">
     <Icon :name="`../assets/${svg}.svg`" />
     <img class="absolute top-0" :src="imageUrl" />
     <div class="font-medium text-center">

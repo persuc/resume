@@ -62,7 +62,9 @@ const fonts = Object.entries(fullConfig.theme!.fontFamily as Record<string, stri
 const colors = Object.entries(theme.colors).filter(e => !['inherit', 'current', 'transparent', 'black', 'white'].includes(e[0]))
 
 const navItems: NavItems[] = [
-  "back",
+  {
+    back: '/',
+  },
   {
     href: "#components",
     label: "Components Library",
