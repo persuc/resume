@@ -113,9 +113,6 @@ import Button from '@/components/Button.vue'
 
 const navItems = [
   {
-    back: '/blog',
-  },
-  {
     href: '#top',
     label: 'Top',
   },
@@ -158,7 +155,7 @@ const componentObjectCode = `{
 </script>
 
 <template>
-  <Article :items="navItems" id="top">
+  <Article :items="navItems" back="/blog" id="top">
 
     <p class="text-3xl">Do It Yourself: Vue Stories</p>
 

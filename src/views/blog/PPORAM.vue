@@ -16,9 +16,6 @@ import Expand from '@/components/Expand.vue'
 
 const navItems = [
   {
-    back: '/blog',
-  },
-  {
     href: '#what-is-ppo',
     label: 'What is PPO?',
   },
@@ -157,7 +154,7 @@ function saveWandBCanvas(name) {
 </script>
 
 <template>
-  <Article :items="navItems" id="top">
+  <Article :items="navItems" back="/blog" id="top">
 
     <p class="text-3xl">Training PPO agents on RAM observations</p>
 

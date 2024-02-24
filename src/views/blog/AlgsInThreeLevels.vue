@@ -25,9 +25,6 @@ const problems = [
 
 const navItems: NavItems[] = [
   {
-    back: '/blog',
-  },
-  {
     href: '#title',
     label: 'Top',
   },
@@ -45,7 +42,7 @@ const navItems: NavItems[] = [
 </script>
 
 <template>
-  <Article :items="navItems">
+  <Article :items="navItems" back="/blog">
     <span class="text-3xl" id="title">Algorithms in Three Levels of Difficulty</span>
     <h3 class="mb-4 text-slate-500">Binary Trees</h3>
 

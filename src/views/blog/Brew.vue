@@ -7,9 +7,6 @@ import brewError from '@/assets/brew-error.png'
 
 const navItems = [
   {
-    back: '/blog',
-  },
-  {
     href: '#top',
     label: 'How to write a homebrew formula',
   },
@@ -119,7 +116,7 @@ end`
 </script>
 
 <template>
-  <Article :items="navItems" id="top">
+  <Article :items="navItems" back="/blog" id="top">
 
     <p class="text-3xl">How to write a homebrew formula</p>
 

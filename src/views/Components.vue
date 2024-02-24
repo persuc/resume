@@ -63,9 +63,6 @@ const colors = Object.entries(theme.colors).filter(e => !['inherit', 'current', 
 
 const navItems: NavItems[] = [
   {
-    back: '/',
-  },
-  {
     href: "#components",
     label: "Components Library",
     classes: 'mb-3',
@@ -92,7 +89,7 @@ const navItems: NavItems[] = [
 </script>
 
 <template>
-  <Article :items="navItems">
+  <Article :items="navItems" back="/">
     <p class="text-2xl mt-12" id="components">Components Library</p>
 
     <Story v-for="component in components" :path="Array.isArray(component) ? component[0] : component"

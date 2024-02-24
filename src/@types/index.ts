@@ -44,8 +44,6 @@ export type NavItems = {
   label: string
   classes?: string
   items?: NavItems[]
-} | {
-  back: string
 }
 
 export type VueComponent = DefineComponent<

@@ -309,9 +309,6 @@ const difficultyColor: Record<Difficulty, string> = {
 }
 
 const navItems: NavItems[] = [
-  {
-    back: '/',
-  },
   { href: "#top", label: "Top", },
   ...(Object.keys(resources).map(r => ({
     href: '#' + r,
@@ -330,7 +327,7 @@ const navItems: NavItems[] = [
 </script>
 
 <template>
-  <Article :items="navItems" id="top">
+  <Article :items="navItems" back="/" id="top">
     <p class="text-xl">Study resources for enterprising individuals with big brains</p>
 
     <p>Don't feel overwhelmed, these are just some resources to read through to get a feel for the different topics you

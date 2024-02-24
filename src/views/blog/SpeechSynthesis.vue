@@ -11,9 +11,6 @@ import usage from '@/assets/style-tts-usage.gif'
 
 const navItems = [
   {
-    back: '/blog',
-  },
-  {
     href: '#top',
     label: 'Speech Syntheseis',
   },
@@ -61,7 +58,7 @@ const components = {
 </script>
 
 <template>
-  <Article :items="navItems" id="top">
+  <Article :items="navItems" back="/blog" id="top">
 
     <p class="text-3xl">A History of Speech Synthesis</p>
 
