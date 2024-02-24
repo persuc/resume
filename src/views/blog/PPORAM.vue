@@ -53,7 +53,7 @@ const charts = ['value-loss', 'ep-return', 'ep-len'] as const
 
 function getChart(run: string) {
   return charts.map(c => ({
-    svg: `ppo-ram/${run}/${c}-axes`,
+    svg: `/src/assets/ppo-ram/${run}/${c}-axes.svg`,
     image: `ppo-ram/${run}/${c}.png`,
     title: {
       'value-loss': 'Value Loss',

@@ -14,7 +14,7 @@ const imageUrl = new URL(`/src/assets/${props.image}`, import.meta.url).toString
 
 <template>
   <div class="relative">
-    <Icon :name="`../assets/${svg}.svg`" />
+    <Icon :name="svg" />
     <img class="absolute top-0" :src="imageUrl" />
     <div class="font-medium text-center">
       <slot></slot>

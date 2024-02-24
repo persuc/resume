@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineAsyncComponent, watch, type Component } from 'vue'
+import { defineAsyncComponent, watch, type Component, computed, type AsyncComponentLoader, type ComputedOptions, type MethodOptions } from 'vue'
 
 interface Props {
   name: string,
@@ -8,26 +8,16 @@ interface Props {
 
 const props = defineProps<Props>()
 
+const iconConstructors: Record<string, AsyncComponentLoader<Component<any, any, any, ComputedOptions, MethodOptions>>> = import.meta.glob('/**/*.svg')
 const componentsCache: Record<string, Component> = {}
 
-for (const pre of props.preload ?? []) {
-  loadSvg(pre)
-}
-
-function loadSvg(name: string) {
-  if (!componentsCache[name]) {
-    componentsCache[name] = defineAsyncComponent(() =>
-      import((name.includes('/') || name.endsWith('.svg')) ? name : `../assets/icons/${name}.svg`)
-    )
+const icon = computed(() => {
+  if (!componentsCache[props.name]) {
+    const iconPath = (props.name.includes('/') || props.name.endsWith('.svg')) ? props.name : `/src/assets/icons/${props.name}.svg`
+    componentsCache[props.name] = defineAsyncComponent(() => iconConstructors[iconPath]())
   }
-  return componentsCache[name]
-}
-
-watch(() => props.name, () => {
-  icon = loadSvg(props.name)
+  return componentsCache[props.name]
 })
-
-let icon = loadSvg(props.name)
 
 </script>
 
