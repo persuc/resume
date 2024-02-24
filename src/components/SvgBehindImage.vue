@@ -8,7 +8,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const imageUrl = new URL(`/src/assets/${props.image}`, import.meta.url)
+const imageUrl = new URL(`/src/assets/${props.image}`, import.meta.url).toString()
 
 </script>
 
