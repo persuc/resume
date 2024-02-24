@@ -354,7 +354,7 @@ function saveWordlist() {
 <template>
   <Button v-show="!showHelp" text no-hover class="absolute left-4 top-4 z-10"
     @click="view === VIEW.SETUP ? $router.replace('/') : view = VIEW.SETUP">
-    <span>← {{ revealed === currentWord ? 'Done' : 'Give Up' }}</span>
+    <span>← {{ revealed === currentWord ? 'Done' : view === VIEW.SETUP ? 'Back' : 'Give Up' }}</span>
   </Button>
 
   <Button v-show="view !== VIEW.LOADING && !showHelp" class="absolute right-4 top-4 border border-gray-300 z-10" text
