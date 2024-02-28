@@ -24,8 +24,6 @@ import Button from '@/components/Button.vue'
     </Button>
   </a>
   <Article back="/" class="pt-24 px-4 print:pt-0">
-
-
     <ImageAndText class="w-fit mx-auto" :image="faceImage" :rounded="true">
       <p class="mb-1" style="line-height: 1em;">Andrew Persic</p>
       <CopyButton :value="EMAIL" style="line-height: 1.5em;">{{ EMAIL }}</CopyButton>
@@ -102,21 +100,15 @@ import Button from '@/components/Button.vue'
 
     <div class="flex justify-between">
       <div>
-        <p class="text-lg mt-2 print:hidden">Inquire to find out more...</p>
-        <ul class="list-disc ml-8 print:hidden">
-          <li>UAVs</li>
-          <li>Cluster computing</li>
-          <li>Side projects</li>
-        </ul>
-        <div class="hidden print:block">
+        <div>
           <br />
-          <p class="text-lg">Inquire to find out about:</p>
-          <p>Drones, speech synthesis</p>
+          <p class="text-lg">Inquire to learn more about</p>
+          <p>UAVs, speech synthesis, cluster computing</p>
         </div>
       </div>
       <ImageAndText class="whitespace-nowrap mt-4" :image="monashLogo" :size="'4rem'">
         <p class="mb-1">Monash University</p>
-        <p style="font-style: italic;">Bachelor of Computer Science</p>
+        <p class="italic">Bachelor of Computer Science</p>
       </ImageAndText>
     </div>
   </Article>
