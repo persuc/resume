@@ -23,7 +23,7 @@ import Button from '@/components/Button.vue'
       <Icon name="download" class="mr-2 w-5" />Download
     </Button>
   </a>
-  <Article back="/" class="pt-16 md:pt-24 px-4 print:pt-0">
+  <Article back="/" class="pt-16 md:pt-24 px-4 print:!pt-0">
     <ImageAndText class="w-fit mx-auto pr-0" :image="faceImage" :rounded="true">
       <p class="mb-1" style="line-height: 1em;">Andrew Persic</p>
       <CopyButton :value="EMAIL" style="line-height: 1.5em;">{{ EMAIL }}</CopyButton>
@@ -56,10 +56,9 @@ import Button from '@/components/Button.vue'
       <li>Managed all pages on <a target="_blank" href="https://www.canva.com/">canva.com</a>
         and <a target="_blank" href="https://www.canva.cn/">canva.cn</a>.
         These 32,590 pages receive ~30 million requests per day</li>
-      <li>Identified shortfalls in our Chinese infrastructure, established communication between the Beijing and Landing
-        Pages teams, and delivered experimentation and fallback mechanisms in the CN region</li>
-      <li>Worked on CMS and page rendering features, syncing millions of rows of data between DynamoDB and Postgres
-        databases and creating UIs for content managers</li>
+      <li>Expanded infrastructure to the China region, established communication between the Beijing and Landing
+        Pages teams, and delivered experimentation and fallback mechanisms in the China region</li>
+      <li>Created web tools to manage pages and sync millions of changes between databases</li>
       <li>Implemented URL management in Canva's CMS, replacing over 10,000 hardcoded URL strings, increasing TTM and
         decreasing load on engineers</li>
     </ul>
@@ -94,7 +93,7 @@ import Button from '@/components/Button.vue'
         spectrometry data using <i>Three.js</i> and <i>WebGL</i></li>
     </ul>
 
-    <div class="flex flex-col md:flex-row md:justify-between ">
+    <div class="flex flex-col md:flex-row md:justify-between print:hidden">
       <div>
         <div>
           <br />
