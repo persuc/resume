@@ -18,23 +18,19 @@ import Button from '@/components/Button.vue'
       <span>← Back</span>
     </Button>
   </a>
-  <a href="/andrew_persic_resume.pdf" download class="absolute right-4 top-4 plain w-auto print:hidden">
-    <Button>
+  <a href="/andrew_persic_resume.pdf" download class="absolute right-0 top-1 plain w-auto print:hidden text-slate-900">
+    <Button text no-hover class="!font-normal">
       <Icon name="download" class="mr-2 w-5" />Download
     </Button>
   </a>
-  <Article back="/" class="pt-24 px-4 print:pt-0">
-    <ImageAndText class="w-fit mx-auto" :image="faceImage" :rounded="true">
+  <Article back="/" class="pt-16 md:pt-24 px-4 print:pt-0">
+    <ImageAndText class="w-fit mx-auto pr-0" :image="faceImage" :rounded="true">
       <p class="mb-1" style="line-height: 1em;">Andrew Persic</p>
       <CopyButton :value="EMAIL" style="line-height: 1.5em;">{{ EMAIL }}</CopyButton>
       <!-- <br /> -->
     </ImageAndText>
-    <div class="w-fit mx-auto">
-      <span>Frontend & backend web</span>
-      <span class="mx-1">•</span>
-      <span>Data-intensive workloads</span>
-      <span class="mx-1">•</span>
-      <span>Cloud infrastructure</span>
+    <div class="w-fit mx-auto text-center">
+      Frontend & backend web • Data-intensive workloads • Cloud infrastructure
     </div>
 
     <JobTitle class="mt-2" company="ARENA 3.0" role="Participant" date-from="2024"
@@ -53,8 +49,8 @@ import Button from '@/components/Button.vue'
       <li>Applied various training techniques, including Q-learning, PPO and RLHF</li>
     </ul>
 
-    <JobTitle class="mt-2" company="Canva" role="Senior Software Engineer (Backend + Frontend)" date-from="2022"
-      date-to="2023"
+    <JobTitle class="mt-2" company="Canva" role="Senior Software Engineer" role-qualifier="Backend + Frontend"
+      date-from="2022" date-to="2023"
       :tech="['TypeScript', 'React', 'Java', 'Terraform', 'AWS', 'GraphQL', 'Protobuf', 'PostgreSQL', 'DynamoDB']" />
     <ul class="list-disc ml-8">
       <li>Managed all pages on <a target="_blank" href="https://www.canva.com/">canva.com</a>
@@ -68,8 +64,9 @@ import Button from '@/components/Button.vue'
         decreasing load on engineers</li>
     </ul>
 
-    <JobTitle class="mt-2" company="Two Bulls" role="Software Engineer (Backend + Frontend)" date-from="2020"
-      date-to="2022" :tech="['Vue.js', 'TypeScript', 'Node.js', 'C#', 'Python', 'AWS', 'MySQL', 'DynamoDB']" />
+    <JobTitle class="mt-2" company="Two Bulls" role="Senior Software Engineer" role-qualifier="Backend + Frontend"
+      date-from="2020" date-to="2022"
+      :tech="['Vue.js', 'TypeScript', 'Node.js', 'C#', 'Python', 'AWS', 'MySQL', 'DynamoDB']" />
     <ul class="list-disc ml-8">
       <li>Delivered bespoke web applications including <a target="_blank"
           href="https://www.kidsdoconcall.com.au/">KidsDoc</a> telehealth, <a target="_blank"
@@ -81,15 +78,15 @@ import Button from '@/components/Button.vue'
         solutions</li>
     </ul>
 
-    <JobTitle class="mt-2" company="Unico" role="Software Engineer (Backend)" date-from="2019" date-to="2020"
-      :tech="['Java', 'MySQL', 'Python', 'MATRIXX', 'Linux', 'Docker', 'Spring']" />
+    <JobTitle class="mt-2" company="Unico" role="Software Engineer" role-qualifier="Backend" date-from="2019"
+      date-to="2020" :tech="['Java', 'MySQL', 'Python', 'MATRIXX', 'Linux', 'Docker', 'Spring']" />
     <ul class="list-disc ml-8">
       <li>Performed large scale database migrations (ETL) for prominent telecommunications vendors</li>
       <li>Successfully migrated over 20 million records to the <i>MATRIXX</i> in-memory database in a single day</li>
       <li>Gained experience in data-intensive systems and concurrency</li>
     </ul>
 
-    <JobTitle class="mt-2" company="Monash Uni Immersive Analytics Dept" role="Software Engineer (Research)"
+    <JobTitle class="mt-2" company="Immersive Analytics" role="Software Engineer" role-qualifier="Research"
       date-from="2017" date-to="2019" :tech="['JavaScript', 'Three.js', 'WebGL', 'Python', 'R']" />
     <ul class="list-disc ml-8">
       <li>Developed a highly performant web application for 2D and 3D
@@ -97,7 +94,7 @@ import Button from '@/components/Button.vue'
         spectrometry data using <i>Three.js</i> and <i>WebGL</i></li>
     </ul>
 
-    <div class="flex justify-between">
+    <div class="flex flex-col md:flex-row md:justify-between ">
       <div>
         <div>
           <br />
@@ -105,7 +102,7 @@ import Button from '@/components/Button.vue'
           <p>UAVs, speech synthesis, cluster computing</p>
         </div>
       </div>
-      <ImageAndText class="whitespace-nowrap mt-4" :image="monashLogo" :size="'4rem'">
+      <ImageAndText class="whitespace-nowrap mt-4 w-fit mx-auto md:mx-4" :image="monashLogo" :size="'4rem'">
         <p class="mb-1">Monash University</p>
         <p class="italic">Bachelor of Computer Science</p>
       </ImageAndText>
