@@ -3,17 +3,18 @@ interface Props {
   company: string,
   role: string,
   dateFrom: string,
-  dateTo: string,
-  tech: string[] 
+  dateTo?: string,
+  tech: string[]
 }
 
-defineProps<Props>();
+defineProps<Props>()
 </script>
 
 <template>
   <div>
     <div class="flex justify-between">
-      <p class="text-lg print:mb-0">{{ company }}<span style="font-weight: 300;"> • {{ role }}</span></p><i>{{ dateFrom }} - {{ dateTo }}</i>
+      <p class="text-lg print:mb-0">{{ company }}<span style="font-weight: 300;"> • {{ role }}</span></p><i>{{ dateFrom
+      }}{{ dateTo ? ` - ${dateTo}` : '' }}</i>
     </div>
     <!-- <span class="ml-2 mr-1" style="font-size: 0.75rem; line-height: 1rem; top: -0.125rem;">⮑</span> -->
     <span class="ml-4 font-bold tech">Tech: </span>
@@ -23,6 +24,3 @@ defineProps<Props>();
     </template>
   </div>
 </template>
-
-<style scoped lang="postcss">
-</style>

@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { EMAIL, PHONE } from '@/ts/constants'
+import { EMAIL } from '@/ts/constants'
 import faceImage from '@/assets/face.png'
 import monashLogo from '@/assets/monash.png'
+import Article from '@/components/Article.vue'
+import External from '@/components/External.vue'
 import ImageAndText from '@/components/ImageAndText.vue'
 import CopyButton from '@/components/CopyButton.vue'
-import Header from '@/components/Header.vue'
 import JobTitle from '@/components/JobTitle.vue'
 import Icon from '@/components/Icon.vue'
 import Button from '@/components/Button.vue'
@@ -12,47 +13,51 @@ import Button from '@/components/Button.vue'
 </script>
 
 <template>
-  <Header class="print:hidden">
-    <a href="/andrew_persic_resume.pdf" download class="plain">
-      <Button>
-        <Icon name="download" class="mr-2 w-5" />Download
-      </Button>
-    </a>
-  </Header>
+  <a href="/" class="plain absolute left-0 top-1 z-10 print:hidden">
+    <Button text no-hover>
+      <span>← Back</span>
+    </Button>
+  </a>
+  <a href="/andrew_persic_resume.pdf" download class="absolute right-4 top-4 plain w-auto print:hidden">
+    <Button>
+      <Icon name="download" class="mr-2 w-5" />Download
+    </Button>
+  </a>
+  <Article back="/" class="pt-24 px-4 print:pt-0">
 
-  <div class="resume px-8" style="max-width: 60rem; margin: 0 auto;">
-    <div class="flex justify-between topRow" style="height: 2.1rem;">
-      <div class="text-2xl">
-        Skills
-      </div>
-      <ImageAndText class="contact whitespace-nowrap mt-4" :image="faceImage" :rounded="true">
-        <p class="mb-1" style="line-height: 1em;">Andrew Persic</p>
-        <CopyButton :value="EMAIL" style="line-height: 1.5em;">{{ EMAIL }}</CopyButton>
-        <!-- <br /> -->
-        <!-- <CopyButton :value="PHONE" style="line-height: 1.2em;">{{ PHONE }}</CopyButton> -->
-      </ImageAndText>
+
+    <ImageAndText class="w-fit mx-auto" :image="faceImage" :rounded="true">
+      <p class="mb-1" style="line-height: 1em;">Andrew Persic</p>
+      <CopyButton :value="EMAIL" style="line-height: 1.5em;">{{ EMAIL }}</CopyButton>
+      <!-- <br /> -->
+      <!-- <CopyButton :value="PHONE" style="line-height: 1.2em;">{{ PHONE }}</CopyButton> -->
+    </ImageAndText>
+    <div class="w-fit mx-auto">
+      <span>Frontend & backend web</span>
+      <span class="mx-1">•</span>
+      <span>Data-intensive workloads</span>
+      <span class="mx-1">•</span>
+      <span>Cloud infrastructure</span>
     </div>
 
-    <!-- <p class="mt-2 text-xl">Technical Leadership</p>
-    <p>I build relationships and pursue initiatives targeting cross-cutting concerns. My leadership style is asking
-      questions based on a solid understanding of business processes and software architecture, then facilitating
-      communication to define goals. I enjoy mentoring, with the aim of helping more junior engineers hone their skills so
-      they can deliver projects on their own.
-    </p> -->
-
-    <p class="mt-2 text-xl">Engineering</p>
-    <p>Experienced with high scale, data-intensive workloads across different regions and architectures. Highly competent
-      in web technologies such as <i>Node.js</i>, <i>Vue.js</i> &amp; <i>React</i>, as well as backend technologies
-      including <i>AWS</i>,
-      <i>Terraform</i>, <i>Java</i> and <i>SQL</i> + <i>NoSQL</i> databases.
-    </p>
-
-    <div class="mt-4 text-2xl">
-      Relevant Experience
-    </div>
+    <JobTitle class="mt-2" company="ARENA 3.0" role="Participant" date-from="2024"
+      :tech="['Python', 'Pytorch', 'nnsight', 'TransformerLens']" />
+    <ul class="list-disc ml-8">
+      <li>The <External href="https://www.arena.education/">the ARENA 3.0 program</External> led by <External
+          href="https://www.perfectlynormal.co.uk/">Callum McDougall</External> offers a deep-dive into machine learning
+        with a focus on mecahnistic interpretability
+      </li>
+      <li>Built convolutional networks, residual networks,
+        optimizers, GANs, VAEs and transformers from scratch</li>
+      <li>Interpreted open source models with tools such as function vectors, SAEs, <External href="https://nnsight.net/">
+          nnsight
+        </External> and <External href="https://neelnanda-io.github.io/TransformerLens/">TransformerLens</External>
+      </li>
+      <li>Applied various training techniques, including Q-learning, PPO and RLHF</li>
+    </ul>
 
     <JobTitle class="mt-2" company="Canva" role="Senior Software Engineer (Backend + Frontend)" date-from="2022"
-      date-to="Current"
+      date-to="2023"
       :tech="['TypeScript', 'React', 'Java', 'Terraform', 'AWS', 'GraphQL', 'Protobuf', 'PostgreSQL', 'DynamoDB']" />
     <ul class="list-disc ml-8">
       <li>Managed all pages on <a target="_blank" href="https://www.canva.com/">canva.com</a>
@@ -74,18 +79,17 @@ import Button from '@/components/Button.vue'
           href="https://fit.theonetwo.com/">TheOneTwo</a> shopfront, <a target="_blank"
           href="https://www.service.vic.gov.au/services/border-permit/home">Victorian COVID border permits</a> (reached #3
         on the app store!) and the <a target="_blank" href="https://release.me/">Release.Me</a> land sales platform.</li>
-      <li>Worked with clients ranging from startups in the inception phase, to state governments to find unique solutions.
-      </li>
+      <li>Responsible for project leadership as well as frontend &amp; backend technical proficiency.</li>
+      <li>Learned to work with clients ranging from startups in the inception phase, to state governments to find unique
+        solutions</li>
     </ul>
 
     <JobTitle class="mt-2" company="Unico" role="Software Engineer (Backend)" date-from="2019" date-to="2020"
       :tech="['Java', 'MySQL', 'Python', 'MATRIXX', 'Linux', 'Docker', 'Spring']" />
     <ul class="list-disc ml-8">
-      <li>Performed large scale database migrations (ETL) for prominent
-        telecommunications vendors.</li>
+      <li>Performed large scale database migrations (ETL) for prominent telecommunications vendors.</li>
       <li>Successfully migrated over 20 million records to the <i>MATRIXX</i> in-memory database in a single day.</li>
-      <li>Gained experience in data-intensive systems and concurrency, sensitive data and reverse engineering older
-        systems.</li>
+      <li>Gained experience in data-intensive systems and concurrency.</li>
     </ul>
 
     <JobTitle class="mt-2" company="Monash Uni Immersive Analytics Dept" role="Software Engineer (Research)"
@@ -107,59 +111,14 @@ import Button from '@/components/Button.vue'
         <div class="hidden print:block">
           <br />
           <p class="text-lg">Inquire to find out about:</p>
-          <p>Deepfake detection, speech synthesis using style diffusion, mechanistic interpretability</p>
+          <p>Drones, speech synthesis</p>
         </div>
       </div>
-      <ImageAndText class="contact whitespace-nowrap mt-4" :image="monashLogo" :size="'4rem'">
+      <ImageAndText class="whitespace-nowrap mt-4" :image="monashLogo" :size="'4rem'">
         <p class="mb-1">Monash University</p>
         <p style="font-style: italic;">Bachelor of Computer Science</p>
       </ImageAndText>
     </div>
-  </div>
+  </Article>
   <div style="height: 10rem;" class="print:hidden" />
 </template>
-
-<style scoped lang="postcss">
-.education {
-  bottom: -1rem;
-}
-
-@media print {
-  .resume>.topRow {
-    flex-direction: row !important;
-    margin-top: 1rem !important;
-  }
-
-  /*
-  ul {
-    padding-left: 1.05rem;
-
-    &>li {
-      display: inline;
-
-      &::marker,
-      &::after {
-        content: ' ';
-      }
-    }
-  }
-  */
-
-  .education {
-    bottom: -6.5rem;
-    right: 1rem;
-  }
-}
-
-.resume>.topRow {
-  flex-direction: column-reverse;
-  margin-top: 6rem;
-}
-
-@media (min-width: 1024px) {
-  .resume>.topRow {
-    flex-direction: row;
-    margin-top: 2rem;
-  }
-}
-</style>

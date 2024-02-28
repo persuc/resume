@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Expand from '@/components/Expand.vue'
 import BackButton from '@/components/BackButton.vue'
+import External from '@/components/External.vue'
 
 </script>
 
@@ -8,6 +9,24 @@ import BackButton from '@/components/BackButton.vue'
   <BackButton />
 
   <div class="accomplishments px-8 pt-24 md:pt-8" style="max-width: 60rem; margin: 0 auto;">
+
+    <p class="text-xl">ARENA 3.0</p>
+
+    <ul class="list-disc ml-8">
+      <li>Participated in <External href="https://www.arena.education/">the ARENA 3.0 program</External> led by <External
+          href="https://www.perfectlynormal.co.uk/">Callum McDougall</External>
+      </li>
+      <li>Built various machine learning models from scratch, including convolutional networks, residual networks,
+        optimizers, GANs, VAEs and transformers</li>
+      <li>Learned to apply various interpretability tools such as function vectors, SAEs, <External
+          href="https://nnsight.net/">nnsight</External> and <External
+          href="https://neelnanda-io.github.io/TransformerLens/">TransformerLens</External>
+      </li>
+      <li>Applied various training techniques, including Q-learning, PPO and RLHF</li>
+      <li>Read more about my machine learning projects on <a href="/blog">my blog</a> or check out the source code I wrote
+        for all of the above on <External href="https://github.com/persuc/ARENA_3.0">GitHub</External>
+      </li>
+    </ul>
 
     <p class="text-xl">Canva: Fallback & Experiments</p>
 
@@ -56,9 +75,9 @@ import BackButton from '@/components/BackButton.vue'
 
     <ul class="list-disc ml-8">
       <li>Built and deployed in a few hours with Vue 3 + Vite + Tailwind + Cloudflare Pages</li>
+      <li>There are lots of side projects scattered around on this site, go find them all!</li>
       <li>See the code on <a target="_blank" href="https://github.com/andrew-p-dev/resume">GitHub</a></li>
     </ul>
 
     <div class="py-16"></div>
-  </div>
-</template>
+  </div></template>
