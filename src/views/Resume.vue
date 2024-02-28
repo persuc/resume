@@ -28,7 +28,6 @@ import Button from '@/components/Button.vue'
       <p class="mb-1" style="line-height: 1em;">Andrew Persic</p>
       <CopyButton :value="EMAIL" style="line-height: 1.5em;">{{ EMAIL }}</CopyButton>
       <!-- <br /> -->
-      <!-- <CopyButton :value="PHONE" style="line-height: 1.2em;">{{ PHONE }}</CopyButton> -->
     </ImageAndText>
     <div class="w-fit mx-auto">
       <span>Frontend & backend web</span>
