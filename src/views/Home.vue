@@ -40,13 +40,10 @@ const randomPages: TPreviewCard[] = [
 
 <template>
   <div class="flex flex-col gap-y-8 mx-8 max-w-6xl mx-auto items-center px-8 pb-16">
-    <div class="flex flex-col mt-48 items-center justify-end">
+    <div class="flex flex-col mt-16 md:mt-48 items-center justify-end">
       <p class="text-3xl">Andrew Persic</p>
       <div class="rounded bg-white">
-        <p>I am great at <b>identifying opportunities</b> for improvement and seeing through the technical implementation
-          to <b>deliver value across teams</b>. I do this by building relationships and understanding individual needs,
-          before establishing partnerships to tackle immediate, widespread concerns. Then I provide the drive to define
-          goals, and provide the technical knowhow to help deliver them.</p>
+        <p>Heya! </p>
         <p>Thanks for coming to hear about me! Here are some more things to check out:</p>
       </div>
     </div>
