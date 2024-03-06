@@ -19,6 +19,14 @@ const navItems = [
     label: 'Mel Spectrograms',
   },
   {
+    href: '#taxonomy',
+    label: 'Taxonomy of of a TTS Model',
+  },
+  {
+    href: '#trad',
+    label: 'Traditional Style Transfer',
+  },
+  {
     href: '#instance-norm',
     label: 'Instance Normalisation',
   },
@@ -93,7 +101,7 @@ const components = {
     <p>This will be used both for the input (reference audio) and output (synthesised speech) of the model. Next, let's
       take an overview of the taxonomy of a typical TTS model.</p>
 
-    <p class="text-3xl" id="taxonomy">Taxonomy of of a TTS Model</p>
+    <p class="text-xl" id="taxonomy">Taxonomy of of a TTS Model</p>
 
     <p>Here are the main components and their functions:</p>
 
@@ -301,12 +309,14 @@ const components = {
     <p class="text-xl" id="cli">Making my own CLI</p>
 
     <p>
-      Since there was no convenient way to run inference, I wrote a small CLI tool so that you can play with Style TTS 2
+      Since there was no convenient way to run inference upon StyleTTS 2's release, I wrote a small CLI tool that you
+      can
+      play with
       on your local machine, and make adjustments to the inference process if you wish. The code is available <External
         href="https://github.com/persuck/StyleTTS2">on my fork</External>.
     </p>
 
-    <p>Here are some examples of how fast the inference is, even on my laptop (M2 Macbook).</p>
+    <p>Here are some examples of how fast the inference is (better than real-time), even on my laptop (M2 Macbook).</p>
 
     <img :src="usage" class="mx-auto my-4 max-w-3xl" />
 
