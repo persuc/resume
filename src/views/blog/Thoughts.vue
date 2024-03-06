@@ -25,9 +25,12 @@ import disaster from '@/assets/disaster-etymology.png'
 
     <p class="mb-8">
       "The Australian mountain forests are funereal, secret, stern. Their solitude is desolation. They seem to stifle in
-      their black gorges a story of sullen despair. No tender sentiment is nourished in their shade… The very animal life
-      of these frowning hills is either grotesque or ghostly. Great grey kangaroos hop noiselessly over the coarse grass.
-      Flights of white cockatoos stream out shrieking like evil souls. The sun suddenly sinks, and mopokes burst out into
+      their black gorges a story of sullen despair. No tender sentiment is nourished in their shade… The very animal
+      life
+      of these frowning hills is either grotesque or ghostly. Great grey kangaroos hop noiselessly over the coarse
+      grass.
+      Flights of white cockatoos stream out shrieking like evil souls. The sun suddenly sinks, and mopokes burst out
+      into
       horrible peals of semi-human laughter… All is fear-inspiring and gloomy."
       <br />
       <i>- Marcus Clarke, 1876</i>
@@ -75,9 +78,46 @@ import disaster from '@/assets/disaster-etymology.png'
       </div>
     </a> -->
 
+    <div class="mb-8">
+      <p>
+        I have great faith in fools — self-confidence my friends call it.
+      </p>
+      <i>- Edgar Allen Poe, Marginalia</i>
+    </div>
+
     <div class="border-gray-200 border rounded p-4 w-fit mb-8">
       <img :src="disaster" class="mx-auto" />
     </div>
+
+    <!-- <div class="mb-8">
+      <p>
+        What I do is good. I wouldn’t let it out if I didn’t think it was.
+      </p>
+      <i>- Shel Silverstein, </i>
+    </div> -->
+
+    <div class="mb-8">
+      <p>
+        Any man’s death diminishes me, because I am involved in Mankind; And therefore never send to know for whom the
+        bell tolls; it tolls for thee.
+      </p>
+      <i>- John Donne, Marginalia</i>
+    </div>
+
+    <div class="mb-8">
+      <p>
+        Had we but world enough, and time, this coyness, lady, were no crime.
+      </p>
+      <i>- Andrew Marvell, To His Coy Mistress</i>
+    </div>
+
+    <div class="mb-8">
+      <p>
+        We sit together, the mountain and me, until only the mountain remains.
+      </p>
+      <i>- 李白</i>
+    </div>
+
 
     <!-- <p class="mb-8">
       

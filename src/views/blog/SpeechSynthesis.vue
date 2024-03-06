@@ -62,25 +62,30 @@ const components = {
 
     <p class="text-3xl">A History of Speech Synthesis</p>
 
-    <p>In this post, I will explain how traditional speech synthesis models work, and what recent innovations have led to
+    <p>In this post, I will explain how traditional speech synthesis models work, and what recent innovations have led
+      to
       the ability to clone any voice from a short reference sample. I even wrote a CLI tool so that you can do this on
       your laptop right now!
     </p>
 
     <p class="text-xl" id="mel-spec">Mel Spectrograms</p>
 
-    <p>The first thing to understand is how we encode audio samples for use in TTS models &#x2012; a mel-spectrogram.</p>
+    <p>The first thing to understand is how to encode audio samples for use in TTS models &#x2012; a mel-spectrogram.
+    </p>
 
-    <p>Simply put, a mel-spectrogram is what you get when you take an audio signal, extract the frequencies in the signal
-      (with fourier transform), and then map those frequencies to a range of human-distinguishable frequencies known as
+    <p>To construct a mel-spectrogram, the frequencies are extracted from an audio signal
+      (with fourier transform) and then those frequencies are mapped to a range of human-distinguishable frequencies
+      known as
       the mel scale. (See <External
-        href="https://medium.com/analytics-vidhya/understanding-the-mel-spectrogram-fca2afa2ce53">this post</External> for
+        href="https://medium.com/analytics-vidhya/understanding-the-mel-spectrogram-fca2afa2ce53">this post</External>
+      for
       more info) At the end of the process, you get this:
     </p>
 
     <img :src="melSpec" class="mx-auto" />
 
-    <p>Once more, this is simply a graph of all the (human-hearable) frequencies in an audio signal at each time step, and
+    <p>To reiterate, this is a graph of all the (human-hearable) frequencies in an audio signal at each time step,
+      and
       their relative loudness. I think it makes sense that this would be a reasonable way to encode both the "style"
       (pitch, energy, duration) and the "content" (phonemes that form words) of a
       speech sample.</p>
@@ -95,15 +100,16 @@ const components = {
     <div class="grid grid-cols-[1fr,auto] gap-x-12 gap-y-2 mx-auto my-4 max-w-lg">
       <template v-for="k, v in components" :key="`ramvalue-${k}`">
         <div class="font-medium">{{ v }}</div>
-        <div class="font-mono">{{ k }}</div>
+        <div class="font-mono" v-html="k"></div>
       </template>
     </div>
 
-    <p>There are also other components such as Duration Predictors, Prosody Predictors and Pitch Extractors, but they are
+    <p>There are also other components such as Duration Predictors, Prosody Predictors and Pitch Extractors, but they
+      are
       beyond the scope of this article, and quite straightforward in any case.</p>
 
 
-    <p class="text-xl" id="trad">Mimicking Style Traditional Speech Synthesis</p>
+    <p class="text-xl" id="trad">Style Transfer With Traditional Speech Synthesis</p>
 
     <p>
       Traditional methods are predominantly based on autoregressive models such as Tacotron. In these models, pitch,
@@ -117,7 +123,8 @@ const components = {
       TTS models such as Fastspeech and Glow-TTS.</p>
 
     <p>
-      With these architectures, because phoneme duration, pitch, and energy are predicted independently from speech, it is
+      With these architectures, because phoneme duration, pitch, and energy are predicted independently from speech, it
+      is
       possible to control speech synthesis and produce different intonations or styles. These models also have the
       advantage of generating speech in parallel, enabling faster speech synthesis.
     </p>
@@ -147,7 +154,8 @@ const components = {
     </p>
 
     <p>
-      Instance normalization is almost the same, but performs style normalization by normalizing feature statistics, which
+      Instance normalization is almost the same, but performs style normalization by normalizing feature statistics,
+      which
       have been found to carry the style information of an image. Like batch normalisation, μ(x) and σ(x) are
       computed across spatial dimensions independently for each channel, but also indepent to each sample!
     </p>
@@ -187,7 +195,8 @@ const components = {
       nel can encoder more subtle style information, which is also
       transferred to the AdaIN output and the final output image.</p>
 
-    <p>You can read more about AdaIN in the paper <External href="https://arxiv.org/pdf/1703.06868v2.pdf">Arbitrary Style
+    <p>You can read more about AdaIN in the paper <External href="https://arxiv.org/pdf/1703.06868v2.pdf">Arbitrary
+        Style
         Transfer in Real-time with Adaptive Instance
         Normalization</External>.</p>
 
@@ -233,7 +242,8 @@ const components = {
     <p>
       This particular model is called "StyleTTS" and you can read more about it in: <External
         href="https://arxiv.org/pdf/2205.15439.pdf">StyleTTS: A Style-Based Generative Model for Natural and
-        Diverse Text-to-Speech Synthesis</External>. This is a good starting point, because now we are going to jump into
+        Diverse Text-to-Speech Synthesis</External>. This is a good starting point, because now we are going to jump
+      into
       the future a few years and review Style TTS's big brother, Style TTS 2.
     </p>
 
@@ -251,14 +261,16 @@ const components = {
       </External>
     </p>
 
-    <p>So what is a diffusion model, and how can one be applied to speech synthesis? If you want an in depth explanation,
+    <p>So what is a diffusion model, and how can one be applied to speech synthesis? If you want an in depth
+      explanation,
       I recommend <External href="https://lilianweng.github.io/posts/2021-07-11-diffusion-models/">this excellent blog
         post by Lilian Weng</External>. For the moment however, you can think of a diffusion model as a denoising model.
       The training process looks like this:</p>
 
     <img :src="noising" class="mx-auto max-w-xl" />
 
-    <p>Where progressively more noise is added to an image, and the model is trained to reconstruct the original as below:
+    <p>Where progressively more noise is added to an image, and the model is trained to reconstruct the original as
+      below:
     </p>
 
     <img :src="denoising" class="mx-auto max-w-3xl" />
@@ -298,7 +310,8 @@ const components = {
 
     <img :src="usage" class="mx-auto my-4 max-w-3xl" />
 
-    <p>My fork will also handle downloading external dependencies for you, so you should be able to simply clone the fork,
+    <p>My fork will also handle downloading external dependencies for you, so you should be able to simply clone the
+      fork,
       <code class="inline-code">pip install -r requirements.txt</code>, drop some reference wav files in <code
         class="inline-code">Data/reference_audio</code>, and run <code class="inline-code">python synthesise.py</code>.
     </p>
@@ -311,7 +324,8 @@ const components = {
       There are many other popular models that I haven't touched on here, such as
       <External href="https://github.com/coqui-ai/TTS">Coqui</External>, and little is known about state of the
       architecture behind state of the art commercial models such as those mode by <External
-        href="https://elevenlabs.io/">ElevenLabs</External>. However it is impossible to summarise the entire field in one
+        href="https://elevenlabs.io/">
+        ElevenLabs</External>. However it is impossible to summarise the entire field in one
       article.
     </p>
 
