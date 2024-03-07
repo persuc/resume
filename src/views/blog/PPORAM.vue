@@ -164,16 +164,19 @@ const spawnCode = `class BreakoutRandomEnv(gym.Wrapper):
 
     <p class="text-xl mt-8" id="what-is-ppo">What is PPO?</p>
 
-    <p>Proximal Policy Optimisation (PPO) falls under the family of Reinforcement Learning (RL) techniques that has gained
+    <p>Proximal Policy Optimisation (PPO) falls under the family of Reinforcement Learning (RL) techniques that has
+      gained
       significant attention in recent years. If you are familiar with other policy optimization methods, PPO offers
       improvements in sample efficiency, stability, and robustness in training deep neural networks for reinforcement
       learning tasks. A key feature of PPO is the clipped surrogate objective. This limit on the loss strikes helps
       balance
-      between exploration and exploitation, and PPO has demonstrated remarkable performance across a wide range of complex
+      between exploration and exploitation, and PPO has demonstrated remarkable performance across a wide range of
+      complex
       environments, including robotics, game playing, and autonomous control systems.</p>
 
     <p>One important difference between PPO and other RL algorithms such as DQN is that PPO is learns online. i.e. it
-      learns directly from whatever observations are provided by the environment as its agent performs actions. This means
+      learns directly from whatever observations are provided by the environment as its agent performs actions. This
+      means
       that training data is not used as efficiently, since it only sees each batch of data once. However, this is not a
       problem for a situation like an emulated game environment, since we can generate as many examples as needed and we
       and so we are not limited by available training data.</p>
@@ -187,11 +190,13 @@ const spawnCode = `class BreakoutRandomEnv(gym.Wrapper):
       \Bigr]" />
 
     <p>What do the terms mean?</p>
-    <p>This is equation is trying to express is that the loss can be calculated as the expectation (empirical average over
+    <p>This is equation is trying to express is that the loss can be calculated as the expectation (empirical average
+      over
       batches of samples) of the log of what action policy
       <Formula value="{\large \pi}_\theta" :inline="true" /> takes in a given state,
       multiplied by
-      <Formula value="A_t" :inline="true" /> - an estimator of how much better or wrose that particular action is compared
+      <Formula value="A_t" :inline="true" /> - an estimator of how much better or wrose that particular action is
+      compared
       to the policy's average performance.
     </p>
 
@@ -202,7 +207,8 @@ const spawnCode = `class BreakoutRandomEnv(gym.Wrapper):
 
     <p class="text-xl mt-8" id="first-attempt">First Attempt</p>
 
-    <p>My first attempt at training on RAM ended in the model falling into a trap early in training that it was never able
+    <p>My first attempt at training on RAM ended in the model falling into a trap early in training that it was never
+      able
       to recover from. Here are the charts:</p>
 
     <SvgBehindImage class="max-w-[30rem] mb-4 mx-auto" v-for="chart in memory1" :key="chart.image" :image="chart.image"
@@ -220,7 +226,8 @@ const spawnCode = `class BreakoutRandomEnv(gym.Wrapper):
       <span class="font-medium pl-2">{{ chart.title }}</span>
     </SvgBehindImage>
 
-    <p>Notice that the RAM agent's charts are very flat, a sure indicator that the model is struggling. The RAM agent and
+    <p>Notice that the RAM agent's charts are very flat, a sure indicator that the model is struggling. The RAM agent
+      and
       the pixel agent actually performed quite similarly until around 50,000 steps through training,at which point the
       pixel agent learned to extract the features it needed (ball x position, paddle x position, etc.) However the RAM
       agent doesn't
@@ -237,13 +244,15 @@ const spawnCode = `class BreakoutRandomEnv(gym.Wrapper):
 
     <p>You may have noticed that the agent is playing in a very "deterministic" way. It simply keeps the paddle on the
       left side of the screen, which every now and then will catch the ball in a very profitable cycle of 3-4 bounces,
-      before it inevitably ends up somewhere other than the left corner of the screen and the agent gives up trying to hit
+      before it inevitably ends up somewhere other than the left corner of the screen and the agent gives up trying to
+      hit
       it.
     </p>
 
     <p>This is an example of the model falling into a "local minimum" &#x2012; a strategy which is vastly better than
       anything else the model has tried so far, but ultimately not very close to the optimal policy. This problem is
-      particularly treacherous in this circumstance, because the suboptimal strategy has a low probability of working, but
+      particularly treacherous in this circumstance, because the suboptimal strategy has a low probability of working,
+      but
       when it dose work it produces a ver high reward (not just one point, but 3-4 points) giving it a very large effect
       on the weights, and trapping the model in this suboptimal pattern.</p>
 
@@ -251,7 +260,8 @@ const spawnCode = `class BreakoutRandomEnv(gym.Wrapper):
 
     <p>The first thing I tried was narrowing the observation space to just the
       relevant variables. The idea is that if the model is more easily able to identify the really key information (the
-      ball and paddle x positions) then it might learn to move the paddle underneath the ball immediately and avoid other,
+      ball and paddle x positions) then it might learn to move the paddle underneath the ball immediately and avoid
+      other,
       suboptimal patterns.
     </p>
 
@@ -272,7 +282,8 @@ const spawnCode = `class BreakoutRandomEnv(gym.Wrapper):
     <VideoBlock :src="example">Model performance after 248835 training steps</VideoBlock>
 
     <p>
-      I've highlighted the relevant parts of the memory in blue. From my observations, here are the what each highlighted
+      I've highlighted the relevant parts of the memory in blue. From my observations, here are the what each
+      highlighted
       address represents:
     </p>
 
@@ -296,7 +307,8 @@ const spawnCode = `class BreakoutRandomEnv(gym.Wrapper):
       <span class="font-medium pl-2">{{ chart.title }}</span>
     </SvgBehindImage>
 
-    <p>Unfortunately, even after this modification as well as many more training runs tweaking hyperparameters, the model
+    <p>Unfortunately, even after this modification as well as many more training runs tweaking hyperparameters, the
+      model
       is still stuck playing in the corner. Time to dive into some papers and see if I could find some secret sauce!</p>
 
     <p class="text-xl mt-8" id="tuning">PPO Dash</p>
@@ -305,7 +317,8 @@ const spawnCode = `class BreakoutRandomEnv(gym.Wrapper):
       <External href="https://arxiv.org/abs/1907.06704">PPO Dash: Improving Generalization in Deep Reinforcement
         Learning
       </External> is a paper that outlines various strategies for optimising the training of PPO agents on much more
-      complex environments than Breakout (albeit on pixel data, not RAM). I found a few useful insights from the authors.
+      complex environments than Breakout (albeit on pixel data, not RAM). I found a few useful insights from the
+      authors.
     </p>
 
     <p>There are two key parameter tweaks outlined in this paper which help solve the problem of falling into a local
@@ -313,7 +326,8 @@ const spawnCode = `class BreakoutRandomEnv(gym.Wrapper):
       secondly, the learning rate should be lower.</p>
     <p>
       The idea here is to both prevent the policy from falling into a local minimum caused by rare outsized returns by
-      making these anomalies count for a smaller part of the data in each batch, and also to learn slower so that batches
+      making these anomalies count for a smaller part of the data in each batch, and also to learn slower so that
+      batches
       with outsized returns cause less dramatic changes in the gradients.
     </p>
 
@@ -325,7 +339,8 @@ const spawnCode = `class BreakoutRandomEnv(gym.Wrapper):
     <p>
       Other resources I found that were useful in tuning hyperparameters include: <External
         href="https://iclr-blog-track.github.io/2022/03/25/ppo-implementation-details/">The 37 Implementation
-        Details of Proximal Policy Optimization</External> and <External href="https://openreview.net/pdf?id=nIAxjsniDzg">
+        Details of Proximal Policy Optimization</External> and <External
+        href="https://openreview.net/pdf?id=nIAxjsniDzg">
         What Matters For On Policy Deep Actor
         Critic Methods? A Large Scale Study</External>
     </p>
@@ -345,7 +360,8 @@ const spawnCode = `class BreakoutRandomEnv(gym.Wrapper):
     <VideoBlock :src="disappearingBall" />
 
     <p>The full video is 20 minutes long. After the ball disappears, training continues until the agent reaches a
-      specified maximum number of steps and the episode is forcefully terminated. I can only speculate that by being able
+      specified maximum number of steps and the episode is forcefully terminated. I can only speculate that by being
+      able
       to observe the RAM directly, the agent was able to manipulate the game to trigger a bug that de-spawned the ball.
     </p>
 
@@ -367,23 +383,28 @@ const spawnCode = `class BreakoutRandomEnv(gym.Wrapper):
 
     <p class="my-4">Did you spot it? The agent is capitalising on a statistical quirk of the Atari implementation of
       Breakout.
-      After analysing thousands of games of Breakout, I discovered that the ball is much more likely to end up towards the
+      After analysing thousands of games of Breakout, I discovered that the ball is much more likely to end up towards
+      the
       edge of the screen rather than the center.</p>
 
-    <p>I'm not exactly sure why this is the case. One reason is probably that the ball bounces off the side walls, meaning
-      it naturally has to spend more time at the edge of the screen than travelling across the center. But given that we
+    <p>I'm not exactly sure why this is the case. One reason is probably that the ball bounces off the side walls,
+      meaning
+      it has to spend more time at the edge of the screen than travelling across the center. But given that we
       have seen the agent manipulate the game in unexpected ways by making the ball disappear, it could also be the case
-      that the has found a way to influence
+      that it has found a way to influence
       where the ball will spawn, choosing an advantageous starting position.</p>
 
-    <p>Whatever the reason, the agent is able to accumulate 3-4 points just by staying in one of the corners a lot of the
+    <p>Whatever the reason, the agent is able to accumulate 3-4 points just by staying in one of the corners a lot of
+      the
       time. How can we remedy this brazen rule bending? Actually it's quite simple, we don't even need to modify the
       environment. Now that we know which RAM addresses indicate whether the ball is alive, we can just add a
       wrapper to the environment that moves the ball instantly to a random location on spawn (as per the normal Breakout
       rules, but with a random number generator completely hidden to the model).</p>
 
-    <p>Also, to address the fact that Breakout inherently has some bias for the ball to move to the edge of the screen, I
-      set the ball's initial x velocity to 0, so that it falls in a straight line, meaning that after first being fired, a
+    <p>Also, to address the fact that Breakout inherently has some bias for the ball to move to the edge of the screen,
+      I
+      set the ball's initial x velocity to 0, so that it falls in a straight line, meaning that after first being fired,
+      a
       ball has a uniform probability of passing over each x coordinate at the bottom of the screen.
     </p>
 
@@ -404,7 +425,8 @@ const spawnCode = `class BreakoutRandomEnv(gym.Wrapper):
 
     <p>You'll notice I had some long running episodes, and some hiccups in the training, but leaving those aside what
       seems to have happened is that the agent has found a new "statistical" method of playing Breakout, where it
-      repeatedly swings the paddle across the screen to maximise the chance of hitting the ball, sort of like a blind man
+      repeatedly swings the paddle across the screen to maximise the chance of hitting the ball, sort of like a blind
+      man
       who can't tell where the ball is, and so must just make the paddle cover as much area as possible in the few steps
       during which the ball is able to collide with the paddle.</p>
 
@@ -420,7 +442,8 @@ const spawnCode = `class BreakoutRandomEnv(gym.Wrapper):
       which memory addresses represent important features in each game. Then I could try to visualise extracted features
       in the
       pixel-observation models by tweaking the various memory addresses and seeing if there are common activation
-      patterns, perhaps using a library like <External href="https://nnsight.net/">nnsight</External>. It would also have
+      patterns, perhaps using a library like <External href="https://nnsight.net/">nnsight</External>. It would also
+      have
       been pretty neat to be able to label each memory address with a picture of what
       the
       pixel-observation model thinks that memory address represents in the game.</p>
