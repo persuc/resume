@@ -37,7 +37,7 @@ const navItems = [
   },
   {
     href: '#seed',
-    label: 'Troubleshooting: Randomness',
+    label: 'Troubleshooting: Ball Distribution',
   },
   {
     href: '#ppo-dash',
@@ -369,7 +369,7 @@ const spawnCode = `class BreakoutRandomEnv(gym.Wrapper):
       this strategy is not incentivised. However, perhaps this implies that the agent is able to influence the game in
       ways that are harmful for training?</p>
 
-    <p class="text-xl mt-8" id="seed">Troubleshooting: PRNGs</p>
+    <p class="text-xl mt-8" id="seed">Troubleshooting: Ball Distribution</p>
 
     <p>I decided to review the footage of the successful Breakout agent trained on pixel data, and I noticed another
       suspicious behaviour. Take note of when
@@ -396,8 +396,10 @@ const spawnCode = `class BreakoutRandomEnv(gym.Wrapper):
 
     <p>Whatever the reason, the agent is able to accumulate 3-4 points just by staying in one of the corners a lot of
       the
-      time. How can we remedy this brazen rule bending? Actually it's quite simple, we don't even need to modify the
-      environment. Now that we know which RAM addresses indicate whether the ball is alive, we can just add a
+      time, and then it plays a sequence of moves learned by wrote since it has memorised where the ball will be after
+      the
+      "corner trap". How can we remedy this brazen rule bending? Actually it's quite simple given that we know which RAM
+      addresses indicate whether the ball is alive. We can just add a
       wrapper to the environment that moves the ball instantly to a random location on spawn (as per the normal Breakout
       rules, but with a random number generator completely hidden to the model).</p>
 
