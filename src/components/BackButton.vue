@@ -22,7 +22,7 @@ function onClick() {
 </script>
 
 <template>
-  <Button class="absolute left-4 top-4 z-10" text no-hover @click="onClick">
+  <Button class="absolute left-4 top-4 z-10 select-none" text no-hover @click="onClick">
     <span>
       <slot>← Back</slot>
     </span>
