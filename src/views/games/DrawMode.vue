@@ -114,11 +114,12 @@ onMounted(() => {
       wireframes: false,
       // showBounds: true,
       hasBounds: true,
-      showInternalEdges: true,
-      showCollisions: true,
-      showConvexHulls: true,
-      showBroadphase: true,
-      showBounds: true,
+      // debug options:
+      // showInternalEdges: true,
+      // showCollisions: true,
+      // showConvexHulls: true,
+      // showBroadphase: true,
+      // showBounds: true,
     },
   })
 

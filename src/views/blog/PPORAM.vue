@@ -432,7 +432,8 @@ const spawnCode = `class BreakoutRandomEnv(gym.Wrapper):
       who can't tell where the ball is, and so must just make the paddle cover as much area as possible in the few steps
       during which the ball is able to collide with the paddle.</p>
 
-    <p>At this point, a few hundred dollars poorer and quite low on sleep, I admit defeat. I have no idea a model that
+    <p>At this point, a few hundred dollars poorer and quite low on sleep, I admit defeat. I'm still curious as to why a
+      model that
       should be large enough to learn this task (2 hidden
       layers of size 64) is acting as if it has no observations to work on at all. If anyone has any advice they would
       like to give me, or would like to review the entire codebase for training these agents, you can <External
