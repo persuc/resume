@@ -32,7 +32,7 @@ const dateString = computed(() => {
     <div class="block md:hidden pt-2 pb-3">
       <div class="italic">{{ dateString }}</div>
     </div>
-    <div class="italic border-l border-l-blue-400 bg-sky-50 w-fit p-2 leading-5">
+    <div class="italic border-l border-l-blue-400 bg-sky-50 w-fit p-2 leading-5 print-exact">
       <template v-for="(t, i) in tech">
         {{ t }}{{ i === tech.length - 1 ? '' : ', ' }}
       </template>

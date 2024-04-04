@@ -34,7 +34,7 @@ import Button from '@/components/Button.vue'
     </div>
 
     <JobTitle class="mt-2" company="ARENA 3.0" role="Participant" date-from="2024"
-      :tech="['Python', 'Pytorch', 'nnsight', 'TransformerLens']" />
+      :tech="['Python', 'NumPy', 'PyTorch', 'NNsight', 'TransformerLens']" />
     <ul class="list-disc ml-8">
       <li>The <External href="https://www.arena.education/">the ARENA 3.0 program</External> led by <External
           href="https://www.perfectlynormal.co.uk/">Callum McDougall</External> offers a deep-dive into machine learning
@@ -42,7 +42,8 @@ import Button from '@/components/Button.vue'
       </li>
       <li>Built convolutional networks, residual networks,
         optimizers, GANs, VAEs and transformers from scratch</li>
-      <li>Interpreted open source models with tools such as function vectors, SAEs, <External href="https://nnsight.net/">
+      <li>Interpreted open source models with tools such as function vectors, SAEs, <External
+          href="https://nnsight.net/">
           nnsight
         </External> and <External href="https://neelnanda-io.github.io/TransformerLens/">TransformerLens</External>
       </li>
@@ -58,9 +59,8 @@ import Button from '@/components/Button.vue'
         These 32,590 pages receive ~30 million requests per day</li>
       <li>Expanded infrastructure to the China region, established communication between the Beijing and Landing
         Pages teams, and delivered experimentation and fallback mechanisms in the China region</li>
-      <li>Created web tools to manage pages and sync millions of changes between databases</li>
-      <li>Implemented URL management in Canva's CMS, replacing over 10,000 hardcoded URL strings, increasing TTM and
-        decreasing load on engineers</li>
+      <li>Created web tools to manage our pages and synchronise millions of daily content changes</li>
+      <li>Implemented an experimentation service for A/B testing page changes in real time across 2 regions</li>
     </ul>
 
     <JobTitle class="mt-2" company="Two Bulls" role="Senior Software Engineer" role-qualifier="Backend + Frontend"
@@ -70,7 +70,8 @@ import Button from '@/components/Button.vue'
       <li>Delivered bespoke web applications including <a target="_blank"
           href="https://www.kidsdoconcall.com.au/">KidsDoc</a> telehealth, <a target="_blank"
           href="https://fit.theonetwo.com/">TheOneTwo</a> shopfront, <a target="_blank"
-          href="https://www.service.vic.gov.au/services/border-permit/home">Victorian COVID border permits</a> (reached #3
+          href="https://www.service.vic.gov.au/services/border-permit/home">Victorian COVID border permits</a> (reached
+        #3
         on the app store!) and the <a target="_blank" href="https://release.me/">Release.Me</a> land sales platform</li>
       <li>Responsible for project leadership as well as frontend &amp; backend technical proficiency</li>
       <li>Learned to work with clients ranging from startups in the inception phase, to state governments to find unique

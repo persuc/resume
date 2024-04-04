@@ -87,6 +87,10 @@ svg {
   @apply bg-gray-100 py-0.5 px-1 rounded-md;
 }
 
+.print-exact {
+  print-color-adjust: exact;
+}
+
 *,
 *::before,
 *::after {
