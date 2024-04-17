@@ -33,8 +33,8 @@ import Button from '@/components/Button.vue'
       Frontend & backend web • Data-intensive workloads • Cloud infrastructure
     </div>
 
-    <JobTitle class="mt-2" company="ARENA 3.0" role="Participant" date-from="2024"
-      :tech="['Python', 'NumPy', 'PyTorch', 'NNsight', 'TransformerLens']" />
+    <JobTitle class="mt-2" company="ARENA 3.0" role="Participant" date-from="8 weeks"
+      :tech="['Python', 'NumPy', 'PyTorch', 'Einops', 'NNsight', 'TransformerLens']" />
     <ul class="list-disc ml-8">
       <li>The <External href="https://www.arena.education/">the ARENA 3.0 program</External> led by <External
           href="https://www.perfectlynormal.co.uk/">Callum McDougall</External> offers a deep-dive into machine learning
@@ -42,16 +42,16 @@ import Button from '@/components/Button.vue'
       </li>
       <li>Built convolutional networks, residual networks,
         optimizers, GANs, VAEs and transformers from scratch</li>
-      <li>Interpreted open source models with tools such as function vectors, SAEs, <External
+      <li>Interpreted open source models with techniques such as function vectors, SAEs, and tools like <External
           href="https://nnsight.net/">
-          nnsight
+          NNSight
         </External> and <External href="https://neelnanda-io.github.io/TransformerLens/">TransformerLens</External>
       </li>
       <li>Applied various training techniques, including Q-learning, PPO and RLHF</li>
     </ul>
 
     <JobTitle class="mt-2" company="Canva" role="Senior Software Engineer" role-qualifier="Backend + Frontend"
-      date-from="2022" date-to="2023"
+      date-from="2022" date-to="2024"
       :tech="['TypeScript', 'React', 'Java', 'Terraform', 'AWS', 'GraphQL', 'Protobuf', 'PostgreSQL', 'DynamoDB']" />
     <ul class="list-disc ml-8">
       <li>Managed all pages on <a target="_blank" href="https://www.canva.com/">canva.com</a>

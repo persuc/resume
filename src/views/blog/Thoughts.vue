@@ -118,6 +118,13 @@ import disaster from '@/assets/disaster-etymology.png'
       <i>- 李白</i>
     </div>
 
+    <div class="mb-8">
+      <p>
+        The information age was nascent when we grew up. Information addictiveness was not strong enough to distract us from information tomfoolery.
+      </p>
+      <i>- Jerome Swannack</i>
+    </div>
+
 
     <!-- <p class="mb-8">
       
