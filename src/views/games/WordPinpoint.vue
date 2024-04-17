@@ -352,26 +352,30 @@ function saveWordlist() {
 </script>
 
 <template>
-  <Button v-show="!showHelp" text no-hover class="absolute left-4 top-4 z-10"
-    @click="view === VIEW.SETUP ? $router.replace('/') : view = VIEW.SETUP">
-    <span>← {{ revealed === currentWord ? 'Done' : view === VIEW.SETUP ? 'Back' : 'Give Up' }}</span>
-  </Button>
+  <Article class="pt-0 h-screen flex flex-col" :footer="false">
 
-  <Button v-show="view !== VIEW.LOADING && !showHelp" class="absolute right-4 top-4 border border-gray-300 z-10" text
-    no-hover @click="() => showHelp = true">
-    <span v-show="!showHelp" class="font-semibold text-xl">?</span>
-  </Button>
-  <Article class="pt-0" :footer="false">
+    <div class="z-10 flex justify-between w-full pb-2">
+      <Button text no-hover class="" @click="view === VIEW.SETUP ? $router.replace('/') : view = VIEW.SETUP">
+        <span>← {{ revealed === currentWord ? 'Done' : view === VIEW.SETUP ? 'Back' : 'Give Up' }}</span>
+      </Button>
+
+      <Button v-show="view !== VIEW.LOADING" class="border border-gray-300 z-10 mr-4 mt-4" text no-hover
+        @click="() => showHelp = true">
+        <span class="font-semibold text-xl">?</span>
+      </Button>
+    </div>
+
     <div v-show="view === VIEW.LOADING">Loading...</div>
-    <div v-show="view !== VIEW.LOADING && showHelp" class="bg-white border border-gray-300 p-8 absolute z-10 mx-8">
+    <div v-show="view !== VIEW.LOADING && showHelp" class="absolute bg-white border border-gray-300 p-8 z-10 mx-8 mt-4">
       <Icon v-show="showHelp" name="close" class="w-10 absolute right-2 top-2 cursor-pointer p-2"
         @click="() => showHelp = false"></Icon>
-      <p>The game is to guess the word. Choose what length the mytery word will be (shorter words are easier) and click
+      <p>The game is to guess the word. Choose what length the mystery word will be (shorter words are easier) and click
         <b>Play</b>.
       </p>
       <p>Now start guessing! The only you information you have about the word you are trying to guess is how far it is
-        through the dictionary (given as a percentage of how far through all the N-letter words it is, if they were sorted
-        alphabetically) Type in your guess and click <b>Guess</b> to get a hint about how close you were.</p>
+        through the dictionary, as a percentage. I.e. if we play with 8 letters, "aardvark" is 0% of the way through,
+        and "midfield" is 54% of the way through. Type in your guess and click <b>Guess</b> to get a hint about how
+        close you were.</p>
       <p>Keep narrowing down your guesses until you find the mystery word!</p>
       <p>Letters will automatically be revealed as they are confirmed by your guesses. If you are stuck, click <b>Reveal
           Letter</b> to reveal a letter.
@@ -382,7 +386,7 @@ function saveWordlist() {
         British spelling is preferred to American. E.g. "Vapour" is allowed, but not "Vapor".
       </p>
     </div>
-    <div v-show="view === VIEW.SETUP" class="h-screen flex items-center justify-center mx-8">
+    <div v-show="view === VIEW.SETUP" class="flex items-center justify-center mx-8">
       <div class="flex flex-col gap-1 items-center flex-wrap">
         <div class="font-display text-xl font-bold text-center">
           How long should the mystery word be?
@@ -418,7 +422,7 @@ function saveWordlist() {
         <Button @click="pick" class="w-fit text-lg font-bold">Play</Button>
       </div>
     </div>
-    <div v-show="view === VIEW.PLAY" class="flex items-center justify-center h-screen">
+    <div v-show="view === VIEW.PLAY" class="flex items-center justify-center">
       <div class="flex flex-col items-center justify-center relative">
         <div class="grid grid-cols-[6rem_14rem] mb-12 font-mono text-xl" id="guessGrid">
           <div>{{ closestBelow >= 0 ? `${getPercentage(closestBelow)}%` : '&nbsp;' }}</div>
