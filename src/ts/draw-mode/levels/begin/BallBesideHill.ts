@@ -1,5 +1,5 @@
 import BodyUtil from "@/ts/draw-mode/BodyUtil"
-import * as EndCondition from "@/ts/draw-mode/EndCondition"
+import * as LevelEvent from "@/ts/draw-mode/LevelEvent"
 import type { LevelSpec } from "@/ts/draw-mode/Level"
 import { Color } from "@/ts/draw-mode/Theme"
 import { Bodies, Body, Engine } from "matter-js"
@@ -23,7 +23,7 @@ const level: LevelSpec = {
       ],
     })
 
-    EndCondition.onCollision(engine, walls.right, target, onEnd)
+    LevelEvent.onCollision(engine, walls.right, target, onEnd)
 
     return [
       walls,

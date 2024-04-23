@@ -1,7 +1,7 @@
 import type { LevelSpec } from "@/ts/draw-mode/Level"
 import { Color } from "@/ts/draw-mode/Theme"
 import { Bodies, Body, Engine } from "matter-js"
-import * as EndCondition from "@/ts/draw-mode/EndCondition"
+import * as LevelEvent from "@/ts/draw-mode/LevelEvent"
 import { type Level } from "@/ts/draw-mode/Level"
 
 const level: LevelSpec = {
@@ -17,7 +17,7 @@ const level: LevelSpec = {
       ]
     })
 
-    EndCondition.onCondition(engine, () => target.position.x <= 180 || target.position.x >= 620, onEnd)
+    LevelEvent.onCondition(engine, () => target.position.x <= 180 || target.position.x >= 620, onEnd)
 
     return [
       slot,

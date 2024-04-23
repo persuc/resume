@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import UI from '@/components/draw-mode/UI.vue'
 import { ASPECT_RATIO, CLEANUP_INTERVAL } from '@/ts/draw-mode/Config'
-import { cleanUpEndConditions } from '@/ts/draw-mode/EndCondition'
+import { cleanUpLevelEvents } from '@/ts/draw-mode/LevelEvent'
 import { createLevel, type LevelSpec } from '@/ts/draw-mode/Level'
 import { ReplayPlayer, type Replay } from '@/ts/draw-mode/Replay'
 import { createState } from '@/ts/draw-mode/State'
@@ -152,17 +152,9 @@ function startLevel(spec: LevelSpec) {
   })
 }
 
-function returnToLevelSelect() {
-  if (!navigation.level) {
-    return
-  }
-  resetEngine()
-}
-
 function resetEngine() {
   navigation.showEndScreen = false
   Composite.clear(engine.world, false)
-  cleanUpEndConditions(engine)
   if (navigation.level !== null) {
     navigation.level.cleanUp()
     navigation.level = null
@@ -206,7 +198,7 @@ function endLevel() {
     navigation.isReplay = false
     Events.off(engine, 'afterUpdate', ReplayPlayer.render)
   }
-  returnToLevelSelect()
+  resetEngine()
 }
 
 onUnmounted(() => {

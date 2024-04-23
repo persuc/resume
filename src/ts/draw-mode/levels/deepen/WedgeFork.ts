@@ -1,6 +1,6 @@
 import type { LevelSpec } from "@/ts/draw-mode/Level"
 import { Bodies, Engine } from "matter-js"
-import * as EndCondition from "@/ts/draw-mode/EndCondition"
+import * as LevelEvent from "@/ts/draw-mode/LevelEvent"
 import BodyUtil from "@/ts/draw-mode/BodyUtil"
 import { Color } from "@/ts/draw-mode/Theme"
 import { type Level } from "@/ts/draw-mode/Level"
@@ -31,7 +31,7 @@ const level: LevelSpec = {
       opacity: 0.6
     }
 
-    EndCondition.onCondition(engine, () => ball.position.y < 200, onEnd)
+    LevelEvent.onCondition(engine, () => ball.position.y < 200, onEnd)
 
     return [
       walls,

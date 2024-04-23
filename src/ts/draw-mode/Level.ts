@@ -6,6 +6,7 @@ import { DEFAULT_FRICTION, DEFAULT_FRICTION_AIR, DEFAULT_FRICTION_STATIC, DEFAUL
 import BodyUtil from "@/ts/draw-mode/BodyUtil"
 import type { Replay } from "@/ts/draw-mode/Replay"
 import saveAs from "file-saver"
+import { cleanUpLevelEvents } from "@/ts/draw-mode/LevelEvent"
 
 export type ColouredBody = { body: Body | Composite, color?: Color, opacity?: number }
 
@@ -29,7 +30,6 @@ export interface Level {
   textBackground: boolean
   line: Line | null
   startTime: number
-  cleanupHandlers: (() => void)[]
   startLine(): Line
   drawLine(point: IMousePoint): void
   saveReplay(): void
@@ -50,7 +50,6 @@ export function createLevel(engine: Engine, spec: LevelSpec, theme: Theme, onEnd
     line: null,
     lineHistory: [],
     startTime: performance.now(),
-    cleanupHandlers: [],
     startLine(): Line {
       level.line = new Line(level.engine)
       level.line.setColor(level.theme.DRAW)
@@ -180,6 +179,31 @@ export function addBody(level: Level, body: Body | ColouredBody | Constraint) {
   Composite.add(level.engine.world, unwrappedBody)
 }
 
+export function removeBody(level: Level, body: Body | ColouredBody | Constraint) {
+  if (BodyUtil.isConstraint(body)) {
+    const constraint = body as Constraint
+    Composite.remove(level.engine.world, constraint)
+    delete level.themeMap[constraint.id]
+    return
+  }
+
+  let unwrappedBody: Body | Composite = 'body' in body ? body.body : body
+  delete level.themeMap[unwrappedBody.id]
+  const parts = [unwrappedBody]
+  if (BodyUtil.isBody(unwrappedBody)) {
+    parts.push(...unwrappedBody.parts)
+  } else if (BodyUtil.isComposite(unwrappedBody)) {
+    parts.push(...unwrappedBody.bodies.flatMap(b => b.parts))
+    for (const constraint of unwrappedBody.constraints) {
+      Composite.remove(level.engine.world, constraint)
+    }
+  }
+  for (const part of parts) {
+    delete level.themeMap[part.id]
+  }
+  Composite.remove(level.engine.world, unwrappedBody)
+}
+
 function setPhysics(body: Body) {
   body.frictionAir = DEFAULT_FRICTION_AIR
   body.frictionStatic = DEFAULT_FRICTION_STATIC
@@ -188,7 +212,7 @@ function setPhysics(body: Body) {
 }
 
 function cleanUp(level: Level) {
-  level.cleanupHandlers.forEach(h => h())
+  cleanUpLevelEvents(level.engine)
   if (level.line) {
     level.endLine()
   }

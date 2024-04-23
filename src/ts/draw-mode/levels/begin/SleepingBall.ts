@@ -1,7 +1,7 @@
 import type { LevelSpec } from "@/ts/draw-mode/Level"
 import { Color } from "@/ts/draw-mode/Theme"
 import { Bodies, Body, Engine } from "matter-js"
-import * as EndCondition from "@/ts/draw-mode/EndCondition"
+import * as LevelEvent from "@/ts/draw-mode/LevelEvent"
 import { type Level } from "@/ts/draw-mode/Level"
 
 const level: LevelSpec = {
@@ -24,11 +24,11 @@ const level: LevelSpec = {
       isSleeping: true
     })
 
-    EndCondition.onAnyCollision(engine, ball, () => {
+    LevelEvent.onAnyCollision(engine, ball, () => {
       ball.isSleeping = false
     })
 
-    EndCondition.onCondition(engine, () => ball.position.y > 700, onEnd)
+    LevelEvent.onCondition(engine, () => ball.position.y > 700, onEnd)
 
     return [
       walls,

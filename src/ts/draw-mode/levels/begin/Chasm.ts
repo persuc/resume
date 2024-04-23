@@ -1,7 +1,7 @@
 import type { LevelSpec } from "@/ts/draw-mode/Level"
 import { Color } from "@/ts/draw-mode/Theme"
 import { Bodies, Body, Engine } from "matter-js"
-import * as EndCondition from "@/ts/draw-mode/EndCondition"
+import * as LevelEvent from "@/ts/draw-mode/LevelEvent"
 import { NO_DRAW_AREA_OPACITY } from "@/ts/draw-mode/Config"
 import { type Level } from "@/ts/draw-mode/Level"
 
@@ -36,7 +36,7 @@ const level: LevelSpec = {
       opacity: NO_DRAW_AREA_OPACITY
     }
 
-    EndCondition.onCondition(engine, () => ball.position.x >= 560 && ball.position.y < 640, onEnd)
+    LevelEvent.onCondition(engine, () => ball.position.x >= 560 && ball.position.y < 640, onEnd)
 
     return [
       leftCliff,

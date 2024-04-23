@@ -1,7 +1,7 @@
 import type { LevelSpec } from "@/ts/draw-mode/Level"
 import { Color } from "@/ts/draw-mode/Theme"
 import { Bodies, Body, Engine } from "matter-js"
-import * as EndCondition from "@/ts/draw-mode/EndCondition"
+import * as LevelEvent from "@/ts/draw-mode/LevelEvent"
 import { NO_DRAW_AREA_OPACITY } from "@/ts/draw-mode/Config"
 import BodyUtil from "@/ts/draw-mode/BodyUtil"
 import { type Level } from "@/ts/draw-mode/Level"
@@ -61,7 +61,7 @@ const level: LevelSpec = {
       opacity: NO_DRAW_AREA_OPACITY
     }
 
-    EndCondition.onCollisionDuration(engine, t, winZone.body, 3000, onEnd)
+    LevelEvent.onCollisionDuration(engine, t, winZone.body, 3000, onEnd)
 
     return [
       walls,

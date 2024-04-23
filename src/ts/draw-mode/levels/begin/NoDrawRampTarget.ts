@@ -1,6 +1,6 @@
 import { Color } from "@/ts/draw-mode/Theme"
 import { Bodies, Body, Engine, Vector } from "matter-js"
-import * as EndCondition from "@/ts/draw-mode/EndCondition"
+import * as LevelEvent from "@/ts/draw-mode/LevelEvent"
 import type { LevelSpec } from "@/ts/draw-mode/Level"
 import { distance } from "@/ts/draw-mode/Util"
 import { NO_DRAW_AREA_OPACITY } from "@/ts/draw-mode/Config"
@@ -49,7 +49,7 @@ const level: LevelSpec = {
       color: Color.ZONE
     }
 
-    EndCondition.onCondition(engine, () => {
+    LevelEvent.onCondition(engine, () => {
       return distance(ball.body.position, target.body.position) < 40
     }, onEnd)
 

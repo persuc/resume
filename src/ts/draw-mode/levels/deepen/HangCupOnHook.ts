@@ -1,7 +1,7 @@
 import type { LevelSpec } from "@/ts/draw-mode/Level"
 import { Color } from "@/ts/draw-mode/Theme"
 import { Bodies, Body, Engine, Events, Vector } from "matter-js"
-import * as EndCondition from "@/ts/draw-mode/EndCondition"
+import * as LevelEvent from "@/ts/draw-mode/LevelEvent"
 import BodyUtil from "@/ts/draw-mode/BodyUtil"
 import { type Level } from "@/ts/draw-mode/Level"
 
@@ -21,18 +21,16 @@ const levelSpec: LevelSpec = {
       },
     })
 
-    function updateCupCollision() {
+    LevelEvent.onUpdate(engine, () => {
       Body.setPosition(cupCollision, Vector.add(cup.position, { x: -Math.sin(cup.angle) * 10, y: Math.cos(cup.angle) * 10 }))
       Body.setAngle(cupCollision, cup.angle)
-    }
-    Events.on(engine, 'afterUpdate', updateCupCollision)
-    level.cleanupHandlers.push(() => Events.off(engine, 'afterUpdate', updateCupCollision))
+    })
 
     const hook = Bodies.rectangle(600, 400, 20, 400, {
       isStatic: true
     })
 
-    EndCondition.onCollision(engine, cupCollision, hook, onEnd)
+    LevelEvent.onCollision(engine, cupCollision, hook, onEnd)
 
     return [
       walls,

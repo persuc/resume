@@ -1,6 +1,6 @@
 import type { LevelSpec } from "@/ts/draw-mode/Level"
 import { Bodies, Body, Constraint, Engine, Events } from "matter-js"
-import * as EndCondition from "@/ts/draw-mode/EndCondition"
+import * as LevelEvent from "@/ts/draw-mode/LevelEvent"
 import BodyUtil from "@/ts/draw-mode/BodyUtil"
 import { NO_DRAW_AREA_OPACITY } from "@/ts/draw-mode/Config"
 import { Color } from "@/ts/draw-mode/Theme"
@@ -28,8 +28,7 @@ const level: LevelSpec = {
       Events.off(engine, 'afterUpdate', jostleCliffs)
     }
 
-    Events.on(engine, 'afterUpdate', jostleCliffs)
-    level.cleanupHandlers.push(() => Events.off(engine, 'afterUpdate', jostleCliffs))
+    LevelEvent.onUpdate(engine, jostleCliffs)
 
     const leftPinJoint = Constraint.create({
       pointA: { x: 300, y: 580 },
@@ -70,11 +69,11 @@ const level: LevelSpec = {
       opacity: 0.6
     }
 
-    EndCondition.onAnyCollision(engine, ball, () => {
+    LevelEvent.onAnyCollision(engine, ball, () => {
       ball.isSleeping = false
     })
 
-    EndCondition.onCollisionDuration(engine, ball, target.body, 3000, onEnd)
+    LevelEvent.onCollisionDuration(engine, ball, target.body, 3000, onEnd)
 
     return [
       walls,

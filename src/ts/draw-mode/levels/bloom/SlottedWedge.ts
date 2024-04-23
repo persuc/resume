@@ -1,7 +1,7 @@
 import type { LevelSpec } from "@/ts/draw-mode/Level"
 import { Color } from "@/ts/draw-mode/Theme"
 import { Bodies, Body, Engine, Events, Vector } from "matter-js"
-import * as EndCondition from "@/ts/draw-mode/EndCondition"
+import * as LevelEvent from "@/ts/draw-mode/LevelEvent"
 import BodyUtil from "@/ts/draw-mode/BodyUtil"
 import { type Level } from "@/ts/draw-mode/Level"
 
@@ -64,13 +64,11 @@ const level: LevelSpec = {
       }
     })
 
-    function updateSlotCollision() {
+    LevelEvent.onUpdate(engine, () => {
       Body.setPosition(slotCollision, Vector.add(wedge.position, { x: 19, y: -14 }))
-    }
-    Events.on(engine, 'afterUpdate', updateSlotCollision)
-    level.cleanupHandlers.push(() => Events.off(engine, 'afterUpdate', updateSlotCollision))
+    })
 
-    EndCondition.onNoCollision(engine, ball, slotCollision, onEnd)
+    LevelEvent.onNoCollision(engine, ball, slotCollision, onEnd)
 
     return [
       { body: ball, color: Color.TARGET },

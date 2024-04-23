@@ -3,10 +3,12 @@
 ## What is the easiest way to contribute?
 
 There are two easy ways to contribute:
+
 1. Making your own levels (see [How do I make my own levels?](#how-do-i-make-my-own-levels))
 2. Making your own themes (see [How do I make my own themes?](#how-do-i-make-my-own-themes))
 
 Larger initiatives include:
+
 1. Making your own worlds (see [How do I make my own worlds?](#how-do-i-make-my-own-worlds))
 2. Improving the drawing code for better performance (see [MatterLine.ts](src/ts/draw-mode/MatterLine.ts))
 3. Improving the game physics to prevent objects from intersecting / sliding through each other.
@@ -15,11 +17,13 @@ Larger initiatives include:
 ## What contributions are accepted?
 
 I will consider all contributions made as pull requests with appropriate details including:
+
 - description of the new feature / bug that has been fixed
 - any manual tests conducted
 - screenshots
 
 You may also want to include:
+
 - decisions made / explanation of code architecture
 - any questions you may have
 
@@ -34,22 +38,24 @@ Feel free to open a PR without any code if you would like to leave suggestions.
 5. Modify the level you copied in step 1 as needed. Modify `MyLevel.ts` as needed, being sure to update the `id` field to `MyLevel` as well as updating the `text` field to tell players what the goal is.
 
 To go over everything in one example, if I added a level called `MyLevel` to the `bloom` world, I would:
+
 1. Copy [src/ts/draw-mode/levels/begin/BallOnCube.ts](src/ts/draw-mode/levels/begin/BallOnCube.ts) to [src/ts/draw-mode/levels/bloom/MyLevel.ts](src/ts/draw-mode/levels/bloom/MyLevel.ts)
 2. Edit [World.ts](src/ts/draw-mode/World.ts) by importing `MyLevel` and adding it to the 'bloom' world data in the `worlds` constant:
-    ```js
-    {
-      name: 'bloom',
-      levelSpecs: [ MyLevel ]
-    }
-    ```
+   ```js
+   {
+     name: 'bloom',
+     levelSpecs: [ MyLevel ]
+   }
+   ```
 3. Create a thumbnail and place it in [/public/draw-mode/bloom/MyLevel.png](/public/draw-mode/bloom/MyLevel.png)
 4. Modify `MyLevel.ts` by updating the `id` field to `MyLevel` as well as updating the `text` field to, for example: `<span>This is my level</span>`. You don't have to use HTML in the `text`, but it is helpful for custom styling
 
 Tips for creating levels:
+
 - The matter-js coordinate system places (0, 0) in the top left of the canvas.
 - Every level is 800x600 units (w x h)
 - There are many types of objects you can use in levels such as hard-body objects, soft-body objects, ropes, pin joints, areas in which the player cannot draw, and more. See existing levels and [matter.js docs](https://brm.io/matter-js/) for examples.
-- There are many ways you can create a win-condition for a level including: when two objects touch, when an object touches any object, when some function on the objects in the level is true, etc. See existing levels and [EndCondition.ts](src/ts/draw-mode/EndCondition.ts) for examples
+- There are many ways you can create a win-condition for a level including: when two objects touch, when an object touches any object, when some function on the objects in the level is true, etc. See existing levels and [LevelEvent.ts](src/ts/draw-mode/LevelEvent.ts) for examples
 - There are also helper functions in [BodyUtil.ts](src/ts/draw-mode/BodyUtil.ts) for creating different types of objects
 - To quickly test a level during development, see the comments in `onMounted()` in [UI.ts](src/components/draw-mode/UI.vue)
 - Try to make levels that you can beat yourself consistently once you have worked out the answer. Levels that incorporate too much random chance are boring to play.
@@ -59,18 +65,20 @@ Tips for creating levels:
 ## How do I make my own worlds?
 
 A world is a grouping of levels. To make your own world:
+
 1. Create a new folder in [src/ts/draw-mode/levels](src/ts/draw-mode/levels) and name it what you want your world to be called. This is where the levels for your world will live
 2. Edit [World.ts](src/ts/draw-mode/World.ts) by adding an entry to the `worlds` constant with your world data. e.g.
-    ```js
-    {
-      name: 'my-world',
-      levelSpecs: []
-    }
-    ```
+   ```js
+   {
+     name: 'my-world',
+     levelSpecs: []
+   }
+   ```
 3. Create a folder with the same name in [public/draw-mode][public/draw-mode]. This is where the thumbnail for your world and its levels will live
 4. Create a thumbnail for your world. It must be an 800x600 PNG image named the same as your world. Place the image in the thumbnail folder you created in step 2
 
 Tips for creating worlds:
+
 - Currently only the [begin](src/ts/draw-mode/levels/begin) world is finished, so look there for examples
 - It is a good idea to make your own world if you want to make your own levels. Not only will grouping your levels together keep all your work in one place, but it will also help players find all the levels that you have made and help create a theme for each world since levels by the same designer will naturally have more similarity to each other
 - You can use AI tools such as [Dezgo](https://dezgo.com/) or [DeepAI](https://deepai.org/machine-learning-model/text2img) to create thumbnails

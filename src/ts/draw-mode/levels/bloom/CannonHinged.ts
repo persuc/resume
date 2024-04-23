@@ -1,6 +1,6 @@
 import type { LevelSpec } from "@/ts/draw-mode/Level"
 import { Bodies, Body, Constraint, Engine, Events, Vector } from "matter-js"
-import * as EndCondition from "@/ts/draw-mode/EndCondition"
+import * as LevelEvent from "@/ts/draw-mode/LevelEvent"
 import BodyUtil from "@/ts/draw-mode/BodyUtil"
 import { Color } from "@/ts/draw-mode/Theme"
 import { type Level } from "@/ts/draw-mode/Level"
@@ -24,7 +24,7 @@ const level: LevelSpec = {
 
     Vector.mult(Vector.normalise(Vector.sub(ball.position, pinJoint.pointA)), 0.1)
 
-    EndCondition.onCollisionDuration(engine, cannon, ball, 2000, () => Body.applyForce(ball, pinJoint.pointA, Vector.mult(Vector.normalise(Vector.sub(ball.position, pinJoint.pointA)), 0.1)))
+    LevelEvent.onCollisionDuration(engine, cannon, ball, 2000, () => Body.applyForce(ball, pinJoint.pointA, Vector.mult(Vector.normalise(Vector.sub(ball.position, pinJoint.pointA)), 0.1)))
 
     const target = {
       body: Bodies.rectangle(600, 500, 40, 40, {
@@ -37,7 +37,7 @@ const level: LevelSpec = {
       opacity: 0.6
     }
 
-    EndCondition.onCollision(engine, ball, target.body, onEnd)
+    LevelEvent.onCollision(engine, ball, target.body, onEnd)
 
     return [
       cannon,

@@ -1,6 +1,6 @@
 import type { LevelSpec } from "@/ts/draw-mode/Level"
 import { Bodies, Engine } from "matter-js"
-import * as EndCondition from "@/ts/draw-mode/EndCondition"
+import * as LevelEvent from "@/ts/draw-mode/LevelEvent"
 import BodyUtil from "@/ts/draw-mode/BodyUtil"
 import { type Level } from "@/ts/draw-mode/Level"
 
@@ -26,7 +26,7 @@ const level: LevelSpec = {
       isStatic: true
     })
 
-    EndCondition.onCondition(engine, () => rod.position.y > 600, onEnd)
+    LevelEvent.onCondition(engine, () => rod.position.y > 600, onEnd)
 
     return [
       walls,

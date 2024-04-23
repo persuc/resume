@@ -1,6 +1,6 @@
 import type { LevelSpec } from "@/ts/draw-mode/Level"
 import { Bodies, Body, Constraint, Engine, Events } from "matter-js"
-import * as EndCondition from "@/ts/draw-mode/EndCondition"
+import * as LevelEvent from "@/ts/draw-mode/LevelEvent"
 import BodyUtil from "@/ts/draw-mode/BodyUtil"
 import { NO_DRAW_AREA_OPACITY } from "@/ts/draw-mode/Config"
 import { Color } from "@/ts/draw-mode/Theme"
@@ -18,7 +18,7 @@ const level: LevelSpec = {
 
     Body.setAngle(cannon, 0.7)
 
-    EndCondition.onCollisionDuration(engine, cannon, ball, 500, () => Body.applyForce(ball, { x: 100, y: 400 }, { x: 0.1, y: -0.1 }))
+    LevelEvent.onCollisionDuration(engine, cannon, ball, 500, () => Body.applyForce(ball, { x: 100, y: 400 }, { x: 0.1, y: -0.1 }))
 
 
     const target = {
@@ -32,7 +32,7 @@ const level: LevelSpec = {
       opacity: 0.6
     }
 
-    EndCondition.onCollision(engine, ball, target.body, onEnd)
+    LevelEvent.onCollision(engine, ball, target.body, onEnd)
 
     return [
       cannon,

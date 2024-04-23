@@ -1,7 +1,7 @@
 import type { LevelSpec } from "@/ts/draw-mode/Level"
 import { Color } from "@/ts/draw-mode/Theme"
 import { Bodies, Body, Constraint, Engine, Events } from "matter-js"
-import * as EndCondition from "@/ts/draw-mode/EndCondition"
+import * as LevelEvent from "@/ts/draw-mode/LevelEvent"
 import { NO_DRAW_AREA_OPACITY } from "@/ts/draw-mode/Config"
 import BodyUtil from "@/ts/draw-mode/BodyUtil"
 import { type Level } from "@/ts/draw-mode/Level"
@@ -44,10 +44,10 @@ const level: LevelSpec = {
     function rotateWindmill() {
       Body.setAngularVelocity(windmill, 0.025)
     }
-    Events.on(engine, 'afterUpdate', rotateWindmill)
-    level.cleanupHandlers.push(() => Events.off(engine, 'afterUpdate', rotateWindmill))
 
-    EndCondition.onCollision(engine, walls.right, target, onEnd)
+    LevelEvent.onUpdate(engine, rotateWindmill)
+
+    LevelEvent.onCollision(engine, walls.right, target, onEnd)
 
     return [
       walls,
