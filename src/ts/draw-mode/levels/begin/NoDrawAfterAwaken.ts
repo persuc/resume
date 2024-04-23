@@ -3,9 +3,10 @@ import { Color } from "@/ts/draw-mode/Theme"
 import { Bodies, Body, Composite, Engine } from "matter-js"
 import * as EndCondition from "@/ts/draw-mode/EndCondition"
 import { NO_DRAW_AREA_OPACITY } from "@/ts/draw-mode/Config"
+import { type Level } from "@/ts/draw-mode/Level"
 
 const level: LevelSpec = {
-  generateBodies(engine: Engine, onEnd: () => any) {
+  generateBodies(engine: Engine, level: Level, onEnd: () => any) {
 
     const leftWall = Bodies.rectangle(10, 320, 20, 560)
     const rightWall = Bodies.rectangle(790, 320, 20, 560)
@@ -38,7 +39,7 @@ const level: LevelSpec = {
       color: Color.NO_DRAW,
       opacity: NO_DRAW_AREA_OPACITY
     }
-    
+
     EndCondition.onAnyCollision(engine, target, () => {
       target.isSleeping = false
       noDraw.body.collisionFilter.mask = 2

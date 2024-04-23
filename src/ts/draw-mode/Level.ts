@@ -11,7 +11,7 @@ export type ColouredBody = { body: Body | Composite, color?: Color, opacity?: nu
 
 export interface LevelSpec {
   id: string,
-  generateBodies(engine: Engine, onEnd: () => any): (Body | ColouredBody | Constraint)[],
+  generateBodies(engine: Engine, level: Level, onEnd: () => any): (Body | ColouredBody | Constraint)[],
   text?: string,
   textBackground?: boolean
 }
@@ -29,13 +29,15 @@ export interface Level {
   textBackground: boolean
   line: Line | null
   startTime: number
+  cleanupHandlers: (() => void)[]
   startLine(): Line
   drawLine(point: IMousePoint): void
   saveReplay(): void
   endLine(): void
   lineHistory: Replay['lineHistory']
   restart(): void
-} 
+  cleanUp(): void
+}
 
 export function createLevel(engine: Engine, spec: LevelSpec, theme: Theme, onEnd: () => any): Level {
   const level: Level = {
@@ -48,6 +50,7 @@ export function createLevel(engine: Engine, spec: LevelSpec, theme: Theme, onEnd
     line: null,
     lineHistory: [],
     startTime: performance.now(),
+    cleanupHandlers: [],
     startLine(): Line {
       level.line = new Line(level.engine)
       level.line.setColor(level.theme.DRAW)
@@ -72,13 +75,17 @@ export function createLevel(engine: Engine, spec: LevelSpec, theme: Theme, onEnd
           }
         }
         level.line = null
-      } 
+      }
     },
     restart() {
-      setBodies(level, spec.generateBodies(engine, onEnd))
+      cleanUp(level)
+      setBodies(level, spec.generateBodies(engine, this, onEnd))
       applyTheme(level, level.theme),
-      level.lineHistory = []
+        level.lineHistory = []
       level.startTime = performance.now()
+    },
+    cleanUp() {
+      cleanUp(level)
     },
     applyTheme(theme: Theme) {
       applyTheme(level, theme)
@@ -90,14 +97,14 @@ export function createLevel(engine: Engine, spec: LevelSpec, theme: Theme, onEnd
             lineHistory: level.lineHistory,
             specId: level.spec.id,
           })],
-          {type: "text/plain;charset=utf-8"}
+          { type: "text/plain;charset=utf-8" }
         ),
         `${level.spec.id}.replay`
       )
-  },
+    },
   }
-  
-  setBodies(level, spec.generateBodies(engine, onEnd))
+
+  setBodies(level, spec.generateBodies(engine, level, onEnd))
   applyTheme(level, theme)
 
   return level
@@ -130,43 +137,47 @@ function setBodies(level: Level, bodies: (Body | ColouredBody | Constraint)[]) {
   level.themeMap = {}
   Composite.clear(level.engine.world, false)
   for (const body of bodies) {
-    if (BodyUtil.isConstraint(body)) {
-      const constraint = body as Constraint
-      Composite.add(level.engine.world, constraint)
-      level.themeMap[constraint.id] = {
-        color: Color.WALL,
-        opacity: 1,
-      }
-      continue
-    }
-    let color: Color = ('color' in body) ? (body.color as Color) : Color.DEFAULT
-    let opacity: number = ('opacity' in body) ? (body.opacity as number) : 1
-    let unwrappedBody: Body | Composite = 'body' in body ? body.body : body
-    level.themeMap[unwrappedBody.id] = {
-      color,
-      opacity,
-    }
-    const parts = [unwrappedBody]
-    if (BodyUtil.isBody(unwrappedBody)) {
-      parts.push(...unwrappedBody.parts)
-      setPhysics(unwrappedBody)
-    } else if (BodyUtil.isComposite(unwrappedBody)) {
-      for (const part of unwrappedBody.bodies.flatMap(b => b.parts)) {
-        parts.push(part)
-        setPhysics(part)
-      }
-      for (const constraint of unwrappedBody.constraints) {
-        Composite.add(level.engine.world, constraint)
-      }
-    }
-    for (const part of parts) {
-      level.themeMap[part.id] = {
-        color,
-        opacity
-      }
-    }
-    Composite.add(level.engine.world, unwrappedBody)
+    addBody(level, body)
   }
+}
+
+export function addBody(level: Level, body: Body | ColouredBody | Constraint) {
+  if (BodyUtil.isConstraint(body)) {
+    const constraint = body as Constraint
+    Composite.add(level.engine.world, constraint)
+    level.themeMap[constraint.id] = {
+      color: Color.WALL,
+      opacity: 1,
+    }
+    return
+  }
+  let color: Color = ('color' in body) ? (body.color as Color) : Color.DEFAULT
+  let opacity: number = ('opacity' in body) ? (body.opacity as number) : 1
+  let unwrappedBody: Body | Composite = 'body' in body ? body.body : body
+  level.themeMap[unwrappedBody.id] = {
+    color,
+    opacity,
+  }
+  const parts = [unwrappedBody]
+  if (BodyUtil.isBody(unwrappedBody)) {
+    parts.push(...unwrappedBody.parts)
+    setPhysics(unwrappedBody)
+  } else if (BodyUtil.isComposite(unwrappedBody)) {
+    for (const part of unwrappedBody.bodies.flatMap(b => b.parts)) {
+      parts.push(part)
+      setPhysics(part)
+    }
+    for (const constraint of unwrappedBody.constraints) {
+      Composite.add(level.engine.world, constraint)
+    }
+  }
+  for (const part of parts) {
+    level.themeMap[part.id] = {
+      color,
+      opacity
+    }
+  }
+  Composite.add(level.engine.world, unwrappedBody)
 }
 
 function setPhysics(body: Body) {
@@ -174,4 +185,11 @@ function setPhysics(body: Body) {
   body.frictionStatic = DEFAULT_FRICTION_STATIC
   body.friction = DEFAULT_FRICTION
   body.slop = DEFAULT_SLOP
+}
+
+function cleanUp(level: Level) {
+  level.cleanupHandlers.forEach(h => h())
+  if (level.line) {
+    level.endLine()
+  }
 }

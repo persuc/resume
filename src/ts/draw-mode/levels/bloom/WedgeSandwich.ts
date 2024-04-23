@@ -3,9 +3,10 @@ import { Color } from "@/ts/draw-mode/Theme"
 import { Bodies, Body, Engine, Events, Vector } from "matter-js"
 import * as EndCondition from "@/ts/draw-mode/EndCondition"
 import BodyUtil from "@/ts/draw-mode/BodyUtil"
+import { type Level } from "@/ts/draw-mode/Level"
 
 const level: LevelSpec = {
-  generateBodies(engine: Engine, onEnd: () => any) {
+  generateBodies(engine: Engine, level: Level, onEnd: () => any) {
 
     const floor = BodyUtil.wallFloor()
 
@@ -84,7 +85,7 @@ const level: LevelSpec = {
         },
       ]
     ])
-    
+
     const slotCollision = Bodies.rectangle(0, 0, 100, 60, {
       collisionFilter: {
         mask: 0
@@ -96,10 +97,12 @@ const level: LevelSpec = {
       }
     })
 
-    Events.on(engine, 'afterUpdate', () => {
+    function updateSlotCollision() {
       Body.setPosition(slotCollision, Vector.add(wedge.position, { x: 19, y: -14 }))
-    })
-    
+    }
+    Events.on(engine, 'afterUpdate', updateSlotCollision)
+    level.cleanupHandlers.push(() => Events.off(engine, 'afterUpdate', updateSlotCollision))
+
     EndCondition.onNoCollision(engine, ball, slotCollision, onEnd)
 
     return [

@@ -8,6 +8,8 @@ import BallOnRope from '@/ts/draw-mode/levels/begin/BallOnRope'
 import BallOnStilts from '@/ts/draw-mode/levels/begin/BallOnStilts'
 import BallUnderClutter from '@/ts/draw-mode/levels/begin/BallUnderClutter'
 import Chasm from '@/ts/draw-mode/levels/begin/Chasm'
+import Claude from '@/ts/draw-mode/levels/begin/Claude'
+import Claude2 from '@/ts/draw-mode/levels/begin/Claude2'
 import NoDrawAfterAwaken from '@/ts/draw-mode/levels/begin/NoDrawAfterAwaken'
 import NoDrawOverhang from '@/ts/draw-mode/levels/begin/NoDrawOverhang'
 import NoDrawRamp from '@/ts/draw-mode/levels/begin/NoDrawRamp'
@@ -15,6 +17,7 @@ import NoDrawRampTarget from '@/ts/draw-mode/levels/begin/NoDrawRampTarget'
 import SleepingBall from '@/ts/draw-mode/levels/begin/SleepingBall'
 import Slot from '@/ts/draw-mode/levels/begin/Slot'
 import SlotNoDraw from '@/ts/draw-mode/levels/begin/SlotNoDraw'
+import SuperSoaker from '@/ts/draw-mode/levels/begin/SuperSoaker'
 import TargetBehindL from '@/ts/draw-mode/levels/begin/TargetBehindL'
 import Windmill from '@/ts/draw-mode/levels/begin/Windmill'
 import AnchorAbove from '@/ts/draw-mode/levels/bloom/AnchorAbove'
@@ -62,7 +65,7 @@ export const worlds: WorldData[] = [
   },
   {
     name: 'deepen',
-    levelSpecs: [ HangCupOnHook, WedgeFork, ]
+    levelSpecs: [HangCupOnHook, WedgeFork, SuperSoaker]
   },
 ]
 

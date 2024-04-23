@@ -4,9 +4,10 @@ import * as EndCondition from "@/ts/draw-mode/EndCondition"
 import BodyUtil from "@/ts/draw-mode/BodyUtil"
 import { NO_DRAW_AREA_OPACITY } from "@/ts/draw-mode/Config"
 import { Color } from "@/ts/draw-mode/Theme"
+import { type Level } from "@/ts/draw-mode/Level"
 
 const level: LevelSpec = {
-  generateBodies(engine: Engine, onEnd: () => any) {
+  generateBodies(engine: Engine, level: Level, onEnd: () => any) {
 
     const walls = BodyUtil.wallCup()
 
@@ -26,8 +27,9 @@ const level: LevelSpec = {
       Body.applyForce(rightBlock, { x: 750, y: 200 }, { x: -0.5, y: 0 })
       Events.off(engine, 'afterUpdate', jostleCliffs)
     }
-    
+
     Events.on(engine, 'afterUpdate', jostleCliffs)
+    level.cleanupHandlers.push(() => Events.off(engine, 'afterUpdate', jostleCliffs))
 
     const leftPinJoint = Constraint.create({
       pointA: { x: 300, y: 580 },
@@ -82,7 +84,7 @@ const level: LevelSpec = {
       leftPinJoint,
       rightPinJoint,
       target,
-      noDraw, 
+      noDraw,
       { body: ball, color: Color.TARGET }
     ]
   },

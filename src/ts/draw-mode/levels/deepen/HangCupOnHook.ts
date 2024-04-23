@@ -3,9 +3,10 @@ import { Color } from "@/ts/draw-mode/Theme"
 import { Bodies, Body, Engine, Events, Vector } from "matter-js"
 import * as EndCondition from "@/ts/draw-mode/EndCondition"
 import BodyUtil from "@/ts/draw-mode/BodyUtil"
+import { type Level } from "@/ts/draw-mode/Level"
 
-const level: LevelSpec = {
-  generateBodies(engine: Engine, onEnd: () => void) {
+const levelSpec: LevelSpec = {
+  generateBodies(engine: Engine, level: Level, onEnd: () => void) {
 
     const walls = BodyUtil.wallFloor()
 
@@ -20,12 +21,13 @@ const level: LevelSpec = {
       },
     })
 
-    Events.on(engine, 'afterUpdate', () => {
+    function updateCupCollision() {
       Body.setPosition(cupCollision, Vector.add(cup.position, { x: -Math.sin(cup.angle) * 10, y: Math.cos(cup.angle) * 10 }))
       Body.setAngle(cupCollision, cup.angle)
-    })
+    }
+    Events.on(engine, 'afterUpdate', updateCupCollision)
+    level.cleanupHandlers.push(() => Events.off(engine, 'afterUpdate', updateCupCollision))
 
-    
     const hook = Bodies.rectangle(600, 400, 20, 400, {
       isStatic: true
     })
@@ -43,4 +45,4 @@ const level: LevelSpec = {
   text: `<span>Hang the cup on the hook</span>`
 }
 
-export default level
+export default levelSpec

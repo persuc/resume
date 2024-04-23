@@ -4,9 +4,10 @@ import * as EndCondition from "@/ts/draw-mode/EndCondition"
 import type { LevelSpec } from "@/ts/draw-mode/Level"
 import { distance } from "@/ts/draw-mode/Util"
 import { NO_DRAW_AREA_OPACITY } from "@/ts/draw-mode/Config"
+import { type Level } from "@/ts/draw-mode/Level"
 
 const level: LevelSpec = {
-  generateBodies(engine: Engine, onEnd: () => any) {
+  generateBodies(engine: Engine, level: Level, onEnd: () => any) {
 
     const ball = {
       body: Bodies.circle(30, 30, 20),

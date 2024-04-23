@@ -4,9 +4,10 @@ import * as EndCondition from "@/ts/draw-mode/EndCondition"
 import BodyUtil from "@/ts/draw-mode/BodyUtil"
 import { NO_DRAW_AREA_OPACITY } from "@/ts/draw-mode/Config"
 import { Color } from "@/ts/draw-mode/Theme"
+import { type Level } from "@/ts/draw-mode/Level"
 
 const level: LevelSpec = {
-  generateBodies(engine: Engine, onEnd: () => any) {
+  generateBodies(engine: Engine, level: Level, onEnd: () => any) {
 
 
     const ball = Bodies.circle(100, 410, 20)
@@ -18,7 +19,7 @@ const level: LevelSpec = {
     Body.setAngle(cannon, 0.7)
 
     EndCondition.onCollisionDuration(engine, cannon, ball, 500, () => Body.applyForce(ball, { x: 100, y: 400 }, { x: 0.1, y: -0.1 }))
-    
+
 
     const target = {
       body: Bodies.rectangle(600, 500, 40, 40, {

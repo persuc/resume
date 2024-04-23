@@ -4,9 +4,10 @@ import { Bodies, Body, Constraint, Engine, Events } from "matter-js"
 import * as EndCondition from "@/ts/draw-mode/EndCondition"
 import { NO_DRAW_AREA_OPACITY } from "@/ts/draw-mode/Config"
 import BodyUtil from "@/ts/draw-mode/BodyUtil"
+import { type Level } from "@/ts/draw-mode/Level"
 
 const level: LevelSpec = {
-  generateBodies(engine: Engine, onEnd: () => any) {
+  generateBodies(engine: Engine, level: Level, onEnd: () => any) {
 
     const walls = BodyUtil.wallCup()
 
@@ -40,8 +41,12 @@ const level: LevelSpec = {
       opacity: NO_DRAW_AREA_OPACITY
     }
 
-    Events.on(engine, 'afterUpdate', () => Body.setAngularVelocity(windmill, 0.025))
-    
+    function rotateWindmill() {
+      Body.setAngularVelocity(windmill, 0.025)
+    }
+    Events.on(engine, 'afterUpdate', rotateWindmill)
+    level.cleanupHandlers.push(() => Events.off(engine, 'afterUpdate', rotateWindmill))
+
     EndCondition.onCollision(engine, walls.right, target, onEnd)
 
     return [

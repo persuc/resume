@@ -4,9 +4,10 @@ import { Bodies, Engine } from "matter-js"
 import * as EndCondition from "@/ts/draw-mode/EndCondition"
 import { NO_DRAW_AREA_OPACITY } from "@/ts/draw-mode/Config"
 import BodyUtil from "@/ts/draw-mode/BodyUtil"
+import { type Level } from "@/ts/draw-mode/Level"
 
 const level: LevelSpec = {
-  generateBodies(engine: Engine, onEnd: () => any) {
+  generateBodies(engine: Engine, level: Level, onEnd: () => any) {
 
     const walls = BodyUtil.wallCup()
     const target = Bodies.circle(100, 200, 30)

@@ -3,9 +3,10 @@ import { Color } from "@/ts/draw-mode/Theme"
 import { Bodies, Body, Engine } from "matter-js"
 import * as EndCondition from "@/ts/draw-mode/EndCondition"
 import { NO_DRAW_AREA_OPACITY } from "@/ts/draw-mode/Config"
+import { type Level } from "@/ts/draw-mode/Level"
 
 const level: LevelSpec = {
-  generateBodies(engine: Engine, onEnd: () => any) {
+  generateBodies(engine: Engine, level: Level, onEnd: () => any) {
 
     const target = Bodies.circle(400, 300, 20)
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import UI from '@/components/draw-mode/UI.vue'
 import { ASPECT_RATIO, CLEANUP_INTERVAL } from '@/ts/draw-mode/Config'
-import { cleanupEndConditions } from '@/ts/draw-mode/EndCondition'
+import { cleanUpEndConditions } from '@/ts/draw-mode/EndCondition'
 import { createLevel, type LevelSpec } from '@/ts/draw-mode/Level'
 import { ReplayPlayer, type Replay } from '@/ts/draw-mode/Replay'
 import { createState } from '@/ts/draw-mode/State'
@@ -130,7 +130,7 @@ onMounted(() => {
 
   Render.run(render)
   Runner.run(runner, engine)
-  Events.on(engine, 'afterUpdate', cleanup)
+  Events.on(engine, 'afterUpdate', cleanUp)
 
   applyTheme(state.theme.value);
 
@@ -156,23 +156,22 @@ function returnToLevelSelect() {
   if (!navigation.level) {
     return
   }
-
-  if (navigation.level.line) {
-    navigation.level.endLine()
-  }
-
   resetEngine()
 }
 
 function resetEngine() {
   navigation.showEndScreen = false
   Composite.clear(engine.world, false)
-  cleanupEndConditions(engine)
-  navigation.level = null
+  cleanUpEndConditions(engine)
+  if (navigation.level !== null) {
+    navigation.level.cleanUp()
+    navigation.level = null
+  }
 }
 
-function cleanup() {
-  const time = Date.now()
+// cleanup that happens each frame
+function cleanUp() {
+  const time = performance.now()
   if (time - timeOfLastCleanup >= CLEANUP_INTERVAL) {
     timeOfLastCleanup = time
     if (!navigation.level) {
@@ -215,7 +214,7 @@ onUnmounted(() => {
   document.removeEventListener("mousemove", draw)
   document.removeEventListener("mouseup", stopDrawing)
   document.removeEventListener("mousedown", startDrawing)
-  Events.off(engine, 'afterUpdate', cleanup)
+  Events.off(engine, 'afterUpdate', cleanUp)
   Engine.clear(engine)
   Render.stop(render)
   Runner.stop(runner)

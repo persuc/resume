@@ -4,9 +4,10 @@ import { Bodies, Body, Engine } from "matter-js"
 import * as EndCondition from "@/ts/draw-mode/EndCondition"
 import { NO_DRAW_AREA_OPACITY } from "@/ts/draw-mode/Config"
 import BodyUtil from "@/ts/draw-mode/BodyUtil"
+import { type Level } from "@/ts/draw-mode/Level"
 
 const level: LevelSpec = {
-  generateBodies(engine: Engine, onEnd: () => any) {
+  generateBodies(engine: Engine, level: Level, onEnd: () => any) {
 
     const walls = BodyUtil.wallCup()
 
@@ -24,7 +25,7 @@ const level: LevelSpec = {
     const blocker = Bodies.rectangle(590, 150, 20, 300, {
       isStatic: true
     })
-    
+
     // const windmill = Body.create({
     //   parts: [
     //     Bodies.rectangle(400, 120, 100, 10),
@@ -67,7 +68,7 @@ const level: LevelSpec = {
       color: Color.NO_DRAW,
       opacity: NO_DRAW_AREA_OPACITY
     }
-    
+
     EndCondition.onCollisionDuration(engine, corner, winZone.body, 3000, onEnd)
 
     return [

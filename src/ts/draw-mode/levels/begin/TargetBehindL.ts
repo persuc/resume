@@ -3,9 +3,10 @@ import { Bodies, Body, Engine, Vector } from "matter-js"
 import * as EndCondition from "@/ts/draw-mode/EndCondition"
 import type { LevelSpec } from "@/ts/draw-mode/Level"
 import { distance } from "@/ts/draw-mode/Util"
+import { type Level } from "@/ts/draw-mode/Level"
 
 const level: LevelSpec = {
-  generateBodies(engine: Engine, onEnd: () => any) {
+  generateBodies(engine: Engine, level: Level, onEnd: () => any) {
 
     const ball = Bodies.circle(50, 250, 20, {
       isSleeping: true

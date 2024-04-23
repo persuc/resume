@@ -4,9 +4,10 @@ import { Bodies, Composite, Constraint, Engine, Vertices } from "matter-js"
 import * as EndCondition from "@/ts/draw-mode/EndCondition"
 import { distance } from "@/ts/draw-mode/Util"
 import BodyUtil from "@/ts/draw-mode/BodyUtil"
+import { type Level } from "@/ts/draw-mode/Level"
 
 const level: LevelSpec = {
-  generateBodies(engine: Engine, onEnd: () => any) {
+  generateBodies(engine: Engine, level: Level, onEnd: () => any) {
 
     const floor = BodyUtil.wallFloor()
 
@@ -92,7 +93,7 @@ const level: LevelSpec = {
         rightRopeRight
       ]
     })
-    
+
     const target = {
       body: Bodies.rectangle(650, 250, 40, 40, {
         isStatic: true,

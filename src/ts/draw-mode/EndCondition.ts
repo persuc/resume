@@ -99,13 +99,13 @@ export function onCollisionAndCondition(engine: Engine, bodyA: Body, bodyB: Body
   })
 }
 
-export function cleanupEndConditions(engine: Engine) {
+export function cleanUpEndConditions(engine: Engine) {
 
   // Note: Engine.events is an array, with the properties 'afterUpdate', 'beforeUpdate' etc.
-  // This is bizarre, but its how matter.js works, so we can see what events exist like:
+  // This is bizarre, but it's how matter.js works, so we can see what events exist like:
   // console.log('events:', (engine as any).events.afterUpdate)
 
-  let e = eventsToRemove.pop() 
+  let e = eventsToRemove.pop()
   while (e) {
     Events.off(engine, e.eventType, e.callback)
     e = eventsToRemove.pop()
