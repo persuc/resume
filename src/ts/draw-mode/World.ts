@@ -15,8 +15,8 @@ import NoDrawRampTarget from '@/ts/draw-mode/levels/begin/NoDrawRampTarget'
 import SleepingBall from '@/ts/draw-mode/levels/begin/SleepingBall'
 import Slot from '@/ts/draw-mode/levels/begin/Slot'
 import SlotNoDraw from '@/ts/draw-mode/levels/begin/SlotNoDraw'
-import SuperSoaker from '@/ts/draw-mode/levels/begin/SuperSoaker'
-import SuperSoakerRepeated from '@/ts/draw-mode/levels/begin/SuperSoakerRepeated'
+import SuperSoaker from '@/ts/draw-mode/levels/deepen/SuperSoaker'
+import SuperSoakerRepeated from '@/ts/draw-mode/levels/deepen/SuperSoakerRepeated'
 import TargetBehindL from '@/ts/draw-mode/levels/begin/TargetBehindL'
 import Windmill from '@/ts/draw-mode/levels/begin/Windmill'
 import AnchorAbove from '@/ts/draw-mode/levels/bloom/AnchorAbove'
@@ -39,6 +39,7 @@ import SuspendBetweenCliffs from '@/ts/draw-mode/levels/bloom/SuspendBetweenClif
 import WedgeSandwich from '@/ts/draw-mode/levels/bloom/WedgeSandwich'
 import HangCupOnHook from '@/ts/draw-mode/levels/deepen/HangCupOnHook'
 import WedgeFork from '@/ts/draw-mode/levels/deepen/WedgeFork'
+import UnbracedWall from '@/ts/draw-mode/levels/deepen/UnbracedWall'
 
 export type WorldData = {
   name: string,
@@ -64,7 +65,7 @@ export const worlds: WorldData[] = [
   },
   {
     name: 'deepen',
-    levelSpecs: [HangCupOnHook, WedgeFork, SuperSoaker, SuperSoakerRepeated]
+    levelSpecs: [HangCupOnHook, WedgeFork, SuperSoaker, SuperSoakerRepeated, UnbracedWall]
   },
 ]
 

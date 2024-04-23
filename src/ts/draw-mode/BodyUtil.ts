@@ -98,11 +98,11 @@ export default {
     left: Body,
     right: Body
   } {
-  
+
     const floor = Bodies.rectangle(400, 590, 762, 20)
     const left = Bodies.rectangle(10, 300, 20, 600)
     const right = Bodies.rectangle(790, 300, 20, 600)
-  
+
     const body = Body.create({
       isStatic: true,
       parts: [
@@ -117,16 +117,16 @@ export default {
       floor,
       left,
       right,
-    } 
+    }
   },
   wallSides(): ColouredBody & {
     left: Body,
     right: Body
   } {
-  
+
     const left = Bodies.rectangle(10, 300, 20, 600)
     const right = Bodies.rectangle(790, 300, 20, 600)
-  
+
     const body = Body.create({
       isStatic: true,
       parts: [
@@ -139,7 +139,37 @@ export default {
       color: Color.WALL,
       left,
       right,
-    } 
+    }
+  },
+  wallBox(): ColouredBody & {
+    floor: Body,
+    left: Body,
+    right: Body,
+    top: Body
+  } {
+
+    const floor = Bodies.rectangle(400, 590, 762, 20)
+    const left = Bodies.rectangle(10, 300, 20, 600)
+    const right = Bodies.rectangle(790, 300, 20, 600)
+    const top = Bodies.rectangle(400, 10, 762, 20)
+
+    const body = Body.create({
+      isStatic: true,
+      parts: [
+        floor,
+        left,
+        right,
+        top
+      ],
+    })
+    return {
+      body,
+      color: Color.WALL,
+      floor,
+      left,
+      right,
+      top,
+    }
   },
   isConstraint(object: any): object is Constraint {
     return 'type' in object && object.type === 'constraint'

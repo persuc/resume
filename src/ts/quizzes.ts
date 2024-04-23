@@ -90,9 +90,19 @@ export default [
         body: 'Which of these is not a real computer science concept?',
         answers: [
           { answer: 'Child stealing' },
-          { answer: '', correct: true },
+          { answer: 'Non-volatile CPUs', correct: true },
           { answer: 'Master/slave control' },
-          { answer: 'Voluntary ' },
+          { answer: 'Hard, firm and soft real-time systems' },
+
+        ]
+      },
+      {
+        body: 'What is the "Eden space"?',
+        answers: [
+          { answer: 'A portion of the Root Zone Database reserved for top-level domains for charitable causes' },
+          { answer: 'A block of storage which is never reclaimed due to swap space intefering with disk defragmentation' },
+          { answer: 'An area of shared memory mapped with PROT_WRITE protection' },
+          { answer: 'Where objects are created in a generational garbage collector', correct: true },
 
         ]
       },
