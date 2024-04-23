@@ -1,7 +1,6 @@
 - Level editor
 - Inventions editor
 - remove theme from level, they should be separate abstractions
-- Turn EndCondition into a general event manager (can also put any afterUpdate events in there) and remove cleanupHandlers from level
 
 ## Level ideas
 
