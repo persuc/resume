@@ -106,6 +106,16 @@ export default [
 
         ]
       },
+      {
+        body: 'What is "Happy Eyeballs"?',
+        answers: [
+          { answer: 'A network connection strategy', correct: true },
+          { answer: 'Another name for Computer Vision Syndrome' },
+          { answer: 'A distributed clock algorithm' },
+          { answer: 'Another name for "Fast Fallback"', correct: true },
+
+        ]
+      },
       // https://en.wikipedia.org/wiki/Semiconductor_device_fabrication
     ],
   },
