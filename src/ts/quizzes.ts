@@ -113,7 +113,15 @@ export default [
           { answer: 'Another name for Computer Vision Syndrome' },
           { answer: 'A distributed clock algorithm' },
           { answer: 'Another name for "Fast Fallback"', correct: true },
-
+        ]
+      },
+      {
+        body: 'Which of these is not a concurrency library for python?',
+        answers: [
+          { answer: 'curio' },
+          { answer: 'spoolio', correct: true },
+          { answer: 'trio' },
+          { answer: 'asyncio' },
         ]
       },
       // https://en.wikipedia.org/wiki/Semiconductor_device_fabrication

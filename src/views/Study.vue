@@ -230,6 +230,11 @@ const resources: Record<string, Resource[]> = {
       link: "https://www.youtube.com/watch?v=LE3NfEULV6k",
       title: "Transfer learning and Transformer models (BERT)",
       postTitle: " (Iulia Turc, Google Researcher)",
+    },
+    {
+      link: "https://www.youtube.com/watch?v=MCs5OvhV9S4",
+      title: "Python Concurrency From the Ground Up",
+      postTitle: " (David Beazley)",
     }
   ],
   "Machine Learning": [
@@ -333,7 +338,8 @@ const navItems: NavItems[] = [
     <p>Don't feel overwhelmed, these are just some resources to read through to get a feel for the different topics you
       can go deeper into. If you find something you like, let me know and I can tailor a study plan for you and explain
       what the field is about a little. Don't try to master everything at once, hehe. Also the best way to learn is by
-      practical example, so if you want to do some particular project (chrome extension, discord bot, blog website are all
+      practical example, so if you want to do some particular project (chrome extension, discord bot, blog website are
+      all
       good first-project choices) I can walk you through and help you where you get stuck. That way it's not all just
       boring theory.</p>
 
@@ -350,17 +356,18 @@ const navItems: NavItems[] = [
     <StudyItem link="https://app.coderpad.io/PQQXDRQX" category="Frontend - 30 mins" title="Implement Reactivity">
       <p>Learn how modern web frameworks like React.js and Vue.js work by implementing reactivity yourself!</p>
       <pre v-highlightjs><code class="javascript rounded">function reactive()
-function watch()
-function ref()
-function computed()
-function render()</code></pre>
+      function watch()
+      function ref()
+      function computed()
+      function render()</code></pre>
     </StudyItem>
 
     <StudyItem link="https://app.coderpad.io/PQQXDRQX" category="Frontend - 60 mins" title="Traffic Light Component">
       <p>Design a toy component as below to display a traffic light (in plain JavaScript)</p>
       <TrafficLight />
     </StudyItem>
-    <StudyItem link="https://app.coderpad.io/PQQXDRQX" category="System Design - 90 mins" title="Design Friends Timeline">
+    <StudyItem link="https://app.coderpad.io/PQQXDRQX" category="System Design - 90 mins"
+      title="Design Friends Timeline">
       <p>Systems design question for a feed of your friends' most recently listened songs</p>
       <img :src="friendSongTimelineImage" class="h-80" />
     </StudyItem>
@@ -393,7 +400,7 @@ function render()</code></pre>
       <a target="_blank" :href="l.link">{{ l.title }}</a>
       <span v-if="l.premium"> ⭐️ Premium</span>
       <span :class="`capitalize ml-2 rounded-full px-2 py-0.5 bg-gray-100 ${difficultyColor[l.difficulty]}`">{{
-        l.difficulty }}</span>
+    l.difficulty }}</span>
     </div>
 
   </Article>
