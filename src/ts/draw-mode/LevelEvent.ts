@@ -1,13 +1,14 @@
 import { Engine, Events, Body, Collision, Pairs, type IEventCollision } from "matter-js"
 
-const eventsToRemove = [] as { eventType: string, handler: (e: any) => void }[]
+const eventsToRemove = [] as { eventType: string, handler: (e: any) => void, callback: () => any }[]
 
 export function onUpdate(engine: Engine, callback: () => any) {
   const eventType = 'afterUpdate'
   Events.on(engine, eventType, callback)
   eventsToRemove.push({
     eventType,
-    handler: callback
+    handler: callback,
+    callback,
   })
 }
 
@@ -23,6 +24,7 @@ export function onAnyCollision(engine: Engine, body: Body, callback: () => any) 
   eventsToRemove.push({
     eventType,
     handler,
+    callback,
   })
 }
 
@@ -45,7 +47,8 @@ export function onCondition(engine: Engine, condition: () => boolean, callback: 
   Events.on(engine, eventType, handler)
   eventsToRemove.push({
     eventType,
-    handler
+    handler,
+    callback,
   })
 }
 
@@ -67,7 +70,8 @@ export function onCollisionDuration(engine: Engine, bodyA: Body, bodyB: Body, mi
   Events.on(engine, eventType, handler)
   eventsToRemove.push({
     eventType,
-    handler
+    handler,
+    callback,
   })
 }
 
@@ -82,8 +86,18 @@ export function onCollisionAndCondition(engine: Engine, bodyA: Body, bodyB: Body
   Events.on(engine, eventType, handler)
   eventsToRemove.push({
     eventType,
-    handler
+    handler,
+    callback,
   })
+}
+
+export function removeEvents(engine: Engine, callback: () => void) {
+  for (const e of eventsToRemove) {
+    if (e.callback == callback) {
+      Events.off(engine, e.eventType, e.handler)
+    }
+  }
+  eventsToRemove.splice(0, eventsToRemove.length, ...eventsToRemove.filter(e => e.callback !== callback))
 }
 
 export function cleanUpLevelEvents(engine: Engine) {

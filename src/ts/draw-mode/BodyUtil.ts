@@ -93,15 +93,30 @@ export default {
       color: Color.WALL,
     }
   },
+  wallCupSeparate(): {
+    floor: Body,
+    left: Body,
+    right: Body
+  } {
+    return {
+      floor: Bodies.rectangle(400, 590, 762, 20, {
+        isStatic: true,
+      }),
+      left: Bodies.rectangle(10, 300, 20, 600, {
+        isStatic: true,
+      }),
+      right: Bodies.rectangle(790, 300, 20, 600, {
+        isStatic: true,
+      }),
+    }
+  },
   wallCup(): ColouredBody & {
     floor: Body,
     left: Body,
     right: Body
   } {
 
-    const floor = Bodies.rectangle(400, 590, 762, 20)
-    const left = Bodies.rectangle(10, 300, 20, 600)
-    const right = Bodies.rectangle(790, 300, 20, 600)
+    const { floor, left, right } = this.wallCupSeparate()
 
     const body = Body.create({
       isStatic: true,
