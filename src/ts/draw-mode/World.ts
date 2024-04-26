@@ -40,6 +40,7 @@ import WedgeSandwich from '@/ts/draw-mode/levels/bloom/WedgeSandwich'
 import HangCupOnHook from '@/ts/draw-mode/levels/deepen/HangCupOnHook'
 import WedgeFork from '@/ts/draw-mode/levels/deepen/WedgeFork'
 import UnbracedWall from '@/ts/draw-mode/levels/deepen/UnbracedWall'
+import GapInFloor from '@/ts/draw-mode/levels/deepen/GapInFloor'
 
 export type WorldData = {
   name: string,
@@ -65,7 +66,7 @@ export const worlds: WorldData[] = [
   },
   {
     name: 'deepen',
-    levelSpecs: [HangCupOnHook, WedgeFork, SuperSoaker, SuperSoakerRepeated, UnbracedWall]
+    levelSpecs: [HangCupOnHook, WedgeFork, SuperSoaker, SuperSoakerRepeated, UnbracedWall, GapInFloor]
   },
 ]
 
