@@ -41,6 +41,9 @@ import HangCupOnHook from '@/ts/draw-mode/levels/deepen/HangCupOnHook'
 import WedgeFork from '@/ts/draw-mode/levels/deepen/WedgeFork'
 import UnbracedWall from '@/ts/draw-mode/levels/deepen/UnbracedWall'
 import GapInFloor from '@/ts/draw-mode/levels/deepen/GapInFloor'
+import DodgePlatform from '@/ts/draw-mode/levels/deepen/DodgePlatform'
+import DodgePlatformNoDraw from '@/ts/draw-mode/levels/deepen/DodgePlatformNoDraw'
+import NoDrawOverhangHill from '@/ts/draw-mode/levels/begin/NoDrawOverhangHill'
 
 export type WorldData = {
   name: string,
@@ -51,9 +54,9 @@ export const worlds: WorldData[] = [
   {
     name: 'begin',
     levelSpecs: [
-      BallOnCube, BallOnFloor, BallInCup, NoDrawOverhang, BallBesideHill, BallUnderClutter,
+      BallOnCube, BallOnFloor, BallInCup, NoDrawOverhang, NoDrawOverhangHill, BallBesideHill, BallUnderClutter,
       BallOnRope, NoDrawRamp, NoDrawRampTarget, SleepingBall, NoDrawAfterAwaken, Windmill,
-      Slot, SlotNoDraw, Chasm, TargetBehindL, BallOnStilts, BalancedBetweenSticks
+      Slot, SlotNoDraw, Chasm, BallOnStilts, BalancedBetweenSticks
     ]
   },
   {
@@ -66,7 +69,7 @@ export const worlds: WorldData[] = [
   },
   {
     name: 'deepen',
-    levelSpecs: [HangCupOnHook, WedgeFork, SuperSoaker, SuperSoakerRepeated, UnbracedWall, GapInFloor]
+    levelSpecs: [HangCupOnHook, TargetBehindL, WedgeFork, SuperSoaker, SuperSoakerRepeated, UnbracedWall, GapInFloor, DodgePlatform, DodgePlatformNoDraw]
   },
 ]
 
