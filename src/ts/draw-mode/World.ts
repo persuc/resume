@@ -47,7 +47,8 @@ import NoDrawOverhangHill from '@/ts/draw-mode/levels/begin/NoDrawOverhangHill'
 
 export type WorldData = {
   name: string,
-  levelSpecs: LevelSpec[]
+  levelSpecs: LevelSpec[],
+  thumbnail: string
 }
 
 export const worlds: WorldData[] = [
@@ -71,7 +72,10 @@ export const worlds: WorldData[] = [
     name: 'deepen',
     levelSpecs: [HangCupOnHook, TargetBehindL, WedgeFork, SuperSoaker, SuperSoakerRepeated, UnbracedWall, GapInFloor, DodgePlatform, DodgePlatformNoDraw]
   },
-]
+].map(wd => ({
+  ...wd,
+  thumbnail: `/draw-mode/${wd.name}.png`
+}))
 
 export type DrawModeNavigation = {
   worldPage: number,

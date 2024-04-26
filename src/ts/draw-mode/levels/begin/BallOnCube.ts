@@ -8,7 +8,7 @@ import { type Level } from "@/ts/draw-mode/Level"
 const level: LevelSpec = {
   generateBodies(engine: Engine, level: Level, onEnd: () => void) {
 
-    const target = Bodies.circle(400, 515, 40)
+    const target = Bodies.circle(400, 460, 40)
     LevelEvent.onCondition(engine, () => target.position.y > 700, onEnd)
 
     return [

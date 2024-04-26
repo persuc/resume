@@ -10,6 +10,14 @@ const level: LevelSpec = {
 
     const ball = Bodies.circle(100, 100, 20)
 
+    const pedestal = {
+      body: Bodies.rectangle(100, 200, 50, 200, {
+        isStatic: true
+      }),
+      color: Color.WALL,
+    }
+
+
     const leftCliff = {
       body: Bodies.rectangle(125, 450, 250, 300, {
         isStatic: true
@@ -39,6 +47,7 @@ const level: LevelSpec = {
     LevelEvent.onCondition(engine, () => ball.position.x >= 560 && ball.position.y < 640, onEnd)
 
     return [
+      pedestal,
       leftCliff,
       rightCliff,
       noDraw,

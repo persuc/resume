@@ -1,12 +1,12 @@
 export enum Color {
-  DEFAULT = 'DEFAULT',
-  TARGET = 'TARGET',
-  DRAW = 'DRAW',
-  WALL = 'WALL',
-  NO_DRAW = 'NO_DRAW',
-  ZONE = 'ZONE',
-  BACKGROUND = 'BACKGROUND',
-  TEXT = 'TEXT',
+  DEFAULT = 'DEFAULT', // color used when no color is set
+  TARGET = 'TARGET', // color of main interactable object
+  DRAW = 'DRAW', // color of objects drawn by player
+  WALL = 'WALL', // color of walls and other obstacles
+  NO_DRAW = 'NO_DRAW', // color of area which forbids drawing
+  ZONE = 'ZONE', // color of zones other than no-draw zones
+  BACKGROUND = 'BACKGROUND', // background color
+  TEXT = 'TEXT', // text colour
 }
 
 export interface Theme {
@@ -42,13 +42,13 @@ export const themes: Record<string, Theme> = {
     TEXT: '#2D2D2D'
   },
   MOONLIGHT: {
-    DEFAULT: '#EF81EF',
-    TARGET: '#FD118A',
-    DRAW: '#A120EF',
-    WALL: '#2100EF',
-    NO_DRAW: '#4242AF',
-    ZONE: '#EF81EF',
-    BACKGROUND: '#000040',
+    DEFAULT: '#32104D',
+    TARGET: '#F6DAF5',
+    DRAW: '#984DAB',
+    WALL: '#32104D',
+    NO_DRAW: '#453F54',
+    ZONE: '#6A2781',
+    BACKGROUND: '#080321',
     TEXT: '#FEFEFE'
   },
   NAOKI: {
@@ -60,5 +60,15 @@ export const themes: Record<string, Theme> = {
     ZONE: '#EFA16F',
     BACKGROUND: '#360000',
     TEXT: '#FEFEFE'
+  },
+  VERDANT: {
+    DEFAULT: '#3F5E30',
+    TARGET: '#DA4031',
+    DRAW: '#3F5E30',
+    WALL: '#3F5E30',
+    NO_DRAW: '#AF4242',
+    ZONE: '#4242AF',
+    BACKGROUND: '#C4DD78',
+    TEXT: '#3F5E30'
   }
 }

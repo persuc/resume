@@ -9,7 +9,7 @@ const level: LevelSpec = {
   generateBodies(engine: Engine, level: Level, onEnd: () => any) {
 
     const walls = BodyUtil.wallCup()
-    const target = Bodies.circle(300, 560, 30)
+    const target = Bodies.circle(300, 545, 30)
     const hill = Body.create({
       parts: [
         Bodies.rectangle(370, 530, 10, 100, {

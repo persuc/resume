@@ -220,7 +220,8 @@ onUnmounted(() => {
   <div class="draw-mode select-none flex items-center justify-center"
     :style="`width: 100vw; height: 100vh; background: ${state.theme.value.BACKGROUND}`">
     <div ref="container">
-      <UI :state="state" @input="startLevel" @replay="startReplay" :navigation="navigation" @end="endLevel" />
+      <UI v-if="render" :state="state" :navigation="navigation" :engine="engine" :renderer="render" @input="startLevel"
+        @replay="startReplay" @end="endLevel" />
       <div id="render" v-show="navigation.level !== null"></div>
     </div>
   </div>
