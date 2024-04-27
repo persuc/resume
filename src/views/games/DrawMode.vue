@@ -20,6 +20,7 @@ Common.setDecomp(decomp)
 
 const engine = Engine.create()
 let render: Matter.Render // created on load
+const isReady = ref(false)
 const runner = Runner.create()
 const container: Ref<HTMLElement> = ref() as Ref<HTMLElement>
 const isDebug = process.env.NODE_ENV === "development"
@@ -143,6 +144,8 @@ onMounted(() => {
     state.save()
     console.info("All levels unlocked!")
   }
+
+  isReady.value = true
 })
 
 function startLevel(spec: LevelSpec) {
@@ -160,6 +163,10 @@ function startLevel(spec: LevelSpec) {
       console.log(line.parts[0])
     }
   } : undefined)
+
+  if (isDebug) {
+    debugValues["Level"] = navigation.level.spec.id
+  }
 }
 
 function resetEngine() {
@@ -168,6 +175,9 @@ function resetEngine() {
   if (navigation.level !== null) {
     navigation.level.cleanUp()
     navigation.level = null
+    if (isDebug) {
+      delete debugValues["Level"]
+    }
   }
 }
 
@@ -231,17 +241,11 @@ onUnmounted(() => {
     :style="`width: 100vw; height: 100vh; background: ${state.theme.value.BACKGROUND}`">
     <div ref="container">
       <div v-if="isDebug" class="absolute z-10 pointer-events-none">
-        <p>Debug:</p>
-        <p>Level: {{ navigation.level?.spec.id }}</p>
         <p v-for="[key, value] of Object.entries(debugValues)" :key="`debug-${key}`">
           {{ key }}: {{ value }}
         </p>
-        <!-- <p v-if="navigation.level">
-          line: {{ navigation.level.line?.points.length }}
-          mass: {{ navigation.level.line.calculateMass() }}
-        </p> -->
       </div>
-      <UI v-if="render" :state="state" :navigation="navigation" :engine="engine" :renderer="render" @input="startLevel"
+      <UI v-if="isReady" :state="state" :navigation="navigation" :engine="engine" :renderer="render" @input="startLevel"
         @replay="startReplay" @end="endLevel" />
       <div id="render" v-show="navigation.level !== null"></div>
     </div>
