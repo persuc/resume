@@ -158,7 +158,8 @@ const spawnCode = `class BreakoutRandomEnv(gym.Wrapper):
 
     <p class="text-3xl">Training PPO agents on RAM observations</p>
 
-    <p>This post explores what proximal policy optimisation is, and my learning process when implementing it to train an
+    <p>This post explores what proximal policy optimisation is, and my learning process when implementing it from
+      scratch to train an
       agent to play the Atari game Breakout using an <External
         href="https://www.gymlibrary.dev/environments/atari/breakout/">emulated environment</External>.</p>
 
