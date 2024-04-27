@@ -1,7 +1,7 @@
 import { DEFAULT_FRICTION, DEFAULT_FRICTION_AIR, DEFAULT_FRICTION_STATIC, DEFAULT_SLOP, MINIMUM_DRAW_DISTANCE } from "@/ts/draw-mode/Config"
 import type { Replay } from "@/ts/draw-mode/Replay"
 import { distance, getAngleRad } from "@/ts/draw-mode/Util"
-import { Bodies, Vector, Composite, type IBodyDefinition, Body, Events, Detector, Collision } from "matter-js";
+import { Bodies, Vector, Composite, type IBodyDefinition, Body, Events, Detector, Collision, Bounds } from "matter-js"
 
 export default class Line {
   engine: Matter.Engine
@@ -28,8 +28,11 @@ export default class Line {
     friction: DEFAULT_FRICTION,
     frictionAir: DEFAULT_FRICTION_AIR,
     frictionStatic: DEFAULT_FRICTION_STATIC,
-    slop:  DEFAULT_SLOP
+    slop: DEFAULT_SLOP
   }
+  overdrawnPoints = 0
+  circleCollisionPoints: Vector[]
+
   constructor(engine: Matter.Engine, lineWidth = 16) {
     this.engine = engine
     this.lineWidth = lineWidth
@@ -45,6 +48,13 @@ export default class Line {
       },
       label: 'lineContainer',
     })
+    this.circleCollisionPoints = [
+      Vector.create(0, 0),
+      Vector.create(this.halfLineWidth, 0),
+      Vector.create(-this.halfLineWidth, 0),
+      Vector.create(0, this.halfLineWidth),
+      Vector.create(0, -this.halfLineWidth),
+    ]
     this.resetParts()
     Composite.add(this.engine.world, this.body)
   }
@@ -57,36 +67,42 @@ export default class Line {
         label: 'drawnPoint_' + this.points.length + 1
       }),
       rect: from ? Bodies.rectangle(
-          (point.x + from.x) / 2,
-          (point.y + from.y) / 2,
-          distanceToLast,
-          this.lineWidth,
-          {
-            ...this.bodyOpts,
-            collisionFilter: {
-              category: 2,
-              mask: 3,
-            },
-            angle: getAngleRad(point, from),
-            label: 'drawnRect_' + this.points.length + 1
-          }
-        ) : null,
-        distanceToLast
+        (point.x + from.x) / 2,
+        (point.y + from.y) / 2,
+        distanceToLast,
+        this.lineWidth,
+        {
+          ...this.bodyOpts,
+          collisionFilter: {
+            category: 2,
+            mask: 3,
+          },
+          angle: getAngleRad(point, from),
+          label: 'drawnRect_' + this.points.length + 1
+        }
+      ) : null,
+      distanceToLast
     }
   }
 
-  addPoint(point: Vector) {
+  addPoint(point: Vector): boolean {
     const { circle, rect, distanceToLast } = this.generatePointBodies(point, this.lastPoint)
 
     if (distanceToLast < MINIMUM_DRAW_DISTANCE) {
-      return
+      return false
     }
-    
+
+    if (this.isOverdrawing(circle)) {
+      this.lastPoint = circle.position
+      this.overdrawnPoints++
+      return true
+    }
+
     const collisions = this.wouldCollide(circle, rect)
 
     if (collisions.length) {
       if (!this.lastPoint) {
-        return
+        return false
       }
 
       let smallestDistance = distanceToLast
@@ -111,16 +127,16 @@ export default class Line {
         }, new Set<Body>()
       )
       if (otherCollidedObjects.size > 1) {
-        return
+        return false
       }
 
       // TODO: think about collisions with "rect" later
       const collision = collisions.find(c => c.bodyA === circle || c.bodyB === circle)
 
       if (!collision) {
-        return
+        return false
       }
-      
+
       const newPoint: Vector = {
         x: circle.position.x - collision.penetration.x + -collision.normal.x,
         y: circle.position.y - collision.penetration.y + -collision.normal.y
@@ -147,7 +163,7 @@ export default class Line {
       )
 
       if (distanceToClosest < MINIMUM_DRAW_DISTANCE) {
-        return
+        return false
       }
 
       const newBodies = this.generatePointBodies(newPoint, closestPoint)
@@ -158,26 +174,18 @@ export default class Line {
       const collisionsTwo = this.wouldCollide(newCircle, newRect)
 
       if (collisionsTwo.length) {
-        return 
+        return false
       }
 
       this.addPointBodies(newPoint, closestPoint, newCircle, newRect)
-      this.resetParts()
-
-      return
+    } else {
+      this.addPointBodies(point, this.lastPoint, circle, rect)
     }
-    this.addPointBodies(point, this.lastPoint, circle, rect)
     this.resetParts()
+    return true
   }
 
-  addPointWithoutChecks(position: Vector, from: Vector | null) {
-    this.addPointsWithoutChecks([{
-      position,
-      from
-    }])
-  }
-
-  addPointsWithoutChecks(points: { position: Vector, from: Vector | null}[]) {
+  addPointsWithoutChecks(points: { position: Vector, from: Vector | null }[]) {
     for (const p of points) {
       const { circle, rect } = this.generatePointBodies(p.position, p.from)
       this.addPointBodies(p.position, p.from, circle, rect)
@@ -210,6 +218,10 @@ export default class Line {
     this.body.collisionFilter.mask = -1
   }
 
+  calculateMass() {
+    return Math.max(1.6, (this.points.length + this.overdrawnPoints) / 3)
+  }
+
   end() {
     Body.setStatic(this.body, false)
     if (this.body.parts.length > 1) {
@@ -218,7 +230,7 @@ export default class Line {
         body.collisionFilter.category = 1
       }
     }
-    Body.setMass(this.body, Math.max(1.6, this.points.length / 3))
+    Body.setMass(this.body, this.calculateMass())
 
     return this.points
   }
@@ -263,13 +275,34 @@ export default class Line {
     return bodies
   }
 
+  isOverdrawing(circle: Body) {
+    // TODO: implement
+    // for (const point of this.circleCollisionPoints) {
+    //   if (!this.parts.some(p => Bounds.contains(p.bounds, Vector.add(circle.position, point)))) {
+    //     return false
+    //   }
+    // }
+    // for (const cp of this.circleCollisionPoints) {
+    //   const point = Vector.add(circle.position, cp)
+    //   for (const part of this.parts) {
+    //     if (part.type)
+    //   }
+    //   if (!this.parts.some(p => Bounds.contains(p.bounds, ))) {
+    //     return false
+    //   }
+    // }
+    return false
+    return true
+  }
+
   wouldCollide(circle: Body, rect: Body | null): Collision[] {
     const bodies = this.getAllBodies().concat(circle)
-    
+
     if (rect) {
       bodies.push(rect)
     }
 
+    // TODO: only create the detector once, and update it with new bodies via an onBodyAdded() handler
     const detector = Detector.create({
       bodies
     })
@@ -278,7 +311,9 @@ export default class Line {
       const pair: (Body | null)[] = [collision.bodyA, collision.bodyB]
       return pair.includes(rect) !== pair.includes(circle)
     })
-    
+
+    Detector.clear(detector)
+
     return collisions
   }
 }

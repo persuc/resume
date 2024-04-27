@@ -2,11 +2,12 @@ import Line from "@/ts/draw-mode/MatterLine"
 import { Color } from "@/ts/draw-mode/Theme"
 import type { Theme } from "@/ts/draw-mode/Theme"
 import { Body, Composite, type IMousePoint, type Engine, Constraint, Vector } from "matter-js"
-import { DEFAULT_FRICTION, DEFAULT_FRICTION_AIR, DEFAULT_FRICTION_STATIC, DEFAULT_SLOP } from "@/ts/draw-mode/Config"
+import { DEFAULT_FRICTION, DEFAULT_FRICTION_AIR, DEFAULT_FRICTION_STATIC, DEFAULT_RESTITUTION, DEFAULT_SLOP } from "@/ts/draw-mode/Config"
 import BodyUtil from "@/ts/draw-mode/BodyUtil"
 import type { Replay } from "@/ts/draw-mode/Replay"
 import saveAs from "file-saver"
 import { cleanUpLevelEvents } from "@/ts/draw-mode/LevelEvent"
+import type MatterLine from "@/ts/draw-mode/MatterLine"
 
 export type ColouredBody = { body: Body | Composite, color?: Color, opacity?: number }
 
@@ -39,7 +40,7 @@ export interface Level {
   cleanUp(): void
 }
 
-export function createLevel(engine: Engine, spec: LevelSpec, theme: Theme, onEnd: () => any): Level {
+export function createLevel(engine: Engine, spec: LevelSpec, theme: Theme, onEnd: () => any, onLineDrawn?: (line: MatterLine) => void): Level {
   const level: Level = {
     engine,
     spec,
@@ -57,7 +58,9 @@ export function createLevel(engine: Engine, spec: LevelSpec, theme: Theme, onEnd
     },
     drawLine(point: IMousePoint) {
       if (level.line) {
-        level.line.addPoint(point)
+        if (level.line.addPoint(point) && (onLineDrawn !== undefined)) {
+          onLineDrawn(level.line)
+        }
       }
     },
     endLine() {
@@ -209,6 +212,7 @@ function setPhysics(body: Body) {
   body.frictionStatic = DEFAULT_FRICTION_STATIC
   body.friction = DEFAULT_FRICTION
   body.slop = DEFAULT_SLOP
+  body.restitution = DEFAULT_RESTITUTION
 }
 
 function cleanUp(level: Level) {

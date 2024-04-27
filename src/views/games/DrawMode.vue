@@ -10,6 +10,8 @@ import type { DrawModeNavigation } from '@/ts/draw-mode/World'
 import Matter, { Common, Composite, Engine, Events, Mouse, Render, Runner } from 'matter-js'
 import decomp from 'poly-decomp'
 import { onMounted, onUnmounted, reactive, ref, type Ref } from 'vue'
+import process from 'process'
+import type MatterLine from '@/ts/draw-mode/MatterLine'
 
 const state = createState()
 let timeOfLastCleanup = 0
@@ -20,6 +22,8 @@ const engine = Engine.create()
 let render: Matter.Render // created on load
 const runner = Runner.create()
 const container: Ref<HTMLElement> = ref() as Ref<HTMLElement>
+const isDebug = process.env.NODE_ENV === "development"
+const debugValues: Record<string, string> = reactive({})
 
 const navigation: DrawModeNavigation = reactive({
   worldPage: 0,
@@ -149,7 +153,13 @@ function startLevel(spec: LevelSpec) {
     }
     state.completed.add(spec.id)
     state.save()
-  })
+  }, isDebug ? (line: MatterLine) => {
+    debugValues["mass"] = line.calculateMass().toFixed(2).toString()
+    debugValues["points"] = line.points.length.toString()
+    if (line.parts.length) {
+      console.log(line.parts[0])
+    }
+  } : undefined)
 }
 
 function resetEngine() {
@@ -220,6 +230,17 @@ onUnmounted(() => {
   <div class="draw-mode select-none flex items-center justify-center"
     :style="`width: 100vw; height: 100vh; background: ${state.theme.value.BACKGROUND}`">
     <div ref="container">
+      <div v-if="isDebug" class="absolute z-10 pointer-events-none">
+        <p>Debug:</p>
+        <p>Level: {{ navigation.level?.spec.id }}</p>
+        <p v-for="[key, value] of Object.entries(debugValues)" :key="`debug-${key}`">
+          {{ key }}: {{ value }}
+        </p>
+        <!-- <p v-if="navigation.level">
+          line: {{ navigation.level.line?.points.length }}
+          mass: {{ navigation.level.line.calculateMass() }}
+        </p> -->
+      </div>
       <UI v-if="render" :state="state" :navigation="navigation" :engine="engine" :renderer="render" @input="startLevel"
         @replay="startReplay" @end="endLevel" />
       <div id="render" v-show="navigation.level !== null"></div>
