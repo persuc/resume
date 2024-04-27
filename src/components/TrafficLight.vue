@@ -65,7 +65,7 @@ function reset() {
   }
 }
 
-let discoInterval: number | null = null
+let discoInterval: NodeJS.Timer | null = null
 
 function cycle() {
   for (const light of lights) {
@@ -73,14 +73,14 @@ function cycle() {
     light.element
       .getElementsByClassName(colour.id)[0]
       .setAttribute('style', `background-color: ${colour.dim}`)
-  
+
     const oldIlluminated = light.illuminated
     light.illuminated = Math.floor(Math.random() * (lightColours.length - 1))
     if (light.illuminated >= oldIlluminated) {
       light.illuminated++
     }
     colour = lightColours[light.illuminated]
-  
+
     light.element
       .getElementsByClassName(colour.id)[0]
       .setAttribute('style', `background-color: ${colour.bright}`)
@@ -112,7 +112,6 @@ function toggle() {
 </template>
 
 <style>
-
 .trafficLight {
   background: black;
   width: fit-content;

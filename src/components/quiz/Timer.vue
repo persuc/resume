@@ -11,7 +11,7 @@ const props = withDefaults(defineProps<{
   isRunning: true,
 })
 const emit = defineEmits(['end', 'update:modelValue'])
-const timerInterval: Ref<number | undefined> = ref(undefined)
+const timerInterval: Ref<NodeJS.Timer | undefined> = ref(undefined)
 
 onMounted(() => {
   timerInterval.value = setInterval(() => {

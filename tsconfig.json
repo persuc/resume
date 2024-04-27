@@ -8,11 +8,12 @@
     },
     "target": "ES2021",
     "lib": ["ES2021"],
-    "noErrorTruncation": true
+    "noErrorTruncation": true,
+    "types": ["node"]
   },
   "references": [
     {
       "path": "./tsconfig.vite-config.json"
     }
-  ],
+  ]
 }
