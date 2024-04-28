@@ -120,10 +120,16 @@ import disaster from '@/assets/disaster-etymology.png'
 
     <div class="mb-8">
       <p>
-        The information age was nascent when we grew up. Information addictiveness was not strong enough to distract us from information tomfoolery.
+        The information age was nascent when we grew up. Information addictiveness was not strong enough to distract us
+        from information tomfoolery.
       </p>
       <i>- Jerome Swannack</i>
     </div>
+
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/Cu6wlaaf-ck?si=ZnG4RuXBh8sYeOqH"
+      title="YouTube video: Pong" frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 
     <!-- <p class="mb-8">

@@ -1,3 +1,4 @@
+import { removeInPlace } from "@/ts/utils"
 import { Engine, Events, Body, Collision, Pairs, type IEventCollision } from "matter-js"
 
 const eventsToRemove = [] as { eventType: string, handler: (e: any) => void, callback: () => any }[]
@@ -97,7 +98,7 @@ export function removeEvents(engine: Engine, callback: () => void) {
       Events.off(engine, e.eventType, e.handler)
     }
   }
-  eventsToRemove.splice(0, eventsToRemove.length, ...eventsToRemove.filter(e => e.callback !== callback))
+  removeInPlace(eventsToRemove, e => e.callback === callback)
 }
 
 export function cleanUpLevelEvents(engine: Engine) {

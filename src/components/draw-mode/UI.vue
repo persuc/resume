@@ -39,7 +39,7 @@ onUnmounted(() => {
 
 const levelThumbnails = computed(() => {
   state.theme // make the theme a dependency to recompute thumbnails on theme change
-  if (navigation.world == null) {
+  if (navigation.world == null || navigation.level !== null) {
     return []
   }
   return navigation.world.levelSpecs.map(spec => {

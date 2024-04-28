@@ -11,7 +11,7 @@ const levelSpec: LevelSpec = {
     const walls = BodyUtil.wallFloor()
 
     const cup = BodyUtil.bodyCup(200, 340, 120, 240, 20, {
-      density: 0.001,
+      // density: 0.001,
     })
 
     const cupCollision = Bodies.rectangle(200, 500, 80, 150, {

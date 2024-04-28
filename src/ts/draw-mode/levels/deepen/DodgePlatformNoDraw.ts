@@ -38,9 +38,8 @@ const levelSpec: LevelSpec = {
     LevelEvent.onCollision(engine, target, platform, () => {
       LevelEvent.removeEvents(engine, onEnd)
       Body.setStatic(right, false)
-      right.force = Vector.create(0.01, 0)
-      Body.setAngularVelocity(right, 0.03)
-      right.force = Vector.create(0, -0.2)
+      right.force = Vector.create(0.01, -0.2)
+      Body.setAngularVelocity(right, 0.08)
     })
 
     LevelEvent.onCollision(engine, target, right, onEnd)

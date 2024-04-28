@@ -1,13 +1,12 @@
 import { DEFAULT_FRICTION, DEFAULT_FRICTION_AIR, DEFAULT_FRICTION_STATIC, DEFAULT_SLOP, MINIMUM_DRAW_DISTANCE } from "@/ts/draw-mode/Config"
-import type { Replay } from "@/ts/draw-mode/Replay"
-import { distance, getAngleRad } from "@/ts/draw-mode/Util"
+import { distance, getAngleRad, isPointInRect, squareDistance } from "@/ts/draw-mode/Util"
+import { removeInPlace } from "@/ts/utils"
 import { Bodies, Vector, Composite, type IBodyDefinition, Body, Events, Detector, Collision, Bounds } from "matter-js"
 
 export default class Line {
   engine: Matter.Engine
   body: Body
   parts: Body[] = []
-  partsSet: Set<Body> = new Set()
   points: {
     position: Vector,
     from: Vector | null,
@@ -15,6 +14,7 @@ export default class Line {
   }[] = []
   lineWidth: number
   halfLineWidth: number
+  squareHalfLineWidth: number
   lastPoint: Vector | null = null
   bodyOpts: IBodyDefinition = {
     render: {
@@ -37,6 +37,7 @@ export default class Line {
     this.engine = engine
     this.lineWidth = lineWidth
     this.halfLineWidth = lineWidth / 2
+    this.squareHalfLineWidth = this.halfLineWidth * this.halfLineWidth
     this.body = Body.create({
       isStatic: true,
       collisionFilter: {
@@ -207,19 +208,18 @@ export default class Line {
       time: this.engine.timing.timestamp
     })
 
-    this.parts.push(circle)
-    this.partsSet.add(circle)
     if (rect) {
       this.parts.push(rect)
-      this.partsSet.add(rect)
     }
+
+    this.parts.push(circle)
     this.lastPoint = this.points[this.points.length - 1].position
     this.body.render.visible = true
     this.body.collisionFilter.mask = -1
   }
 
   calculateMass() {
-    return Math.max(1.6, (this.points.length + this.overdrawnPoints) / 3)
+    return Math.max(1.6, this.points.length / 2.6, this.overdrawnPoints / 2.3)
   }
 
   end() {
@@ -259,13 +259,13 @@ export default class Line {
     for (const body of Composite.allBodies(this.engine.world)) {
       if (body.parts.length > 1) {
         for (let i = 1; i < body.parts.length; i++) {
-          if (body.parts[i] === this.body || this.partsSet.has(body.parts[i])) {
+          if (this.isPart(body.parts[i])) {
             continue
           }
           bodies.push(body.parts[i])
         }
       } else {
-        if (body === this.body || this.partsSet.has(body)) {
+        if (this.isPart(body)) {
           continue
         }
         bodies.push(body)
@@ -276,23 +276,28 @@ export default class Line {
   }
 
   isOverdrawing(circle: Body) {
-    // TODO: implement
-    // for (const point of this.circleCollisionPoints) {
-    //   if (!this.parts.some(p => Bounds.contains(p.bounds, Vector.add(circle.position, point)))) {
-    //     return false
-    //   }
-    // }
-    // for (const cp of this.circleCollisionPoints) {
-    //   const point = Vector.add(circle.position, cp)
-    //   for (const part of this.parts) {
-    //     if (part.type)
-    //   }
-    //   if (!this.parts.some(p => Bounds.contains(p.bounds, ))) {
-    //     return false
-    //   }
-    // }
+    let collisionPoints = this.circleCollisionPoints.map(cp => Vector.add(circle.position, cp))
+
+    for (const part of this.parts) {
+      if (part.circleRadius ?? -1 == this.halfLineWidth) { // circle
+        removeInPlace(collisionPoints, cp => squareDistance(part.position, cp) < this.squareHalfLineWidth)
+      } else if (part.vertices.length == 4) { // rect
+        removeInPlace(collisionPoints, cp => isPointInRect(
+          cp,
+          part.vertices[0],
+          part.vertices[1],
+          part.vertices[2],
+          part.vertices[3],
+          part.area
+        ))
+      } else { // unknown
+        console.warn("unknown part type", part)
+      }
+      if (collisionPoints.length == 0) {
+        return true
+      }
+    }
     return false
-    return true
   }
 
   wouldCollide(circle: Body, rect: Body | null): Collision[] {
@@ -315,5 +320,15 @@ export default class Line {
     Detector.clear(detector)
 
     return collisions
+  }
+
+  isPart(body: Body): boolean {
+    if (body == this.body) {
+      return true
+    }
+    if (body.parent == body) {
+      return false
+    }
+    return this.isPart(body.parent)
   }
 }

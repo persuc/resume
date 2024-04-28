@@ -159,8 +159,9 @@ function startLevel(spec: LevelSpec) {
   }, isDebug ? (line: MatterLine) => {
     debugValues["mass"] = line.calculateMass().toFixed(2).toString()
     debugValues["points"] = line.points.length.toString()
-    if (line.parts.length) {
-      console.log(line.parts[0])
+    if (line.parts.length == 3) {
+      // console.log(line.parts[0])
+      // console.log(line.parts[1])
     }
   } : undefined)
 
