@@ -68,7 +68,7 @@ export default [
         ]
       },
       {
-        body: 'What are Cyclic Barrier, Phaser, and Exchanger all a examples of?',
+        body: 'What are Cyclic Barrier, Phaser, and Exchanger all examples of?',
         answers: [
           { answer: 'Objects in the <i>Star Trek</i> universe' },
           { answer: 'Components of laser interferometers' },
@@ -118,10 +118,10 @@ export default [
       {
         body: 'Which of these is not a concurrency library for python?',
         answers: [
-          { answer: 'curio' },
-          { answer: 'spoolio', correct: true },
-          { answer: 'trio' },
-          { answer: 'asyncio' },
+          { answer: 'curio', },
+          { answer: 'twisted', correct: true },
+          { answer: 'trio', },
+          { answer: 'tornado', },
         ]
       },
       // https://en.wikipedia.org/wiki/Semiconductor_device_fabrication

@@ -42,7 +42,7 @@ const answerClass = computed(() => {
 
 </script>
 <template>
-  <div class="capitalize p-4">
+  <div class="p-4">
     <div class="content-box w-full mx-auto">
       <h1 class="text-xl font-mont font-bold select-none">{{ props.question.body }}</h1>
       <ul class="mt-8">
