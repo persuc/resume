@@ -124,18 +124,57 @@ export default [
           { answer: 'tornado', },
         ]
       },
+      {
+        body: 'What can be parsed by a recursive descent parser?',
+        answers: [
+          { answer: 'Regular grammars', correct: true },
+          { answer: 'Left recursive strings', },
+          { answer: 'Right recursive strings', correct: true },
+          { answer: 'Context sensitive languages', },
+        ]
+      },
       // https://en.wikipedia.org/wiki/Semiconductor_device_fabrication
     ],
   },
-  // {
-  //   name: 'Two',
-  //   questions: [
-  //     {
-  //       body: '',
-  //       answers: [
-  //         { answer: '' },
-  //       ],
-  //     },
-  //   ]
-  // },
+  {
+    name: 'Machine learning',
+    questions: [
+      {
+        body: 'What does LAT stand for?',
+        answers: [
+          { answer: 'Loss/Accuracy Transpose' },
+          { answer: 'Logistic Activation Tuning' },
+          { answer: 'Linear Attention Transformer' },
+          { answer: 'Latent Adversarial Training', correct: true },
+        ],
+      },
+      {
+        body: 'Which is a real field of mathematics',
+        answers: [
+          { answer: 'Dynamical mean field theory', correct: true },
+          { answer: 'Dynamic mean field theory' },
+          { answer: 'Diffuse mean field theory' },
+          { answer: 'Diffused mean field theory' },
+        ],
+      },
+      {
+        body: 'Which is not a real ML paper?',
+        answers: [
+          { answer: 'Do Deep Nets Really Need to be Deep?' },
+          { answer: 'Neural Networks are Expensive', correct: true },
+          { answer: 'Man is to Computer Programmer as Woman is to Homemaker?' },
+          { answer: 'Squeeze-and-Excitation Networks' },
+        ],
+      },
+      // {
+      //   body: '',
+      //   answers: [
+      //     { answer: '' },
+      //     { answer: '' },
+      //     { answer: '' },
+      //     { answer: '', correct: true },
+      //   ],
+      // },
+    ]
+  },
 ] satisfies { name: string, questions: QuizQuestion[] }[]

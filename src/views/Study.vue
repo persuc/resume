@@ -371,10 +371,11 @@ const navItems: NavItems[] = [
       <p>Systems design question for a feed of your friends' most recently listened songs</p>
       <img :src="friendSongTimelineImage" class="h-80" />
     </StudyItem>
-    <StudyItem link="https://app.coderpad.io/PQQXDRQX" category="Backend - 45 mins" title="can_transform">
+    <StudyItem link="https://app.coderpad.io/PQQXDRQX" category="Backend - 45 mins" title="Can Transform">
       <p>
-        You are given two strings of characters, start_state and end_state. Each character can either be an "R", "L", or
-        "-". can_transform should return true if it is possible to transform the start_state into the end_state by:
+        You are given two strings, start_state and end_state. Each character can either be an "R", "L", or
+        "-". <code>can_transform()</code> should return true if it is possible to transform the start_state into the
+        end_state by:
       <ol class="list-decimal ml-8">
         <li>swapping R with a - to its right</li>
         <li>swapping L with a - to its left</li>

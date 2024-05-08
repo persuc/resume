@@ -115,6 +115,7 @@ export default new Set([
 'BOBBY',
 'BOOKER',
 'BORIS',
+'BOTSWANA',
 'BOYCE',
 'BOYD',
 'BRAD',
