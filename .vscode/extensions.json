@@ -1,6 +1,5 @@
 {
   "recommendations": [
-    "vue.vscode-typescript-vue-plugin",
     "vue.volar",
     "cpylua.language-postcss",
     "rvest.vs-code-prettier-eslint"

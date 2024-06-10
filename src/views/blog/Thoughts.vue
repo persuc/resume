@@ -2,6 +2,7 @@
 import BackButton from '@/components/BackButton.vue'
 import bodeVocoder from '@/assets/bode_vocoder.png'
 import deltap from '@/assets/deltap.jpg'
+import External from '@/components/External.vue'
 import disaster from '@/assets/disaster-etymology.png'
 
 </script>
@@ -129,13 +130,20 @@ import disaster from '@/assets/disaster-etymology.png'
     <iframe width="560" height="315" src="https://www.youtube.com/embed/Cu6wlaaf-ck?si=ZnG4RuXBh8sYeOqH"
       title="YouTube video: Pong" frameborder="0"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="mb-8"></iframe>
 
 
     <!-- <p class="mb-8">
       
 
     </p> -->
+
+    <External href="https://nervetower.neocities.org/main" :thumbnail="[
+      'https://nervetower.neocities.org/img/bg_00outside.gif',
+      'https://nervetower.neocities.org/img/nervetower.gif'
+    ]">
+      THE NERVE TOWER
+    </External>
 
     <div class="py-16"></div>
 
