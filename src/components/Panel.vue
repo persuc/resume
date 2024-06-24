@@ -1,11 +1,23 @@
-<template>
-  <div class="panel border">
-    <div class="p-2 label-slot">
-      <slot name="label"></slot>
-    </div>
+<script setup lang="ts">
+interface Props {
+  padLabel?: boolean
+  padContent?: boolean
+}
 
-    <div class="content-slot px-2 pb-2">
+withDefaults(defineProps<Props>(), {
+  padLabel: true,
+  padContent: true,
+})
+
+</script>
+
+<template>
+  <div class="border border-slate-800">
+    <div :class="[padContent ? 'p-2' : '']">
       <slot name="content"></slot>
+    </div>
+    <div :class="['bg-slate-800 text-slate-50', padLabel ? 'p-2' : '']">
+      <slot name="label"></slot>
     </div>
   </div>
 </template>

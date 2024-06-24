@@ -5,9 +5,12 @@ import { computed } from 'vue'
 interface Props {
   href: string,
   thumbnail?: string | string[],
+  size?: string,
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  size: '16rem',
+})
 
 const thumbnails = computed(() => {
   return [(props.thumbnail ?? [])].flat()
@@ -17,11 +20,11 @@ const thumbnails = computed(() => {
 
 <template>
   <a target="_blank" :href="href">
-    <div v-if="thumbnail" class="w-80 rounded-md border border-gray-300">
-      <div class="w-80 h-80 relative">
-        <img v-for="thumb in thumbnails" class="w-full absolute h-full" :src="thumb" />
+    <div v-if="thumbnail" class="border border-slate-800" :style="`width: ${size};`">
+      <div class="relative w-full" :style="`height: ${size};`">
+        <img v-for="thumb in thumbnails" class="object-cover h-full w-full absolute" :src="thumb" />
       </div>
-      <div class="py-2 px-2">
+      <div class="py-2 px-2 bg-slate-800 text-slate-50 underline">
         <slot></slot>
       </div>
     </div>

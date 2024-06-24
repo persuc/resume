@@ -229,7 +229,7 @@ const spawnCode = `class BreakoutRandomEnv(gym.Wrapper):
 
     <p>Notice that the RAM agent's charts are very flat, a sure indicator that the model is struggling. The RAM agent
       and
-      the pixel agent actually performed quite similarly until around 50,000 steps through training,at which point the
+      the pixel agent actually performed quite similarly until around 50,000 steps through training, at which point the
       pixel agent learned to extract the features it needed (ball x position, paddle x position, etc.) However the RAM
       agent doesn't
       even have to perform feature extraction, it just needs to look at the relevant integers in the RAM and do a very
@@ -241,7 +241,7 @@ const spawnCode = `class BreakoutRandomEnv(gym.Wrapper):
     <!-- <iframe src="https://wandb.ai/persic/PPOPixels/reports/Training-PPO-Agent-on-Breakout-Pixels--Vmlldzo2ODMzODMz"
       style="border:none;height:1024px;width:100%"></iframe> -->
 
-    <VideoBlock :src="localMinimum" />
+    <VideoBlock :src="localMinimum">RAM agent plays poorly</VideoBlock>
 
     <p>You may have noticed that the agent is playing in a very "deterministic" way. It simply keeps the paddle on the
       left side of the screen, which every now and then will catch the ball in a very profitable cycle of 3-4 bounces,
@@ -358,7 +358,7 @@ const spawnCode = `class BreakoutRandomEnv(gym.Wrapper):
     <p>It was at this point I noticed that something strange was happening. Does this look like peak performance to you?
     </p>
 
-    <VideoBlock :src="disappearingBall" />
+    <VideoBlock :src="disappearingBall">Ball disappears</VideoBlock>
 
     <p>The full video is 20 minutes long. After the ball disappears, training continues until the agent reaches a
       specified maximum number of steps and the episode is forcefully terminated. I can only speculate that by being
@@ -376,7 +376,7 @@ const spawnCode = `class BreakoutRandomEnv(gym.Wrapper):
       suspicious behaviour. Take note of when
       the agent seems to do well, and when it makes mistakes.</p>
 
-    <VideoBlock :src="pixelVideo" />
+    <VideoBlock :src="pixelVideo">Agent using statistical strategies</VideoBlock>
 
     <Expand label="Hint">
       Is the ball any more likely to be in certain places?
@@ -419,7 +419,7 @@ const spawnCode = `class BreakoutRandomEnv(gym.Wrapper):
 
     <p>After 300k steps, here is what the agent in the new environment looks like:</p>
 
-    <VideoBlock :src="finalGame" />
+    <VideoBlock :src="finalGame">Best performance so far</VideoBlock>
 
     <SvgBehindImage class="max-w-[30rem] mb-4 mx-auto" v-for="chart in randomSpawn" :key="chart.image"
       :image="chart.image" :svg="chart.svg">

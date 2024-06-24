@@ -614,6 +614,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fontsource-variable/noto-sans-jp@npm:^5.0.19":
+  version: 5.0.19
+  resolution: "@fontsource-variable/noto-sans-jp@npm:5.0.19"
+  checksum: 34b4bd57c3d7ef061d3c39fb1f473a0a36daa13ebe0a0b185c8961caf8b1a1bb5962590d9c62029c4e612ad29865f77d063533db8873e013781caf3bb5ca3812
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.11.11":
   version: 0.11.11
   resolution: "@humanwhocodes/config-array@npm:0.11.11"
@@ -3836,6 +3843,7 @@ __metadata:
   resolution: "resume@workspace:."
   dependencies:
     "@fontsource-variable/montserrat": ^5.0.13
+    "@fontsource-variable/noto-sans-jp": ^5.0.19
     "@rushstack/eslint-patch": ^1.1.0
     "@tsconfig/node18": ^18.2.1
     "@types/file-saver": ^2.0.5

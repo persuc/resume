@@ -1,14 +1,11 @@
 <script setup lang="ts">
 import Article from '@/components/Article.vue'
+import BackButton from '@/components/BackButton.vue'
 import Button from '@/components/Button.vue'
 </script>
 
 <template>
-  <a href="/" class="plain absolute left-0 top-1 z-10">
-    <Button text no-hover>
-      <span>← Back</span>
-    </Button>
-  </a>
+  <BackButton />
   <Article class="max-w-7xl">
 
     <p class="mt-8 font-display text-xl font-bold">Welcome to my wall!</p>

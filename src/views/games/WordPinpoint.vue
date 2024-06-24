@@ -355,12 +355,11 @@ function saveWordlist() {
   <Article class="pt-0 h-screen flex flex-col" :footer="false">
 
     <div class="z-10 flex justify-between w-full pb-2">
-      <Button text no-hover class="" @click="view === VIEW.SETUP ? $router.replace('/') : view = VIEW.SETUP">
-        <span>← {{ revealed === currentWord ? 'Done' : view === VIEW.SETUP ? 'Back' : 'Give Up' }}</span>
+      <Button variant="text" class="" @click="view === VIEW.SETUP ? $router.replace('/') : view = VIEW.SETUP">
+        <span>← {{ view === VIEW.SETUP ? 'Back' : revealed === currentWord ? 'Done' : 'Give Up' }}</span>
       </Button>
 
-      <Button v-show="view !== VIEW.LOADING" class="border border-gray-300 z-10 mr-4 mt-4" text no-hover
-        @click="() => showHelp = true">
+      <Button v-show="view !== VIEW.LOADING" class="z-10 mr-4 mt-4" @click="() => showHelp = true">
         <span class="font-semibold text-xl">?</span>
       </Button>
     </div>
@@ -399,22 +398,22 @@ function saveWordlist() {
           Difficulty?
         </div>
         <div class="flex justify-center gap-4 mb-8 flex-wrap">
-          <Button text @click="difficulty = DIFFICULTY.EASY" color="lime"
+          <Button variant="text" @click="difficulty = DIFFICULTY.EASY" color="lime"
             class="w-fit text-lg font-bold border !text-lime-500"
             :class="{ 'border-2 border-lime-500': difficulty === DIFFICULTY.EASY }">
             Easy
           </Button>
-          <Button text @click="difficulty = DIFFICULTY.MEDIUM" color="yellow"
+          <Button variant="text" @click="difficulty = DIFFICULTY.MEDIUM" color="yellow"
             class="w-fit text-lg font-bold border !text-yellow-500"
             :class="{ 'border-2 border-yellow-500': difficulty === DIFFICULTY.MEDIUM }">
             Medium
           </Button>
-          <Button text @click="difficulty = DIFFICULTY.HARD" color="red"
+          <Button variant="text" @click="difficulty = DIFFICULTY.HARD" color="red"
             class="w-fit text-lg font-bold border !text-red-500"
             :class="{ 'border-2 border-red-500': difficulty === DIFFICULTY.HARD }">
             Hard
           </Button>
-          <Button text @click="difficulty = DIFFICULTY.RANDOM" class="w-fit text-lg font-bold border"
+          <Button variant="text" @click="difficulty = DIFFICULTY.RANDOM" class="w-fit text-lg font-bold border"
             :class="{ 'border-2 border-gray-500': difficulty === DIFFICULTY.RANDOM }">
             RANDOM
           </Button>
@@ -444,8 +443,7 @@ function saveWordlist() {
             :placeholder="'E.g.' + exampleWord" />
           <Button @click="check" class="text-lg" id="guessButton">Guess</Button>
         </div>
-        <Button text @click="reveal" v-show="revealed !== currentWord"
-          class="text-lg w-80 my-8 border border-gray-300 hover:bg-gray-200">Reveal
+        <Button text @click="reveal" v-show="revealed !== currentWord" class="text-lg w-80 my-8">Reveal
           letter
         </Button>
         <div class="w-80 rounded py-1 px-3 mx-8 bg-sky-100 text-lg" v-show="message !== ''" v-html="message">

@@ -1,29 +1,13 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
-import Button from '@/components/Button.vue'
-const router = useRouter()
-
-interface Props {
-  backRoute?: string,
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  backRoute: '/'
-})
-
-function goHome() {
-  router.push(props.backRoute)
-}
+import BackButton from '@/components/BackButton.vue'
 
 </script>
 
 <template>
-  <header class="flex justify-between items-center p-3 text-base border-b bg-gray-100">
-    <Button text @click="goHome">
-      <span>← Back</span>
-    </Button>
+  <BackButton />
+  <div class="px-8 pt-16" style="max-width: 60rem; margin: 0 auto;">
     <slot></slot>
-  </header>
+  </div>
 </template>
 
 <style scoped></style>

@@ -238,8 +238,8 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="draw-mode select-none flex items-center justify-center"
-    :style="`width: 100vw; height: 100vh; background: ${state.theme.value.BACKGROUND}`">
+  <div class="draw-mode select-none flex items-center justify-center w-dvw h-dvh"
+    :style="`background: ${state.theme.value.BACKGROUND}`">
     <div ref="container">
       <div v-if="isDebug" class="absolute z-10 pointer-events-none">
         <p v-for="[key, value] of Object.entries(debugValues)" :key="`debug-${key}`">

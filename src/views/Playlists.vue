@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Button from '@/components/Button.vue'
+import BackButton from '@/components/BackButton.vue'
 
 const playlists = [
   "https://open.spotify.com/embed/playlist/4SoPjoHiuWD1GwBFTGYkWC", // Liv: B sides
@@ -18,13 +18,9 @@ const playlists = [
 </script>
 
 <template>
-  <a href="/" class="plain absolute left-0 top-1 z-10">
-    <Button text no-hover>
-      <span>← Back</span>
-    </Button>
-  </a>
+  <BackButton />
 
-  <div class="blog px-8 pt-16" style="max-width: 60rem; margin: 0 auto;">
+  <div class="px-8 pt-16" style="max-width: 60rem; margin: 0 auto;">
 
     <p class="text-3xl mb-4">Playlists by me and my friends</p>
 

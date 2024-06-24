@@ -4,7 +4,7 @@
       enter-active-class="transition-all duration-500 ease-out"
       leave-active-class="transition-all duration-500 ease-out absolute w-full"
       enter-from-class="opacity-0 translate-y-full" leave-to-class="opacity-0 -translate-y-full">
-      <div v-for="msg in messages" :key="msg + updateKey"
+      <div v-for="(msg, index) in messages" :key="`${index}-${updateKey}`"
         class="h-8 leading-8 whitespace-nowrap overflow-hidden text-ellipsis flex-shrink-0">
         {{ msg }}
       </div>

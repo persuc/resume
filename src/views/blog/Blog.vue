@@ -1,15 +1,11 @@
 <script setup lang="ts">
-import Button from '@/components/Button.vue'
+import BackButton from '@/components/BackButton.vue'
 import { blogPosts } from '@/ts/blog'
 
 </script>
 
 <template>
-  <a href="/" class="plain absolute left-4 top-4 z-10">
-    <Button text no-hover>
-      <span class="text-nowrap">← Back</span>
-    </Button>
-  </a>
+  <BackButton href="/" />
 
   <div class="blog px-8 pt-24 md:pt-8" style="max-width: 60rem; margin: 0 auto;">
 

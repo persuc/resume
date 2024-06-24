@@ -5,7 +5,7 @@ export default {
   content: ['./index.html', './src/**/*.vue'],
   theme: {
     fontFamily: {
-      sans: ['system-ui'],
+      sans: ['Noto Sans JP Variable'],
       serif: ['Georgia'],
       mono: ['monospace', 'monospace'],
       display: ['Montserrat Variable', 'ui-sans-serif'],

@@ -1,6 +1,7 @@
 import solitaireThumb from '@/assets/SolitaireThumb.png'
 import drawThumb from '@/assets/DrawThumb.png'
 import quizThumb from '@/assets/QuizThumb.png'
+import riddlesThumb from '@/assets/sphinx.jpg'
 import type { PreviewCard } from '@/@types'
 
 export const games: (PreviewCard & { component: string })[] = [
@@ -8,17 +9,15 @@ export const games: (PreviewCard & { component: string })[] = [
     path: '/missing-word',
     title: 'Missing Word',
     component: 'MissingWord',
-    previewComponent: () => (
-      <div>The ________ of the wolf is the pack</div>
-    ),
+    previewComponent: () => <div class='overflow-hidden'>The ________ of the wolf is the pack</div>,
   },
   {
     path: '/word-pinpoint',
     title: 'Word Pinpoint',
     component: 'WordPinpoint',
     previewComponent: () => (
-      <div>
-        <div class="mx-auto flex flex-col">
+      <div class='overflow-hidden'>
+        <div class='mx-auto flex flex-col'>
           <p>&gt; RAVAGE</p>
           <p>&gt; RAV___ ?</p>
           <p>&gt; RAVINE</p>
@@ -31,11 +30,14 @@ export const games: (PreviewCard & { component: string })[] = [
     title: 'Blackout Poem',
     component: 'BlackoutPoem',
     previewComponent: () => (
-      <div>
+      <div class='max-h-full'>
         <div>
-          <span class="bg-black">I can't stop</span><span> you </span>
-          <span class="bg-black">going away, but there</span><span> are </span>
-          <span class="bg-black">you able to say you</span><span> loved?</span>
+          <span class='bg-black'>I can't stop</span>
+          <span> you </span>
+          <span class='bg-black'>going away, but there</span>
+          <span> are </span>
+          <span class='bg-black'>you able to say you</span>
+          <span> loved?</span>
         </div>
       </div>
     ),
@@ -57,6 +59,12 @@ export const games: (PreviewCard & { component: string })[] = [
     title: 'Quizzes',
     component: 'Quiz',
     thumb: quizThumb,
+  },
+  {
+    path: '/riddles',
+    title: 'Riddles',
+    component: 'Riddles',
+    thumb: riddlesThumb,
   },
   // TODO: enable me once it's built
   // {

@@ -25,7 +25,7 @@ defineProps<Props>();
     <NavItems :items="items" :back="back"
       :class="`!flex-col gap-4 fixed lg:w-64 w-full h-screen p-8 lg:p-4 !pb-32 mt-8 lg:mt-0 lg:border-r border-gray-200 text-xl lg:text-base z-20 bg-white overflow-y-scroll`" />
   </div>
-  <Button text @click="isVisible = !isVisible"
+  <Button variant="text" @click="isVisible = !isVisible"
     :class="`fixed w-screen lg:hidden bg-white hover:bg-white border-gray-200 border-b z-20 !p-2 !rounded-none`">
     <Icon :name="isVisible ? 'close' : 'hamburger'" :preload="['close', 'hamburger']" class="w-8"></Icon>
   </Button>

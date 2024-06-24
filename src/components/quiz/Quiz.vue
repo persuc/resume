@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import type { QuizQuestion } from "@/@types/quiz"
+import { type QuizQuestion, isTextQuestion, isMultiChoiceQuestion } from "@/@types/quiz"
 import Button from "@/components/Button.vue"
-import Question from '@/components/quiz/Question.vue'
+import MultiChoiceQuestion from '@/components/quiz/MultiChoiceQuestion.vue'
+import TextQuestion from '@/components/quiz/TextQuestion.vue'
 import Timer from '@/components/quiz/Timer.vue'
 import { getArraySample } from "@/ts/utils"
 import { ref, computed, reactive, type ComputedRef } from "vue"
@@ -74,7 +75,9 @@ function onEnd() {
         <div :class="{ hidden: i !== currentQuestionIndex }">
           <Timer v-if="timeout" v-model="elapsedSeconds" :duration="timeout" @end.stop="loadNextQuestion"
             :is-running="!isViewingResult" />
-          <Question :question="question" @answerPicked="loadNextQuestion" />
+          <TextQuestion v-if="isTextQuestion(question)" :question="question" @answerPicked="loadNextQuestion" />
+          <MultiChoiceQuestion v-else-if="isMultiChoiceQuestion(question)" :question="question"
+            @answerPicked="loadNextQuestion" />
         </div>
       </template>
     </div>

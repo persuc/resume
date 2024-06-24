@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, reactive, ref } from 'vue'
 import Button from '@/components/Button.vue'
+import BackButton from '@/components/BackButton.vue'
 const MAX_SIZE = 10
 const MIN_SIZE = 2
 
@@ -369,6 +370,7 @@ const boardSize = computed(() => rowSize.value * rowSize.value)
 </script>
 
 <template>
+  <BackButton />
   <div class="solitaire px-8 pt-8">
     <div v-show="state.length === 0 && !loading">
       <p>The game is to remove all but one stone from the board.</p>
@@ -384,10 +386,11 @@ const boardSize = computed(() => rowSize.value * rowSize.value)
     <div v-show="loading">
       Loading...
     </div>
-    <div v-show="state.length > 0 && !loading" class="flex" :style="`flex-direction: ${isVertical ? 'column' : 'row'}`">
-      <div class="panel grow" style="margin-right: 10rem"></div>
+    <div v-show="state.length > 0 && !loading"
+      :class="['flex flex-col justify-center items-center gap-8', isVertical ? '' : 'md:flex-row']">
       <div class="board">
-        <div v-for="row in (rowSize)" :key="`row-${row}`" :class="{ flex: true }" :style="`height: ${100 / (rowSize)}%`">
+        <div v-for="row in (rowSize)" :key="`row-${row}`" :class="{ flex: true }"
+          :style="`height: ${100 / (rowSize)}%`">
           <div v-for="col in (rowSize)" :key="`col-${col}`" @click="clickPlace(row, col)"
             :style="`width: ${100 / (rowSize)}%`" :class="{
               stone: state[(row - 1) * (rowSize) + col - 1] === true,
@@ -398,11 +401,7 @@ const boardSize = computed(() => rowSize.value * rowSize.value)
           </div>
         </div>
       </div>
-      <div :class="{
-        panel: true,
-        grow: true,
-        'pl-8': !isVertical
-      }">
+      <div :class="['panel']">
         <p>Mode:</p>
         <Button :disabled="mode !== MODE.PLAY" :class="{
           'mb-2': true,
@@ -433,9 +432,7 @@ const boardSize = computed(() => rowSize.value * rowSize.value)
       </div>
     </div>
     <div v-show="message !== ''" class="rounded py-1 px-3 mt-3 bg-sky-100" v-html="message"></div>
-    <a href="/" class="nohover" style="display: block; width: fit-content; position: relative; left: -32px;">
-      <div class="pt-2 pb-4 px-8 mb-4" style="margin-top: 20vh">&lt; Back</div>
-    </a>
+    <div class="py-16"></div>
   </div>
 </template>
 

@@ -1,30 +1,29 @@
 <script setup lang="ts">
 import BackButton from '@/components/BackButton.vue'
 import bodeVocoder from '@/assets/bode_vocoder.png'
-import deltap from '@/assets/deltap.jpg'
 import External from '@/components/External.vue'
-import disaster from '@/assets/disaster-etymology.png'
+import disaster from '@/assets/disaster-etymology-upscaled.png'
 
 </script>
 
 <template>
   <BackButton />
 
-  <article class="px-8 pt-8" style="max-width: 60rem; margin: 0 auto;">
+  <article class="px-8 py-20 mx-auto flex flex-col items-center gap-y-16" style="max-width: 60rem">
 
-    <p class="mb-8">
+    <p>
       <code>self.destroy()</code> is an abstract method.
       Every instance has its own implementation, but only some choose to call it early.
     </p>
 
-    <p class="mb-8">
+    <p>
       The only way for a boxer to defeat a biased referee, is to win by knockout.
       <br />
       <i>— Idi Amin</i>
       <span style="display:none;">He does not need wings to fly.</span>
     </p>
 
-    <p class="mb-8">
+    <p>
       "The Australian mountain forests are funereal, secret, stern. Their solitude is desolation. They seem to stifle in
       their black gorges a story of sullen despair. No tender sentiment is nourished in their shade… The very animal
       life
@@ -37,16 +36,11 @@ import disaster from '@/assets/disaster-etymology.png'
       <i>- Marcus Clarke, 1876</i>
     </p>
 
-    <a target="_blank" href="https://youtu.be/5kc-bhOOLxE">
-      <div class="border-gray-200 border rounded p-4 w-fit mb-8">
-        <p class="mb-4">
-          What are the vocoder tricks???
-        </p>
-        <img :src="bodeVocoder" class="max-w-2xl" />
-      </div>
-    </a>
+    <External href="https://youtu.be/5kc-bhOOLxE" :thumbnail="bodeVocoder">
+      What are the vocoder tricks???
+    </External>
 
-    <p class="mb-8">
+    <p>
       "It is difficult to estimate the misery inflicted upon thousands of persons, and the absolute pecuniary penalty
       imposed upon multitudes of intellectual workers by the loss of their time, destroyed by organ-grinders and other
       similar nuisances."
@@ -54,7 +48,7 @@ import disaster from '@/assets/disaster-etymology.png'
       <i>- Charles Babbage, 1864</i>
     </p>
 
-    <div class="mb-8">
+    <div>
       <p>ANTONY It is shaped, sir, like itself, and it is as broad as it hath breadth. It is just so high as it is, and
         moves with its own organs. It lives by that which nourisheth it, and, the elements once out of it, it expires.
       </p>
@@ -70,56 +64,40 @@ import disaster from '@/assets/disaster-etymology.png'
       <i>- William Shakespeare, "Antony and Cleopatra"</i>
     </div>
 
-    <!-- <a target="_blank" href="https://youtu.be/AEtbFm_CjE0">
-      <div class="border-gray-200 border rounded p-4 w-fit">
-        <p class="mb-4">
-          What is delta p?
-        </p>
-        <img :src="deltap" class="max-w-2xl" />
-      </div>
-    </a> -->
-
-    <div class="mb-8">
-      <p>
-        I have great faith in fools — self-confidence my friends call it.
-      </p>
-      <i>- Edgar Allen Poe, Marginalia</i>
+    <div class="p-4 py-20 border border-slate-800 w-[40rem]">
+      <img :src="disaster" />
     </div>
 
-    <div class="border-gray-200 border rounded p-4 w-fit mb-8">
-      <img :src="disaster" class="mx-auto" />
-    </div>
-
-    <!-- <div class="mb-8">
+    <!-- <div>
       <p>
         What I do is good. I wouldn’t let it out if I didn’t think it was.
       </p>
       <i>- Shel Silverstein, </i>
     </div> -->
 
-    <div class="mb-8">
+    <div>
       <p>
-        Any man’s death diminishes me, because I am involved in Mankind; And therefore never send to know for whom the
+        Any man's death diminishes me, because I am involved in Mankind; And therefore never send to know for whom the
         bell tolls; it tolls for thee.
       </p>
-      <i>- John Donne, Marginalia</i>
+      <i>- John Donne, For Whom the Bell Tolls</i>
     </div>
 
-    <div class="mb-8">
+    <div>
       <p>
         Had we but world enough, and time, this coyness, lady, were no crime.
       </p>
       <i>- Andrew Marvell, To His Coy Mistress</i>
     </div>
 
-    <div class="mb-8">
+    <div>
       <p>
         We sit together, the mountain and me, until only the mountain remains.
       </p>
       <i>- 李白</i>
     </div>
 
-    <div class="mb-8">
+    <div>
       <p>
         The information age was nascent when we grew up. Information addictiveness was not strong enough to distract us
         from information tomfoolery.
@@ -130,20 +108,33 @@ import disaster from '@/assets/disaster-etymology.png'
     <iframe width="560" height="315" src="https://www.youtube.com/embed/Cu6wlaaf-ck?si=ZnG4RuXBh8sYeOqH"
       title="YouTube video: Pong" frameborder="0"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen class="mb-8"></iframe>
+      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 
-    <!-- <p class="mb-8">
-      
+    <div class="w-fit mx-auto">
+      <External href="https://nervetower.neocities.org/main" :thumbnail="[
+        'https://nervetower.neocities.org/img/bg_00outside.gif',
+        'https://nervetower.neocities.org/img/nervetower.gif'
+      ]">
+        THE NERVE TOWER
+      </External>
+    </div>
 
-    </p> -->
-
-    <External href="https://nervetower.neocities.org/main" :thumbnail="[
-      'https://nervetower.neocities.org/img/bg_00outside.gif',
-      'https://nervetower.neocities.org/img/nervetower.gif'
-    ]">
-      THE NERVE TOWER
-    </External>
+    <div class="flex flex-col md:flex-row mx-auto gap-y-2 gap-x-4 w-fit py-4">
+      <div>
+        <p>
+          We will continue to carry that distortion within ourselves
+        </p>
+        <p>We are all distorted beings</p>
+        <p>Entwine with the distortion without turning away</p>
+      </div>
+      <div class="border-b md:border-r border-grey-200 "></div>
+      <div class="">
+        <p>そのゆがみをかかえたままで</p>
+        <p>ゆがんだものどうし</p>
+        <p>ゆがみからめをそらさず</p>
+      </div>
+    </div>
 
     <div class="py-16"></div>
 

@@ -133,6 +133,16 @@ export default [
           { answer: 'Context sensitive languages', },
         ]
       },
+      {
+        body: 'Which term does not appear in the Apple TrueType reference manual?',
+        answers: [
+          { answer: 'mirp' },
+          { answer: 'Ploop value', },
+          { answer: 'Twilight zone' },
+          { answer: 'Freedom vector', },
+          { answer: 'None of the above', correct: true },
+        ]
+      },
       // https://en.wikipedia.org/wiki/Semiconductor_device_fabrication
     ],
   },

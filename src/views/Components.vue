@@ -8,8 +8,9 @@ import faceImage from '@/assets/face.png'
 import Article from '@/components/Article.vue'
 import Story from '@/components/Story.vue'
 
-type DefaultsType = Record<string, string | boolean | number>
+type DefaultsType = Record<string, string | boolean | number | string[]>
 const components: (string | [string, DefaultsType] | [string, DefaultsType, string])[] = [
+  ['BackButton', {}, '!top-0 !left-0'],
   'Button',
   ['Codeblock', {
     label: 'hello.js',
@@ -20,6 +21,19 @@ const components: (string | [string, DefaultsType] | [string, DefaultsType, stri
   ['Expand', {
     label: 'collapsed',
     expandedLabel: 'expanded',
+  }],
+  ['External', {
+    href: 'https://nervetower.neocities.org/main', thumbnail: [
+      'https://nervetower.neocities.org/img/bg_00outside.gif',
+      'https://nervetower.neocities.org/img/nervetower.gif'
+    ]
+  }],
+  ['Formula', {
+    value: String.raw`L^{PG}(\theta) = \hat{\Bbb{E}}_t
+      \Bigl[
+      log\, {\large \pi}_\theta
+      \displaystyle (a_t\, |\, s_t) \hat{A}_{t}
+      \Bigr]`
   }],
   'Header',
   ['Icon', { name: 'download' }, 'h-12'],
@@ -34,6 +48,9 @@ const components: (string | [string, DefaultsType] | [string, DefaultsType, stri
   //   dateTo: "Current",
   //   tech: [ 'TypeScript', 'React', 'Java', 'Terraform', 'AWS', 'GraphQL', 'Protobuf', 'PostgreSQL', 'DynamoDB' ],
   // }, ''],
+  ['MessageSpool', {
+    message: 'type here',
+  }],
   'Note',
   'Panel',
   'ProgressLinear',
@@ -41,7 +58,7 @@ const components: (string | [string, DefaultsType] | [string, DefaultsType, stri
     quotation: 'He does not need wings to fly',
     author: 'VJ Emmie'
   }],
-  'TrafficLight',
+  ['SlideReveal', {}],
   ['StudyItem', {
     link: "https://flexboxfroggy.com/",
     title: "Flexbox Froggy",
@@ -49,6 +66,9 @@ const components: (string | [string, DefaultsType] | [string, DefaultsType, stri
     description: "Game for learning how to make website layouts with CSS flexbox",
     category: "UI / webpage layout",
   },],
+  'SvgBehindImage',
+  'TrafficLight',
+  'VideoBlock',
 ]
 
 const fullConfig = resolveConfig(tailwindConfig)
