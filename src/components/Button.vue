@@ -1,6 +1,6 @@
 <template>
   <div :class="[
-    'button flex items-center h-10 w-fit focus:outline-none',
+    'button flex items-center h-10 w-fit focus:outline-none select-none',
     variant,
     variant === 'primary' ? 'bg-gray-800 text-white hover:bg-gray-700' : '',
     variant === 'secondary' ? 'bg-gray-200 text-gray-800 hover:bg-gray-300' : '',

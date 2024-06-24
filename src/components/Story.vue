@@ -5,7 +5,7 @@ import Icon from '@/components/Icon.vue'
 
 interface Props {
   path: string, // path relative to @/components/ not including .vue extension
-  defaults: Record<string, string | boolean | number>
+  defaults: Record<string, string | boolean | number | string[]>
   classes?: string
 }
 type TypeName = 'Boolean' | 'String' | 'Number' | 'Array'

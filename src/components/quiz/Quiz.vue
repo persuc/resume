@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type QuizQuestion, isTextQuestion, isMultiChoiceQuestion } from "@/@types/quiz"
+import { type QuizQuestion, isTextQuestion, isMultiChoiceQuestion, type MultiChoiceQuestion as MultiChoiceQuestionType } from "@/@types/quiz"
 import Button from "@/components/Button.vue"
 import MultiChoiceQuestion from '@/components/quiz/MultiChoiceQuestion.vue'
 import TextQuestion from '@/components/quiz/TextQuestion.vue'
@@ -8,7 +8,8 @@ import { getArraySample } from "@/ts/utils"
 import { ref, computed, reactive, type ComputedRef } from "vue"
 
 const props = defineProps<{
-  questions: QuizQuestion[],
+  // TODO: support TextQuestion (make this type QuizQuestion)
+  questions: MultiChoiceQuestionType[],
   subsetSize?: number,
   timeout?: number
 }>()
@@ -21,7 +22,7 @@ const elapsedSeconds = ref(0)
 const isViewingResult = ref(false)
 const isQuizFinished = computed(() => (results.length === props.questions.length) && !isViewingResult.value)
 
-const questions: ComputedRef<QuizQuestion[]> = computed(() => (
+const questions: ComputedRef<MultiChoiceQuestionType[]> = computed(() => (
   (props.subsetSize === undefined || props.subsetSize <= 0)
     ? props.questions
     : getArraySample(props.questions, props.subsetSize)
