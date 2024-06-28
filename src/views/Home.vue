@@ -50,7 +50,7 @@ const randomPages: TPreviewCard[] = [
 
     <div class="grid lg:grid-cols-[auto_minmax(0px,_1fr)] gap-4 w-fit">
       <HomeGrid title="For Recruiters">
-        <ImageAndText class="w-64 bg-gray-900 text-slate-50 px-4 cursor-pointer" slim @click="goResume"
+        <ImageAndText class="w-64 bg-gray-950 text-slate-50 px-4 cursor-pointer" slim @click="goResume"
           :image="booksImage" size="2rem">
           <div class="flex justify-between items-center h-12">
             <span class="text-xl pl-1">Resume</span>
