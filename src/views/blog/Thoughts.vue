@@ -68,13 +68,6 @@ import disaster from '@/assets/disaster-etymology-upscaled.png'
       <img :src="disaster" />
     </div>
 
-    <!-- <div>
-      <p>
-        What I do is good. I wouldn’t let it out if I didn’t think it was.
-      </p>
-      <i>- Shel Silverstein, </i>
-    </div> -->
-
     <div>
       <p>
         Any man's death diminishes me, because I am involved in Mankind; And therefore never send to know for whom the
@@ -134,6 +127,14 @@ import disaster from '@/assets/disaster-etymology-upscaled.png'
         <p>ゆがんだものどうし</p>
         <p>ゆがみからめをそらさず</p>
       </div>
+    </div>
+
+    <div>
+      <p>Power is a seed, nutured and grown</p>
+      <p>Might in oaken boughs that lifts a kingdom on its own</p>
+      <p>When I fetch my axe, fear thee not of me</p>
+      <p>Perish amidst falling limbs, if thou makest me fell my tree</p>
+      <i>- Original work</i>
     </div>
 
     <div class="py-16"></div>

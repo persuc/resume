@@ -27,7 +27,7 @@ const riddles: Riddle[] = [
       "You'll often find me in a dark place",
     ],
     answers: ['candelabra', 'menorah', 'candelabras', 'menorahs', 'a candelabra', 'a menorah'],
-    hints: ['I am an object you can see and touch', 'I am found commonly inside', 'I am commonly found in churches'],
+    hints: ['I am an object you can see and touch', 'I am commonly found inside', 'I am commonly found in churches'],
   },
   {
     title: 'That which bites',
@@ -41,6 +41,17 @@ const riddles: Riddle[] = [
     ],
     answers: ['shears', 'sheep shears', 'clippers', 'sheep clippers', 'blade shears', 'fleecing scissors', 'shearing scissors', 'wool shears', 'wool scissors'],
     hints: ['I am an object you can see and touch', 'I have special significance for Aussies', 'I am commonly found on farms'],
+  },
+  {
+    title: '',
+    body: [
+      "Ah, dud farewell",
+      "Becomes something new",
+      "Beneath the seas",
+      "A one-sided sex organ",
+    ],
+    answers: ['dreadful whale'],
+    hints: ['A mobius strip is one-sided', 'The first line holds the answer', 'The first line is an anagram'],
   },
 ]
 
