@@ -13,7 +13,7 @@ const riddles: Riddle[] = [
     title: 'That which seeps',
     body: ['Life I give and life I take', 'Covet me hastily, and sink within to never wake', 'Covet me patiently and you\'ll never be alone', 'At first I seep and then I\'m stone'],
     answers: ['amber', 'sap', 'tree sap', 'treesap', 'tree resin', 'resinite', 'ambrite'],
-    hints: ['I am an object you can see and touch', 'I am found commonly outside', 'Hummingbirds like me'],
+    hints: ['I am an object you can see and touch', 'I am commonly found outside', 'Hummingbirds like me'],
     nearMisses: {
       'cement': 'Never alone with cement?'
     }
@@ -43,15 +43,26 @@ const riddles: Riddle[] = [
     hints: ['I am an object you can see and touch', 'I have special significance for Aussies', 'I am commonly found on farms'],
   },
   {
-    title: '',
+    title: 'A ruffian four',
     body: [
-      "Ah, dud farewell",
-      "Becomes something new",
-      "Beneath the seas",
-      "A one-sided sex organ",
+      "Look within, look with out",
+      "Who brings news, from my high redoubt",
+      "At the fringes aft and fore",
+      "You will find a ruffian four",
+    ],
+    answers: ['lout'],
+    hints: ['This riddle wouldn\'t work in a different language', 'Look at the words and letters in the riddle', 'The first two lines make a word, the second two transform it'],
+  },
+  {
+    title: 'A feared behemoth',
+    body: [
+      "Steer ye full headward",
+      "Yester long gone",
+      "I answer, a behemoth",
+      "Where is he, boatman?",
     ],
     answers: ['dreadful whale'],
-    hints: ['A mobius strip is one-sided', 'The first line holds the answer', 'The first line is an anagram'],
+    hints: ['This riddle wouldn\'t work in a different language', 'Look at the words and letters in the riddle', 'The first two lines make two words, the last two are clues'],
   },
 ]
 
