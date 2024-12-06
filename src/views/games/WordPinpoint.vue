@@ -5,8 +5,10 @@ import propset from '@/assets/proper_nouns'
 import wordlist from '@/assets/wordlist'
 import Article from '@/components/Article.vue'
 import Button from '@/components/Button.vue'
+import CopyButton from '@/components/CopyButton.vue'
 import Icon from '@/components/Icon.vue'
-import { type Ref, ref, onMounted, onUnmounted, computed } from 'vue'
+import createVignere from '@/ts/pinpoint/vignere'
+import { type Ref, ref, onMounted, onUnmounted, computed, type ComputedRef } from 'vue'
 const MAX_LENGTH = 20
 const MIN_LENGTH = 3
 const EASY_FREQUENCY_CUTOFF = 950
@@ -23,7 +25,8 @@ enum DIFFICULTY {
 enum VIEW {
   LOADING,
   SETUP,
-  PLAY
+  CUSTOM,
+  PLAY,
 }
 
 const targets: Record<string, string[][]> = {
@@ -41,12 +44,10 @@ for (let i = 0; i <= MAX_LENGTH - MIN_LENGTH; i++) {
 }
 
 for (const cob of corncob) {
-  if (cob.length >= MIN_LENGTH && cob.length <= MAX_LENGTH && cob !== 'PRINCE') {
+  if (cob.length >= MIN_LENGTH && cob.length <= MAX_LENGTH) {
     validWords[cob.length - MIN_LENGTH].push(cob)
   }
 }
-
-console.log('vw', validWords)
 
 for (const word of wordlist) {
   if (word[0].length >= MIN_LENGTH && word[0].length <= MAX_LENGTH) {
@@ -70,8 +71,6 @@ for (let i = MIN_LENGTH; i <= MAX_LENGTH; i++) {
   validWords[i - MIN_LENGTH].sort()
 }
 
-console.log('targets is', targets)
-
 function getPercentage(index: number) {
   return Math.round(index / validWords[length.value - MIN_LENGTH].length * 100000) / 1000
 }
@@ -80,6 +79,7 @@ const view: Ref<VIEW> = ref(VIEW.LOADING)
 const difficulty: Ref<DIFFICULTY> = ref(DIFFICULTY.MEDIUM)
 const showHelp = ref(false)
 let lengthInput = 5
+const customInput = ref('')
 const length = ref(5)
 const currentWord = ref('')
 let index = 0
@@ -89,6 +89,7 @@ const closestAbove = ref(-1)
 const message = ref('')
 const guess = ref('')
 const revealed = ref('')
+const vignere = createVignere("THISISDHEERAJSFAULT")
 
 const exampleWord = computed(() => {
   let word = currentWord.value
@@ -96,6 +97,20 @@ const exampleWord = computed(() => {
     word = targets[DIFFICULTY.EASY][length.value - MIN_LENGTH][Math.floor(Math.random() * targets[DIFFICULTY.EASY][length.value - MIN_LENGTH].length)]
   }
   return word
+})
+
+const seedUrl: ComputedRef<string | undefined> = computed(() => {
+  const custom = customInput.value.toUpperCase()
+  const current = currentWord.value.toUpperCase()
+  const plaintext = view.value === VIEW.CUSTOM ? custom : current
+  if (plaintext.length < MIN_LENGTH || plaintext.length > MAX_LENGTH) {
+    return undefined
+  }
+  try {
+    return `https://persic.cloud/word-pinpoint?seed=${vignere.encipher(plaintext)}`
+  } catch {
+    return undefined
+  }
 })
 
 function pick() {
@@ -134,21 +149,39 @@ function pick() {
   index = validWords[length.value - MIN_LENGTH].indexOf(target)
   currentWord.value = validWords[length.value - MIN_LENGTH][index]
   currentPercentage.value = getPercentage(index)
+
+  saveState()
+
+  const searchParams = new URLSearchParams(window.location.search)
+  searchParams.set("seed", vignere.encipher(currentWord.value))
+  window.location.search = searchParams.toString()
+}
+
+function setCustom(target: string) {
+  view.value = VIEW.PLAY
+  revealed.value = ''
+  closestBelow.value = -1
+  closestAbove.value = -1
+  message.value = ''
+  guess.value = ''
+  length.value = target.length
+  index = validWords[length.value - MIN_LENGTH].findIndex(word => target <= word)
+  if (index === -1) {
+    index = validWords.length
+  }
+  currentWord.value = target
+  currentPercentage.value = getPercentage(index)
 }
 
 function check() {
   const guessUpper = guess.value.toUpperCase()
   guess.value = revealed.value
-
-  if (currentWord.value.length === 0) {
-    pick()
+  if (!guessUpper.length) {
+    return
   }
 
   if (guessUpper === 'GRACE') {
     message.value = `❤️ You guessed my special person.`
-    return
-  } else if (guessUpper === 'PRINCE') {
-    message.value = `👑 What's a mob to a king?`
     return
   } else if (guessUpper === 'DOOYEON') {
     message.value = '🌲 In the dappled lee of a linden tree'
@@ -156,9 +189,8 @@ function check() {
   } else if (guessUpper === 'SASKIA') {
     message.value = '🍣 Teach a girl to fish'
     return
-  }
-
-  if (!guessUpper.length) {
+  } else if (guessUpper === 'DHEERAJ') {
+    message.value = '🧔🏾 persic.cloud perf test when?'
     return
   }
 
@@ -226,6 +258,16 @@ function reveal() {
   }
 }
 
+function reset() {
+  message.value = ''
+  revealed.value = currentWord.value
+  saveState()
+  view.value = VIEW.SETUP
+  const searchParams = new URLSearchParams(window.location.search)
+  searchParams.delete("seed")
+  window.location.search = searchParams.toString()
+}
+
 function onKeyUp(e: KeyboardEvent) {
   if (e.key === 'Space' || e.key === 'Enter') {
     e.preventDefault()
@@ -254,14 +296,15 @@ onMounted(() => {
   document.addEventListener("keyup", onKeyUp)
   document.addEventListener('touchend', onTouchEnd)
   loadState()
-  // test code
-  // lengthInput = 10
-  // length.value = 10
-  // pick()
-  // closestBelow.value = 0
-  // closestAbove.value = validWords[length.value - MIN_LENGTH].length - 1
-  // guess.value = 'fool'
-  // check()
+
+  const parsedUrl = new URL(window.location.href)
+  const seed = parsedUrl.searchParams.get("seed")
+  if (seed) {
+    const target = vignere.decipher(seed)
+    if (currentWord.value !== target) {
+      setCustom(target)
+    }
+  }
 })
 
 onUnmounted(() => {
@@ -274,7 +317,7 @@ const defaultState = {
   index: 0,
   closestBelow: -1,
   closestAbove: -1,
-  revealed: ''
+  revealed: validWords[5 - MIN_LENGTH][0]
 }
 type StateType = typeof defaultState
 
@@ -308,7 +351,7 @@ function loadState() {
     loadSerialized(defaultSerialized)
   }
   autoReveal()
-  if (revealed.value) {
+  if (revealed.value != currentWord.value) {
     view.value = VIEW.PLAY
   } else {
     view.value = VIEW.SETUP
@@ -355,7 +398,7 @@ function saveWordlist() {
   <Article class="pt-0 h-screen flex flex-col" :footer="false">
 
     <div class="z-10 flex justify-between w-full pb-2">
-      <Button variant="text" class="" @click="view === VIEW.SETUP ? $router.replace('/') : view = VIEW.SETUP">
+      <Button variant="text" class="" @click="reset">
         <span>← {{ view === VIEW.SETUP ? 'Back' : revealed === currentWord ? 'Done' : 'Give Up' }}</span>
       </Button>
 
@@ -418,8 +461,26 @@ function saveWordlist() {
             RANDOM
           </Button>
         </div>
-        <Button @click="pick" class="w-fit text-lg font-bold">Play</Button>
+        <Button @click="pick" class="w-fit text-lg font-bold mx-0">Play</Button>
+        <Button v-show="view === VIEW.SETUP" class="z-10 mt-4 mx-0" @click="() => view = VIEW.CUSTOM">
+          <span class="font-semibold text-xl">Custom</span>
+        </Button>
       </div>
+    </div>
+    <div v-show="view === VIEW.CUSTOM" class="flex flex-col items-center justify-center gap-4">
+      <div class="font-display text-xl font-bold text-center">
+        Enter your chosen target word:
+      </div>
+      <div class="text-2xl">
+        <input type="text" v-model="customInput" :min="MIN_LENGTH" :max="MAX_LENGTH"
+          class="border-b border-gray-500 w-96 after:content-['*']" />
+      </div>
+      <div v-show="seedUrl === undefined" class="w-80 rounded py-1 px-3 mx-8 bg-sky-100 text-lg">
+        ⚠️ Word must be only letters, at least {{ MIN_LENGTH }} and at most {{ MAX_LENGTH }} characters
+      </div>
+      <CopyButton v-if="seedUrl !== undefined" :value="seedUrl" style="line-height: 1.5em;">
+        <span class="p-2 bg-gray-200 break-words mr-30">{{ seedUrl }}</span>
+      </CopyButton>
     </div>
     <div v-show="view === VIEW.PLAY" class="flex items-center justify-center">
       <div class="flex flex-col items-center justify-center relative">
@@ -448,8 +509,8 @@ function saveWordlist() {
         </Button>
         <div class="w-80 rounded py-1 px-3 mx-8 bg-sky-100 text-lg" v-show="message !== ''" v-html="message">
         </div>
-        <div class="flex justify-between w-80 mt-8" v-show="revealed === currentWord">
-          <Button @click="message = ''; view = VIEW.SETUP" class="text-lg w-80">Next Game</Button>
+        <div class="flex justify-center w-80 mt-8" v-show="revealed === currentWord">
+          <Button @click="reset" class="text-lg w-80">Next Game</Button>
         </div>
       </div>
     </div>

@@ -1503,6 +1503,7 @@ export default new Set([
 'BECKIE',
 'BECKY',
 'BELEN',
+'BELGIUM',
 'BELIA',
 'BELINDA',
 'BELKIS',

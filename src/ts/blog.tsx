@@ -10,13 +10,6 @@ const isDevelopment = process.env.NODE_ENV === 'development'
 type Post = PreviewCard & { component: string }
 
 const postsInDevelopment: Post[] = [
-  // {
-  //   path: "ultimate-value",
-  //   title: "Ultimate moral values",
-  //   subtitle: "Exploring utilitarianism, suffering, knowledge and intelligence",
-  //   thumb: breakoutThumb, // TODO
-  //   component: "UltimateValue"
-  // },
   {
     path: 'perplexity-prediction',
     title: 'Perplexity prediction',
