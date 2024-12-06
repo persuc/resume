@@ -58,11 +58,60 @@ const riddles: Riddle[] = [
     body: [
       "Steer ye full headward",
       "Yester long gone",
-      "I answer, a behemoth",
       "Where is he, boatman?",
+      "I answer, a behemoth",
     ],
     answers: ['dreadful whale'],
     hints: ['This riddle wouldn\'t work in a different language', 'Look at the words and letters in the riddle', 'The first two lines make two words, the last two are clues'],
+  },
+  {
+    title: 'Light: I',
+    body: [
+      "I came before lamplight",
+      "I came before firelight",
+      "Yet both come before me",
+      "I'm not first",
+      "And I'm even after last",
+      "Whatever could I be?",
+    ],
+    answers: ['sunlight', 'moonlight'],
+    hints: ['This riddle wouldn\'t work in a different language', 'I\'m something ancient', 'Fire came before lamps, and fire comes before lamp'],
+  },
+  {
+    title: 'Light: II',
+    body: [
+      "You see me when you turn to me",
+      "And my reflection when you turn away",
+      "If you saw me last night",
+      "Then you'll miss me in the day",
+      "What am I?",
+    ],
+    answers: ['the sun', 'sun', 'sunlight', 'moonlight'],
+    hints: ['You\'ll turn toward me and away again', 'Unless you travel far and forever', 'Or so far as outer space'],
+  },
+  {
+    title: 'Light: III',
+    body: [
+      "I'm born in darkness",
+      "For light will surely destroy me",
+      "But fully matured, I bathe in brilliant rays",
+      "And it is those who observe that are swathed in dark",
+      "What am I?",
+    ],
+    answers: ['film', 'camera film', 'roll of film', 'a rolle of film', 'film roll', 'camera roll'],
+    hints: ['I don\'t cost much', 'But my price is rising', 'Perhaps I\'m not needed any more'],
+  },
+  {
+    title: 'Fatal to the touch',
+    body: [
+      "First I swim",
+      "And then I fly",
+      "I'm softer than silk",
+      "But if we meet you'll die",
+      "What am I?",
+    ],
+    answers: ['a cloud', 'cloud', 'clouds', 'raincloud'],
+    hints: ['I don\'t live as long as you', 'After flying I might swim again', 'I\'ll be there when you\'re sad'],
   },
 ]
 
