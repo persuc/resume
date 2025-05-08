@@ -48,7 +48,7 @@ const answerClass = computed(() => {
       <ul class="mt-8">
         <li v-for="answer, answerIdx of props.question.answers" @click="answerPicked(answerIdx)"
           :class="`text-xl font-ssp mt-4 p-2 cursor-pointer border-2 border-transparent hover:border-black ${answerClass[answerIdx]}`">
-          <span v-html="answer.answer" class="select-none" />
+          <span v-html="picked >= 0 ? answer.revealedAnswer ?? answer.answer : answer.answer" class="select-none" />
         </li>
       </ul>
     </div>

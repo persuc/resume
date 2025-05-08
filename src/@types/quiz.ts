@@ -4,7 +4,7 @@ type BaseQuestion = {
 }
 
 export type MultiChoiceQuestion = BaseQuestion & {
-  answers: { answer: string, correct?: boolean }[],
+  answers: { answer: string, correct?: boolean, revealedAnswer?: string }[],
 }
 
 export type TextQuestion = BaseQuestion & {
