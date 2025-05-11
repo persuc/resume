@@ -318,4 +318,81 @@ export default [
       },
     ]
   },
+  {
+    name: '',
+    "questions": [
+      {
+        "body": "Which of these vape flavors exists?",
+        "answers": [
+          { "answer": "Blueberry Strawberry Kiwi" },
+          { "answer": "Mango Coconut Breeze" },
+          { "answer": "Cherry Vanilla Dream" },
+          { "answer": "Watermelon Ice", "correct": true }
+        ]
+      },
+      {
+        "body": "Which of these is a real vape flavor?",
+        "answers": [
+          { "answer": "Raspberry Cotton Cloud" },
+          { "answer": "Tropical Sunrise Fusion" },
+          { "answer": "Cool Mint", "correct": true },
+          { "answer": "Dragon Fruit Lychee" }
+        ]
+      },
+      {
+        "body": "Spot the actual vape flavor:",
+        "answers": [
+          { "answer": "Peach Passionfruit Paradise" },
+          { "answer": "Lemon Lime", "correct": true },
+          { "answer": "Honeydew Melon Tart" },
+          { "answer": "Citrus Berry Blast" }
+        ]
+      },
+      {
+        "body": "Which one of these exists in real life?",
+        "answers": [
+          { "answer": "Arctic Blue Frost" },
+          { "answer": "Tropical Storm Fusion" },
+          { "answer": "Berry Cotton Cloud" },
+          { "answer": "Skittles", "correct": true }
+        ]
+      },
+      {
+        "body": "Pick the real vape flavor:",
+        "answers": [
+          { "answer": "Grape Bubble Gum Twist" },
+          { "answer": "Fizzy Strawberry Lemonade" },
+          { "answer": "Cantaloupe Apple", "correct": true },
+          { "answer": "Blue Raspberry Sherbet" }
+        ]
+      },
+      {
+        "body": "Which flavor actually exists?",
+        "answers": [
+          { "answer": "Blueberry Cotton Candy", "correct": true },
+          { "answer": "Strawberry Kiwi Splash" },
+          { "answer": "Watermelon Lime Cooler" },
+          { "answer": "Mango Mint Freeze" }
+        ]
+      },
+      {
+        "body": "Find the authentic vape flavor:",
+        "answers": [
+          { "answer": "Sour Apple Candy Twist" },
+          { "answer": "Pineapple Coconut Crush" },
+          { "answer": "Berry Menthol Breeze" },
+          { "answer": "Kiwi Passion Fruit Guava", "correct": true }
+        ]
+      },
+      {
+        "body": "Which of these is real?",
+        "answers": [
+          { "answer": "Strawberry Lychee Ice" },
+          { "answer": "Peach Cotton Candy" },
+          { "answer": "Mr Blue", "correct": true },
+          { "answer": "Cherry Lime Twist" }
+        ]
+      }
+    ]
+  }
 ] satisfies { name: string, questions: QuizQuestion[] }[]
