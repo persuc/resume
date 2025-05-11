@@ -319,80 +319,98 @@ export default [
     ]
   },
   {
-    name: '',
+    name: 'Clouds of confusion',
     "questions": [
       {
-        "body": "Which of these vape flavors exists?",
-        "answers": [
-          { "answer": "Blueberry Strawberry Kiwi" },
-          { "answer": "Mango Coconut Breeze" },
-          { "answer": "Cherry Vanilla Dream" },
-          { "answer": "Watermelon Ice", "correct": true }
-        ]
+        body: 'Which of these vape flavors actually exists?',
+        answers: [
+          { answer: 'Grape Melon Ice' },
+          { answer: 'Cherry Pomegranate Burst' },
+          { answer: 'Peach Lychee Fizz' },
+          { answer: 'White Gummy', correct: true },
+        ],
       },
       {
-        "body": "Which of these is a real vape flavor?",
-        "answers": [
-          { "answer": "Raspberry Cotton Cloud" },
-          { "answer": "Tropical Sunrise Fusion" },
-          { "answer": "Cool Mint", "correct": true },
-          { "answer": "Dragon Fruit Lychee" }
-        ]
+        body: 'Find the real vape flavor:',
+        answers: [
+          { answer: 'Mango Dragon Fruit Rush' },
+          { answer: 'Blue Raspberry Apple Ice' },
+          { answer: 'Columbian Coffee', correct: true },
+          { answer: 'Passion Fruit Coconut Freeze' },
+        ],
       },
       {
-        "body": "Spot the actual vape flavor:",
-        "answers": [
-          { "answer": "Peach Passionfruit Paradise" },
-          { "answer": "Lemon Lime", "correct": true },
-          { "answer": "Honeydew Melon Tart" },
-          { "answer": "Citrus Berry Blast" }
-        ]
+        body: 'Which one of these is a real vape flavor?',
+        answers: [
+          { answer: 'Guava Starfruit Breeze' },
+          { answer: 'Strawberry Watermelon', correct: true },
+          { answer: 'Pear Cranberry Splash' },
+          { answer: 'Mango Kiwi Storm' },
+        ],
       },
       {
-        "body": "Which one of these exists in real life?",
-        "answers": [
-          { "answer": "Arctic Blue Frost" },
-          { "answer": "Tropical Storm Fusion" },
-          { "answer": "Berry Cotton Cloud" },
-          { "answer": "Skittles", "correct": true }
-        ]
+        body: 'Pick the authentic vape juice flavor:',
+        answers: [
+          { answer: 'Pineapple Coconut Rush' },
+          { answer: 'Dragon Fruit Berry Blast' },
+          { answer: 'Melon Apple Twist' },
+          { answer: 'Blueberry Cherry Cranberry', correct: true },
+        ],
       },
       {
-        "body": "Pick the real vape flavor:",
-        "answers": [
-          { "answer": "Grape Bubble Gum Twist" },
-          { "answer": "Fizzy Strawberry Lemonade" },
-          { "answer": "Cantaloupe Apple", "correct": true },
-          { "answer": "Blue Raspberry Sherbet" }
-        ]
+        body: 'Which of these really exists?',
+        answers: [
+          { answer: 'Grapefruit Mint Fusion' },
+          { answer: 'Tropical Fruit Medley Ice' },
+          { answer: 'Kiwi Passion Fruit Guava', correct: true },
+          { answer: 'Pink Lemonade Burst' },
+        ],
       },
       {
-        "body": "Which flavor actually exists?",
-        "answers": [
-          { "answer": "Blueberry Cotton Candy", "correct": true },
-          { "answer": "Strawberry Kiwi Splash" },
-          { "answer": "Watermelon Lime Cooler" },
-          { "answer": "Mango Mint Freeze" }
-        ]
+        body: 'Spot the real disposable vape flavor:',
+        answers: [
+          { answer: 'Berry Pomegranate Ice' },
+          { answer: 'Fizzy Cherry', correct: true },
+          { answer: 'Mango Lychee Explosion' },
+          { answer: 'Watermelon Lime Crush' },
+        ],
       },
       {
-        "body": "Find the authentic vape flavor:",
-        "answers": [
-          { "answer": "Sour Apple Candy Twist" },
-          { "answer": "Pineapple Coconut Crush" },
-          { "answer": "Berry Menthol Breeze" },
-          { "answer": "Kiwi Passion Fruit Guava", "correct": true }
-        ]
+        body: 'Which flavor actually appears on the Totally Vapour list?',
+        answers: [
+          { answer: 'Grape Watermelon Ice' },
+          { answer: 'Apple Dragon Fruit Rush' },
+          { answer: 'Cherry Blackberry Fizz' },
+          { answer: 'Watermelon Bubblegum', correct: true },
+        ],
       },
       {
-        "body": "Which of these is real?",
-        "answers": [
-          { "answer": "Strawberry Lychee Ice" },
-          { "answer": "Peach Cotton Candy" },
-          { "answer": "Mr Blue", "correct": true },
-          { "answer": "Cherry Lime Twist" }
-        ]
-      }
+        body: 'Find the genuine vape juice flavor:',
+        answers: [
+          { answer: 'Strawberry Kiwi Frost' },
+          { answer: 'Blue Raspberry Lemonade Ice' },
+          { answer: 'Mr Blue', correct: true },
+          { answer: 'Peach Dragon Fruit Blast' },
+        ],
+      },
+      {
+        body: 'Which of these is a real flavor on the list?',
+        answers: [
+          { answer: 'Pineapple Mango Breeze' },
+          { answer: 'Berry Cotton Candy Ice' },
+          { answer: 'Skittles', correct: true },
+          { answer: 'Watermelon Strawberry Blast' },
+        ],
+      },
+      {
+        body: 'Pick the actual vape flavor:',
+        answers: [
+          { answer: 'Passion Fruit Mango Rush' },
+          { answer: 'Grape Apple Fizz' },
+          { answer: 'Cherry Lime Blast' },
+          { answer: 'Blueberry Cotton Candy', correct: true },
+        ],
+      },
     ]
   }
 ] satisfies { name: string, questions: QuizQuestion[] }[]
