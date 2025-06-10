@@ -57,7 +57,7 @@ export const games: (PreviewCard & { component: string })[] = [
   {
     path: '/quiz',
     title: 'Quizzes',
-    component: 'Quiz',
+    component: 'Quizzes',
     thumb: quizThumb,
   },
   {

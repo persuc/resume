@@ -7,15 +7,17 @@ const props = defineProps<{
 }>()
 
 const picked = ref(-1)
-const emit = defineEmits(['answer-picked'])
+const emit = defineEmits(['answer-submitted'])
 
-function answerPicked(answerIdx: number) {
+function answerSubmitted(answerIdx: number) {
   if (picked.value >= 0) {
+    // already made their selection
     return
   }
 
   picked.value = answerIdx
-  emit('answer-picked', answerIdx)
+  const correct = props.question.answers[answerIdx].correct === true
+  emit('answer-submitted', { index: answerIdx, correctRatio: correct ? 1 : 0 })
 }
 
 const answerClass = computed(() => {
@@ -43,10 +45,13 @@ const answerClass = computed(() => {
 </script>
 <template>
   <div class="p-4">
-    <div class="content-box w-full mx-auto">
+    <div class="w-full mx-auto">
       <h1 class="text-xl font-mont font-bold select-none">{{ props.question.body }}</h1>
+      <div v-show="picked >= 0 && !!props.question.revealedBody" class="flex items-start">
+        {{ props.question.revealedBody }}
+      </div>
       <ul class="mt-8">
-        <li v-for="answer, answerIdx of props.question.answers" @click="answerPicked(answerIdx)"
+        <li v-for="answer, answerIdx of props.question.answers" @click="answerSubmitted(answerIdx)"
           :class="`text-xl font-ssp mt-4 p-2 cursor-pointer border-2 border-transparent hover:border-black ${answerClass[answerIdx]}`">
           <span v-html="picked >= 0 ? answer.revealedAnswer ?? answer.answer : answer.answer" class="select-none" />
         </li>

@@ -1,15 +1,19 @@
 <script setup lang="ts">
-import { type QuizQuestion, isTextQuestion, isMultiChoiceQuestion, type MultiChoiceQuestion as MultiChoiceQuestionType } from "@/@types/quiz"
+import { isTextQuestion, isMultiChoiceQuestion, type MultiChoiceQuestion as MultiChoiceQuestionType, type MatchupQuestion as MatchupQuestionType, isMatchupQuestion } from "@/@types/quiz"
 import Button from "@/components/Button.vue"
+import MatchupQuestion from "@/components/quiz/MatchupQuestion.vue"
 import MultiChoiceQuestion from '@/components/quiz/MultiChoiceQuestion.vue'
 import TextQuestion from '@/components/quiz/TextQuestion.vue'
 import Timer from '@/components/quiz/Timer.vue'
 import { getArraySample } from "@/ts/utils"
 import { ref, computed, reactive, type ComputedRef } from "vue"
+import BackButton from "../BackButton.vue"
+
+type SupportedQuestion = MultiChoiceQuestionType | MatchupQuestionType
 
 const props = defineProps<{
   // TODO: support TextQuestion (make this type QuizQuestion)
-  questions: MultiChoiceQuestionType[],
+  questions: SupportedQuestion[],
   subsetSize?: number,
   timeout?: number
 }>()
@@ -17,28 +21,32 @@ const props = defineProps<{
 const emit = defineEmits(['end'])
 
 const currentQuestionIndex = ref(0)
-const results: { answerIdx: number | null, correct: boolean }[] = reactive([])
+const currentQuestion: ComputedRef<SupportedQuestion | null> = computed(() => currentQuestionIndex.value < questions.value.length ? props.questions[currentQuestionIndex.value] : null)
+const results: { answerIdx: number | null, correctRatio: number, numSubquestions: number }[] = reactive([])
 const elapsedSeconds = ref(0)
 const isViewingResult = ref(false)
 const isQuizFinished = computed(() => (results.length === props.questions.length) && !isViewingResult.value)
 
-const questions: ComputedRef<MultiChoiceQuestionType[]> = computed(() => (
+const questions: ComputedRef<SupportedQuestion[]> = computed(() => (
   (props.subsetSize === undefined || props.subsetSize <= 0)
     ? props.questions
     : getArraySample(props.questions, props.subsetSize)
 ))
 
-function loadNextQuestion(answerIdx: number | null) {
+function answerAndViewResult(correctRatio: number) {
   if (isViewingResult.value) {
     return
   }
   isViewingResult.value = true
 
-  const result = {
-    answerIdx,
-    correct: answerIdx === null ? false : (questions.value[currentQuestionIndex.value].answers[answerIdx].correct === true)
-  }
-  results.push(result)
+  results.push({
+    answerIdx: currentQuestionIndex.value,
+    numSubquestions: (Array.isArray(currentQuestion.value!.answers[0])
+      ? currentQuestion.value!.answers.length
+      : 1
+    ),
+    correctRatio,
+  })
 }
 
 function finishViewingResult() {
@@ -61,31 +69,30 @@ function onEnd() {
 </script>
 
 <template>
-  <div :class="`p-2 flex flex-col ${isQuizFinished ? 'items-center' : ''}`">
+  <BackButton href="/" />
+  <div :class="`p-4 py-12 max-h-screen flex flex-col ${isQuizFinished ? 'items-center' : ''}`">
     <div :class="`flex flex-col gap-y-2 items-center ${isQuizFinished ? '' : 'hidden'}`">
       <div class="text-6xl font-mont font-bold">
         Finished
       </div>
       <div class="text-3xl font-bold">
-        Score: {{ results.reduce((acc, r) => acc + (r.correct ? 1 : 0), 0) }} / {{ results.length
-        }}
+        Score: {{(results.reduce((acc, r) => acc + r.correctRatio, 0) / results.length * 100).toFixed(1)}}%
       </div>
     </div>
-    <div :class="isQuizFinished ? 'hidden' : ''">
-      <template v-for="question, i of questions" :key="question.id">
-        <div :class="{ hidden: i !== currentQuestionIndex }">
-          <Timer v-if="timeout" v-model="elapsedSeconds" :duration="timeout" @end.stop="loadNextQuestion"
-            :is-running="!isViewingResult" />
-          <TextQuestion v-if="isTextQuestion(question)" :question="question" @answerPicked="loadNextQuestion" />
-          <MultiChoiceQuestion v-else-if="isMultiChoiceQuestion(question)" :question="question"
-            @answerPicked="loadNextQuestion" />
-        </div>
-      </template>
-    </div>
-    <div class="flex gap-2 mx-4 mt-4">
-      <Button class="w-max" @click.stop="onEnd">{{ isQuizFinished ? 'Done' : 'Give Up' }}</Button>
-      <Button class="w-max" :class="{ hidden: isQuizFinished }" :disabled="!isViewingResult"
-        @click="finishViewingResult">Next</Button>
+    <template v-if="currentQuestion && !isQuizFinished">
+      <Timer v-if="timeout" v-model="elapsedSeconds" :duration="timeout" @end.stop="answerAndViewResult"
+        :is-running="!isViewingResult" />
+      <TextQuestion v-if="isTextQuestion(currentQuestion)" :question="currentQuestion"
+        @answer-submitted="answerAndViewResult" />
+      <MultiChoiceQuestion v-else-if="isMultiChoiceQuestion(currentQuestion)" :question="currentQuestion"
+        @answer-submitted="(multiChoiceResult) => answerAndViewResult(multiChoiceResult.correctRatio)" />
+      <MatchupQuestion v-else-if="isMatchupQuestion(currentQuestion)" :question="currentQuestion"
+        @answer-submitted="answerAndViewResult">
+        <Button class="w-max" :disabled="!isViewingResult" @click="finishViewingResult">Next</Button>
+      </MatchupQuestion>
+    </template>
+    <div v-show="currentQuestion !== null && !isMatchupQuestion(currentQuestion)" class="flex gap-2 mx-4 mt-4 pb-16">
+      <Button class="w-max" :disabled="!isViewingResult" @click="finishViewingResult">Next</Button>
     </div>
   </div>
 </template>

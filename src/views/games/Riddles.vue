@@ -204,7 +204,7 @@ function onBack() {
       <Button v-show="solution" @click="onBack" class="mx-auto">Return</Button>
 
       <div v-show="!solution" class="flex gap-4 items-center mt-8">
-        <TextQuestion :question="riddle" @solved="onSolve" :hide-body="true" :whimsical="true"
+        <TextQuestion :question="riddle" @answer-submitted="onSolve" :hide-body="true" :whimsical="true"
           :denials="['Not quite', 'No, try again', 'Ponder a little longer', 'The answer remains elusive', 'Something else perhaps', 'No, but keep trying']"
           class="w-full" />
       </div>
