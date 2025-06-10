@@ -398,7 +398,7 @@ function saveWordlist() {
   <Article class="pt-0 h-screen flex flex-col" :footer="false">
 
     <div class="z-10 flex justify-between w-full pb-2">
-      <Button variant="text" class="" @click="reset">
+      <Button variant="text" class="" @click="() => view === VIEW.SETUP ? $router.push('/') : reset()">
         <span>← {{ view === VIEW.SETUP ? 'Back' : revealed === currentWord ? 'Done' : 'Give Up' }}</span>
       </Button>
 

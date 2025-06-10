@@ -11,11 +11,13 @@ const props = defineProps<{
   denials?: string[],
 }>()
 
-const emit = defineEmits(['solved'])
+const emit = defineEmits(['answer-submitted'])
 
 const guess = ref('')
 
 const message = ref('')
+
+const solved = ref(false)
 
 const spool = ref() as Ref<InstanceType<typeof MessageSpool>>
 
@@ -26,7 +28,8 @@ function answerPicked() {
   const previousMessage = message.value
   if (props.question.answers.includes(g)) {
     message.value = "Correct!"
-    emit('solved', g)
+    solved.value = true
+    emit('answer-submitted', 1)
   } else if (g in nm) {
     message.value = nm[g]
   } else {
@@ -44,13 +47,16 @@ function answerPicked() {
 </script>
 <template>
   <div>
-    <div class="content-box w-full mx-auto">
-      <h1 v-if="!hideBody" v-for="bodyLine in props.question.body" :key="bodyLine"
+    <div class="w-full mx-auto">
+      <h1 v-show="!hideBody" v-for="bodyLine in props.question.body" :key="bodyLine"
         class="text-xl font-mont font-bold select-none">
         {{
           bodyLine
         }}
       </h1>
+      <div v-show="solved && !!props.question.revealedBody" class="flex items-start">
+        {{ props.question.revealedBody }}
+      </div>
       <div class="flex gap-4 items-start">
         <div>
           <input type="text" v-model="guess"
@@ -59,6 +65,8 @@ function answerPicked() {
           <MessageSpool ref="spool" :message="message" />
         </div>
         <Button @click="answerPicked">Guess</Button>
+        <!-- TODO: add a way of skipping a question -->
+        <!-- <Button @click="giveUp">Give up</Button> -->
       </div>
     </div>
   </div>
