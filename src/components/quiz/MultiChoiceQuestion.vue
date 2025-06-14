@@ -46,7 +46,10 @@ const answerClass = computed(() => {
 <template>
   <div class="p-4">
     <div class="w-full mx-auto">
-      <h1 class="text-xl font-mont font-bold select-none">{{ props.question.body }}</h1>
+      <h1 class="text-xl font-mont font-bold select-none" v-html="props.question.body" />
+      <div class="flex max-w-[40rem] max-h-[40rem] mt-4" v-if="props.question.image">
+        <img :src="props.question.image" />
+      </div>
       <div v-show="picked >= 0 && !!props.question.revealedBody" class="flex items-start">
         {{ props.question.revealedBody }}
       </div>

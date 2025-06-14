@@ -6,7 +6,7 @@ import MultiChoiceQuestion from '@/components/quiz/MultiChoiceQuestion.vue'
 import TextQuestion from '@/components/quiz/TextQuestion.vue'
 import Timer from '@/components/quiz/Timer.vue'
 import { getArraySample } from "@/ts/utils"
-import { ref, computed, reactive, type ComputedRef } from "vue"
+import { ref, computed, reactive, type ComputedRef, nextTick } from "vue"
 import BackButton from "../BackButton.vue"
 
 type SupportedQuestion = MultiChoiceQuestionType | MatchupQuestionType
@@ -60,6 +60,14 @@ function finishViewingResult() {
   if (currentQuestionIndex.value < questions.value.length - 1) {
     currentQuestionIndex.value += 1
   }
+
+  // this is a weird little hack to basically reset the data in the child component
+  // otherwise state from the previous question carries over
+  const nextIdx = currentQuestionIndex.value
+  currentQuestionIndex.value = questions.value.length
+  nextTick(() => {
+    currentQuestionIndex.value = nextIdx
+  })
 }
 
 function onEnd() {
@@ -91,8 +99,10 @@ function onEnd() {
         <Button class="w-max" :disabled="!isViewingResult" @click="finishViewingResult">Next</Button>
       </MatchupQuestion>
     </template>
-    <div v-show="currentQuestion !== null && !isMatchupQuestion(currentQuestion)" class="flex gap-2 mx-4 mt-4 pb-16">
-      <Button class="w-max" :disabled="!isViewingResult" @click="finishViewingResult">Next</Button>
+    <div class="flex gap-2 mx-4 mt-4 pb-16">
+      <Button v-show="!isQuizFinished" class="w-max" :disabled="!isViewingResult"
+        @click="finishViewingResult">Next</Button>
+      <Button v-show="isQuizFinished" class="w-max" @click.stop="onEnd">{{ 'Done' }}</Button>
     </div>
   </div>
 </template>

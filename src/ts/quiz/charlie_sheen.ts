@@ -49,7 +49,7 @@ export default {
       body: 'I am stronger than man, stronger than machine, I am an idea.',
       answers: [
         { answer: 'Charlie Sheen' },
-        { revealedAnswer: 'LoL (Urgot)', answer: 'LoL', correct: true },
+        { answer: 'LoL', revealedAnswer: 'LoL (Urgot)', correct: true },
       ],
     },
     {

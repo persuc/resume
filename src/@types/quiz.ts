@@ -2,9 +2,10 @@ type BaseQuestion<T> = {
   body: string | string[],
   revealedBody?: string,
   answers: T[],
+  image?: string,
 }
 
-export type MultiChoiceQuestion = BaseQuestion<{ answer: string, correct?: boolean, revealedAnswer?: string }>
+export type MultiChoiceQuestion = BaseQuestion<{ answer: string, correct?: boolean, revealedAnswer?: string, image?: string }>
 
 export type TextQuestion = BaseQuestion<string> & {
   hints?: string[],
