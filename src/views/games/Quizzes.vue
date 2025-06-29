@@ -28,7 +28,7 @@ function endQuiz() {
 
 <template>
   <div class="h-screen w-screen flex items-center justify-center p-8 overflow-y-scroll">
-    <div v-if="chosen < 0">
+    <div v-if="chosen < 0" class="h-full">
       <MultiChoiceQuestion :question="whichQuiz"
         @answer-submitted="multichoiceResult => onChooseQuiz(multichoiceResult.index)" />
       <Button class="mx-4 w-max mt-2" @click="() => router.push('/')">Back</Button>

@@ -1,5 +1,6 @@
 type BaseQuestion<T> = {
   body: string | string[],
+  subtitleBody?: string,
   revealedBody?: string,
   answers: T[],
   image?: string,
@@ -7,10 +8,16 @@ type BaseQuestion<T> = {
 
 export type MultiChoiceQuestion = BaseQuestion<{ answer: string, correct?: boolean, revealedAnswer?: string, image?: string }>
 
+/**
+ * @param nearMisses: mapping of near miss answer to text displayed when this input is received
+ * @param answersCanBeSubstrings: if true, guesses that contain any answer as a substring will be accepted
+ */
 export type TextQuestion = BaseQuestion<string> & {
   hints?: string[],
   nearMisses?: Record<string, string>,
+  answersCanBeSubstrings?: boolean
 }
+
 
 export type MatchupQuestion = BaseQuestion<[string, string]> & {
   retries: number

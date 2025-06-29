@@ -26,7 +26,10 @@ function answerPicked() {
   guess.value = ""
   const nm = (props.question.nearMisses ?? {})
   const previousMessage = message.value
-  if (props.question.answers.includes(g)) {
+  if (
+    (props.question.answers.includes(g)) ||
+    (props.question.answersCanBeSubstrings && props.question.answers.some(a => g.includes(a)))
+  ) {
     message.value = "Correct!"
     solved.value = true
     emit('answer-submitted', 1)
@@ -54,10 +57,12 @@ function answerPicked() {
           bodyLine
         }}
       </h1>
+      <i v-if="!!props.question.subtitleBody" class="text-xl font-mont select-none"
+        v-html="props.question.subtitleBody" />
       <div v-show="solved && !!props.question.revealedBody" class="flex items-start">
         {{ props.question.revealedBody }}
       </div>
-      <div class="flex gap-4 items-start">
+      <div class="flex justify-center gap-4 mt-8 items-start">
         <div>
           <input type="text" v-model="guess"
             class="border-b border-gray-500 lowercase text-xl font-mono outline-none w-full"
