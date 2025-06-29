@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import { isTextQuestion, isMultiChoiceQuestion, type MultiChoiceQuestion as MultiChoiceQuestionType, type MatchupQuestion as MatchupQuestionType, isMatchupQuestion } from "@/@types/quiz"
+import { isTextQuestion, isMultiChoiceQuestion, type MultiChoiceQuestion as MultiChoiceQuestionType, type MatchupQuestion as MatchupQuestionType, isMatchupQuestion, type TextQuestion as TextQuestionType } from "@/@types/quiz"
 import Button from "@/components/Button.vue"
 import MatchupQuestion from "@/components/quiz/MatchupQuestion.vue"
 import MultiChoiceQuestion from '@/components/quiz/MultiChoiceQuestion.vue'
-import TextQuestion from '@/components/quiz/TextQuestion.vue'
 import Timer from '@/components/quiz/Timer.vue'
 import { getArraySample } from "@/ts/utils"
 import { ref, computed, reactive, type ComputedRef, nextTick } from "vue"
 import BackButton from "../BackButton.vue"
 
-type SupportedQuestion = MultiChoiceQuestionType | MatchupQuestionType
+type SupportedQuestion = MultiChoiceQuestionType | MatchupQuestionType | TextQuestionType
 
 const props = defineProps<{
   // TODO: support TextQuestion (make this type QuizQuestion)

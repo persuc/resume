@@ -1,7 +1,7 @@
 import type { QuizData } from "@/@types/quiz"
 
 export default {
-  name: 'Computer Science',
+  name: 'Computer Science I',
   questions: [
     {
       body: 'What is Jensen\'s device?',
