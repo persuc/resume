@@ -45,3 +45,7 @@ export function isMatchupQuestion(q: BaseQuestion<unknown>): q is MatchupQuestio
     return Array.isArray(answer) && answer.length == 2 && answer.every(a => typeof (a) === 'string')
   })
 }
+
+export function getQuizId(q: QuizData): string {
+  return q.name.toLowerCase().replaceAll(/[&\/?%]/g, '').replaceAll(/\s+/g, '-')
+}

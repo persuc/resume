@@ -3,6 +3,7 @@ import { isTextQuestion, isMultiChoiceQuestion, type MultiChoiceQuestion as Mult
 import Button from "@/components/Button.vue"
 import MatchupQuestion from "@/components/quiz/MatchupQuestion.vue"
 import MultiChoiceQuestion from '@/components/quiz/MultiChoiceQuestion.vue'
+import TextQuestion from '@/components/quiz/TextQuestion.vue'
 import Timer from '@/components/quiz/Timer.vue'
 import { getArraySample } from "@/ts/utils"
 import { ref, computed, reactive, type ComputedRef, nextTick } from "vue"
@@ -76,7 +77,7 @@ function onEnd() {
 </script>
 
 <template>
-  <BackButton href="/" />
+  <BackButton href="/quiz" />
   <div :class="`p-4 py-12 max-h-screen flex flex-col ${isQuizFinished ? 'items-center' : ''}`">
     <div :class="`flex flex-col gap-y-2 items-center ${isQuizFinished ? '' : 'hidden'}`">
       <div class="text-6xl font-mont font-bold">

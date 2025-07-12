@@ -73,6 +73,11 @@ const router = createRouter({
       component: () => import(`./views/games/${g.component}.vue`)
     })),
     {
+      path: '/quiz/:id',
+      name: 'Quiz',
+      component: () => import(`./views/games/Quizzes.vue`)
+    },
+    {
       path: '/components',
       name: "Components",
       component: () => import('./views/Components.vue')
