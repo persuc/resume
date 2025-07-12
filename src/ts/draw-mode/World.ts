@@ -8,6 +8,7 @@ import BallOnRope from '@/ts/draw-mode/levels/begin/BallOnRope'
 import BallOnStilts from '@/ts/draw-mode/levels/begin/BallOnStilts'
 import BallUnderClutter from '@/ts/draw-mode/levels/begin/BallUnderClutter'
 import Chasm from '@/ts/draw-mode/levels/begin/Chasm'
+import ChasmWalled from '@/ts/draw-mode/levels/begin/ChasmWalled'
 import NoDrawAfterAwaken from '@/ts/draw-mode/levels/begin/NoDrawAfterAwaken'
 import NoDrawOverhang from '@/ts/draw-mode/levels/begin/NoDrawOverhang'
 import NoDrawRamp from '@/ts/draw-mode/levels/begin/NoDrawRamp'
@@ -70,7 +71,7 @@ export const worlds: WorldData[] = [
   },
   {
     name: 'deepen',
-    levelSpecs: [HangCupOnHook, TargetBehindL, WedgeFork, SuperSoaker, SuperSoakerRepeated, UnbracedWall, GapInFloor, DodgePlatform, DodgePlatformNoDraw]
+    levelSpecs: [HangCupOnHook, TargetBehindL, WedgeFork, SuperSoaker, SuperSoakerRepeated, UnbracedWall, GapInFloor, DodgePlatform, DodgePlatformNoDraw, ChasmWalled]
   },
 ].map(wd => ({
   ...wd,
