@@ -104,6 +104,58 @@ import disaster from '@/assets/disaster-etymology-upscaled.png'
       referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 
+    <div>
+      <p>And now I'm going to tell you about a scorpion.</p>
+
+      <p>This scorpion wanted to cross a river...</p>
+
+      <p>so he asked the frog to carry him.</p>
+
+      <p>"No," said the frog.</p>
+
+      <p>"No, thank you.</p>
+
+      <p>"If I let you on my back,</p>
+
+      <p>you may sting me...</p>
+
+      <p>and the sting of a scorpion is death."</p>
+
+      <p>"Now, where," asked the scorpion, "is the logic of that?"</p>
+
+      <p>for scorpions always try to be logical.</p>
+
+      <p>"If I sting you, you will die, and I will drown."</p>
+
+      <p>So the frog was convinced...</p>
+
+      <p>and allowed the scorpion on his back.</p>
+
+      <p>But just in the middle of the river,</p>
+
+      <p>he felt a terrible pain...</p>
+
+      <p>and realized that, after all,</p>
+
+      <p>the scorpion had stung him.</p>
+
+      <p>"Logic," cried the dying frog as he started under,</p>
+
+      <p>bearing the scorpion down with him.</p>
+
+      <p>"There is no logic in this."</p>
+
+      <p>"I know," said the scorpion,</p>
+
+      <p>"but I can't help it.</p>
+
+      <p>It's my character."</p>
+
+      <p>Let's drink to character.</p>
+
+      <i>- The Scorpion and the Frog</i>
+    </div>
+
     <div class="w-fit mx-auto">
       <External href="https://nervetower.neocities.org/main" :thumbnail="[
         'https://nervetower.neocities.org/img/bg_00outside.gif',
@@ -130,11 +182,10 @@ import disaster from '@/assets/disaster-etymology-upscaled.png'
     </div>
 
     <div>
-      <p>Power is a seed, nutured and grown</p>
-      <p>Might in oaken boughs that lifts a kingdom on its own</p>
+      <p>Power art a seed, nutured and grown</p>
+      <p>Might in oaken boughs that raises a kingdom alone</p>
       <p>When I fetch my axe, fear thee not of me</p>
-      <p>Perish amidst falling limbs, if thou makest me fell my tree</p>
-      <i>- Original work</i>
+      <p>Watch for falling limbs, if thou seeketh to fell a tree</p>
     </div>
 
     <div class="py-16"></div>
