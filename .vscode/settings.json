@@ -8,7 +8,8 @@
     "/src/assets/wordlist.ts": true
   },
   "files.exclude": {
-    ".yarn/": true
+    ".yarn/": true,
+    "public/vextab": true
   },
   "cSpell.words": [
     "Algorithmica",

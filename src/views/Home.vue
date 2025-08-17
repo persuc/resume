@@ -34,6 +34,7 @@ const randomPages: TPreviewCard[] = [
   { path: 'blog/thoughts', title: 'Thoughts' },
   { path: 'wall', title: 'Google Doc?' },
   { path: 'playlists', title: 'Playlists' },
+  { path: 'tablature', title: 'Tablature' },
 ]
 
 </script>

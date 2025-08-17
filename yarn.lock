@@ -829,6 +829,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/vexflow@npm:<4":
+  version: 3.0.1
+  resolution: "@types/vexflow@npm:3.0.1"
+  checksum: 1273eedb3d8a48b6c150a94d2cc58eae3e36e777d9247d6308a6fe47817a992962944cfcbe4aaeab4f4a4f4a4a376fa78057701112dd68890c9564611948b6a1
+  languageName: node
+  linkType: hard
+
+"@types/vextab@npm:^3.0.4":
+  version: 3.0.4
+  resolution: "@types/vextab@npm:3.0.4"
+  dependencies:
+    "@types/vexflow": <4
+  checksum: 311e589cd9ceab20062d53c24d06772920d3dd61da1a21655f3a0da5ac67051c7c171ec815104494ed87dea8502a6468ba81fd627e69ba08490566d872566edc
+  languageName: node
+  linkType: hard
+
 "@typescript-eslint/eslint-plugin@npm:^5.59.1":
   version: 5.62.0
   resolution: "@typescript-eslint/eslint-plugin@npm:5.62.0"
@@ -1535,17 +1551,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"caniuse-lite@npm:^1.0.30001517, caniuse-lite@npm:^1.0.30001520":
-  version: 1.0.30001533
-  resolution: "caniuse-lite@npm:1.0.30001533"
-  checksum: 1ffb2d69f817ee5f13351cb01c26a98ac61515809a6ce355305df3fbc6de6391a58466c1dcad1f322231b1ddc59bdda9bc52b9480cac100c3ff2f5782e859eb1
-  languageName: node
-  linkType: hard
-
-"caniuse-lite@npm:^1.0.30001541":
-  version: 1.0.30001543
-  resolution: "caniuse-lite@npm:1.0.30001543"
-  checksum: 1a65c8b0b93913b6241c7d66e1e1f3ea0f194f7e140eefe500512641c2eb4df285991ec9869a1ba2856ea6f6d21e9f3d7bcd91971b5fb1721e3fa0390feec6f1
+"caniuse-lite@npm:^1.0.30001517, caniuse-lite@npm:^1.0.30001520, caniuse-lite@npm:^1.0.30001541":
+  version: 1.0.30001735
+  resolution: "caniuse-lite@npm:1.0.30001735"
+  checksum: 41ee174f41b876a76d9f9a164d84a43a2d7d4cfba9076b459f165370fd5e0778327262ec3cd676c05f8e8cdeb4f6362d31714fecdcdc584034ae91e987b5bf84
   languageName: node
   linkType: hard
 
@@ -3040,7 +3049,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:^4.17.21":
+"lodash@npm:^4.17.21, lodash@npm:^4.2.1":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
@@ -3850,6 +3859,7 @@ __metadata:
     "@types/highlightjs": ^9.12.2
     "@types/matter-js": ^0.19.0
     "@types/node": 18
+    "@types/vextab": ^3.0.4
     "@vitejs/plugin-vue": ^4.3.4
     "@vitejs/plugin-vue-jsx": ^3.0.2
     "@vue/eslint-config-prettier": ^8.0.0
@@ -3869,6 +3879,7 @@ __metadata:
     prettier: ^3.0.3
     tailwindcss: ^3.3.3
     typescript: ~5.2.2
+    vextab: ^3.0.6
     vite: ^4.4.9
     vite-svg-loader: ^4.0.0
     vue: ^3.2.29
@@ -4447,6 +4458,23 @@ __metadata:
   version: 1.0.2
   resolution: "util-deprecate@npm:1.0.2"
   checksum: 474acf1146cb2701fe3b074892217553dfcf9a031280919ba1b8d651a068c9b15d863b7303cb15bd00a862b498e6cf4ad7b4a08fb134edd5a6f7641681cb54a2
+  languageName: node
+  linkType: hard
+
+"vexflow@npm:^3.0.8":
+  version: 3.0.9
+  resolution: "vexflow@npm:3.0.9"
+  checksum: 532b5969ba4e8b29dbf3102f4f498a9913f95f6315db035fd6db64fda26673e5083320c3b3adfede1f368cfabce60bf3810b8e084deddcc19cf52ee4427bb432
+  languageName: node
+  linkType: hard
+
+"vextab@npm:^3.0.6":
+  version: 3.0.6
+  resolution: "vextab@npm:3.0.6"
+  dependencies:
+    lodash: ^4.2.1
+    vexflow: ^3.0.8
+  checksum: 8f2c2b30017895930b5649dab6235cdbcabff478ffb0cd549cf1826b846d894ab0893f962b72f77e5f9471dd4e68e77b7769545a77d3f3143b93f77493fd0e58
   languageName: node
   linkType: hard
 
