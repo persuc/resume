@@ -4,7 +4,7 @@ import resolveConfig from 'tailwindcss/resolveConfig'
 import type { ThemeConfig } from 'tailwindcss/types/config'
 
 import type { NavItems } from '@/@types'
-import faceImage from '@/assets/face.png'
+import faceImage from '@/assets/face.jpg'
 import Article from '@/components/Article.vue'
 import Story from '@/components/Story.vue'
 
