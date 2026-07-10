@@ -12,18 +12,6 @@ import disaster from '@/assets/disaster-etymology-upscaled.png'
   <article class="px-8 py-20 mx-auto flex flex-col items-center gap-y-16" style="max-width: 60rem">
 
     <p>
-      <code>self.destroy()</code> is an abstract method.
-      Every instance has its own implementation, but only some choose to call it early.
-    </p>
-
-    <p>
-      The only way for a boxer to defeat a biased referee, is to win by knockout.
-      <br />
-      <i>— Idi Amin</i>
-      <span style="display:none;">He does not need wings to fly.</span>
-    </p>
-
-    <p>
       "The Australian mountain forests are funereal, secret, stern. Their solitude is desolation. They seem to stifle in
       their black gorges a story of sullen despair. No tender sentiment is nourished in their shade… The very animal
       life
@@ -97,11 +85,6 @@ import disaster from '@/assets/disaster-etymology-upscaled.png'
       </p>
       <i>- Jerome Swannack</i>
     </div>
-
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/Cu6wlaaf-ck?si=ZnG4RuXBh8sYeOqH"
-      title="YouTube video: Pong" frameborder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 
     <div>
@@ -182,10 +165,11 @@ import disaster from '@/assets/disaster-etymology-upscaled.png'
     </div>
 
     <div>
-      <p>Power art a seed, nutured and grown</p>
-      <p>Might in oaken boughs that raises a kingdom alone</p>
-      <p>When I fetch my axe, fear thee not of me</p>
-      <p>Watch for falling limbs, if thou seeketh to fell a tree</p>
+      <p>Power art a seed, nurtured and grown</p>
+      <p>Might in oaken boughs beareth a kingdom alone</p>
+      <p>When thou fetchest thine axe, fear thou not of me</p>
+      <p>Beware of falling limbs, if thou seekest to fell a tree</p>
+      <i>- me</i>
     </div>
 
     <div class="py-16"></div>
