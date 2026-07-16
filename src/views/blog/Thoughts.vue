@@ -21,7 +21,7 @@ import disaster from '@/assets/disaster-etymology-upscaled.png'
       into
       horrible peals of semi-human laughter… All is fear-inspiring and gloomy."
       <br />
-      <i>- Marcus Clarke, 1876</i>
+      <i>― Marcus Clarke, 1876</i>
     </p>
 
     <External href="https://youtu.be/5kc-bhOOLxE" :thumbnail="bodeVocoder">
@@ -33,7 +33,7 @@ import disaster from '@/assets/disaster-etymology-upscaled.png'
       imposed upon multitudes of intellectual workers by the loss of their time, destroyed by organ-grinders and other
       similar nuisances."
       <br />
-      <i>- Charles Babbage, 1864</i>
+      <i>― Charles Babbage, 1864</i>
     </p>
 
     <div>
@@ -49,7 +49,7 @@ import disaster from '@/assets/disaster-etymology-upscaled.png'
 
       <p>ANTONY 'Tis so. And the tears of it are wet.</p>
 
-      <i>- William Shakespeare, "Antony and Cleopatra"</i>
+      <i>― William Shakespeare, "Antony and Cleopatra"</i>
     </div>
 
     <div class="p-4 py-20 border border-slate-800 w-[40rem]">
@@ -61,21 +61,21 @@ import disaster from '@/assets/disaster-etymology-upscaled.png'
         Any man's death diminishes me, because I am involved in Mankind; And therefore never send to know for whom the
         bell tolls; it tolls for thee.
       </p>
-      <i>- John Donne, For Whom the Bell Tolls</i>
+      <i>― John Donne, For Whom the Bell Tolls</i>
     </div>
 
     <div>
       <p>
         Had we but world enough, and time, this coyness, lady, were no crime.
       </p>
-      <i>- Andrew Marvell, To His Coy Mistress</i>
+      <i>― Andrew Marvell, To His Coy Mistress</i>
     </div>
 
     <div>
       <p>
         We sit together, the mountain and me, until only the mountain remains.
       </p>
-      <i>- 李白</i>
+      <i>― 李白</i>
     </div>
 
     <div>
@@ -83,7 +83,7 @@ import disaster from '@/assets/disaster-etymology-upscaled.png'
         The information age was nascent when we grew up. Information addictiveness was not strong enough to distract us
         from information tomfoolery.
       </p>
-      <i>- Jerome Swannack</i>
+      <i>― Jerome Swannack</i>
     </div>
 
 
@@ -136,7 +136,7 @@ import disaster from '@/assets/disaster-etymology-upscaled.png'
 
       <p>Let's drink to character.</p>
 
-      <i>- The Scorpion and the Frog</i>
+      <i>― The Scorpion and the Frog</i>
     </div>
 
     <div class="w-fit mx-auto">
@@ -164,12 +164,23 @@ import disaster from '@/assets/disaster-etymology-upscaled.png'
       </div>
     </div>
 
+    <div class="max-w-[30rem]">
+      <p>Man shouldn't be able to see his own face—there's nothing more sinister. Nature gave him the gift of not
+        being able to see it, and of not being able to stare into his own eyes.</p>
+
+      <p>Only in the water of rivers and ponds could he look at his face. And the very posture he had to assume was
+        symbolic. He had to bend over, stoop down, to commit the ignominy of beholding himself.</p>
+
+      <p>The inventor of the mirror poisoned the human heart.</p>
+      <p>― Fernando Pessoa, The Book of Disquiet</p>
+    </div>
+
     <div>
       <p>Power art a seed, nurtured and grown</p>
       <p>Might in oaken boughs beareth a kingdom alone</p>
       <p>When thou fetchest thine axe, fear thou not of me</p>
       <p>Beware of falling limbs, if thou seekest to fell a tree</p>
-      <i>- me</i>
+      <i>― me</i>
     </div>
 
     <div class="py-16"></div>
