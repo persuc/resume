@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { EMAIL } from '@/ts/constants'
-import faceImage from '@/assets/face.png'
+import faceImage from '@/assets/face.jpg'
 import monashLogo from '@/assets/monash.png'
 import Article from '@/components/Article.vue'
 import External from '@/components/External.vue'
@@ -15,7 +15,7 @@ import BackButton from '@/components/BackButton.vue'
 
 <template>
   <div class="overflow-hidden">
-    <BackButton />
+    <BackButton class="print:hidden" />
     <a href="/andrew_persic_resume.pdf" download class="relative float-right -right-6 top-0 plain w-auto print:hidden">
       <Button variant="primary">
         <Icon name="download" class="mr-2 w-5" />Download
