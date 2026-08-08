@@ -18,6 +18,56 @@ const renderer = ref<InstanceType<typeof TabRenderer>>()
 const handleInput = (event: Event) => {
   handleTabSave((event.target as HTMLTextAreaElement).value)
 }
+
+const escapeHtml = (value: string) =>
+  value.replace(
+    /[&<>"]/g,
+    (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[character] as string
+  )
+
+const handlePrint = () => {
+  const tab = tabsState.currentTab
+  const svg = renderer.value?.getSvg()
+  if (!tab || !svg) return
+
+  renderer.value?.stop()
+
+  const sheet = window.open('', '_blank')
+  if (!sheet) return
+
+  // Browsers seed the "Save as PDF" filename from the document title.
+  const title = tab.artist ? `${tab.title} - ${tab.artist}` : tab.title
+
+  sheet.document.write(`<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>${escapeHtml(title)}</title>
+<style>
+  @page { margin: 1.5cm; }
+  body { margin: 0; font-family: Georgia, 'Times New Roman', Times, serif; color: #111827; }
+  h1 { font-size: 22pt; font-weight: 600; margin: 0; text-align: center; }
+  .artist { font-size: 12pt; font-style: italic; color: #4b5563; margin: 4pt 0 0; text-align: center; }
+  .tempo { font-size: 11pt; color: #374151; margin: 18pt 0 8pt; }
+  .sheet { width: fit-content; max-width: 100%; margin: 0 auto; }
+  svg { display: block; max-width: 100%; height: auto; }
+</style>
+</head>
+<body>
+<h1>${escapeHtml(tab.title)}</h1>
+${tab.artist ? `<p class="artist">by ${escapeHtml(tab.artist)}</p>` : ''}
+<div class="sheet">
+<p class="tempo">&#9833; = ${renderer.value?.tempo}</p>
+${svg.outerHTML}
+</div>
+</body>
+</html>`)
+
+  sheet.document.close()
+  sheet.focus()
+  sheet.addEventListener('afterprint', () => sheet.close())
+  sheet.print()
+}
 </script>
 
 <template>
@@ -35,7 +85,8 @@ const handleInput = (event: Event) => {
     <div class="flex justify-end items-center w-full pt-8">
       <Button @click="renderer?.toggle()" :disabled="!renderer?.hasAudio" variant="outline"
         class="disabled:opacity-50">
-        {{ renderer?.isPlaying ? 'Stop' : 'Play' }}
+        <Icon :name="renderer?.isPlaying ? 'pause' : 'play'" class="w-4 h-4 mr-2" />
+        {{ renderer?.isPlaying ? 'Pause' : 'Play' }}
       </Button>
 
       <Button @click="triggerFileInput(fileInput)" variant="outline">
@@ -46,6 +97,11 @@ const handleInput = (event: Event) => {
       <Button @click="handleExport()" variant="outline">
         <Icon name="download" class="w-4 h-4 mr-2" />
         Export
+      </Button>
+
+      <Button @click="handlePrint" :disabled="!renderer?.hasAudio" variant="outline" class="disabled:opacity-50">
+        <Icon name="download" class="w-4 h-4 mr-2" />
+        PDF
       </Button>
     </div>
 

@@ -213,7 +213,18 @@ onBeforeUnmount(() => {
 
 watch(() => props.value, renderTab)
 
-defineExpose({ toggle, stop: stopPlayback, isPlaying, hasAudio: computed(() => schedule.value.length > 0) })
+function getSvg(): SVGSVGElement | null {
+  return canvasRef.value?.querySelector('svg') ?? null
+}
+
+defineExpose({
+  toggle,
+  stop: stopPlayback,
+  getSvg,
+  tempo,
+  isPlaying,
+  hasAudio: computed(() => schedule.value.length > 0)
+})
 </script>
 
 <template>
