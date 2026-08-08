@@ -45,7 +45,7 @@ const handleItemClick = (item: MenuItem, event: Event) => {
 
     <div v-if="isOpen"
       class="absolute right-6 mt-2 w-48 bg-white rounded-md shadow-lg z-20 rhomboid outline outline-none before:border-2 before:border-gray-800 before:!-skew-x-6 before:!w-[calc(100%+2rem)] before:!-left-4 before:!bg-white">
-      <div class="py-1 pb-4">
+      <div class="py-1 pb-4 relative z-[2]">
         <template v-for="(item, index) in items" :key="index">
           <!-- <hr v-if="item.separator && index > 0" class="my-1"> -->
           <button @click="handleItemClick(item, $event)"

@@ -1,5 +1,6 @@
 import { ref, reactive } from 'vue'
 import type { MenuItem } from '@/components/FloatingMenu.vue'
+import type { ExampleTab } from '@/assets/tablature/examples'
 
 export interface TabFile {
   id: string
@@ -69,20 +70,9 @@ export async function createTab(title: string, artist: string = '', content: str
   return newTab
 }
 
-export async function updateTab(id: string, updates: Partial<Omit<TabFile, 'id' | 'createdAt'>>): Promise<void> {
-  const tabIndex = tabsState.tabs.findIndex(tab => tab.id === id)
-  if (tabIndex !== -1) {
-    tabsState.tabs[tabIndex] = {
-      ...tabsState.tabs[tabIndex],
-      ...updates,
-      updatedAt: new Date()
-    }
-    await saveTabs()
-
-    if (tabsState.currentTab?.id === id) {
-      tabsState.currentTab = tabsState.tabs[tabIndex]
-    }
-  }
+export async function updateTab(tab: TabFile, updates: Partial<Omit<TabFile, 'id' | 'createdAt'>>): Promise<void> {
+  Object.assign(tab, updates, { updatedAt: new Date() })
+  await saveTabs()
 }
 
 export async function deleteTab(id: string): Promise<void> {
@@ -115,30 +105,18 @@ export function exportTab(tab: TabFile): void {
 }
 
 export async function importTab(file: File): Promise<TabFile> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onload = async (e) => {
-      try {
-        const content = e.target?.result as string
-        const importedTab = JSON.parse(content) as TabFile
+  let parsed: Partial<TabFile>
+  try {
+    parsed = JSON.parse(await file.text())
+  } catch {
+    throw new Error('Invalid tab file format')
+  }
 
-        const newTab: TabFile = {
-          ...importedTab,
-          id: Date.now().toString(),
-          createdAt: new Date(),
-          updatedAt: new Date()
-        }
+  if (typeof parsed?.title !== 'string' || typeof parsed?.content !== 'string') {
+    throw new Error('Invalid tab file format')
+  }
 
-        tabsState.tabs.push(newTab)
-        await saveTabs()
-        resolve(newTab)
-      } catch (error) {
-        reject(new Error('Invalid tab file format'))
-      }
-    }
-    reader.onerror = () => reject(new Error('Failed to read file'))
-    reader.readAsText(file)
-  })
+  return createTab(parsed.title, parsed.artist ?? '', parsed.content)
 }
 
 export async function handleCreateTab(): Promise<void> {
@@ -173,12 +151,22 @@ export function handleExport(tab?: TabFile): void {
 
 export async function handleImportFile(file: File): Promise<void> {
   try {
-    const importedTab = await importTab(file)
-    tabsState.currentTab = importedTab
+    tabsState.error = ''
+    tabsState.currentTab = await importTab(file)
     currentView.value = 'editor'
   } catch (e) {
+    tabsState.error = e instanceof Error ? e.message : 'Import failed'
     console.error('Import failed:', e)
   }
+}
+
+export async function handleFileSelect(event: Event): Promise<void> {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  if (!file) return
+
+  await handleImportFile(file)
+  input.value = ''
 }
 
 export function handleOpenTab(tabId: string): void {
@@ -195,10 +183,26 @@ export async function handleDeleteTab(tabId: string): Promise<void> {
   await deleteTab(tabId)
 }
 
-export function handleTabSave(content: string): void {
-  if (tabsState.currentTab) {
-    updateTab(tabsState.currentTab.id, { content })
+export function openExample(example: ExampleTab): void {
+  tabsState.currentTab = {
+    id: Date.now().toString(),
+    title: example.title,
+    artist: example.artist,
+    content: example.content,
+    createdAt: new Date(),
+    updatedAt: new Date()
   }
+  currentView.value = 'editor'
+}
+
+export function handleTabSave(content: string): void {
+  const tab = tabsState.currentTab
+  if (!tab) return
+
+  // An example opened straight from its URL only joins the library once edited.
+  if (!tabsState.tabs.some((candidate) => candidate.id === tab.id)) tabsState.tabs.push(tab)
+
+  updateTab(tab, { content })
 }
 
 export function triggerFileInput(fileInputRef: HTMLInputElement | undefined): void {

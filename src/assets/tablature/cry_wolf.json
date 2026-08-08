@@ -1,0 +1,9 @@
+{
+  "id": "1786222902335",
+  "title": "Cry Wolf",
+  "artist": "Sundazer",
+  "content": "options\n  tempo=140\n\ntabstave\n  notation=true\n  time=4/4 key=Gm\n  tuning=dropd\n\n  text :h,Intro\n\n  notes :q 1/5 0/4 2/3 :8 0/4 1/5 |\n  notes :8 1/6s3/6 :q 3/5 :8 3/6s5/6 :q 0/6 |\n  notes :q T0/6 0/4 2/3 :q 0/4 |\n  notes :q T0/4 0/6 :8 2/3h3/3 2/3 3/5\n\ntabstave\n  notation=true\n  time=4/4 key=Gm\n  tuning=dropd\n\n  voice\n  notes :q 1/5 0/4 2/3 :8 0/4 1/5 |\n  notes :8 1/6s3/6 :q 3/5 :8 3/6s5/6 :q 0/6 |\n  notes :q T0/6 0/4 2/3 0/4 |\n  notes :q T0/4 0/6 :8 2/3h3/3 2/3 3/5\n\n\n  voice\n  notes :w #_# |\n  notes :w #_# |\n  notes :h #_# :h 3/2 |\n  notes :w #_#\n\ntabstave\n  notation=true\n  time=4/4 key=Gm\n  tuning=dropd\n\n  voice\n  notes :q 1/5 0/4 2/3 :8 0/4 1/5 |\n  notes :8 1/6s3/6 :q 3/5 :8 3/6s5/6 :q 0/6 |\n  notes :q T0/6 0/4 2/3 0/4 |\n  notes :q T0/4 0/6 :8 2/3h3/3 2/3 3/5\n\ntabstave\n  notation=true\n  time=4/4 key=Gm\n  tuning=dropd\n\n  voice\n  notes :q 1/5 0/4 2/3 :8 0/4 1/5 |\n  notes :8 1/6s3/6 :q 3/5 :8 3/6s5/6 :q 0/6 |\n  notes :q T0/6 :h ## :q ## |\n  notes :w ##\n\n\n  voice\n  notes :h #_# :h 3/2 |\n  notes :w #_# |\n  notes :w #_# |\n  notes :w #_#",
+  "createdAt": "2026-08-08T21:01:42.336Z",
+  "updatedAt": "2026-08-08T23:25:18.897Z",
+  "tempo": 140
+}

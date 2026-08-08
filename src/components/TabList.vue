@@ -8,53 +8,29 @@ import {
   handleCreateTab,
   handleOpenTab,
   getTabMenuItems,
-  handleImportFile,
+  handleFileSelect,
   triggerFileInput,
-  type TabFile,
-  saveTabs,
-  importTab
+  createTab,
+  saveTabs
 } from '@/ts/tablature'
 import Button from '@/components/Button.vue'
 import Icon from '@/components/Icon.vue'
 import FloatingMenu from '@/components/FloatingMenu.vue'
 import External from './External.vue'
 import EditLabel from './EditLabel.vue'
-import witch_s_rune from '@/assets/tablature/witch_s_rune.json'
+import { exampleTabs, type ExampleTab } from '@/assets/tablature/examples'
 
 const showHelp = ref(false)
 
 const fileInput = ref<HTMLInputElement>()
 
-const handleFileSelect = async (event: Event) => {
-  const input = event.target as HTMLInputElement
-  const file = input.files?.[0]
-  if (file) {
-    await handleImportFile(file)
-  }
-}
-
-const onEditTitle = (tab: TabFile) => {
+const onEditTitle = () => {
   tabsState.renamingTab = null
   saveTabs()
 }
 
-const handleLoadExampleTab = async () => {
-  const importedTab = JSON.parse(JSON.stringify(witch_s_rune)) as TabFile
-
-  // TODO: copied from importTab
-  const newTab: TabFile = {
-    ...importedTab,
-    id: Date.now().toString(),
-    createdAt: new Date(),
-    updatedAt: new Date()
-  }
-
-  tabsState.tabs.push(newTab)
-  await saveTabs()
-
-  // Reset form
-  newTabTitle.value = ''
-  newTabArtist.value = ''
+const handleLoadExampleTab = async (example: ExampleTab) => {
+  await createTab(example.title, example.artist, example.content)
   showNewTabForm.value = false
 }
 
@@ -70,6 +46,21 @@ const handleLoadExampleTab = async () => {
         tutorials
         on the VexTab language at
         <External href="https://vexflow.com/vextab/tutorial.html">https://vexflow.com/vextab/tutorial.html</External>.
+      </p>
+
+      <p>
+        Anything after <code class="font-mono bg-gray-100 px-1">//</code> on a line is a comment - it is ignored when
+        the tab is drawn and played, so you can annotate your notation freely.
+      </p>
+
+      <p>
+        <code class="font-mono bg-gray-100 px-1">#_#</code> is a hidden rest - it takes up time and keeps the voices
+        aligned like a normal <code class="font-mono bg-gray-100 px-1">##</code> rest, but is not drawn. Use it for
+        bars where a secondary voice is silent.
+      </p>
+
+      <p>
+        Press Play to hear the tab. Click any note in the rendered notation to move the playhead there.
       </p>
 
       <p>
@@ -124,9 +115,12 @@ const handleLoadExampleTab = async () => {
 
       <div class="py-8">OR</div>
 
-      <Button @click="handleLoadExampleTab">
-        Load example tab
-      </Button>
+      <div class="flex flex-wrap items-center gap-y-2">
+        <span class="text-sm text-gray-700">Load an example</span>
+        <Button v-for="example in exampleTabs" :key="example.slug" @click="handleLoadExampleTab(example)">
+          {{ example.title }}
+        </Button>
+      </div>
     </div>
 
     <div v-if="tabsState.error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
@@ -142,7 +136,7 @@ const handleLoadExampleTab = async () => {
         class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow relative">
         <div @click="handleOpenTab(tab.id)" class="p-6 cursor-pointer">
           <EditLabel class="w-[calc(100%-2rem)]" :is-open="tabsState.renamingTab === tab" :value="tab.title"
-            @change="(v: string) => tab.title = v" @open="tabsState.renamingTab = tab" @close="() => onEditTitle(tab)"
+            @change="(v: string) => tab.title = v" @open="tabsState.renamingTab = tab" @close="onEditTitle"
             hide-edit-icon />
           <!-- <h3 class="text-xl font-semibold text-gray-900 mb-2">{{ tab.title }}</h3> -->
           <p v-if="tab.artist" class="text-gray-600 mb-3">by {{ tab.artist }}</p>
