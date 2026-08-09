@@ -1,13 +1,19 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import {
   tabsState,
   handleTabSave,
+  handleLinkSave,
   handleExport,
   handleFileSelect,
   triggerFileInput
 } from '@/ts/tablature'
+import { parseMediaLink } from '@/ts/media'
+import { printSheet } from '@/ts/tab-print'
+import { DEFAULT_TEMPO } from '@/ts/vextab'
 import TabRenderer from './TabRenderer.vue'
+import MediaPlayer from './MediaPlayer.vue'
+import EditLabel from './EditLabel.vue'
 import Button from './Button.vue'
 import Icon from './Icon.vue'
 
@@ -19,11 +25,18 @@ const handleInput = (event: Event) => {
   handleTabSave((event.target as HTMLTextAreaElement).value)
 }
 
-const escapeHtml = (value: string) =>
-  value.replace(
-    /[&<>"]/g,
-    (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[character] as string
-  )
+const isEditingLink = ref(false)
+
+const onEditLink = (value: string) => {
+  handleLinkSave(value.trim())
+  isEditingLink.value = false
+}
+
+const embed = computed(() => parseMediaLink(tabsState.currentTab?.link))
+
+const linkIsUnrecognised = computed(
+  () => !!tabsState.currentTab?.link?.trim() && !embed.value
+)
 
 const handlePrint = () => {
   const tab = tabsState.currentTab
@@ -31,53 +44,25 @@ const handlePrint = () => {
   if (!tab || !svg) return
 
   renderer.value?.stop()
-
-  const sheet = window.open('', '_blank')
-  if (!sheet) return
-
-  // Browsers seed the "Save as PDF" filename from the document title.
-  const title = tab.artist ? `${tab.title} - ${tab.artist}` : tab.title
-
-  sheet.document.write(`<!doctype html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>${escapeHtml(title)}</title>
-<style>
-  @page { margin: 1.5cm; }
-  body { margin: 0; font-family: Georgia, 'Times New Roman', Times, serif; color: #111827; }
-  h1 { font-size: 22pt; font-weight: 600; margin: 0; text-align: center; }
-  .artist { font-size: 12pt; font-style: italic; color: #4b5563; margin: 4pt 0 0; text-align: center; }
-  .tempo { font-size: 11pt; color: #374151; margin: 18pt 0 8pt; }
-  .sheet { width: fit-content; max-width: 100%; margin: 0 auto; }
-  svg { display: block; max-width: 100%; height: auto; }
-</style>
-</head>
-<body>
-<h1>${escapeHtml(tab.title)}</h1>
-${tab.artist ? `<p class="artist">by ${escapeHtml(tab.artist)}</p>` : ''}
-<div class="sheet">
-<p class="tempo">&#9833; = ${renderer.value?.tempo}</p>
-${svg.outerHTML}
-</div>
-</body>
-</html>`)
-
-  sheet.document.close()
-  sheet.focus()
-  sheet.addEventListener('afterprint', () => sheet.close())
-  sheet.print()
+  printSheet(tab, svg, renderer.value?.tempo ?? DEFAULT_TEMPO)
 }
 </script>
 
 <template>
   <div v-if="tabsState.currentTab" class="flex flex-col h-full py-12">
-    <div class="flex items-center pt-8 relative">
-      <div class="flex flex-col text-center absolute w-full">
-        <h1 class="text-3xl font-bold text-gray-900">{{ tabsState.currentTab.title }}
-        </h1>
-        <p v-if="tabsState.currentTab.artist" class="text-gray-600">by {{ tabsState.currentTab.artist }}</p>
-      </div>
+    <div class="flex flex-col items-center pt-8">
+      <h1 class="text-3xl font-bold text-gray-900">{{ tabsState.currentTab.title }}</h1>
+      <p v-if="tabsState.currentTab.artist" class="text-gray-600">by {{ tabsState.currentTab.artist }}</p>
+
+      <EditLabel class="mt-2 w-96 max-w-full justify-center text-sm" :is-open="isEditingLink"
+        :value="tabsState.currentTab.link ?? ''" placeholder="choose youtube/spotify URL"
+        @open="isEditingLink = true" @close="onEditLink" />
+
+      <p v-if="linkIsUnrecognised" class="mt-1 text-xs text-amber-600">
+        Not a recognised YouTube or Spotify link
+      </p>
+
+      <MediaPlayer v-if="embed" :embed="embed" class="mt-4 w-full max-w-2xl" />
     </div>
 
     <input ref="fileInput" type="file" accept=".json" @change="handleFileSelect" class="hidden" />

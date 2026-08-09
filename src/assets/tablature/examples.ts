@@ -6,6 +6,7 @@ export interface ExampleTab {
   title: string
   artist: string
   content: string
+  link?: string
 }
 
 export const exampleTabs: ExampleTab[] = [

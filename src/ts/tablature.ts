@@ -1,12 +1,14 @@
 import { ref, reactive } from 'vue'
 import type { MenuItem } from '@/components/FloatingMenu.vue'
 import type { ExampleTab } from '@/assets/tablature/examples'
+import { printTab } from './tab-print'
 
 export interface TabFile {
   id: string
   title: string
   artist: string
   content: string
+  link?: string
   createdAt: Date
   updatedAt: Date
 }
@@ -16,7 +18,8 @@ export const tabsState = reactive({
   currentTab: null as TabFile | null,
   isLoading: false,
   error: '',
-  renamingTab: null as TabFile | null
+  renamingTab: null as TabFile | null,
+  linkingTab: null as TabFile | null
 })
 
 export const currentView = ref<'list' | 'editor'>('list')
@@ -55,12 +58,18 @@ export async function saveTabs(): Promise<void> {
   }
 }
 
-export async function createTab(title: string, artist: string = '', content: string = ''): Promise<TabFile> {
+export async function createTab(
+  title: string,
+  artist: string = '',
+  content: string = '',
+  link: string = ''
+): Promise<TabFile> {
   const newTab: TabFile = {
     id: Date.now().toString(),
     title,
     artist,
     content,
+    link,
     createdAt: new Date(),
     updatedAt: new Date()
   }
@@ -116,7 +125,7 @@ export async function importTab(file: File): Promise<TabFile> {
     throw new Error('Invalid tab file format')
   }
 
-  return createTab(parsed.title, parsed.artist ?? '', parsed.content)
+  return createTab(parsed.title, parsed.artist ?? '', parsed.content, parsed.link ?? '')
 }
 
 export async function handleCreateTab(): Promise<void> {
@@ -137,7 +146,7 @@ export async function handleRename(tab: TabFile): Promise<void> {
 }
 
 export async function handleDuplicate(tab: TabFile): Promise<void> {
-  const duplicatedTab = await createTab(`${tab.title} (Copy)`, tab.artist, tab.content)
+  const duplicatedTab = await createTab(`${tab.title} (Copy)`, tab.artist, tab.content, tab.link)
   tabsState.currentTab = duplicatedTab
   currentView.value = 'editor'
 }
@@ -189,24 +198,47 @@ export function openExample(example: ExampleTab): void {
     title: example.title,
     artist: example.artist,
     content: example.content,
+    link: example.link ?? '',
     createdAt: new Date(),
     updatedAt: new Date()
   }
   currentView.value = 'editor'
 }
 
+// An example opened straight from its URL only joins the library once edited.
+function adopt(tab: TabFile): void {
+  if (!tabsState.tabs.some((candidate) => candidate.id === tab.id)) tabsState.tabs.push(tab)
+}
+
+export function handleLinkSave(link: string): void {
+  const tab = tabsState.currentTab
+  if (!tab) return
+
+  adopt(tab)
+  updateTab(tab, { link })
+}
+
 export function handleTabSave(content: string): void {
   const tab = tabsState.currentTab
   if (!tab) return
 
-  // An example opened straight from its URL only joins the library once edited.
-  if (!tabsState.tabs.some((candidate) => candidate.id === tab.id)) tabsState.tabs.push(tab)
-
+  adopt(tab)
   updateTab(tab, { content })
 }
 
 export function triggerFileInput(fileInputRef: HTMLInputElement | undefined): void {
   fileInputRef?.click()
+}
+
+export async function handlePrintTab(tab: TabFile): Promise<void> {
+  tabsState.error = ''
+
+  const printed = await printTab(tab)
+  if (!printed) tabsState.error = `"${tab.title}" has no valid notation to print`
+}
+
+export function handleSetLink(tab: TabFile): void {
+  tabsState.linkingTab = tab
 }
 
 export function getTabMenuItems(
@@ -219,6 +251,11 @@ export function getTabMenuItems(
       action: () => handleRename(tab)
     },
     {
+      label: 'Set link',
+      icon: 'comments',
+      action: () => handleSetLink(tab)
+    },
+    {
       label: 'Duplicate',
       icon: 'copy',
       action: () => handleDuplicate(tab)
@@ -227,6 +264,11 @@ export function getTabMenuItems(
       label: 'Export',
       icon: 'download',
       action: () => handleExport(tab)
+    },
+    {
+      label: 'PDF',
+      icon: 'download',
+      action: () => handlePrintTab(tab)
     },
     {
       label: 'Delete',

@@ -47,6 +47,107 @@ export interface VexArtist {
   tab_articulations: VexArticulation[]
 }
 
+export interface DivInstance {
+  artist: VexArtist & { reset(): void; draw(renderer: unknown): void }
+  parser: { reset(): void; parse(code: string): unknown; isValid(): boolean }
+  renderer: unknown
+  ctx: { clear(): void }
+}
+
+export type DivConstructor = new (element: HTMLElement) => DivInstance
+
+declare global {
+  interface Window {
+    vextab?: { default: DivConstructor }
+  }
+}
+
+let vexTabPromise: Promise<DivConstructor> | null = null
+
+export function loadVexTab(): Promise<DivConstructor> {
+  if (vexTabPromise) return vexTabPromise
+
+  const pending = new Promise<DivConstructor>((resolve, reject) => {
+    if (typeof window.vextab?.default === 'function') {
+      resolve(window.vextab.default)
+      return
+    }
+
+    const script = document.createElement('script')
+    script.src = '/vextab/div.prod.js'
+    script.onerror = () => reject(new Error('Failed to load VexTab script'))
+    script.onload = () => {
+      let attempts = 0
+      const checkForVexTab = () => {
+        if (typeof window.vextab?.default === 'function') {
+          resolve(window.vextab.default)
+        } else if (++attempts >= 50) {
+          reject(new Error('VexTab constructor not found on window object'))
+        } else {
+          setTimeout(checkForVexTab, 100)
+        }
+      }
+      checkForVexTab()
+    }
+    document.head.appendChild(script)
+  })
+
+  vexTabPromise = pending.catch((e) => {
+    vexTabPromise = null
+    throw e
+  })
+
+  return vexTabPromise
+}
+
+export function configureCanvas(element: HTMLElement): void {
+  element.setAttribute('width', '800')
+  element.setAttribute('height', '200')
+  element.setAttribute('renderer', 'svg')
+  element.setAttribute('scale', '1.0')
+}
+
+export interface RenderedSheet {
+  svg: SVGSVGElement
+  tempo: number
+}
+
+// Draws a tab away from the page so a score can be produced without an editor
+// mounted. The host must stay laid out - VexFlow measures text via getBBox.
+export async function renderOffscreen(content: string): Promise<RenderedSheet | null> {
+  const { code, hiddenRests } = prepareSource(content)
+  if (!code.trim()) return null
+
+  const VexTabDiv = await loadVexTab()
+
+  const host = document.createElement('div')
+  host.style.cssText = 'position:absolute;left:-10000px;top:0;width:800px'
+  configureCanvas(host)
+  document.body.appendChild(host)
+
+  try {
+    const div = new VexTabDiv(host)
+
+    div.artist.reset()
+    div.parser.reset()
+    div.parser.parse(code)
+    if (!div.parser.isValid()) return null
+
+    div.artist.draw(div.renderer)
+    hideRests(div.artist, hiddenRests)
+
+    const svg = host.querySelector('svg')
+    if (!svg) return null
+
+    return {
+      svg: svg.cloneNode(true) as SVGSVGElement,
+      tempo: Number(div.artist.customizations.tempo) || DEFAULT_TEMPO
+    }
+  } finally {
+    host.remove()
+  }
+}
+
 export interface PreparedSource {
   code: string
   hiddenRests: Set<number>

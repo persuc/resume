@@ -1,60 +1,15 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
-import { prepareSource, hideRests, DEFAULT_TEMPO, type VexArtist } from '@/ts/vextab'
+import {
+  prepareSource,
+  hideRests,
+  loadVexTab,
+  configureCanvas,
+  DEFAULT_TEMPO,
+  type DivInstance,
+  type DivConstructor
+} from '@/ts/vextab'
 import { buildSchedule, TabPlayer, type ScheduledNote } from '@/ts/tab-audio'
-
-interface DivInstance {
-  artist: VexArtist & { reset(): void; draw(renderer: unknown): void }
-  parser: { reset(): void; parse(code: string): unknown; isValid(): boolean }
-  renderer: unknown
-  ctx: { clear(): void }
-}
-
-type DivConstructor = new (element: HTMLElement) => DivInstance
-
-declare global {
-  interface Window {
-    vextab?: { default: DivConstructor }
-  }
-}
-
-let vexTabPromise: Promise<DivConstructor> | null = null
-
-function loadVexTab(): Promise<DivConstructor> {
-  if (vexTabPromise) return vexTabPromise
-
-  const pending = new Promise<DivConstructor>((resolve, reject) => {
-    if (typeof window.vextab?.default === 'function') {
-      resolve(window.vextab.default)
-      return
-    }
-
-    const script = document.createElement('script')
-    script.src = '/vextab/div.prod.js'
-    script.onerror = () => reject(new Error('Failed to load VexTab script'))
-    script.onload = () => {
-      let attempts = 0
-      const checkForVexTab = () => {
-        if (typeof window.vextab?.default === 'function') {
-          resolve(window.vextab.default)
-        } else if (++attempts >= 50) {
-          reject(new Error('VexTab constructor not found on window object'))
-        } else {
-          setTimeout(checkForVexTab, 100)
-        }
-      }
-      checkForVexTab()
-    }
-    document.head.appendChild(script)
-  })
-
-  vexTabPromise = pending.catch((e) => {
-    vexTabPromise = null
-    throw e
-  })
-
-  return vexTabPromise
-}
 
 const props = defineProps<{
   value: string
@@ -191,10 +146,7 @@ onMounted(async () => {
   const el = canvasRef.value
   if (!el) return
 
-  el.setAttribute('width', '800')
-  el.setAttribute('height', '200')
-  el.setAttribute('renderer', 'svg')
-  el.setAttribute('scale', '1.0')
+  configureCanvas(el)
 
   try {
     div = new VexTabDiv(el)

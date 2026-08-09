@@ -11,8 +11,10 @@ import {
   handleFileSelect,
   triggerFileInput,
   createTab,
-  saveTabs
+  saveTabs,
+  type TabFile
 } from '@/ts/tablature'
+import { parseMediaLink } from '@/ts/media'
 import Button from '@/components/Button.vue'
 import Icon from '@/components/Icon.vue'
 import FloatingMenu from '@/components/FloatingMenu.vue'
@@ -24,8 +26,18 @@ const showHelp = ref(false)
 
 const fileInput = ref<HTMLInputElement>()
 
-const onEditTitle = () => {
+const onEditTitle = (tab: TabFile, value: string) => {
+  const title = value.trim()
+  if (title) tab.title = title
+
   tabsState.renamingTab = null
+  saveTabs()
+}
+
+const onEditLink = (tab: TabFile, value: string) => {
+  tab.link = value.trim()
+
+  tabsState.linkingTab = null
   saveTabs()
 }
 
@@ -136,10 +148,18 @@ const handleLoadExampleTab = async (example: ExampleTab) => {
         class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow relative">
         <div @click="handleOpenTab(tab.id)" class="p-6 cursor-pointer">
           <EditLabel class="w-[calc(100%-2rem)]" :is-open="tabsState.renamingTab === tab" :value="tab.title"
-            @change="(v: string) => tab.title = v" @open="tabsState.renamingTab = tab" @close="onEditTitle"
-            hide-edit-icon />
-          <!-- <h3 class="text-xl font-semibold text-gray-900 mb-2">{{ tab.title }}</h3> -->
+            @open="tabsState.renamingTab = tab" @close="(v: string) => onEditTitle(tab, v)" hide-edit-icon />
           <p v-if="tab.artist" class="text-gray-600 mb-3">by {{ tab.artist }}</p>
+
+          <EditLabel v-if="tabsState.linkingTab === tab" class="w-[calc(100%-2rem)] mb-3" :is-open="true"
+            :value="tab.link ?? ''" placeholder="YouTube or Spotify link"
+            @close="(v: string) => onEditLink(tab, v)" hide-edit-icon />
+          <p v-else-if="tab.link" class="text-sm mb-3"
+            :class="parseMediaLink(tab.link) ? 'text-gray-500' : 'text-amber-600'">
+            {{ parseMediaLink(tab.link)?.kind === 'spotify' ? 'Spotify' : parseMediaLink(tab.link) ? 'YouTube' :
+              'Unrecognised link' }}
+          </p>
+
           <p class="text-sm text-gray-500">
             Updated {{ new Date(tab.updatedAt).toLocaleDateString() }}
           </p>
