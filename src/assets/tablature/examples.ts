@@ -9,14 +9,20 @@ export interface ExampleTab {
   link?: string
 }
 
+interface ExampleFile {
+  title: string
+  artist: string
+  content: string
+  link?: string
+}
+
+function example(slug: string, file: ExampleFile): ExampleTab {
+  return { slug, title: file.title, artist: file.artist, content: file.content, link: file.link }
+}
+
 export const exampleTabs: ExampleTab[] = [
-  { slug: 'cry-wolf', title: cry_wolf.title, artist: cry_wolf.artist, content: cry_wolf.content },
-  {
-    slug: 'witch-s-rune',
-    title: witch_s_rune.title,
-    artist: witch_s_rune.artist,
-    content: witch_s_rune.content
-  }
+  example('cry-wolf', cry_wolf),
+  example('witch-s-rune', witch_s_rune)
 ]
 
 export function findExample(slug: string): ExampleTab | undefined {

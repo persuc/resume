@@ -42,7 +42,7 @@ const onEditLink = (tab: TabFile, value: string) => {
 }
 
 const handleLoadExampleTab = async (example: ExampleTab) => {
-  await createTab(example.title, example.artist, example.content)
+  await createTab(example.title, example.artist, example.content, example.link ?? '')
   showNewTabForm.value = false
 }
 
