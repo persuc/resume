@@ -14,6 +14,12 @@ export interface VexNote {
   getNoteHeadBeginX?(): number
   getNoteHeadEndX?(): number
   getAttribute?(name: string): unknown
+  note_heads?: VexNoteHead[]
+}
+
+export interface VexNoteHead {
+  custom_glyph?: boolean
+  glyph_code?: string
 }
 
 export interface VexStave {
@@ -135,6 +141,7 @@ export async function renderOffscreen(content: string): Promise<RenderedSheet | 
 
     div.artist.draw(div.renderer)
     hideRests(div.artist, hiddenRests)
+    hideMutedNoteheads(div.artist)
 
     const svg = host.querySelector('svg')
     if (!svg) return null
@@ -188,6 +195,42 @@ export function prepareSource(raw: string): PreparedSource {
 function hideNote(note: VexNote | undefined): void {
   const element = note?.getAttribute?.('el') as { style?: { display: string } } | undefined
   if (element?.style) element.style.display = 'none'
+}
+
+function isMutedHead(head: VexNoteHead): boolean {
+  return head.custom_glyph === true && head.glyph_code === 'noteheadXBlack'
+}
+
+// VexFlow pins every X notehead to octave 4 (`keyProperties` overwrites the
+// written octave from its note table), so muted strings all collapse onto one
+// staff line instead of tracking their string. They stay on the tab stave.
+export function hideMutedNoteheads(artist: VexArtist): void {
+  for (const stave of artist.staves || []) {
+    const voices = stave.note_voices?.length ? stave.note_voices : [stave.note_notes || []]
+
+    for (const voice of voices) {
+      for (const note of voice || []) {
+        const heads = note.note_heads
+        if (!heads?.length) continue
+
+        const muted = heads.filter(isMutedHead)
+        if (!muted.length) continue
+
+        if (muted.length === heads.length) {
+          hideNote(note)
+          continue
+        }
+
+        const element = note.getAttribute?.('el') as Element | undefined
+        const groups = element?.querySelectorAll('.vf-notehead')
+        if (!groups) continue
+
+        heads.forEach((head, index) => {
+          if (isMutedHead(head)) groups[index]?.setAttribute('style', 'display:none')
+        })
+      }
+    }
+  }
 }
 
 export function hideRests(artist: VexArtist, hidden: Set<number>): void {

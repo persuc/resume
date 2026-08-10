@@ -3,6 +3,7 @@ import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import {
   prepareSource,
   hideRests,
+  hideMutedNoteheads,
   loadVexTab,
   configureCanvas,
   DEFAULT_TEMPO,
@@ -79,6 +80,7 @@ const renderTab = () => {
   stopPlayback()
   div.artist.draw(div.renderer)
   hideRests(div.artist, hiddenRests)
+  hideMutedNoteheads(div.artist)
 
   tempo.value = Number(div.artist.customizations.tempo) || DEFAULT_TEMPO
   schedule.value = buildSchedule(div.artist, tempo.value)
@@ -188,7 +190,8 @@ defineExpose({
       <span class="text-lg leading-none align-middle">&#9833;</span> = {{ tempo }}
     </div>
 
-    <div ref="stageRef" class="relative" :class="{ 'cursor-pointer': schedule.length }" @click="seek">
+    <div ref="stageRef" tabindex="0" class="relative focus:outline-none"
+      :class="{ 'cursor-pointer': schedule.length }" @click="seek" @keydown.space.prevent="toggle">
       <div ref="canvasRef" id="canvas"></div>
 
       <div v-if="playhead" class="absolute w-0 pointer-events-none" :style="playhead">

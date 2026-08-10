@@ -68,12 +68,6 @@ const handlePrint = () => {
     <input ref="fileInput" type="file" accept=".json" @change="handleFileSelect" class="hidden" />
 
     <div class="flex justify-end items-center w-full pt-8">
-      <Button @click="renderer?.toggle()" :disabled="!renderer?.hasAudio" variant="outline"
-        class="disabled:opacity-50">
-        <Icon :name="renderer?.isPlaying ? 'pause' : 'play'" class="w-4 h-4 mr-2" />
-        {{ renderer?.isPlaying ? 'Pause' : 'Play' }}
-      </Button>
-
       <Button @click="triggerFileInput(fileInput)" variant="outline">
         <Icon name="upload" class="w-4 h-4 mr-2" />
         Import
@@ -105,6 +99,14 @@ const handlePrint = () => {
       </div>
 
       <div class="flex-1 border-t border-b border-l border-gray-300 bg-white p-4">
+        <div class="sticky top-0 z-10 -mx-4 flex justify-center bg-white px-4 py-2">
+          <button @click="renderer?.toggle()" :disabled="!renderer?.hasAudio"
+            :aria-label="renderer?.isPlaying ? 'Pause' : 'Play'"
+            class="flex h-11 w-11 items-center justify-center rounded-full border-0 bg-gray-800 p-0 text-white shadow-md transition-colors hover:bg-gray-700 disabled:opacity-40 disabled:hover:bg-gray-800">
+            <Icon :name="renderer?.isPlaying ? 'pause' : 'play'" class="h-5 w-5" />
+          </button>
+        </div>
+
         <TabRenderer ref="renderer" :value="tabsState.currentTab.content" @parse-error="parseError = $event" />
       </div>
     </div>
