@@ -13,7 +13,7 @@ import {
 import { buildSchedule, TabPlayer, type ScheduledNote } from '@/ts/tab-audio'
 
 const props = defineProps<{
-  value: string
+  markup: string
 }>()
 
 const emit = defineEmits<{
@@ -54,7 +54,7 @@ const playhead = computed(() => {
 const renderTab = () => {
   if (!div) return
 
-  const { code, hiddenRests } = prepareSource(props.value)
+  const { code, hiddenRests } = prepareSource(props.markup)
 
   if (!code.trim()) {
     stopPlayback()
@@ -70,7 +70,7 @@ const renderTab = () => {
     div.parser.reset()
     div.parser.parse(code)
   } catch (e: any) {
-    emit('parse-error', e?.message || 'Invalid tab notation')
+    emit('parse-error', e?.message || 'Invalid score markup')
     return
   }
 
@@ -165,7 +165,7 @@ onBeforeUnmount(() => {
   player.dispose()
 })
 
-watch(() => props.value, renderTab)
+watch(() => props.markup, renderTab)
 
 function getSvg(): SVGSVGElement | null {
   return canvasRef.value?.querySelector('svg') ?? null

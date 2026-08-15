@@ -120,8 +120,8 @@ export interface RenderedSheet {
 
 // Draws a tab away from the page so a score can be produced without an editor
 // mounted. The host must stay laid out - VexFlow measures text via getBBox.
-export async function renderOffscreen(content: string): Promise<RenderedSheet | null> {
-  const { code, hiddenRests } = prepareSource(content)
+export async function renderOffscreen(markup: string): Promise<RenderedSheet | null> {
+  const { code, hiddenRests } = prepareSource(markup)
   if (!code.trim()) return null
 
   const VexTabDiv = await loadVexTab()
@@ -170,11 +170,11 @@ export function stripComments(code: string): string {
     .join('\n')
 }
 
-export function prepareSource(raw: string): PreparedSource {
+export function prepareSource(markup: string): PreparedSource {
   const hiddenRests = new Set<number>()
   let rest = 0
 
-  const code = stripComments(raw)
+  const code = stripComments(markup)
     .split('\n')
     .map((line) => {
       if (!line.trimStart().startsWith('notes')) return line

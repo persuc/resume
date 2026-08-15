@@ -5,6 +5,7 @@ import {
   showNewTabForm,
   newTabTitle,
   newTabArtist,
+  newTabLink,
   handleCreateTab,
   handleOpenTab,
   getTabMenuItems,
@@ -18,11 +19,9 @@ import { parseMediaLink } from '@/ts/media'
 import Button from '@/components/Button.vue'
 import Icon from '@/components/Icon.vue'
 import FloatingMenu from '@/components/FloatingMenu.vue'
-import External from './External.vue'
 import EditLabel from './EditLabel.vue'
+import TabHelp from './TabHelp.vue'
 import { exampleTabs, type ExampleTab } from '@/assets/tablature/examples'
-
-const showHelp = ref(false)
 
 const fileInput = ref<HTMLInputElement>()
 
@@ -42,45 +41,14 @@ const onEditLink = (tab: TabFile, value: string) => {
 }
 
 const handleLoadExampleTab = async (example: ExampleTab) => {
-  await createTab(example.title, example.artist, example.content, example.link ?? '')
+  await createTab(example)
   showNewTabForm.value = false
 }
 
 </script>
 
 <template>
-  <div
-    :class="{ 'w-full absolute flex items-center justify-center h-screen': true, 'z-20 bg-gray-600/[.5]': showHelp }">
-    <div v-show="showHelp" class="bg-white border max-w-2xl border-gray-300 p-8 z-10 mt-4 h-fit select-none">
-      <Icon v-show="showHelp" name="close" class="w-10 absolute right-2 top-2 cursor-pointer p-2"
-        @click="() => showHelp = false"></Icon>
-      <p>This page is for creating guitar tablatures using the VexTab standard notation language. You can find
-        tutorials
-        on the VexTab language at
-        <External href="https://vexflow.com/vextab/tutorial.html">https://vexflow.com/vextab/tutorial.html</External>.
-      </p>
-
-      <p>
-        Anything after <code class="font-mono bg-gray-100 px-1">//</code> on a line is a comment - it is ignored when
-        the tab is drawn and played, so you can annotate your notation freely.
-      </p>
-
-      <p>
-        <code class="font-mono bg-gray-100 px-1">#_#</code> is a hidden rest - it takes up time and keeps the voices
-        aligned like a normal <code class="font-mono bg-gray-100 px-1">##</code> rest, but is not drawn. Use it for
-        bars where a secondary voice is silent.
-      </p>
-
-      <p>
-        Press Play to hear the tab. Click any note in the rendered notation to move the playhead there.
-      </p>
-
-      <p>
-        This is a beta version of the editor - please export your files regularly for safekeeping!
-      </p>
-    </div>
-  </div>
-  <div :class="{ 'p-8': true, 'pointer-events-none': showHelp }">
+  <div class="p-8">
     <div class="flex justify-between items-center mb-8">
       <div>
         <h1 class="text-4xl font-bold text-gray-900 mb-2">Tablature</h1>
@@ -93,9 +61,7 @@ const handleLoadExampleTab = async (example: ExampleTab) => {
           <Icon name="plus" class="w-4 h-4 mr-2" />
           New Tab
         </Button>
-        <Button class="z-10" variant="outline" @click="() => showHelp = true">
-          <span class="font-semibold text-xl">?</span>
-        </Button>
+        <TabHelp />
       </div>
 
     </div>
@@ -113,6 +79,11 @@ const handleLoadExampleTab = async (example: ExampleTab) => {
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">Artist</label>
           <input v-model="newTabArtist" type="text" placeholder="Artist name"
+            class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+        <div class="md:col-span-2">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Link (optional)</label>
+          <input v-model="newTabLink" type="url" placeholder="YouTube or Spotify link"
             class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
         </div>
       </div>

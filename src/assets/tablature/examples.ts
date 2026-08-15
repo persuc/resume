@@ -7,6 +7,7 @@ export interface ExampleTab {
   artist: string
   content: string
   link?: string
+  lyrics?: string
 }
 
 interface ExampleFile {
@@ -14,10 +15,18 @@ interface ExampleFile {
   artist: string
   content: string
   link?: string
+  lyrics?: string
 }
 
 function example(slug: string, file: ExampleFile): ExampleTab {
-  return { slug, title: file.title, artist: file.artist, content: file.content, link: file.link }
+  return {
+    slug,
+    title: file.title,
+    artist: file.artist,
+    content: file.content,
+    link: file.link,
+    lyrics: file.lyrics
+  }
 }
 
 export const exampleTabs: ExampleTab[] = [

@@ -9,6 +9,7 @@ export interface TabFile {
   artist: string
   content: string
   link?: string
+  lyrics?: string
   createdAt: Date
   updatedAt: Date
 }
@@ -26,6 +27,7 @@ export const currentView = ref<'list' | 'editor'>('list')
 export const showNewTabForm = ref(false)
 export const newTabTitle = ref('')
 export const newTabArtist = ref('')
+export const newTabLink = ref('')
 
 export async function loadTabs(): Promise<void> {
   tabsState.isLoading = true
@@ -58,18 +60,22 @@ export async function saveTabs(): Promise<void> {
   }
 }
 
-export async function createTab(
-  title: string,
-  artist: string = '',
-  content: string = '',
-  link: string = ''
-): Promise<TabFile> {
+export interface NewTab {
+  title: string
+  artist?: string
+  content?: string
+  link?: string
+  lyrics?: string
+}
+
+export async function createTab(input: NewTab): Promise<TabFile> {
   const newTab: TabFile = {
     id: Date.now().toString(),
-    title,
-    artist,
-    content,
-    link,
+    title: input.title,
+    artist: input.artist ?? '',
+    content: input.content ?? '',
+    link: input.link ?? '',
+    lyrics: input.lyrics ?? '',
     createdAt: new Date(),
     updatedAt: new Date()
   }
@@ -125,19 +131,30 @@ export async function importTab(file: File): Promise<TabFile> {
     throw new Error('Invalid tab file format')
   }
 
-  return createTab(parsed.title, parsed.artist ?? '', parsed.content, parsed.link ?? '')
+  return createTab({
+    title: parsed.title,
+    artist: parsed.artist,
+    content: parsed.content,
+    link: parsed.link,
+    lyrics: parsed.lyrics
+  })
 }
 
 export async function handleCreateTab(): Promise<void> {
   if (!newTabTitle.value.trim()) return
 
-  const tab = await createTab(newTabTitle.value, newTabArtist.value)
+  const tab = await createTab({
+    title: newTabTitle.value,
+    artist: newTabArtist.value,
+    link: newTabLink.value.trim()
+  })
   tabsState.currentTab = tab
   currentView.value = 'editor'
 
   // Reset form
   newTabTitle.value = ''
   newTabArtist.value = ''
+  newTabLink.value = ''
   showNewTabForm.value = false
 }
 
@@ -146,7 +163,7 @@ export async function handleRename(tab: TabFile): Promise<void> {
 }
 
 export async function handleDuplicate(tab: TabFile): Promise<void> {
-  const duplicatedTab = await createTab(`${tab.title} (Copy)`, tab.artist, tab.content, tab.link)
+  const duplicatedTab = await createTab({ ...tab, title: `${tab.title} (Copy)` })
   tabsState.currentTab = duplicatedTab
   currentView.value = 'editor'
 }
@@ -199,6 +216,7 @@ export function openExample(example: ExampleTab): void {
     artist: example.artist,
     content: example.content,
     link: example.link ?? '',
+    lyrics: example.lyrics ?? '',
     createdAt: new Date(),
     updatedAt: new Date()
   }
@@ -218,6 +236,14 @@ export function handleLinkSave(link: string): void {
   updateTab(tab, { link })
 }
 
+export function handleLyricsSave(lyrics: string): void {
+  const tab = tabsState.currentTab
+  if (!tab) return
+
+  adopt(tab)
+  updateTab(tab, { lyrics })
+}
+
 export function handleTabSave(content: string): void {
   const tab = tabsState.currentTab
   if (!tab) return
@@ -234,7 +260,7 @@ export async function handlePrintTab(tab: TabFile): Promise<void> {
   tabsState.error = ''
 
   const printed = await printTab(tab)
-  if (!printed) tabsState.error = `"${tab.title}" has no valid notation to print`
+  if (!printed) tabsState.error = `"${tab.title}" has no valid markup to print`
 }
 
 export function handleSetLink(tab: TabFile): void {

@@ -4,6 +4,7 @@ import {
   tabsState,
   handleTabSave,
   handleLinkSave,
+  handleLyricsSave,
   handleExport,
   handleFileSelect,
   triggerFileInput
@@ -14,6 +15,7 @@ import { DEFAULT_TEMPO } from '@/ts/vextab'
 import TabRenderer from './TabRenderer.vue'
 import MediaPlayer from './MediaPlayer.vue'
 import EditLabel from './EditLabel.vue'
+import TabHelp from './TabHelp.vue'
 import Button from './Button.vue'
 import Icon from './Icon.vue'
 
@@ -21,8 +23,14 @@ const fileInput = ref<HTMLInputElement>()
 const parseError = ref('')
 const renderer = ref<InstanceType<typeof TabRenderer>>()
 
+const showLyrics = ref(false)
+
 const handleInput = (event: Event) => {
   handleTabSave((event.target as HTMLTextAreaElement).value)
+}
+
+const handleLyricsInput = (event: Event) => {
+  handleLyricsSave((event.target as HTMLTextAreaElement).value)
 }
 
 const isEditingLink = ref(false)
@@ -82,15 +90,28 @@ const handlePrint = () => {
         <Icon name="download" class="w-4 h-4 mr-2" />
         PDF
       </Button>
+
+      <TabHelp />
     </div>
 
     <div class="flex w-full flex-1 pt-4 min-h-[30rem]">
-      <div class="flex-1 flex flex-col min-w-[20rem]">
-        <textarea :value="tabsState.currentTab.content" @input="handleInput" spellcheck="false" autocapitalize="off"
-          placeholder="Enter tab notation here..."
-          class="w-full h-full p-4 font-mono text-sm border-t border-b border-gray-300 resize-none focus:outline-none" />
+      <div class="flex-1 flex flex-col min-w-[20rem] border-t border-b border-gray-300 bg-white">
+        <div class="sticky top-0 z-10 flex h-11 items-center justify-end bg-white px-2">
+          <button @click="showLyrics = !showLyrics"
+            class="h-7 rounded border-0 bg-gray-200 px-3 text-xs text-gray-700 transition-colors hover:bg-gray-300">
+            {{ showLyrics ? 'Markup' : 'Lyrics' }}
+          </button>
+        </div>
 
-        <div v-if="parseError" class="sticky bottom-0 h-0 pointer-events-none">
+        <textarea v-if="!showLyrics" :value="tabsState.currentTab.content" @input="handleInput" spellcheck="false"
+          autocapitalize="off" placeholder="Enter score markup here..."
+          class="markup-input w-full h-full p-4 pb-16 font-mono text-sm bg-transparent border-0 resize-none focus:outline-none" />
+
+        <textarea v-else :value="tabsState.currentTab.lyrics ?? ''" @input="handleLyricsInput"
+          placeholder="Add lyrics..."
+          class="sticky top-11 shrink-0 mx-auto w-full max-w-[34rem] h-[calc(100vh-4rem)] border-0 bg-transparent p-6 font-serif text-base leading-8 text-gray-800 resize-none focus:outline-none placeholder:italic placeholder:text-gray-400" />
+
+        <div v-if="parseError && !showLyrics" class="sticky bottom-0 h-0 pointer-events-none">
           <div
             class="absolute inset-x-0 bottom-0 rounded-b border-t border-amber-300 bg-amber-50 px-4 py-2 font-mono text-xs text-amber-900">
             {{ parseError }}
@@ -107,7 +128,7 @@ const handlePrint = () => {
           </button>
         </div>
 
-        <TabRenderer ref="renderer" :value="tabsState.currentTab.content" @parse-error="parseError = $event" />
+        <TabRenderer ref="renderer" :markup="tabsState.currentTab.content" @parse-error="parseError = $event" />
       </div>
     </div>
 
@@ -118,7 +139,7 @@ const handlePrint = () => {
 </template>
 
 <style scoped>
-textarea {
+.markup-input {
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
 }
 </style>
