@@ -54,7 +54,7 @@ const playhead = computed(() => {
 const renderTab = () => {
   if (!div) return
 
-  const { code, hiddenRests } = prepareSource(props.markup)
+  const { code, hiddenRests, tempos } = prepareSource(props.markup)
 
   if (!code.trim()) {
     stopPlayback()
@@ -82,8 +82,8 @@ const renderTab = () => {
   hideRests(div.artist, hiddenRests)
   hideMutedNoteheads(div.artist)
 
-  tempo.value = Number(div.artist.customizations.tempo) || DEFAULT_TEMPO
-  schedule.value = buildSchedule(div.artist, tempo.value)
+  tempo.value = tempos.get(0) ?? DEFAULT_TEMPO
+  schedule.value = buildSchedule(div.artist, tempos, tempo.value)
   cursor.value = schedule.value.length ? 0 : -1
 }
 

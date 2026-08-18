@@ -3,6 +3,11 @@ export const COMMENT_TOKEN = '//'
 export const HIDDEN_REST = '#_#'
 
 const REST_TOKEN = /#(?:_|-?\d+)?#/g
+const STAVE_LINE = /^(?:tabstave|stave)\b/
+const CHORD_GROUP = /\(([^()]*)\)/g
+const HARMONIC_IN_CHORD = /(\d+)<(\d+)>/g
+const HARMONIC_NOTE = /(\d+)<(\d+)>\/(\d+)/g
+const TEMPO_TOKEN = /(?:^|[\s,])tempo\s*=\s*(\d+)/
 
 export interface VexNote {
   shouldIgnoreTicks(): boolean
@@ -15,6 +20,14 @@ export interface VexNote {
   getNoteHeadEndX?(): number
   getAttribute?(name: string): unknown
   note_heads?: VexNoteHead[]
+  modifiers?: VexModifier[]
+  positions?: { str?: number; fret?: string | number }[]
+}
+
+export interface VexModifier {
+  type?: string
+  text?: string
+  getAttribute?(name: string): unknown
 }
 
 export interface VexNoteHead {
@@ -121,7 +134,7 @@ export interface RenderedSheet {
 // Draws a tab away from the page so a score can be produced without an editor
 // mounted. The host must stay laid out - VexFlow measures text via getBBox.
 export async function renderOffscreen(markup: string): Promise<RenderedSheet | null> {
-  const { code, hiddenRests } = prepareSource(markup)
+  const { code, hiddenRests, tempos } = prepareSource(markup)
   if (!code.trim()) return null
 
   const VexTabDiv = await loadVexTab()
@@ -148,7 +161,7 @@ export async function renderOffscreen(markup: string): Promise<RenderedSheet | n
 
     return {
       svg: svg.cloneNode(true) as SVGSVGElement,
-      tempo: Number(div.artist.customizations.tempo) || DEFAULT_TEMPO
+      tempo: tempos.get(0) ?? DEFAULT_TEMPO
     }
   } finally {
     host.remove()
@@ -158,6 +171,8 @@ export async function renderOffscreen(markup: string): Promise<RenderedSheet | n
 export interface PreparedSource {
   code: string
   hiddenRests: Set<number>
+  // Stave index -> tempo taking effect from that stave onward.
+  tempos: Map<number, number>
 }
 
 export function stripComments(code: string): string {
@@ -172,14 +187,24 @@ export function stripComments(code: string): string {
 
 export function prepareSource(markup: string): PreparedSource {
   const hiddenRests = new Set<number>()
+  const tempos = new Map<number, number>()
   let rest = 0
+  let stave = 0
 
   const code = stripComments(markup)
     .split('\n')
     .map((line) => {
-      if (!line.trimStart().startsWith('notes')) return line
+      const trimmed = line.trimStart()
 
-      return line.replace(REST_TOKEN, (match) => {
+      // A tempo applies from the stave that follows it, so count staves first.
+      if (STAVE_LINE.test(trimmed)) stave++
+
+      const tempo = line.match(TEMPO_TOKEN)
+      if (tempo) tempos.set(stave, Number(tempo[1]))
+
+      if (!trimmed.startsWith('notes')) return line
+
+      return rewriteHarmonics(line).replace(REST_TOKEN, (match) => {
         const index = rest++
         if (match !== HIDDEN_REST) return match
 
@@ -189,7 +214,28 @@ export function prepareSource(markup: string): PreparedSource {
     })
     .join('\n')
 
-  return { code, hiddenRests }
+  return { code, hiddenRests, tempos }
+}
+
+// `5<17>/3` is tab shorthand for "fret 5, touch fret 17" - an artificial
+// harmonic. VexTab has no such decorator, so it becomes the note plus the
+// conventional `<17>` annotation, which the schedule reads back for playback.
+export function rewriteHarmonics(line: string): string {
+  const withChords = line.replace(CHORD_GROUP, (whole, inner: string) => {
+    const touches: string[] = []
+    const cleaned = inner.replace(HARMONIC_IN_CHORD, (_match, fret: string, touch: string) => {
+      touches.push(touch)
+      return fret
+    })
+
+    if (!touches.length) return whole
+    return `(${cleaned}) ${touches.map((touch) => `$<${touch}>$`).join(' ')}`
+  })
+
+  return withChords.replace(
+    HARMONIC_NOTE,
+    (_match, fret: string, touch: string, string: string) => `${fret}/${string} $<${touch}>$`
+  )
 }
 
 function hideNote(note: VexNote | undefined): void {

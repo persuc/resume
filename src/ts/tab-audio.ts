@@ -19,6 +19,7 @@ export interface ScheduledNote {
   duration: number
   midi: number[]
   legato: Legato | null
+  staccato: boolean
   x: number
   y: number
   height: number
@@ -48,8 +49,14 @@ export function frequencyOf(midi: number): number {
   return 440 * Math.pow(2, (midi - 69) / 12)
 }
 
-function buildLegatoTargets(artist: VexArtist): Map<VexNote, Legato> {
+interface NoteMaps {
+  toScoreNote: Map<VexNote, VexNote>
+  toTabNote: Map<VexNote, VexNote>
+}
+
+function buildNoteMaps(artist: VexArtist): NoteMaps {
   const toScoreNote = new Map<VexNote, VexNote>()
+  const toTabNote = new Map<VexNote, VexNote>()
 
   for (const stave of artist.staves || []) {
     const tabVoices = stave.tab_voices?.length ? stave.tab_voices : [stave.tab_notes || []]
@@ -60,10 +67,15 @@ function buildLegatoTargets(artist: VexArtist): Map<VexNote, Legato> {
       const scoreNotes = scoreVoices[v] || []
       for (let i = 0; i < tabNotes.length && i < scoreNotes.length; i++) {
         toScoreNote.set(tabNotes[i], scoreNotes[i])
+        toTabNote.set(scoreNotes[i], tabNotes[i])
       }
     }
   }
 
+  return { toScoreNote, toTabNote }
+}
+
+function buildLegatoTargets(artist: VexArtist, toScoreNote: Map<VexNote, VexNote>): Map<VexNote, Legato> {
   const targets = new Map<VexNote, Legato>()
 
   for (const articulation of artist.tab_articulations || []) {
@@ -81,6 +93,42 @@ function buildLegatoTargets(artist: VexArtist): Map<VexNote, Legato> {
   }
 
   return targets
+}
+
+// VexFlow's staccato articulation, written in VexTab as `$.a./bottom.$`.
+const STACCATO = 'a.'
+
+function isStaccato(note: VexNote): boolean {
+  return (note.modifiers || []).some(
+    (modifier) => modifier.getAttribute?.('type') === 'Articulation' && modifier.type === STACCATO
+  )
+}
+
+// `$<17>$` marks an artificial harmonic: the picking hand touches that fret,
+// so the string sounds a partial above the fretted note rather than the note
+// itself. The partial follows from how far above the fret the touch point is.
+const TOUCHED_FRET = /^<(\d+)>$/
+
+function harmonicShift(note: VexNote, toTabNote: Map<VexNote, VexNote>): number {
+  const annotation = (note.modifiers || []).find(
+    (modifier) =>
+      modifier.getAttribute?.('type') === 'Annotation' && TOUCHED_FRET.test(modifier.text ?? '')
+  )
+  if (!annotation) return 0
+
+  const touched = Number(annotation.text?.match(TOUCHED_FRET)?.[1])
+  const tabNote = toTabNote.get(note) ?? note
+  const fretted = Number(tabNote.positions?.[0]?.fret)
+  if (Number.isNaN(touched) || Number.isNaN(fretted)) return 0
+
+  const distance = touched - fretted
+  if (distance <= 0) return 0
+
+  const ratio = Math.pow(2, distance / 12)
+  const partial = Math.round(ratio / (ratio - 1))
+  if (!Number.isFinite(partial) || partial < 2) return 0
+
+  return 12 * Math.log2(partial)
 }
 
 function noteCenterX(note: VexNote): number {
@@ -120,17 +168,28 @@ function systemBand(
   return { y: (top - 12) * scale, height: (bottom - top + 24) * scale }
 }
 
-export function buildSchedule(artist: VexArtist, tempo: number): ScheduledNote[] {
+export function buildSchedule(
+  artist: VexArtist,
+  tempos: Map<number, number>,
+  initialTempo: number
+): ScheduledNote[] {
   const data = artist.getPlayerData()
   const scale = data.scale || 1
-  const secondsPerTick = 60 / (tempo * TICKS_PER_QUARTER)
-  const legatoTargets = buildLegatoTargets(artist)
+  const { toScoreNote, toTabNote } = buildNoteMaps(artist)
+  const legatoTargets = buildLegatoTargets(artist, toScoreNote)
   const byTick = new Map<number, ScheduledNote>()
 
   let staveStartTicks = 0
+  let staveStartSeconds = 0
+  let tempo = initialTempo
 
   for (let s = 0; s < data.voices.length; s++) {
     const voiceGroup = data.voices[s] || []
+
+    // A tempo change takes effect from the start of the stave it precedes.
+    tempo = tempos.get(s) ?? tempo
+    const secondsPerTick = 60 / (tempo * TICKS_PER_QUARTER)
+
     let band: { y: number; height: number } | null = null
     let longestVoice = 0
 
@@ -144,22 +203,26 @@ export function buildSchedule(artist: VexArtist, tempo: number): ScheduledNote[]
         const absoluteTick = staveStartTicks + ticks
         band = band ?? systemBand(artist.staves?.[s], note.getStave(), scale)
 
+        const shift = note.isRest() ? 0 : harmonicShift(note, toTabNote)
         const midi = note.isRest()
           ? []
           : (note.getPlayNote() || [])
               .map(midiFromPlayNote)
               .filter((value): value is number => value !== null)
+              .map((value) => value + shift)
 
         const existing = byTick.get(absoluteTick)
         if (existing) {
           existing.midi.push(...midi)
           existing.legato = existing.legato ?? legatoTargets.get(note) ?? null
+          existing.staccato = existing.staccato || isStaccato(note)
         } else if (band) {
           byTick.set(absoluteTick, {
-            time: absoluteTick * secondsPerTick,
+            time: staveStartSeconds + ticks * secondsPerTick,
             duration: noteTicks * secondsPerTick,
             midi,
             legato: legatoTargets.get(note) ?? null,
+            staccato: isStaccato(note),
             x: noteCenterX(note) * scale,
             y: band.y,
             height: band.height
@@ -173,6 +236,7 @@ export function buildSchedule(artist: VexArtist, tempo: number): ScheduledNote[]
     }
 
     staveStartTicks += longestVoice
+    staveStartSeconds += longestVoice * secondsPerTick
   }
 
   return [...byTick.values()].sort((a, b) => a.time - b.time)
@@ -222,6 +286,10 @@ interface Voice {
   currentMidi: number
 }
 
+// A staccato note sounds for about half its written length, then is damped.
+const STACCATO_RATIO = 0.5
+const DAMP_SECONDS = 0.06
+
 const RAMP_SECONDS: Record<Legato, number> = {
   slide: 0.14,
   step: 0.03,
@@ -261,7 +329,8 @@ export class TabPlayer {
       if (note.legato && sounding.length) {
         sounding = note.midi.map((midi) => this.glide(sounding, midi, at, note.legato as Legato))
       } else {
-        sounding = note.midi.map((midi) => this.pluck(context, midi, at))
+        const damp = note.staccato ? note.duration * STACCATO_RATIO : null
+        sounding = note.midi.map((midi) => this.pluck(context, midi, at, damp))
       }
     }
 
@@ -305,7 +374,7 @@ export class TabPlayer {
     return this.context
   }
 
-  private pluck(context: AudioContext, midi: number, at: number): Voice {
+  private pluck(context: AudioContext, midi: number, at: number, damp: number | null): Voice {
     let buffer = this.buffers.get(midi)
     if (!buffer) {
       buffer = pluckBuffer(context, midi)
@@ -314,7 +383,18 @@ export class TabPlayer {
 
     const source = context.createBufferSource()
     source.buffer = buffer
-    source.connect(this.master as GainNode)
+
+    if (damp === null) {
+      source.connect(this.master as GainNode)
+    } else {
+      const envelope = context.createGain()
+      envelope.gain.setValueAtTime(1, at)
+      envelope.gain.setValueAtTime(1, at + damp)
+      envelope.gain.exponentialRampToValueAtTime(0.0001, at + damp + DAMP_SECONDS)
+      envelope.connect(this.master as GainNode)
+      source.connect(envelope)
+    }
+
     source.start(at)
     source.onended = () => {
       this.sources = this.sources.filter((candidate) => candidate !== source)
