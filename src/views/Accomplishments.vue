@@ -13,7 +13,7 @@ import External from '@/components/External.vue'
     <p class="text-xl">ARENA 3.0</p>
 
     <ul class="list-disc ml-8">
-      <li>Participated in <External href="https://www.arena.education/">the ARENA 3.0 program</External> led by <External
+      <li>Completed in <External href="https://www.arena.education/">the ARENA 3.0 program</External> led by <External
           href="https://www.perfectlynormal.co.uk/">Callum McDougall</External>
       </li>
       <li>Built various machine learning models from scratch, including convolutional networks, residual networks,
@@ -23,7 +23,8 @@ import External from '@/components/External.vue'
           href="https://neelnanda-io.github.io/TransformerLens/">TransformerLens</External>
       </li>
       <li>Applied various training techniques, including Q-learning, PPO and RLHF</li>
-      <li>Read more about my machine learning projects on <a href="/blog">my blog</a> or check out the source code I wrote
+      <li>Read more about my machine learning projects on <a href="/blog">my blog</a> or check out the source code I
+        wrote
         for all of the above on <External href="https://github.com/persuc/ARENA_3.0">GitHub</External>
       </li>
     </ul>
@@ -31,13 +32,14 @@ import External from '@/components/External.vue'
     <p class="text-xl">Canva: Fallback & Experiments</p>
 
     <ul class="list-disc ml-8">
-      <li>Identified pain points in the China region Pages go down without a fallback or being unable to test new
-        designs for canva.com's pages</li>
-      <li>Set up communication with China, Conversion Rate Optimisation and Landing Page teams to define goals</li>
-      <li>Deployed a proxy service, landing page caching mechanism, and experiments config service in the China region
+      <li>At Canva Chinese users made up almost a third of all traffic to the website. However I found that China region
+        pages could go down without a fallback mechanism, and users could also be locked out from testing new designs
       </li>
-      <li>Success metrics: Reduced number of 404s in the China region to near 0 and contributed to conversion rate
-        improvement of 6% that year</li>
+      <li>After reaching out to engineers on three different teams, we deployed a proxy service, landing page caching
+        mechanism, and experiments config service in the China region that allowed us to be fault tolerant and monitor
+        these issues.</li>
+      <li>Success metrics: This was followed by a reduction in number of 404s in the China region to near 0 and
+        improvement on conversion rate of 6% that year</li>
     </ul>
 
     <Expand class="ml-4 my-2" label="Read more" expanded-label="Read less">
@@ -80,4 +82,5 @@ import External from '@/components/External.vue'
     </ul>
 
     <div class="py-16"></div>
-  </div></template>
+  </div>
+</template>

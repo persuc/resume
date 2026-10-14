@@ -3,7 +3,7 @@ import { useRouter } from 'vue-router'
 import booksImage from '@/assets/books.png'
 import hornImage from '@/assets/postal_horn.png'
 import linkedInImage from '@/assets/linkedin.png'
-import starImage from '@/assets/glowing_star.png'
+// import starImage from '@/assets/glowing_star.png'
 import ImageAndText from '@/components/ImageAndText.vue'
 import Icon from '@/components/Icon.vue'
 import Button from '@/components/Button.vue'
@@ -64,10 +64,10 @@ const randomPages: TPreviewCard[] = [
           </div>
         </ImageAndText>
 
-        <ImageAndText class="w-64 bg-gray-950 text-slate-50 px-4" @click="goTalents" style="cursor: pointer;"
+        <!-- <ImageAndText class="w-64 bg-gray-950 text-slate-50 px-4" @click="goTalents" style="cursor: pointer;"
           :image="starImage" size="2rem">
           <div class="w-full text-xl pl-1 pr-2">What I'm Good At</div>
-        </ImageAndText>
+        </ImageAndText> -->
 
         <ImageAndText class="w-64 bg-gray-950 text-slate-50 px-4" @click="goAccomplishments" style="cursor: pointer;"
           :image="hornImage" size="2rem">

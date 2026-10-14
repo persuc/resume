@@ -53,47 +53,37 @@ import BackButton from '@/components/BackButton.vue'
         date-from="2022" date-to="2024"
         :tech="['TypeScript', 'React', 'Java', 'Terraform', 'AWS', 'GraphQL', 'Protobuf', 'PostgreSQL', 'DynamoDB']" />
       <ul class="list-disc ml-8">
-        <li>Managed all pages on <a target="_blank" href="https://www.canva.com/">canva.com</a>
+        <li>Team managed all pages on <a target="_blank" href="https://www.canva.com/">canva.com</a>
           and <a target="_blank" href="https://www.canva.cn/">canva.cn</a>.
-          These 32,590 pages receive ~30 million requests per day</li>
+          These 32,590 pages received ~30 million requests per day, millions of daily content changes</li>
         <li>Expanded infrastructure to the China region, established communication between the Beijing and Landing
           Pages teams, and delivered experimentation and fallback mechanisms in the China region</li>
-        <li>Created web tools to manage our pages and synchronise millions of daily content changes</li>
-        <li>Implemented an experimentation service for A/B testing page changes in real time across 2 regions</li>
       </ul>
 
       <JobTitle class="mt-2" company="Two Bulls" role="Senior Software Engineer" role-qualifier="Backend + Frontend"
         date-from="2020" date-to="2022"
         :tech="['Vue.js', 'TypeScript', 'Node.js', 'C#', 'Python', 'AWS', 'MySQL', 'DynamoDB']" />
       <ul class="list-disc ml-8">
-        <li>Delivered bespoke web applications including <a target="_blank"
-            href="https://www.kidsdoconcall.com.au/">KidsDoc</a> telehealth, <a target="_blank"
-            href="https://fit.theonetwo.com/">TheOneTwo</a> shopfront, <a target="_blank"
-            href="https://www.service.vic.gov.au/services/border-permit/home">Victorian COVID border permits</a>
-          (reached
-          #3
-          on the app store!) and the <a target="_blank" href="https://release.me/">Release.Me</a> land sales platform
+        <li>Designed and built bespoke web applications (<a target="_blank"
+            href="https://www.kidsdoconcall.com.au/">KidsDoc</a>
+          telehealth, <a target="_blank" href="https://fit.theonetwo.com/">TheOneTwo</a> shopfront, <a target="_blank"
+            href="https://www.service.vic.gov.au/services/border-permit/home">COVID border permits </a>,
+          <a target="_blank" href="https://release.me/">Release.Me</a>)
         </li>
-        <li>Responsible for project leadership as well as frontend &amp; backend technical proficiency</li>
-        <li>Learned to work with clients ranging from startups in the inception phase, to state governments to find
-          unique
-          solutions</li>
+        <li>Worked with clients ranging from startups to governments</li>
       </ul>
 
       <JobTitle class="mt-2" company="Unico" role="Software Engineer" role-qualifier="Backend" date-from="2019"
         date-to="2020" :tech="['Java', 'MySQL', 'Python', 'MATRIXX', 'Linux', 'Docker', 'Spring']" />
       <ul class="list-disc ml-8">
-        <li>Performed large scale database migrations (ETL) for prominent telecommunications vendors</li>
-        <li>Successfully migrated over 20 million records to the <i>MATRIXX</i> in-memory database in a single day</li>
-        <li>Gained experience in data-intensive systems and concurrency</li>
+        <li>Database migrations (ETL) for telecoms</li>
       </ul>
 
       <JobTitle class="mt-2" company="Immersive Analytics" role="Software Engineer" role-qualifier="Research"
         date-from="2017" date-to="2019" :tech="['JavaScript', 'Three.js', 'WebGL', 'Python', 'R']" />
       <ul class="list-disc ml-8">
-        <li>Developed a highly performant web application for 2D and 3D
-          visualisation of protein complexes and cross-link mass
-          spectrometry data using <i>Three.js</i> and <i>WebGL</i></li>
+        <li>2D and 3D visualisation of protein complexes and cross-link mass spectrometry data
+        </li>
       </ul>
 
       <div class="flex flex-col md:flex-row md:justify-between print:hidden">
@@ -101,7 +91,7 @@ import BackButton from '@/components/BackButton.vue'
           <div>
             <br />
             <p class="text-lg">Inquire to learn more about</p>
-            <p>UAVs, speech synthesis, cluster computing</p>
+            <p>UAVs, cluster computing</p>
           </div>
         </div>
         <ImageAndText class="whitespace-nowrap mt-4 w-fit mx-auto md:mx-4" :image="monashLogo" :size="'4rem'">
