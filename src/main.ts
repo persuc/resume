@@ -82,11 +82,11 @@ const router = createRouter({
       name: "Components",
       component: () => import('./views/Components.vue')
     },
-    {
-      path: '/playlists',
-      name: "Playlists",
-      component: () => import('./views/Playlists.vue')
-    },
+    // {
+    //   path: '/playlists',
+    //   name: "Playlists",
+    //   component: () => import('./views/Playlists.vue')
+    // },
     {
       path: '/tablature',
       name: "Tablature",

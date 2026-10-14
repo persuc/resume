@@ -20,9 +20,9 @@ function goResume() {
   router.push('/resume')
 }
 
-function goTalents() {
-  router.push('/talents')
-}
+// function goTalents() {
+//   router.push('/talents')
+// }
 
 function goAccomplishments() {
   router.push('/accomplishments')
@@ -33,7 +33,7 @@ const randomPages: TPreviewCard[] = [
   { path: 'study', title: 'Study' },
   { path: 'blog/thoughts', title: 'Thoughts' },
   { path: 'wall', title: 'Google Doc?' },
-  { path: 'playlists', title: 'Playlists' },
+  // { path: 'playlists', title: 'Playlists' },
   { path: 'tablature', title: 'Tablature' },
 ]
 
