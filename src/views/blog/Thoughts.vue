@@ -3,6 +3,7 @@ import BackButton from '@/components/BackButton.vue'
 import bodeVocoder from '@/assets/bode_vocoder.png'
 import External from '@/components/External.vue'
 import disaster from '@/assets/disaster-etymology-upscaled.png'
+import blackbird from '@/assets/black-bird.jpg'
 
 </script>
 
@@ -182,6 +183,41 @@ import disaster from '@/assets/disaster-etymology-upscaled.png'
       <p>Beware of falling limbs, if thou seekest to fell a tree</p>
       <i>― me</i>
     </div>
+
+    <img :src="blackbird" class="max-h-[46rem]" />
+
+    <pre class="font-serif">
+      In the sea without lees
+      Standeth the bird of Hermes
+      Eating his wings variable
+      And maketh himself yet full stable
+      When all his feathers be from him gone
+      He standeth still here as a stone
+      Here is now both white and red
+      And all so the stone to quicken the dead
+      All and some without fable
+      Both hard and soft and malleable
+      Understand now well and right
+      And thank you God of this sight
+
+
+      The bird of Hermes is my name eating my wings to make me tame.
+
+      The Red Sea. The Red Sol. The Red Elixir Vitae.
+      Red Stone. White Stone. Elixir Vitae. Luna in Crescent.
+
+
+      My wings that me brought
+      Hither and thither where I thought
+      Now with their might they down me pull,
+      And bring me where they will
+      The Blood of mine heart I wish
+      Now causeth both joy and blisse
+      And dissolveth the very Stone
+      And knitteth him ere he have done
+      Now maketh hard that was lix
+      And causeth him to be fix
+    </pre>
 
     <div class="py-16"></div>
 
