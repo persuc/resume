@@ -157,6 +157,26 @@ function pick() {
   window.location.search = searchParams.toString()
 }
 
+function wordComp(a: string, b: string): number {
+  let index = 0
+  let aint = 0
+  let bint = 0
+  while (index < Math.min(a.length, b.length)) {
+    aint = parseInt(a.charAt(index), 36)
+    bint = parseInt(b.charAt(index), 36)
+    if (aint < bint) {
+      return -1
+    } else if (aint > bint) {
+      return 1
+    }
+    index++
+  }
+  if (a.length === b.length) {
+    return 0
+  }
+  return a.length < b.length ? -1 : 1
+}
+
 function setCustom(target: string) {
   view.value = VIEW.PLAY
   revealed.value = ''
