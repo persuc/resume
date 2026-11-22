@@ -22,7 +22,7 @@ import blackbird from '@/assets/black-bird.jpg'
       into
       horrible peals of semi-human laughter… All is fear-inspiring and gloomy."
       <br />
-      <i>― Marcus Clarke, 1876</i>
+      <i>– Marcus Clarke, 1876</i>
     </p>
 
     <External href="https://youtu.be/5kc-bhOOLxE" :thumbnail="bodeVocoder">
@@ -34,7 +34,7 @@ import blackbird from '@/assets/black-bird.jpg'
       imposed upon multitudes of intellectual workers by the loss of their time, destroyed by organ-grinders and other
       similar nuisances."
       <br />
-      <i>― Charles Babbage, 1864</i>
+      <i>– Charles Babbage, 1864</i>
     </p>
 
     <div>
@@ -50,7 +50,7 @@ import blackbird from '@/assets/black-bird.jpg'
 
       <p>ANTONY 'Tis so. And the tears of it are wet.</p>
 
-      <i>― William Shakespeare, "Antony and Cleopatra"</i>
+      <i>– William Shakespeare, "Antony and Cleopatra"</i>
     </div>
 
     <div class="p-4 py-20 border border-slate-800 w-[40rem]">
@@ -62,21 +62,21 @@ import blackbird from '@/assets/black-bird.jpg'
         Any man's death diminishes me, because I am involved in Mankind; And therefore never send to know for whom the
         bell tolls; it tolls for thee.
       </p>
-      <i>― John Donne, For Whom the Bell Tolls</i>
+      <i>– John Donne, For Whom the Bell Tolls</i>
     </div>
 
     <div>
       <p>
         Had we but world enough, and time, this coyness, lady, were no crime.
       </p>
-      <i>― Andrew Marvell, To His Coy Mistress</i>
+      <i>– Andrew Marvell, To His Coy Mistress</i>
     </div>
 
     <div>
       <p>
         We sit together, the mountain and me, until only the mountain remains.
       </p>
-      <i>― 李白</i>
+      <i>– 李白</i>
     </div>
 
     <div>
@@ -84,7 +84,7 @@ import blackbird from '@/assets/black-bird.jpg'
         The information age was nascent when we grew up. Information addictiveness was not strong enough to distract us
         from information tomfoolery.
       </p>
-      <i>― Jerome Swannack</i>
+      <i>– Jerome Swannack</i>
     </div>
 
 
@@ -137,7 +137,7 @@ import blackbird from '@/assets/black-bird.jpg'
 
       <p>Let's drink to character.</p>
 
-      <i>― The Scorpion and the Frog</i>
+      <i>– The Scorpion and the Frog</i>
     </div>
 
     <div class="w-fit mx-auto">
@@ -173,7 +173,7 @@ import blackbird from '@/assets/black-bird.jpg'
         symbolic. He had to bend over, stoop down, to commit the ignominy of beholding himself.</p>
 
       <p>The inventor of the mirror poisoned the human heart.</p>
-      <p>― Fernando Pessoa, The Book of Disquiet</p>
+      <p>– Fernando Pessoa, The Book of Disquiet</p>
     </div>
 
     <div>
@@ -181,7 +181,7 @@ import blackbird from '@/assets/black-bird.jpg'
       <p>Might in oaken boughs beareth a kingdom alone</p>
       <p>When thou fetchest thine axe, fear thou not of me</p>
       <p>Beware of falling limbs, if thou seekest to fell a tree</p>
-      <i>― me</i>
+      <i>– me</i>
     </div>
 
     <img :src="blackbird" class="max-h-[46rem]" />
@@ -218,6 +218,17 @@ import blackbird from '@/assets/black-bird.jpg'
       Now maketh hard that was lix
       And causeth him to be fix
     </pre>
+
+    <div>
+      <p>In life the challenge is not so much to figure out how best to play the game; the challenge is to figure out
+        what
+        game you're playing.</p>
+      <i>– Kwame Anthony Appiah</i>
+    </div>
+
+    <div>
+      <a target="_blank" href="https://graymirror.substack.com/p/you-can-only-lose-the-culture-war">Dark elves</a>
+    </div>
 
     <div class="py-16"></div>
 
