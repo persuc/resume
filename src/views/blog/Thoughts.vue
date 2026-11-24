@@ -186,44 +186,47 @@ import blackbird from '@/assets/black-bird.jpg'
 
     <img :src="blackbird" class="max-h-[46rem]" />
 
-    <pre class="font-serif">
-      In the sea without lees
-      Standeth the bird of Hermes
-      Eating his wings variable
-      And maketh himself yet full stable
-      When all his feathers be from him gone
-      He standeth still here as a stone
-      Here is now both white and red
-      And all so the stone to quicken the dead
-      All and some without fable
-      Both hard and soft and malleable
-      Understand now well and right
-      And thank you God of this sight
-
-
-      The bird of Hermes is my name eating my wings to make me tame.
-
-      The Red Sea. The Red Sol. The Red Elixir Vitae.
-      Red Stone. White Stone. Elixir Vitae. Luna in Crescent.
-
-
-      My wings that me brought
-      Hither and thither where I thought
-      Now with their might they down me pull,
-      And bring me where they will
-      The Blood of mine heart I wish
-      Now causeth both joy and blisse
-      And dissolveth the very Stone
-      And knitteth him ere he have done
-      Now maketh hard that was lix
-      And causeth him to be fix
-    </pre>
+    <div class="">
+      <p>In the sea without lees</p>
+      <p>Standeth the bird of Hermes</p>
+      <p>Eating his wings variable</p>
+      <p>And maketh himself yet full stable</p>
+      <p>When all his feathers be from him gone</p>
+      <p>He standeth still here as a stone</p>
+      <p>Here is now both white and red</p>
+      <p>And all so the stone to quicken the dead</p>
+      <p>All and some without fable</p>
+      <p>Both hard and soft and malleable</p>
+      <p>Understand now well and right</p>
+      <p>And thank you God of this sight</p>
+      <p>...</p>
+      <p>The bird of Hermes is my name, <br> eating my wings to make me tame.</p>
+      <p>...</p>
+      <p>The Red Sea. The Red Sol. The Red Elixir Vitae.</p>
+      <p>Red Stone. White Stone. Elixir Vitae. Luna in Crescent.</p>
+      <p>...</p>
+      <p>My wings that me brought</p>
+      <p>Hither and thither where I thought</p>
+      <p>Now with their might they down me pull,</p>
+      <p>And bring me where they will</p>
+      <p>The Blood of mine heart I wish</p>
+      <p>Now causeth both joy and blisse</p>
+      <p>And dissolveth the very Stone</p>
+      <p>And knitteth him ere he have done</p>
+      <p>Now maketh hard that was lix</p>
+      <p>And causeth him to be fix</p>
+    </div>
 
     <div>
       <p>In life the challenge is not so much to figure out how best to play the game; the challenge is to figure out
         what
         game you're playing.</p>
       <i>– Kwame Anthony Appiah</i>
+    </div>
+
+    <div>
+      <p>This is not reality, it's a romance. So, take a breath. Enjoy it. It's for you.</p>
+      <i>– Alan Rickman</i>
     </div>
 
     <div>
